@@ -454,8 +454,9 @@ function sendWhatsAppOrder() {
 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
+/* --- SECCIÓN 01: RUTAS DE VUELO CON OPTIMIZACIÓN DE MEMORIA --- */
+let videoObserver = null;
 
-/* --- SECCIÓN 01: RUTAS DE VUELO --- */
 function openRutasVuelo() {
     const view = document.getElementById('rutasFullscreenView');
     if (view) {
@@ -463,24 +464,33 @@ function openRutasVuelo() {
         view.scrollTop = 0;
         document.body.style.overflow = 'hidden';
         
-        // Forzar reproducción automática e instantánea de todos los videos
-        const videos = view.querySelectorAll('video');
-        videos.forEach(video => {
-            video.muted = true;
-            video.currentTime = 0;
-            video.play().catch(err => console.log("Autoplay:", err));
-        });
+        // Activar observador inteligente de videos
+        initVideoObserver(view);
     }
 }
 
-function closeRutasVuelo() {
-    const view = document.getElementById('rutasFullscreenView');
-    if (view) {
-        view.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-}
+function initVideoObserver(container) {
+    if (!('IntersectionObserver' in window)) return;
 
+    if (!videoObserver) {
+        videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {});
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.3 });
+    }
+
+    const videos = container.querySelectorAll('video');
+    videos.forEach(video => {
+        video.muted = true;
+        videoObserver.observe(video);
+    });
+}
 /* FILTRADO DE RUTAS DE VUELO */
 document.addEventListener('DOMContentLoaded', () => {
     const botonesFiltro = document.querySelectorAll('.btn-filtro');
