@@ -526,6 +526,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 /* --- SECCIÓN 02: MONCHIS Y BAJAR AVIÓN --- */
+let currentMonchisTab = 'calle';
+
 function openMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
     if (view) {
@@ -545,6 +547,69 @@ function closeMonchisVuelo() {
     }
 }
 
+function switchMonchisTab(tab) {
+    currentMonchisTab = tab;
+
+    const btnCalle = document.getElementById('tabCalleBtn');
+    const btnCasa = document.getElementById('tabCasaBtn');
+    const filtersCalle = document.getElementById('filtersCalle');
+    const filtersCasa = document.getElementById('filtersCasa');
+
+    if (tab === 'calle') {
+        btnCalle?.classList.add('active');
+        btnCasa?.classList.remove('active');
+        if (filtersCalle) filtersCalle.style.display = 'flex';
+        if (filtersCasa) filtersCasa.style.display = 'none';
+    } else {
+        btnCasa?.classList.add('active');
+        btnCalle?.classList.remove('active');
+        if (filtersCasa) filtersCasa.style.display = 'flex';
+        if (filtersCalle) filtersCalle.style.display = 'none';
+    }
+
+    filterMonchisCards();
+}
+
+function filterMonchisCards() {
+    const cards = document.querySelectorAll('#monchisGrid .compact-card');
+
+    if (currentMonchisTab === 'calle') {
+        const zona = document.getElementById('filterZona')?.value || 'todos';
+        const antojo = document.getElementById('filterAntojoCalle')?.value || 'todos';
+
+        cards.forEach(card => {
+            const tipoCard = card.getAttribute('data-tipo');
+            const zonaCard = card.getAttribute('data-zona');
+            const antojoCard = card.getAttribute('data-antojo');
+
+            const matchTipo = (tipoCard === 'calle');
+            const matchZona = (zona === 'todos' || zonaCard === zona);
+            const matchAntojo = (antojo === 'todos' || antojoCard === antojo);
+
+            if (matchTipo && matchZona && matchAntojo) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    } else if (currentMonchisTab === 'casa') {
+        const antojo = document.getElementById('filterAntojoCasa')?.value || 'todos';
+
+        cards.forEach(card => {
+            const tipoCard = card.getAttribute('data-tipo');
+            const antojoCard = card.getAttribute('data-antojo');
+
+            const matchTipo = (tipoCard === 'casa');
+            const matchAntojo = (antojo === 'todos' || antojoCard === antojo);
+
+            if (matchTipo && matchAntojo) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+}
 /* --- SECCIÓN 03: TRIP VISUAL & CINE --- */
 function openCineVuelo() {
     const cineView = document.getElementById('cineFullscreenView');
