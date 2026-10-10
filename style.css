@@ -1711,13 +1711,56 @@
     border-color: #ffffff;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
 }
-
-/* Ajuste para pantallas móviles */
+/* ==========================================
+   OPTIMIZACIONES EXCLUSIVAS PARA CELULARES
+   ========================================== */
 @media (max-width: 600px) {
-    .buzon-floating-btn {
-        bottom: 75px !important;
+    /* 1. Muestra el logo y avión completo en la portada sin recortar los lados */
+    .hero-cover::before {
+        background-size: contain !important;
+        background-position: top center !important;
+    }
+
+    .hero-cover {
+        min-height: 55vh !important;
+        padding-top: 15px !important;
+    }
+
+    /* 2. Carrito ubicado en la ESQUINA SUPERIOR DERECHA en móviles */
+    .cart-floating-btn {
+        top: 15px !important;
         right: 15px !important;
-        padding: 10px 16px !important;
+        bottom: auto !important;
+        left: auto !important;
+        padding: 9px 16px !important;
         font-size: 0.75rem !important;
+        z-index: 9999 !important;
+    }
+
+    /* 3. Buzón ubicado en la ESQUINA INFERIOR DERECHA */
+    .buzon-floating-btn {
+        bottom: 20px !important;
+        right: 15px !important;
+        top: auto !important;
+        padding: 10px 18px !important;
+        font-size: 0.78rem !important;
+        z-index: 9999 !important;
+    }
+
+    /* 4. Ajustes generales de tarjetas y títulos */
+    .about-card h2, 
+    .diferencia-card h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .rutas-content-overlay {
+        padding: 75px 10px 40px 10px !important;
+    }
+
+    .rutas-info-card, 
+    .about-card, 
+    .diferencia-card {
+        padding: 18px !important;
+        border-radius: 18px !important;
     }
 }
