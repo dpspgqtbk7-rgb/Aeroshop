@@ -1712,64 +1712,75 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
 }
 /* ==========================================
-   FIX DEFINITIVO PORTADA MÓVIL (SIN RECORTES)
+   AJUSTE COMPACTO Y ESTABLE PARA MÓVILES
    ========================================== */
 @media (max-width: 600px) {
-    /* 1. Contenedor principal de la portada */
+    /* 1. Carrito compacto en la esquina superior derecha */
+    .cart-floating-btn {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        bottom: auto !important;
+        left: auto !important;
+        width: auto !important;
+        max-width: fit-content !important;
+        padding: 8px 16px !important;
+        font-size: 0.75rem !important;
+        white-space: nowrap !important;
+        z-index: 9999 !important;
+    }
+
+    /* 2. Buzón compacto en la esquina inferior derecha */
+    .buzon-floating-btn {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 15px !important;
+        top: auto !important;
+        left: auto !important;
+        width: auto !important;
+        max-width: fit-content !important;
+        padding: 10px 18px !important;
+        font-size: 0.78rem !important;
+        white-space: nowrap !important;
+        z-index: 9999 !important;
+    }
+
+    /* 3. Portada ajustada y limpia */
     .hero-cover {
-        min-height: 350px !important;
+        min-height: 320px !important;
         height: auto !important;
-        padding: 65px 15px 20px 15px !important; /* Espacio superior para despejar el Carrito y la barra de estado */
+        padding: 25px 15px 20px 15px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         align-items: center !important;
     }
 
-    /* 2. Posicionamiento de la imagen de fondo */
     .hero-cover::before {
-        background-size: 100% auto !important; /* Ancho completo de borde a borde */
-        background-position: center 35px !important; /* Desplaza el fondo 35px hacia abajo para no cortar el techo de las letras */
+        background-size: 100% auto !important;
+        background-position: center top !important;
         background-repeat: no-repeat !important;
     }
 
-    /* 3. Tamaño y posición del Avión */
+    /* 4. Avión y sub-título */
     .hero-plane-container {
-        margin-top: 15px !important;
+        margin-top: 10px !important;
         margin-bottom: 0 !important;
     }
 
     .hero-plane-img {
-        width: 160px !important;
+        width: 170px !important;
     }
 
-    /* 4. Botón Eleva tu experiencia */
     .hero-subtitle {
-        font-size: 0.75rem !important;
+        font-size: 0.78rem !important;
         padding: 10px 22px !important;
-        margin-top: 15px !important;
+        margin-top: 10px !important;
         margin-bottom: 5px !important;
         letter-spacing: 2px !important;
     }
 
-    /* 5. Botones flotantes (Carrito y Buzón) */
-    .cart-floating-btn {
-        top: 12px !important;
-        right: 12px !important;
-        padding: 8px 14px !important;
-        font-size: 0.72rem !important;
-        z-index: 9999 !important;
-    }
-
-    .buzon-floating-btn {
-        bottom: 20px !important;
-        right: 12px !important;
-        padding: 9px 15px !important;
-        font-size: 0.75rem !important;
-        z-index: 9999 !important;
-    }
-
-    /* 6. Ajustes de tarjetas */
+    /* 5. Tarjetas generales */
     .about-card h2, 
     .diferencia-card h2 {
         font-size: 1.8rem !important;
