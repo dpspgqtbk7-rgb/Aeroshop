@@ -459,12 +459,13 @@ function sendWhatsAppOrder() {
 /* --- FUNCIONES REUTILIZABLES PARA REPRODUCCIÓN FLUIDA DE VIDEOS --- */
 function playSectionVideos(container) {
     if (!container) return;
-    const videos = container.querySelectorAll('video');
-    videos.forEach(video => {
-        video.muted = true;
-        video.playsInline = true;
-        video.play().catch(err => console.log("Autoplay diferido:", err));
-    });
+    // Solo reproduce el video hero principal, no las tarjetas compactas
+    const heroVideo = container.querySelector('.monchis-hero-video, #cineHeroVideo');
+    if (heroVideo) {
+        heroVideo.muted = true;
+        heroVideo.playsInline = true;
+        heroVideo.play().catch(err => console.log("Autoplay diferido:", err));
+    }
 }
 
 function pauseSectionVideos(container) {
@@ -969,3 +970,23 @@ function sendBuzonWhatsApp(event) {
     document.getElementById('buzonMensaje').value = '';
     closeBuzonModal();
 }
+/* DETECTOR Y REDIRECCIÓN DE NAVEGADORES INTERNOS (WHATSAPP / INSTAGRAM / TIKTOK) */
+document.addEventListener('DOMContentLoaded', () => {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isWebView = /FBAN|FBAV|Instagram|WhatsApp|TikTok|MicroMessenger/i.test(ua);
+
+    if (isWebView) {
+        const isAndroid = /Android/i.test(ua);
+        if (isAndroid) {
+            // En Android intenta abrir Chrome directamente
+            const cleanUrl = window.location.href.replace(/^https?:\/\//, '');
+            window.location.href = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+        } else {
+            // En iOS (iPhone) despliega una barra fija de ayuda superior
+            const banner = document.createElement('div');
+            banner.style.cssText = 'position:fixed; top:0; left:0; width:100%; background:#facc15; color:#000; text-align:center; padding:12px 16px; font-weight:800; font-size:0.82rem; z-index:99999; box-shadow:0 4px 12px rgba(0,0,0,0.5);';
+            banner.innerHTML = '⚠️ Para ver fotos y videos sin fallas, toca <strong>⋯</strong> o <strong>↑</strong> arriba a la derecha y elige <strong>"Abrir en Safari"</strong>.';
+            document.body.prepend(banner);
+        }
+    }
+});
