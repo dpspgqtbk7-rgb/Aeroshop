@@ -14,13 +14,21 @@ function scrollToBrandProducts() {
         target.scrollIntoView({ behavior: 'smooth' });
     }
 }
-
-/* FUNCIONALIDAD CARRUSEL CON COMPATIBILIDAD DE VIDEO Y ROTACIÓN LIMPIA */
+/* FUNCIONALIDAD CARRUSEL CON COMPATIBILIDAD DE VIDEO, ROTACIÓN LIMPIA Y TÁCTIL */
 function startHoverSlider(container) {
+    // Protección: Evita que se creen múltiples animaciones si el usuario toca la pantalla varias veces
+    if (container._intervalId) return; 
+
     const mediaElements = container.querySelectorAll('img, video');
     if (mediaElements.length <= 1) return;
     
+    // Detectamos cuál es la imagen/video que está activo actualmente
     let currentIndex = 0;
+    mediaElements.forEach((el, idx) => {
+        if (el.classList.contains('active')) {
+            currentIndex = idx;
+        }
+    });
 
     container._intervalId = setInterval(() => {
         mediaElements[currentIndex].classList.remove('active');
@@ -29,6 +37,7 @@ function startHoverSlider(container) {
     }, 1200);
 }
 
+// ¡ESTA ES LA FUNCIÓN QUE SE HABÍA BORRADO, DEBE IR AQUÍ ABAJO!
 function stopHoverSlider(container) {
     if (container._intervalId) {
         clearInterval(container._intervalId);
@@ -37,11 +46,12 @@ function stopHoverSlider(container) {
     const mediaElements = container.querySelectorAll('img, video');
     mediaElements.forEach((el, idx) => el.classList.toggle('active', idx === 0));
 }
-
+/* MANEJO DE VENTANA MODAL DE PRODUCTOS */
 /* MANEJO DE VENTANA MODAL DE PRODUCTOS */
 function openProductModal(productId) {
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
+    const strainPillsContainer = document.getElementById('modalStrainPills'); // Nuevo contenedor dinámico
 
     if (productId === 'donutsdonitav3') {
         currentModalProduct = { title: 'donuts donita v3', price: 850, image: './donusdonitav31.JPG' };
@@ -53,6 +63,14 @@ function openProductModal(productId) {
             <img src="./donusdonitav31.JPG" class="modal-thumb active" onclick="changeModalMedia(this, './donusdonitav31.JPG')">
             <img src="./donutsdonasv3.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsdonasv3.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'donutsv2') {
         currentModalProduct = { title: 'Donuts v2', price: 700, image: './donutsv22.JPG' };
         document.getElementById('modalTitle').innerText = 'Donuts v2';
@@ -64,6 +82,14 @@ function openProductModal(productId) {
             <img src="./donutsv22.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv22.JPG')">
             <img src="./donutsv23.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv23.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'packman3g') {
         currentModalProduct = { title: 'PACKMAN 3g + Pre-Roll', price: 950, image: './packman1.png' };
         document.getElementById('modalTitle').innerText = 'PACKMAN 3g + Pre-Roll';
@@ -76,6 +102,14 @@ function openProductModal(productId) {
             <img src="./packman3.png" class="modal-thumb" onclick="changeModalMedia(this, './packman3.png')">
             <img src="./packman5.JPG" class="modal-thumb" onclick="changeModalMedia(this, './packman5.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'muhacmeds') {
         currentModalProduct = { title: 'MUHACMEDS 2g', price: 700, image: './Muhacmeds1.JPG' };
         document.getElementById('modalTitle').innerText = 'MUHACMEDS 2g';
@@ -88,6 +122,14 @@ function openProductModal(productId) {
             <img src="./muhacmeds.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds.jpg')">
             <img src="./muhacmeds2.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds2.jpg')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'muhamedual') {
         currentModalProduct = { title: 'MUHAMEDual 2g', price: 800, image: './muhamedual 2.JPG' };
         document.getElementById('modalTitle').innerText = 'MUHAMEDual 2g';
@@ -99,12 +141,17 @@ function openProductModal(productId) {
             <img src="./muhamedual 2.JPG" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual 2.JPG')">
             <img src="./muhamedual3.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual3.jpg')">
         `;
+        // Botones dinámicos especiales para Muhamedual
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+        `;
+        selectedStrain = 'Híbrida'; // Por defecto seleccionamos la primera
     }
 
     document.getElementById('productModalOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
-
 function closeProductModal() {
     document.getElementById('productModalOverlay').classList.remove('active');
     document.body.style.overflow = 'auto';
