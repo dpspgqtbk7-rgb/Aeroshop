@@ -462,6 +462,14 @@ function openRutasVuelo() {
         view.classList.add('active');
         view.scrollTop = 0;
         document.body.style.overflow = 'hidden';
+        
+        // Forzar reproducción automática e instantánea de todos los videos
+        const videos = view.querySelectorAll('video');
+        videos.forEach(video => {
+            video.muted = true;
+            video.currentTime = 0;
+            video.play().catch(err => console.log("Autoplay:", err));
+        });
     }
 }
 

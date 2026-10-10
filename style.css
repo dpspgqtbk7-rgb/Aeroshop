@@ -1683,9 +1683,9 @@
 /* --- BOTÓN FLOTANTE DEL BUZÓN (ESQUINA INFERIOR DERECHA) --- */
 .buzon-floating-btn {
     position: fixed;
-    bottom: 25px;
+    bottom: 90px;
     right: 25px;
-    z-index: 4000;
+    z-index: 9999;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
     color: #ffffff;
     font-family: 'Space Grotesk', sans-serif;
