@@ -14,13 +14,21 @@ function scrollToBrandProducts() {
         target.scrollIntoView({ behavior: 'smooth' });
     }
 }
-
-/* FUNCIONALIDAD CARRUSEL CON COMPATIBILIDAD DE VIDEO Y ROTACIÓN LIMPIA */
+/* FUNCIONALIDAD CARRUSEL CON COMPATIBILIDAD DE VIDEO, ROTACIÓN LIMPIA Y TÁCTIL */
 function startHoverSlider(container) {
+    // Protección: Evita que se creen múltiples animaciones si el usuario toca la pantalla varias veces
+    if (container._intervalId) return; 
+
     const mediaElements = container.querySelectorAll('img, video');
     if (mediaElements.length <= 1) return;
     
+    // Detectamos cuál es la imagen/video que está activo actualmente
     let currentIndex = 0;
+    mediaElements.forEach((el, idx) => {
+        if (el.classList.contains('active')) {
+            currentIndex = idx;
+        }
+    });
 
     container._intervalId = setInterval(() => {
         mediaElements[currentIndex].classList.remove('active');
@@ -29,6 +37,7 @@ function startHoverSlider(container) {
     }, 1200);
 }
 
+// ¡ESTA ES LA FUNCIÓN QUE SE HABÍA BORRADO, DEBE IR AQUÍ ABAJO!
 function stopHoverSlider(container) {
     if (container._intervalId) {
         clearInterval(container._intervalId);
@@ -37,11 +46,12 @@ function stopHoverSlider(container) {
     const mediaElements = container.querySelectorAll('img, video');
     mediaElements.forEach((el, idx) => el.classList.toggle('active', idx === 0));
 }
-
+/* MANEJO DE VENTANA MODAL DE PRODUCTOS */
 /* MANEJO DE VENTANA MODAL DE PRODUCTOS */
 function openProductModal(productId) {
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
+    const strainPillsContainer = document.getElementById('modalStrainPills'); // Nuevo contenedor dinámico
 
     if (productId === 'donutsdonitav3') {
         currentModalProduct = { title: 'donuts donita v3', price: 850, image: './donusdonitav31.JPG' };
@@ -53,6 +63,14 @@ function openProductModal(productId) {
             <img src="./donusdonitav31.JPG" class="modal-thumb active" onclick="changeModalMedia(this, './donusdonitav31.JPG')">
             <img src="./donutsdonasv3.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsdonasv3.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'donutsv2') {
         currentModalProduct = { title: 'Donuts v2', price: 700, image: './donutsv22.JPG' };
         document.getElementById('modalTitle').innerText = 'Donuts v2';
@@ -64,6 +82,14 @@ function openProductModal(productId) {
             <img src="./donutsv22.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv22.JPG')">
             <img src="./donutsv23.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv23.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'packman3g') {
         currentModalProduct = { title: 'PACKMAN 3g + Pre-Roll', price: 950, image: './packman1.png' };
         document.getElementById('modalTitle').innerText = 'PACKMAN 3g + Pre-Roll';
@@ -76,6 +102,14 @@ function openProductModal(productId) {
             <img src="./packman3.png" class="modal-thumb" onclick="changeModalMedia(this, './packman3.png')">
             <img src="./packman5.JPG" class="modal-thumb" onclick="changeModalMedia(this, './packman5.JPG')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'muhacmeds') {
         currentModalProduct = { title: 'MUHACMEDS 2g', price: 700, image: './Muhacmeds1.JPG' };
         document.getElementById('modalTitle').innerText = 'MUHACMEDS 2g';
@@ -88,6 +122,14 @@ function openProductModal(productId) {
             <img src="./muhacmeds.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds.jpg')">
             <img src="./muhacmeds2.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds2.jpg')">
         `;
+        // Botones dinámicos
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+        `;
+        selectedStrain = 'Sativa';
+
     } else if (productId === 'muhamedual') {
         currentModalProduct = { title: 'MUHAMEDual 2g', price: 800, image: './muhamedual 2.JPG' };
         document.getElementById('modalTitle').innerText = 'MUHAMEDual 2g';
@@ -99,12 +141,17 @@ function openProductModal(productId) {
             <img src="./muhamedual 2.JPG" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual 2.JPG')">
             <img src="./muhamedual3.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual3.jpg')">
         `;
+        // Botones dinámicos especiales para Muhamedual
+        strainPillsContainer.innerHTML = `
+            <button class="strain-pill selected" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
+            <button class="strain-pill" onclick="selectStrain(this, 'Sativa')">Sativa</button>
+        `;
+        selectedStrain = 'Híbrida'; // Por defecto seleccionamos la primera
     }
 
     document.getElementById('productModalOverlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
-
 function closeProductModal() {
     document.getElementById('productModalOverlay').classList.remove('active');
     document.body.style.overflow = 'auto';
@@ -784,6 +831,7 @@ const cardDetailsDB = {
                 <span style="color: #f8fafc; font-size: 0.85rem;">Sirve una base de papas fritas crujientes, echa la mezcla encima y baña con Ranch.</span>
             </div>
         `
+        
     },
 
     // --- SECCIÓN 03: TRIP VISUAL & CINE ---
@@ -901,17 +949,145 @@ const cardDetailsDB = {
                 <p style="color: #f8fafc; font-size: 0.9rem; margin-top: 4px;">Disponible de forma exclusiva en Netflix.</p>
             </div>
         `
+    },
+    lagoalgo: {
+        title: "LagoAlgo — Bosque de Chapultepec",
+        video: "./lago-algo.MP4",
+        badge: "📍 Poniente • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                Un espacio inmersivo único que combina una galería de arte contemporáneo con un restaurante y vista panorámica al lago. Su arquitectura brutalista de techos altos y los ventanales hacia la naturaleza crean un ambiente hipnótico y super relajante.
+            </p>
+            <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 14px; border-radius: 10px; margin-bottom: 16px;">
+                <strong style="color: #4ade80;">Radar de Discreción: 🟡 Medio en interior / 🟢 Libre en jardines.</strong>
+            </div>
+        `
+    },
+    pizzadog: {
+        title: "PizzaDog Express en Airfryer 🌭🍕",
+        video: "./pizza-dog.MP4",
+        badge: "🏠 Casa • 🧂 Salado • ⚡ 5 min",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                La fusión perfecta entre un Hot Dog y una Pizza de Pepperoni. Salchicha envuelta en tocino crujiente, dentro de un pan untado con salsa italiana, cubierto de queso gratinado y pepperoni.
+            </p>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+                <strong style="color: #facc15; display: block; margin-bottom: 8px;">🛒 Ingredientes:</strong>
+                <ul style="color: #e2e8f0; font-size: 0.88rem; padding-left: 18px; margin: 0;">
+                    <li>Pan de hot dog, salchichas y tocino.</li>
+                    <li>Salsa italiana de tomate (Pizza).</li>
+                    <li>Queso para gratinar y Pepperoni.</li>
+                </ul>
+            </div>
+        `
+    },
+    sandwich: {
+        title: "Sándwich Monchoso de 3 Pisos 🥪🥤",
+        video: "./sandwich.MP4",
+        badge: "🏠 Casa • 🧂 Salado • 🍳 10 min",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                Un club sándwich supremo de tres pisos dorado a la mantequilla. Lleva queso crema, manchego, jamón de pavo y tocino súper crujiente. Acompañado de una malteada helada de fresa natural con plátano.
+            </p>
+        `
+    },
+    losperros: {
+        title: "Los Perros de San Antonio 🌭",
+        video: "./losperros.MP4",
+        badge: "📍 Sur • 🍿 Salado",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                Hot dogs gigantes de hasta medio kilo con salchichas ahumadas artesanalmente, cebolla caramelizada, baño de queso y barra de salsas desde $75 MXN.
+            </p>
+            <p style="color: #94a3b8; font-size: 0.88rem;">📍 Av. San Antonio & Av. Revolución (Junto al Metro).</p>
+        `
+    },
+    burgergate: {
+        title: "Burger Gate 🍔",
+        video: "./burgerg.MP4",
+        badge: "📍 Centro • 🍿 Salado",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                Smash burgers de alta calidad. Destaca "La Chilanga" con choriqueso de Oaxaca, aguacate y mayonesa chipotle, acompañada de un tazón de papas cargadas.
+            </p>
+            <p style="color: #94a3b8; font-size: 0.88rem;">📍 Culiacán 122, Hipódromo Condesa.</p>
+        `
+    },
+    pastoral: {
+        title: "PASTORAL: TO DIE IN THE COUNTRY 🎬",
+        video: "./pastoral.MP4",
+        badge: "🎬 Drama Experimental • ⏱️ 1h 42m",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                <strong>👁️ Por qué verla:</strong><br>Un viaje introspectivo y delirante sobre la infancia. Dirección de arte impresionante donde los escenarios se desarman y usa filtros cromáticos extremos.
+            </p>
+        `
+    },
+    neotokyo: {
+        title: "NEO TOKYO (1987) 🚀",
+        video: "./neotokyo.MP4",
+        badge: "🎬 Animación Experimental • ⏱️ 50m",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                <strong>👁️ Por qué verla:</strong><br>Antología de tres cortometrajes animados a mano. Combina un laberinto surrealista, una carrera futurista y una rebelión de máquinas.
+            </p>
+        `
+    },
+    dandadan: {
+        title: "DANDADAN 👻🛸",
+        video: "./dandadan.MP4",
+        badge: "🎬 Comedia Absurda / Acción",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                <strong>🤪 Humor:</strong> Un caos hilarante que mezcla comedia escolar con situaciones bizarras (fantasmas vs extraterrestres).<br>
+                <strong>🎨 Visuales:</strong> Animación cinética impresionante con paleta neón psicodélica y fluidez impecable.
+            </p>
+        `
+    },
+    dubside: {
+        title: "DUB SIDE OF THE MOON",
+        video: "./sub.png",
+        badge: "🔊 Dub / Reggae / Psicodélico",
+        html: `
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                <strong>💡 ¿Qué es?:</strong><br>Es una reinterpretación completa paso a paso del aclamado disco <em>The Dark Side of the Moon</em> de Pink Floyd, llevada a los terrenos del dub jamaiquino y el reggae.
+            </p>
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
+                <strong>🌀 ¿Por qué escucharlo?:</strong><br>Si buscas una vibra envolvente, perfecta para entrar en trance relajado. Sustituye sintetizadores espaciales por líneas de bajo profundas, metales cálidos y reverb.
+            </p>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+                <strong style="color: #facc15; display: block; margin-bottom: 8px;">⭐ Canciones Clave:</strong>
+                <ol style="color: #e2e8f0; font-size: 0.9rem; padding-left: 22px; margin: 0; line-height: 1.6;">
+                    <li>Speak to Me / Breathe (In the Air)</li>
+                    <li>Time</li>
+                    <li>Money</li>
+                    <li>Brain Damage</li>
+                </ol>
+            </div>
+            <div style="background: rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; padding: 12px; border-radius: 8px;">
+                <strong style="color: #38bdf8;">📲 Dónde escuchar:</strong>
+                <p style="color: #f8fafc; font-size: 0.9rem; margin-top: 4px;">Apple Music, Spotify, YouTube Music y Bandcamp.</p>
+            </div>
+        `
     }
+
 };
 
 /* MODAL INFORMATIVA GLOBAL PARA TARJETAS COMPACTAS */
+/* MODAL INFORMATIVA GLOBAL (AHORA SOPORTA FOTOS Y VIDEOS) */
 function openCardModal(section, key) {
     const data = cardDetailsDB[key];
     if (!data) return;
 
+    // Detecta si es video o imagen
+    const isVideo = data.video.toLowerCase().endsWith('.mp4');
+    const mediaTag = isVideo 
+        ? `<video src="${data.video}" autoplay loop muted playsinline webkit-playsinline></video>`
+        : `<img src="${data.video}" alt="${data.title}" style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">`;
+
     const modalBody = document.getElementById('infoModalBody');
     modalBody.innerHTML = `
-        <video src="${data.video}" autoplay loop muted playsinline></video>
+        ${mediaTag}
         <span class="badge-tag" style="margin-bottom: 10px; display: inline-block;">${data.badge}</span>
         <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: #ffffff;">${data.title}</h2>
         ${data.html}
@@ -919,17 +1095,6 @@ function openCardModal(section, key) {
 
     document.getElementById('infoModalOverlay').classList.add('active');
 }
-
-function closeInfoModal() {
-    document.getElementById('infoModalOverlay').classList.remove('active');
-}
-
-function closeInfoModalOnOverlay(e) {
-    if (e.target.id === 'infoModalOverlay') {
-        closeInfoModal();
-    }
-}
-
 /* --- FUNCIONALIDAD BUZÓN DE SUGERENCIAS Y DUDAS --- */
 function openBuzonModal() {
     const overlay = document.getElementById('buzonModalOverlay');
@@ -990,3 +1155,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+/* --- SECCIÓN 04: FRECUENCIAS & SOUNDTRACKS --- */
+function openMusicVuelo() {
+    const view = document.getElementById('musicFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+        filterMusicCards();
+    }
+}
+
+function closeMusicVuelo() {
+    const view = document.getElementById('musicFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function filterMusicCards() {
+    const categoria = document.getElementById('filterCategoriaMusic')?.value || 'todos';
+    const cards = document.querySelectorAll('#musicGrid .music-card');
+
+    cards.forEach(card => {
+        const cardCat = card.getAttribute('data-categoria');
+        if (categoria === 'todos' || cardCat === categoria) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}

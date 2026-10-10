@@ -80,6 +80,12 @@
             </div>
         </div>
  </div>
+ <!-- TARJETA 04: FRECUENCIAS & SOUNDTRACKS -->
+            <div class="diferencia-item" style="cursor: pointer;" onclick="openMusicVuelo()">
+                <span class="diferencia-num">04</span>
+                <h3 style="margin-bottom: 8px;">Frecuencias 🎧</h3>
+                <p>Una selección sonora para acompañar tu viaje.</p>
+            </div>
 </section>
 
     <!-- PRODUCTOS DESTACADOS -->
@@ -89,76 +95,76 @@
         </div>
 
         <div class="products-grid" id="featuredGrid">
-            <!-- PRODUCTO DONUTS DONITA V3 -->
-            <div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
-                <span class="product-tag-new">NUEVO LANZAMIENTO</span>
-                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                    <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1">
-                    <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2">
-                </div>
-                <div>
-                    <div class="product-name">donuts donita v3</div>
-                    <div class="product-subtitle">Dona Mágica ✨🪴 • Sativa / Indica / Híbrida</div>
-                    <div class="product-price">$850 MXN</div>
-                </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
-            </div>
+         <!-- PRODUCTO DONUTS DONITA V3 -->
+<div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
+    <span class="product-tag-new">NUEVO LANZAMIENTO</span>
+    <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+        <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1">
+        <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2">
+    </div>
+    <div>
+        <div class="product-name">donuts donita v3</div>
+        <div class="product-subtitle">Dona Mágica ✨🪴 • Sativa / Indica / Híbrida</div>
+        <div class="product-price">$850 MXN</div>
+    </div>
+    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
+</div>
 
-            <!-- PRODUCTO PACKMAN 3g + PRE-ROLL -->
-            <div class="product-card card-glass" onclick="openProductModal('packman3g')">
-                <span class="product-tag-sale">¡REBAJA!</span>
-                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                    <img src="./packman1.png" class="active" alt="Packman 3g 1">
-                    <img src="./packman2.png" alt="Packman 3g 2">
-                    <img src="./packman3.png" alt="Packman 3g 3">
-                    <img src="./packman5.JPG" alt="Packman 3g 4">
-                </div>
-                <div>
-                    <div class="product-name">PACKMAN 3g + Pre-Roll</div>
-                    <div class="product-subtitle">Packman × PartyBoyz • 3G Live Resin + .5G Infused Pre-Roll</div>
-                    <div class="product-price">
-                        <span style="text-decoration: line-through; color: #94a3b8; font-size: 0.95rem; margin-right: 6px;">$1,300 MXN</span>
-                        <span style="color: #e11d48; font-weight: 800;">$950 MXN</span>
-                    </div>
-                </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('packman3g')">Ver Más Información</button>
-            </div>
-
-            <!-- PRODUCTO MUHACMEDS 2g -->
-            <div class="product-card card-glass" onclick="openProductModal('muhacmeds')">
-                <span class="product-tag-collab">COLABORACIÓN</span>
-                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                    <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1">
-                    <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2">
-                    <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3">
-                    <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4">
-                </div>
-                <div>
-                    <div class="product-name">MUHACMEDS 2g</div>
-                    <div class="product-subtitle">Muha Meds × Cookies • Sativa / Indica / Híbrida</div>
-                    <div class="product-price">$700 MXN</div>
-                </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhacmeds')">Ver Más Información</button>
-            </div>
-
-            <!-- PRODUCTO MUHAMEDual 2g -->
-            <div class="product-card card-glass" onclick="openProductModal('muhamedual')">
-                <span class="product-tag-new">NUEVO LANZAMIENTO</span>
-                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                    <video src="./muhadual.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
-                    <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2">
-                    <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3">
-                </div>
-                <div>
-                    <div class="product-name">MUHAMEDual 2g</div>
-                    <div class="product-subtitle">Muha Meds • Doble variante & doble resistencia</div>
-                    <div class="product-price">$800 MXN</div>
-                </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
-            </div>
+<!-- PRODUCTO PACKMAN 3g + PRE-ROLL -->
+<div class="product-card card-glass" onclick="openProductModal('packman3g')">
+    <span class="product-tag-sale">¡REBAJA!</span>
+    <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+        <img src="./packman1.png" class="active" alt="Packman 3g 1">
+        <img src="./packman2.png" alt="Packman 3g 2">
+        <img src="./packman3.png" alt="Packman 3g 3">
+        <img src="./packman5.JPG" alt="Packman 3g 4">
+    </div>
+    <div>
+        <div class="product-name">PACKMAN 3g + Pre-Roll</div>
+        <div class="product-subtitle">Packman × PartyBoyz • 3G Live Resin + .5G Infused Pre-Roll</div>
+        <div class="product-price">
+            <span style="text-decoration: line-through; color: #94a3b8; font-size: 0.95rem; margin-right: 6px;">$1,300 MXN</span>
+            <span style="color: #e11d48; font-weight: 800;">$950 MXN</span>
         </div>
-    </section>
+    </div>
+    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('packman3g')">Ver Más Información</button>
+</div>
 
+<!-- PRODUCTO MUHACMEDS 2g -->
+<div class="product-card card-glass" onclick="openProductModal('muhacmeds')">
+    <span class="product-tag-collab">COLABORACIÓN</span>
+    <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+        <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1">
+        <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2">
+        <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3">
+        <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4">
+    </div>
+    <div>
+        <div class="product-name">MUHACMEDS 2g</div>
+        <div class="product-subtitle">Muha Meds × Cookies • Sativa / Indica / Híbrida</div>
+        <div class="product-price">$700 MXN</div>
+    </div>
+    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhacmeds')">Ver Más Información</button>
+</div>
+<!-- PRODUCTO MUHAMEDual 2g -->
+<div class="product-card card-glass" onclick="openProductModal('muhamedual')">
+    <span class="product-tag-new">NUEVO LANZAMIENTO</span>
+    <!-- Agregamos ontouchstart y ontouchend para celulares -->
+    <div class="product-img-slider" 
+         onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)"
+         ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+        <!-- Agregamos autoplay y class="active" -->
+        <video src="./muhadual.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata" class="active"></video>
+        <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2">
+        <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3">
+    </div>
+    <div>
+        <div class="product-name">MUHAMEDual 2g</div>
+        <div class="product-subtitle">Muha Meds • Doble variante & doble resistencia</div>
+        <div class="product-price">$800 MXN</div>
+    </div>
+    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
+</div>
     <!-- NUESTRAS MARCAS -->
     <section style="padding: 20px 20px 80px 20px;" id="nuestras-marcas">
         <div class="section-title-container" style="margin-bottom: 35px;">
@@ -219,10 +225,16 @@
 
         <!-- Grid de Tarjetas Compactas -->
         <div class="rutas-grid" id="rutasGrid">
-
+<div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'lagoalgo')">
+                <video src="./lago-algo.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️✈️</span>
+                    <h4>LagoAlgo — Bosque de Chapultepec</h4>
+                </div>
+            </div>
             <!-- CENART -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'cenart')">
-                <video src="./cenart-hero.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./cenart-hero.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️</span>
                     <h4>CENART (Centro Nacional de las Artes)</h4>
@@ -231,7 +243,7 @@
 
             <!-- CINETECA CHAPULTEPEC -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'chapultepec')">
-                <video src="./chapultepec.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./chapultepec.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Cineteca de Chapultepec</h4>
@@ -240,7 +252,7 @@
 
             <!-- LAGUNA CDMX -->
             <div class="compact-card" data-zona="centro" onclick="openCardModal('rutas', 'laguna')">
-                <video src="./LAGUNA.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./LAGUNA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Centro • ✈️✈️✈️✈️</span>
                     <h4>Laguna CDMX</h4>
@@ -249,7 +261,7 @@
 
             <!-- JARDÍN ESCÉNICO -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'jardin')">
-                <video src="./jardin.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./jardin.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️</span>
                     <h4>Jardín Escénico Chapultepec</h4>
@@ -258,7 +270,7 @@
 
             <!-- JARDÍN EL EDÉN CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'eden')">
-                <video src="./eden.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./eden.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️</span>
                     <h4>Jardín El Edén CU</h4>
@@ -267,7 +279,7 @@
 
             <!-- MUSEO SOUMAYA -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'soumaya')">
-                <video src="./soumaya.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./soumaya.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Museo Soumaya</h4>
@@ -276,7 +288,7 @@
 
             <!-- MUAC CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'muac')">
-                <video src="./muac.mp4" loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./muac.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️✈️</span>
                     <h4>MUAC CU (Museo de Arte Contemporáneo)</h4>
@@ -286,133 +298,163 @@
         </div> <!-- /rutasGrid -->
     </div> <!-- /rutas-content-overlay -->
 </div> <!-- /rutasFullscreenView --> 
+
 <!-- VISTA FULLSCREEN: MONCHIS Y BAJAR AVIÓN -->
-    <div class="monchis-fullscreen-view" id="monchisFullscreenView">
-        <div class="monchis-container">
-            
-            <!-- Botón Volver -->
-            <div class="monchis-header">
-                <button class="btn-back-main" onclick="closeMonchisVuelo()">
-                    ← VOLVER AL MENÚ PRINCIPAL
-                </button>
+<div class="monchis-fullscreen-view" id="monchisFullscreenView">
+    <div class="monchis-container">
+        
+        <!-- Botón Volver -->
+        <div class="monchis-header">
+            <button class="btn-back-main" onclick="closeMonchisVuelo()">
+                ← VOLVER AL MENÚ PRINCIPAL
+            </button>
+        </div>
+
+        <!-- Pestañas (Tabs Toggle) -->
+        <div class="monchis-tabs">
+            <button class="tab-btn active" id="tabCalleBtn" onclick="switchMonchisTab('calle')">
+                🌮 Monchis en la Calle
+            </button>
+            <button class="tab-btn" id="tabCasaBtn" onclick="switchMonchisTab('casa')">
+                🏠 Supervivencia en Casa
+            </button>
+        </div>
+
+        <!-- Filtros Desplegables -->
+        <div class="monchis-filters-container">
+            <!-- Filtros Vista Calle -->
+            <div id="filtersCalle" class="dropdown-group">
+                <select id="filterZona" class="monchis-dropdown" onchange="filterMonchisCards()">
+                    <option value="todos">📍 Zona de la CDMX (Todas)</option>
+                    <option value="sur">Sur</option>
+                    <option value="centro">Centro</option>
+                    <option value="norte">Norte</option>
+                    <option value="poniente">Poniente</option>
+                </select>
+
+                <select id="filterAntojoCalle" class="monchis-dropdown" onchange="filterMonchisCards()">
+                    <option value="todos">🍿 Antojo (Todos)</option>
+                    <option value="dulce">🍩 Dulce</option>
+                    <option value="salado">🌮 Salado</option>
+                </select>
             </div>
 
-            <!-- Pestañas (Tabs Toggle) -->
-            <div class="monchis-tabs">
-                <button class="tab-btn active" id="tabCalleBtn" onclick="switchMonchisTab('calle')">
-                    🌮 Monchis en la Calle
-                </button>
-                <button class="tab-btn" id="tabCasaBtn" onclick="switchMonchisTab('casa')">
-                    🏠 Supervivencia en Casa
-                </button>
+            <!-- Filtros Vista Casa -->
+            <div id="filtersCasa" class="dropdown-group" style="display: none;">
+                <select id="filterAntojoCasa" class="monchis-dropdown" onchange="filterMonchisCards()">
+                    <option value="todos">🍿 Antojo (Todos)</option>
+                    <option value="dulce">🍩 Dulce</option>
+                    <option value="salado">🌮 Salado</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid de recomendaciones Monchis -->
+        <div class="monchis-cards-grid" id="monchisGrid">
+<div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'pizzadog')">
+                <video src="./pizza-dog.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🏠 Casa • 🧂 Salado</span>
+                    <h4>PizzaDog Express en Airfryer 🌭🍕</h4>
+                </div>
+            </div>
+            <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'sandwich')">
+                <video src="./sandwich.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🏠 Casa • 🧂 Salado</span>
+                    <h4>Sándwich Monchoso de 3 Pisos 🥪</h4>
+                </div>
+            </div>
+            <div class="compact-card" data-tipo="calle" data-antojo="salado" data-zona="sur" onclick="openCardModal('monchis', 'losperros')">
+                <video src="./losperros.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Sur • 🍿 Salado</span>
+                    <h4>Los Perros de San Antonio 🌭</h4>
+                </div>
+            </div>
+            <div class="compact-card" data-tipo="calle" data-antojo="salado" data-zona="centro" onclick="openCardModal('monchis', 'burgergate')">
+                <video src="./burgerg.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Centro • 🍿 Salado</span>
+                    <h4>Burger Gate 🍔</h4>
+                </div>
+            </div>
+            <!-- SALCHICHAS BBQ COMPACTA -->
+            <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchichas')">
+                <video src="./salchichasbbq.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🏠 Supervivencia en Casa • 🧂 Salado</span>
+                    <h4>Salchichas BBQ de Ricardo Pérez 🌭</h4>
+                </div>
             </div>
 
-            <!-- Filtros Desplegables -->
-            <div class="monchis-filters-container">
-                <!-- Filtros Vista Calle -->
-                <div id="filtersCalle" class="dropdown-group">
-                    <select id="filterZona" class="monchis-dropdown" onchange="filterMonchisCards()">
-                        <option value="todos">📍 Zona de la CDMX (Todas)</option>
-                        <option value="sur">Sur</option>
-                        <option value="centro">Centro</option>
-                        <option value="norte">Norte</option>
-                        <option value="poniente">Poniente</option>
-                    </select>
+        </div> <!-- /monchisGrid -->
 
-                    <select id="filterAntojoCalle" class="monchis-dropdown" onchange="filterMonchisCards()">
-                        <option value="todos">🍿 Antojo (Todos)</option>
-                        <option value="dulce">🍩 Dulce</option>
-                        <option value="salado">🌮 Salado</option>
-                    </select>
+    </div> <!-- /monchis-container -->
+</div> <!-- /monchisFullscreenView -->
+<!-- ========================================== -->
+<!-- 1. VENTANA MODAL DE PRODUCTOS Y CARRITO (RESTAURADOS COMPLETOS) -->
+<!-- ========================================== -->
+<div class="product-modal-overlay" id="productModalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="product-modal-card">
+        <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
+        <div class="modal-grid">
+            <div>
+                <div class="modal-media-wrapper" id="modalMediaContainer">
+                    <img id="modalMainImage" src="./Muhacmeds1.JPG" class="modal-main-image" alt="Producto">
+                </div>
+                <div class="modal-thumbnails" id="modalThumbnails">
+                    <!-- Generado dinámicamente -->
+                </div>
+            </div>
+            <div>
+                <h2 class="modal-title" id="modalTitle">MUHACMEDS 2g</h2>
+                <div class="modal-price" id="modalPrice">$700 MXN</div>
+                <div class="modal-description" id="modalDescription">
+                    MUHACMEDS 2g, es una colaboración que no solo es estéticamente cool...
                 </div>
 
-                <!-- Filtros Vista Casa -->
-                <div id="filtersCasa" class="dropdown-group" style="display: none;">
-                    <select id="filterAntojoCasa" class="monchis-dropdown" onchange="filterMonchisCards()">
-                        <option value="todos">🍿 Antojo (Todos)</option>
-                        <option value="dulce">🍩 Dulce</option>
-                        <option value="salado">🌮 Salado</option>
-                    </select>
+                <span class="strain-select-title">Selecciona tu Variedad:</span>
+                <!-- AQUÍ AGREGAMOS EL ID PARA CAMBIAR LOS BOTONES DESDE JS -->
+                <div class="strain-pills" id="modalStrainPills">
+                    <!-- Los botones se generarán automáticamente desde app.js -->
                 </div>
+
+                <button class="btn-add" style="padding: 16px; font-size: 1.05rem;" onclick="addModalProductToCart()">Agregar al Carrito</button>
             </div>
-
-            <!-- Grid de recomendaciones Monchis -->
-     <div class="monchis-cards-grid" id="monchisGrid">
-
-    <!-- SALCHICHAS BBQ COMPACTA -->
-    <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchichas')">
-        <video src="./salchichasbbq.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
-        <div class="compact-card-body">
-            <span class="badge-tag">🏠 Supervivencia en Casa • 🧂 Salado</span>
-            <h4>Salchichas BBQ de Ricardo Pérez 🌭</h4>
         </div>
     </div>
-
 </div>
-            </div> <!-- /monchisGrid -->
 
-        </div> <!-- /monchis-container -->
-    </div> <!-- /monchisFullscreenView -->
+<!-- PANEL CARRITO -->
+<div class="cart-overlay" id="cartOverlay">
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h2>Bolsa de Compras</h2>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items-list" id="cartItemsContainer"></div>
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotalPrice">$0 MXN</span>
+            </div>
+            <div class="summary-row">
+                <span>Envío</span>
+                <span style="color: #16a34a; font-weight: bold;">Por acordar</span>
+            </div>
+            <div class="summary-row" style="font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
+                <span>Total</span>
+                <span id="totalPrice">$0 MXN</span>
+            </div>
+            <button class="btn-checkout" onclick="sendWhatsAppOrder()">Finalizar compra</button>
         </div>
     </div>
-    <div class="product-modal-overlay" id="productModalOverlay" onclick="closeModalOnOverlay(event)">
-        <div class="product-modal-card">
-            <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
-            <div class="modal-grid">
-                <div>
-                    <div class="modal-media-wrapper" id="modalMediaContainer">
-                        <img id="modalMainImage" src="./Muhacmeds1.JPG" class="modal-main-image" alt="Producto">
-                    </div>
-                    <div class="modal-thumbnails" id="modalThumbnails">
-                        <!-- Generado dinámicamente -->
-                    </div>
-                </div>
-                <div>
-                    <h2 class="modal-title" id="modalTitle">MUHACMEDS 2g</h2>
-                    <div class="modal-price" id="modalPrice">$700 MXN</div>
-                    <div class="modal-description" id="modalDescription">
-                        MUHACMEDS 2g, es una colaboración que no solo es estéticamente cool si no que junta ambas marcas lideres en el mercado de las mieles, MUHAMEDS y COOKIES.
-                    </div>
+</div>
 
-                    <span class="strain-select-title">Selecciona tu Variedad:</span>
-                    <div class="strain-pills">
-                        <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-                        <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
-                        <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida / Ambas</button>
-                    </div>
-
-                    <button class="btn-add" style="padding: 16px; font-size: 1.05rem;" onclick="addModalProductToCart()">Agregar al Carrito</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PANEL CARRITO -->
-    <div class="cart-overlay" id="cartOverlay">
-        <div class="cart-drawer">
-            <div class="cart-header">
-                <h2>Bolsa de Compras</h2>
-                <button class="close-cart" onclick="toggleCart()">&times;</button>
-            </div>
-            <div class="cart-items-list" id="cartItemsContainer"></div>
-            <div class="cart-summary">
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span id="subtotalPrice">$0 MXN</span>
-                </div>
-                <div class="summary-row">
-                    <span>Envío</span>
-                    <span style="color: #16a34a; font-weight: bold;">Por acordar</span>
-                </div>
-                <div class="summary-row" style="font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
-                    <span>Total</span>
-                    <span id="totalPrice">$0 MXN</span>
-                </div>
-                <button class="btn-checkout" onclick="sendWhatsAppOrder()">Finalizar compra</button>
-            </div>
-        </div>
-    </div>
-<!-- VISTA FULLSCREEN: 03. TRIP VISUAL & CINE -->
+<!-- ========================================== -->
+<!-- 2. VISTA FULLSCREEN: 03. TRIP VISUAL & CINE (CON IMAGEN DE PORTADA) -->
+<!-- ========================================== -->
 <div class="monchis-fullscreen-view" id="cineFullscreenView">
     <div class="monchis-container">
         
@@ -429,11 +471,9 @@
             <p style="color: #a0a0b0; font-size: 1rem;">Apaga la mente, prende la pantalla: lo mejor para potenciar tu viaje</p>
         </div>
 
-        <!-- Video Hero -->
+        <!-- Video Hero CON IMAGEN DE PORTADA (poster) -->
         <div class="monchis-hero-container" style="margin-bottom: 25px;">
-            <video id="cineHeroVideo" class="monchis-hero-video" loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
-    <source src="./videode03.mp4" type="video/mp4">
-</video>
+            <video id="cineHeroVideo" class="monchis-hero-video" poster="./aeroshopvisual.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
                 <source src="./videode03.mp4" type="video/mp4">
             </video>
         </div>
@@ -451,9 +491,29 @@
 
         <!-- Grid de Tarjetas Compactas de Cine -->
         <div class="monchis-cards-grid" id="cineGrid">
-            
+            <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'pastoral')">
+                <video src="./pastoral.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Drama Experimental</span>
+                    <h4>PASTORAL: TO DIE IN THE COUNTRY 👁️</h4>
+                </div>
+            </div>
+            <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'neotokyo')">
+                <video src="./neotokyo.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Animación Experimental</span>
+                    <h4>NEO TOKYO (1987) 🚀</h4>
+                </div>
+            </div>
+            <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'dandadan')">
+                <video src="./dandadan.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Comedia Absurda</span>
+                    <h4>DANDADAN 👻🛸</h4>
+                </div>
+            </div>
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'void')">
-                <video src="./VOID.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./VOID.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Psicodélica & Inmersiva</span>
                     <h4>ENTER THE VOID (2009) 👁️‍🗨️🌀</h4>
@@ -461,7 +521,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'belladonna')">
-                <video src="./BELLADONNA.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./BELLADONNA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Anime Psicodélico</span>
                     <h4>BELLADONNA OF SADNESS (1973) 👁️‍🗨️</h4>
@@ -469,7 +529,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'puparia')">
-                <video src="./PUPARIA.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./PUPARIA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Cortometraje Anime</span>
                     <h4>PUPARIA (2020) 👁️‍🗨️🌀</h4>
@@ -477,7 +537,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'goodtrip')">
-                <video src="./GOOD-TRIP.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video src="./GOOD-TRIP.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Documental & Comedia</span>
                     <h4>HAVE A GOOD TRIP (2020) 🍿🌀</h4>
@@ -485,7 +545,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'entergalactic')">
-                <video src="./ENTERGALACTIC.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>></video>
+                <video src="./ENTERGALACTIC.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎨 Animación & Álbum Visual</span>
                     <h4>ENTERGALACTIC (2022) 🎨🎶</h4>
@@ -493,10 +553,8 @@
             </div>
 
         </div> <!-- /cineGrid -->
-
-    </div>
+        </div>
 </div>
-
 <!-- VENTANA MODAL DETALLADA PARA TARJETAS (01, 02, 03) -->
 <div class="info-modal-overlay" id="infoModalOverlay" onclick="closeInfoModalOnOverlay(event)">
     <div class="info-modal-card">
@@ -542,6 +600,42 @@
             </form>
         </div>
     </div>
+   <!-- ========================================== -->
+<!-- VISTA FULLSCREEN: 04. FRECUENCIAS -->
+<!-- ========================================== -->
+<div class="monchis-fullscreen-view" id="musicFullscreenView">
+    <div class="monchis-container" style="max-width: 1000px;">
+        <div class="monchis-header">
+            <button class="btn-back-main" onclick="closeMusicVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+        </div>
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">04. FRECUENCIAS & SOUNDTRACKS 🎧</h2>
+            <p style="color: #a0a0b0; font-size: 1rem;">Una selección sonora diseñada para acompañar el viaje</p>
+        </div>
+        
+        <div class="monchis-filters-container">
+            <select id="filterCategoriaMusic" class="monchis-dropdown" onchange="filterMusicCards()" style="max-width: 300px; margin: 0 auto; display: block;">
+                <option value="todos">✨ Todo el Flow</option>
+                <option value="flotar">🎈 Para Flotar</option>
+                <option value="trip-conceptual">🌀 Trip Conceptual</option>
+                <option value="bajon">🍕 Bajón & Chill</option>
+                <option value="ritmo">⚡ Ritmo & Groove</option>
+                <option value="cine">🎧 Atmósferas & Cine</option>
+            </select>
+        </div>
+
+        <div class="music-cards-grid" id="musicGrid">
+            <!-- TARJETA MUSICAL DUB SIDE -->
+            <div class="music-card" data-categoria="trip-conceptual" onclick="openCardModal('music', 'dubside')">
+                <div class="music-cover-wrapper">
+                    <img src="./sub.png" alt="Dub Side of the Moon">
+                </div>
+                <h4>DUB SIDE OF THE MOON</h4>
+                <p>Easy Star All-Stars</p>
+            </div>
+        </div>
+    </div>
+</div> 
     <!-- JAVASCRIPT -->
     <script src="app.js"></script>
 </body>

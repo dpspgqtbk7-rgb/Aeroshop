@@ -1795,3 +1795,71 @@
         padding: 22px 18px !important;
     }
 }
+/* ==========================================
+   SECCIÓN 04: FRECUENCIAS (ESTILO SPOTIFY/APPLE MUSIC)
+   ========================================== */
+.music-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding-top: 10px;
+}
+
+@media (min-width: 600px) {
+    .music-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 25px;
+    }
+}
+
+.music-card {
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.music-card:hover {
+    transform: translateY(-5px);
+}
+
+.music-cover-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #111827; /* Fondo por si la imagen tarda */
+}
+
+.music-cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.music-card:hover .music-cover-wrapper img {
+    transform: scale(1.05);
+}
+
+.music-card h4 {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.music-card p {
+    color: #94a3b8;
+    font-size: 0.82rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
