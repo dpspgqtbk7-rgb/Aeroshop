@@ -1712,63 +1712,64 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
 }
 /* ==========================================
-   OPTIMIZACIÓN DEFINITIVA PORTADA MÓVIL
+   FIX DEFINITIVO PORTADA MÓVIL (SIN RECORTES)
    ========================================== */
 @media (max-width: 600px) {
-    /* 1. Ajuste de la portada principal */
+    /* 1. Contenedor principal de la portada */
     .hero-cover {
-        min-height: 380px !important; /* Altura exacta para eliminar espacios vacíos */
-        padding: 20px 15px 25px 15px !important;
+        min-height: 350px !important;
+        height: auto !important;
+        padding: 65px 15px 20px 15px !important; /* Espacio superior para despejar el Carrito y la barra de estado */
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         align-items: center !important;
     }
 
+    /* 2. Posicionamiento de la imagen de fondo */
     .hero-cover::before {
-        background-size: cover !important;
-        background-position: center top !important; /* Centra el logo AEROSHOP */
+        background-size: 100% auto !important; /* Ancho completo de borde a borde */
+        background-position: center 35px !important; /* Desplaza el fondo 35px hacia abajo para no cortar el techo de las letras */
+        background-repeat: no-repeat !important;
     }
 
-    /* 2. Escalado del avión */
+    /* 3. Tamaño y posición del Avión */
     .hero-plane-container {
         margin-top: 15px !important;
         margin-bottom: 0 !important;
     }
 
     .hero-plane-img {
-        width: 210px !important; /* Tamaño proporcional para celular */
+        width: 160px !important;
     }
 
-    /* 3. Botón Eleva tu experiencia */
+    /* 4. Botón Eleva tu experiencia */
     .hero-subtitle {
-        font-size: 0.8rem !important;
-        padding: 12px 24px !important;
-        margin-bottom: 10px !important;
+        font-size: 0.75rem !important;
+        padding: 10px 22px !important;
+        margin-top: 15px !important;
+        margin-bottom: 5px !important;
         letter-spacing: 2px !important;
     }
 
-    /* 4. Carrito en la esquina superior derecha */
+    /* 5. Botones flotantes (Carrito y Buzón) */
     .cart-floating-btn {
-        top: 15px !important;
-        right: 15px !important;
-        bottom: auto !important;
-        left: auto !important;
+        top: 12px !important;
+        right: 12px !important;
         padding: 8px 14px !important;
         font-size: 0.72rem !important;
         z-index: 9999 !important;
     }
 
-    /* 5. Buzón en la esquina inferior derecha */
     .buzon-floating-btn {
         bottom: 20px !important;
-        right: 15px !important;
-        padding: 10px 16px !important;
+        right: 12px !important;
+        padding: 9px 15px !important;
         font-size: 0.75rem !important;
         z-index: 9999 !important;
     }
 
-    /* 6. Tarjetas generales */
+    /* 6. Ajustes de tarjetas */
     .about-card h2, 
     .diferencia-card h2 {
         font-size: 1.8rem !important;
@@ -1779,4 +1780,3 @@
         padding: 22px 18px !important;
     }
 }
-
