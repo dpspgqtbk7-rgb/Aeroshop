@@ -1712,55 +1712,71 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.4);
 }
 /* ==========================================
-   OPTIMIZACIONES EXCLUSIVAS PARA CELULARES
+   OPTIMIZACIÓN DEFINITIVA PORTADA MÓVIL
    ========================================== */
 @media (max-width: 600px) {
-    /* 1. Muestra el logo y avión completo en la portada sin recortar los lados */
-    .hero-cover::before {
-        background-size: contain !important;
-        background-position: top center !important;
-    }
-
+    /* 1. Ajuste de la portada principal */
     .hero-cover {
-        min-height: 55vh !important;
-        padding-top: 15px !important;
+        min-height: 380px !important; /* Altura exacta para eliminar espacios vacíos */
+        padding: 20px 15px 25px 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: center !important;
     }
 
-    /* 2. Carrito ubicado en la ESQUINA SUPERIOR DERECHA en móviles */
+    .hero-cover::before {
+        background-size: cover !important;
+        background-position: center top !important; /* Centra el logo AEROSHOP */
+    }
+
+    /* 2. Escalado del avión */
+    .hero-plane-container {
+        margin-top: 15px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hero-plane-img {
+        width: 210px !important; /* Tamaño proporcional para celular */
+    }
+
+    /* 3. Botón Eleva tu experiencia */
+    .hero-subtitle {
+        font-size: 0.8rem !important;
+        padding: 12px 24px !important;
+        margin-bottom: 10px !important;
+        letter-spacing: 2px !important;
+    }
+
+    /* 4. Carrito en la esquina superior derecha */
     .cart-floating-btn {
         top: 15px !important;
         right: 15px !important;
         bottom: auto !important;
         left: auto !important;
-        padding: 9px 16px !important;
+        padding: 8px 14px !important;
+        font-size: 0.72rem !important;
+        z-index: 9999 !important;
+    }
+
+    /* 5. Buzón en la esquina inferior derecha */
+    .buzon-floating-btn {
+        bottom: 20px !important;
+        right: 15px !important;
+        padding: 10px 16px !important;
         font-size: 0.75rem !important;
         z-index: 9999 !important;
     }
 
-    /* 3. Buzón ubicado en la ESQUINA INFERIOR DERECHA */
-    .buzon-floating-btn {
-        bottom: 20px !important;
-        right: 15px !important;
-        top: auto !important;
-        padding: 10px 18px !important;
-        font-size: 0.78rem !important;
-        z-index: 9999 !important;
-    }
-
-    /* 4. Ajustes generales de tarjetas y títulos */
+    /* 6. Tarjetas generales */
     .about-card h2, 
     .diferencia-card h2 {
         font-size: 1.8rem !important;
     }
 
-    .rutas-content-overlay {
-        padding: 75px 10px 40px 10px !important;
-    }
-
-    .rutas-info-card, 
     .about-card, 
     .diferencia-card {
-        padding: 18px !important;
-        border-radius: 18px !important;
+        padding: 22px 18px !important;
     }
 }
+
