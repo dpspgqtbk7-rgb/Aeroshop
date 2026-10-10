@@ -145,7 +145,7 @@
             <div class="product-card card-glass" onclick="openProductModal('muhamedual')">
                 <span class="product-tag-new">NUEVO LANZAMIENTO</span>
                 <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                    <video src="./muhadual.mp4" autoplay loop muted playsinline class="active"></video>
+                    <video src="./muhadual.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                     <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2">
                     <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3">
                 </div>
@@ -222,7 +222,7 @@
 
             <!-- CENART -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'cenart')">
-                <video src="./cenart-hero.mp4" autoplay loop muted playsinline></video>
+                <video src="./cenart-hero.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️</span>
                     <h4>CENART (Centro Nacional de las Artes)</h4>
@@ -231,7 +231,7 @@
 
             <!-- CINETECA CHAPULTEPEC -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'chapultepec')">
-                <video src="./chapultepec.mp4" autoplay loop muted playsinline></video>
+                <video src="./chapultepec.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Cineteca de Chapultepec</h4>
@@ -240,7 +240,7 @@
 
             <!-- LAGUNA CDMX -->
             <div class="compact-card" data-zona="centro" onclick="openCardModal('rutas', 'laguna')">
-                <video src="./LAGUNA.MP4" autoplay loop muted playsinline></video>
+                <video src="./LAGUNA.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Centro • ✈️✈️✈️✈️</span>
                     <h4>Laguna CDMX</h4>
@@ -249,7 +249,7 @@
 
             <!-- JARDÍN ESCÉNICO -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'jardin')">
-                <video src="./jardin.mp4" autoplay loop muted playsinline></video>
+                <video src="./jardin.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️</span>
                     <h4>Jardín Escénico Chapultepec</h4>
@@ -258,7 +258,7 @@
 
             <!-- JARDÍN EL EDÉN CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'eden')">
-                <video src="./eden.mp4" autoplay loop muted playsinline></video>
+                <video src="./eden.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️</span>
                     <h4>Jardín El Edén CU</h4>
@@ -267,7 +267,7 @@
 
             <!-- MUSEO SOUMAYA -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'soumaya')">
-                <video src="./soumaya.mp4" autoplay loop muted playsinline></video>
+                <video src="./soumaya.mp4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Museo Soumaya</h4>
@@ -276,7 +276,7 @@
 
             <!-- MUAC CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'muac')">
-                <video src="./muac.mp4" autoplay loop muted playsinline></video>
+                <video src="./muac.mp4" loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️✈️</span>
                     <h4>MUAC CU (Museo de Arte Contemporáneo)</h4>
@@ -341,7 +341,7 @@
 
     <!-- SALCHICHAS BBQ COMPACTA -->
     <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchichas')">
-        <video src="./salchichasbbq.MP4" autoplay loop muted playsinline></video>
+        <video src="./salchichasbbq.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
         <div class="compact-card-body">
             <span class="badge-tag">🏠 Supervivencia en Casa • 🧂 Salado</span>
             <h4>Salchichas BBQ de Ricardo Pérez 🌭</h4>
@@ -431,7 +431,9 @@
 
         <!-- Video Hero -->
         <div class="monchis-hero-container" style="margin-bottom: 25px;">
-            <video id="cineHeroVideo" class="monchis-hero-video" autoplay loop muted playsinline style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
+            <video id="cineHeroVideo" class="monchis-hero-video" loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
+    <source src="./videode03.mp4" type="video/mp4">
+</video>
                 <source src="./videode03.mp4" type="video/mp4">
             </video>
         </div>
@@ -451,7 +453,7 @@
         <div class="monchis-cards-grid" id="cineGrid">
             
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'void')">
-                <video src="./VOID.MP4" autoplay loop muted playsinline></video>
+                <video src="./VOID.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Psicodélica & Inmersiva</span>
                     <h4>ENTER THE VOID (2009) 👁️‍🗨️🌀</h4>
@@ -459,7 +461,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'belladonna')">
-                <video src="./BELLADONNA.MP4" autoplay loop muted playsinline></video>
+                <video src="./BELLADONNA.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Anime Psicodélico</span>
                     <h4>BELLADONNA OF SADNESS (1973) 👁️‍🗨️</h4>
@@ -467,7 +469,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'puparia')">
-                <video src="./PUPARIA.MP4" autoplay loop muted playsinline></video>
+                <video src="./PUPARIA.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Cortometraje Anime</span>
                     <h4>PUPARIA (2020) 👁️‍🗨️🌀</h4>
@@ -475,7 +477,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'goodtrip')">
-                <video src="./GOOD-TRIP.MP4" autoplay loop muted playsinline></video>
+                <video src="./GOOD-TRIP.MP4"  loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Documental & Comedia</span>
                     <h4>HAVE A GOOD TRIP (2020) 🍿🌀</h4>
@@ -483,7 +485,7 @@
             </div>
 
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'entergalactic')">
-                <video src="./ENTERGALACTIC.MP4" autoplay loop muted playsinline></video>
+                <video src="./ENTERGALACTIC.MP4" loop muted playsinline webkit-playsinline preload="metadata"></video>></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎨 Animación & Álbum Visual</span>
                     <h4>ENTERGALACTIC (2022) 🎨🎶</h4>
