@@ -6,6 +6,7 @@ let currentModalProduct = {
     price: 700,
     image: './Muhacmeds1.JPG'
 };
+let currentMonchisTab = 'calle';
 
 function scrollToBrandProducts() {
     const target = document.getElementById('brandProductsSection');
@@ -454,6 +455,7 @@ function sendWhatsAppOrder() {
 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
+
 /* --- FUNCIONES REUTILIZABLES PARA REPRODUCCIÓN FLUIDA DE VIDEOS --- */
 function playSectionVideos(container) {
     if (!container) return;
@@ -490,12 +492,8 @@ function closeRutasVuelo() {
         pauseSectionVideos(view);
     }
 }
-    const videos = container.querySelectorAll('video');
-    videos.forEach(video => {
-        video.muted = true;
-        videoObserver.observe(video);
-    });
-/* FILTRADO DE RUTAS DE VUELO */
+
+/* FILTRADO DE RUTAS DE VUELO POR ZONAS */
 document.addEventListener('DOMContentLoaded', () => {
     const botonesFiltro = document.querySelectorAll('.btn-filtro');
 
@@ -509,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             spots.forEach(spot => {
                 const zonaSpot = spot.getAttribute('data-zona');
-                if (zonaSeleccionada === 'todo' || zonaSeleccionada === zonaSpot) {
+                if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaSeleccionada === zonaSpot) {
                    spot.style.display = 'block';
                 } else {
                     spot.style.display = 'none';
@@ -525,9 +523,8 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('mouseleave', () => { card.open = false; });
     });
 });
-/* --- SECCIÓN 02: MONCHIS Y BAJAR AVIÓN --- */
-let currentMonchisTab = 'calle';
 
+/* --- SECCIÓN 02: MONCHIS Y BAJAR AVIÓN --- */
 function openMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
     if (view) {
@@ -610,6 +607,7 @@ function filterMonchisCards() {
         });
     }
 }
+
 /* --- SECCIÓN 03: TRIP VISUAL & CINE --- */
 function openCineVuelo() {
     const cineView = document.getElementById('cineFullscreenView');
@@ -627,23 +625,6 @@ function closeCineVuelo() {
         cineView.classList.remove('active');
         document.body.style.overflow = 'auto';
         pauseSectionVideos(cineView);
-    }
-}
-/* --- SECCIÓN 03: TRIP VISUAL & CINE --- */
-function openCineVuelo() {
-    const cineView = document.getElementById('cineFullscreenView');
-    if (cineView) {
-        cineView.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        filterCineCards();
-    }
-}
-
-function closeCineVuelo() {
-    const cineView = document.getElementById('cineFullscreenView');
-    if (cineView) {
-        cineView.classList.remove('active');
-        document.body.style.overflow = 'auto';
     }
 }
 
@@ -947,6 +928,7 @@ function closeInfoModalOnOverlay(e) {
         closeInfoModal();
     }
 }
+
 /* --- FUNCIONALIDAD BUZÓN DE SUGERENCIAS Y DUDAS --- */
 function openBuzonModal() {
     const overlay = document.getElementById('buzonModalOverlay');
@@ -969,6 +951,7 @@ function closeBuzonOnOverlay(e) {
         closeBuzonModal();
     }
 }
+
 function sendBuzonWhatsApp(event) {
     event.preventDefault();
 
@@ -976,7 +959,7 @@ function sendBuzonWhatsApp(event) {
     const nombre = document.getElementById('buzonNombre').value.trim() || 'Anónimo';
     const mensaje = document.getElementById('buzonMensaje').value.trim();
 
-    let text = `*📪 NUEVA ENTRADA AL BUZÓN AEROSHOP*\n\n`;
+    let text = `*MB NUEVA ENTRADA AL BUZÓN AEROSHOP*\n\n`;
     text += `*Categoría:* ${tipo}\n`;
     text += `*De:* ${nombre}\n\n`;
     text += `*Mensaje / Detalle:*\n${mensaje}`;
