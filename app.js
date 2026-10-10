@@ -454,54 +454,47 @@ function sendWhatsAppOrder() {
 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
-/* --- SECCIÓN 01: RUTAS DE VUELO CON OPTIMIZACIÓN DE MEMORIA --- */
-let videoObserver = null;
+/* --- FUNCIONES REUTILIZABLES PARA REPRODUCCIÓN FLUIDA DE VIDEOS --- */
+function playSectionVideos(container) {
+    if (!container) return;
+    const videos = container.querySelectorAll('video');
+    videos.forEach(video => {
+        video.muted = true;
+        video.playsInline = true;
+        video.play().catch(err => console.log("Autoplay diferido:", err));
+    });
+}
 
+function pauseSectionVideos(container) {
+    if (!container) return;
+    const videos = container.querySelectorAll('video');
+    videos.forEach(video => video.pause());
+}
+
+/* --- SECCIÓN 01: RUTAS DE VUELO --- */
 function openRutasVuelo() {
     const view = document.getElementById('rutasFullscreenView');
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
         document.body.style.overflow = 'hidden';
-        
-        // Activar observador inteligente de videos
-        initVideoObserver(view);
+        playSectionVideos(view);
     }
 }
-/* --- FUNCIÓN PARA CERRAR Y VOLVER AL MENÚ --- */
+
 function closeRutasVuelo() {
     const view = document.getElementById('rutasFullscreenView');
     if (view) {
         view.classList.remove('active');
         document.body.style.overflow = 'auto';
-        
-        // Pausa videos al salir para liberar procesamiento del celular
-        const videos = view.querySelectorAll('video');
-        videos.forEach(video => video.pause());
+        pauseSectionVideos(view);
     }
 }
-function initVideoObserver(container) {
-    if (!('IntersectionObserver' in window)) return;
-
-    if (!videoObserver) {
-        videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const video = entry.target;
-                if (entry.isIntersecting) {
-                    video.play().catch(() => {});
-                } else {
-                    video.pause();
-                }
-            });
-        }, { threshold: 0.3 });
-    }
-
     const videos = container.querySelectorAll('video');
     videos.forEach(video => {
         video.muted = true;
         videoObserver.observe(video);
     });
-}
 /* FILTRADO DE RUTAS DE VUELO */
 document.addEventListener('DOMContentLoaded', () => {
     const botonesFiltro = document.querySelectorAll('.btn-filtro');
@@ -532,7 +525,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('mouseleave', () => { card.open = false; });
     });
 });
-
 /* --- SECCIÓN 02: MONCHIS Y BAJAR AVIÓN --- */
 function openMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
@@ -540,6 +532,7 @@ function openMonchisVuelo() {
         view.classList.add('active');
         document.body.style.overflow = 'hidden';
         filterMonchisCards();
+        playSectionVideos(view);
     }
 }
 
@@ -547,55 +540,30 @@ function closeMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
     if (view) {
         view.classList.remove('active');
-        document.body.style.overflow = '';
+        document.body.style.overflow = 'auto';
+        pauseSectionVideos(view);
     }
 }
 
-function switchMonchisTab(tab) {
-    const tabCalleBtn = document.getElementById('tabCalleBtn');
-    const tabCasaBtn = document.getElementById('tabCasaBtn');
-    const filtersCalle = document.getElementById('filtersCalle');
-    const filtersCasa = document.getElementById('filtersCasa');
-
-    if (tab === 'calle') {
-        tabCalleBtn.classList.add('active');
-        tabCasaBtn.classList.remove('active');
-        filtersCalle.style.display = 'flex';
-        filtersCasa.style.display = 'none';
-    } else {
-        tabCasaBtn.classList.add('active');
-        tabCalleBtn.classList.remove('active');
-        filtersCasa.style.display = 'flex';
-        filtersCalle.style.display = 'none';
+/* --- SECCIÓN 03: TRIP VISUAL & CINE --- */
+function openCineVuelo() {
+    const cineView = document.getElementById('cineFullscreenView');
+    if (cineView) {
+        cineView.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        filterCineCards();
+        playSectionVideos(cineView);
     }
-    filterMonchisCards();
 }
 
-function filterMonchisCards() {
-    const activeTab = document.getElementById('tabCalleBtn')?.classList.contains('active') ? 'calle' : 'casa';
-    const cards = document.querySelectorAll('#monchisGrid .compact-card');
-    
-    cards.forEach(card => {
-        const cardTipo = card.getAttribute('data-tipo');
-        if (cardTipo !== activeTab) {
-            card.style.display = 'none';
-            return;
-        }
-
-        if (activeTab === 'calle') {
-            const zona = document.getElementById('filterZona')?.value || 'todos';
-            const antojo = document.getElementById('filterAntojoCalle')?.value || 'todos';
-            const matchZona = (zona === 'todos' || card.getAttribute('data-zona') === zona);
-            const matchAntojo = (antojo === 'todos' || card.getAttribute('data-antojo') === antojo);
-            card.style.display = (matchZona && matchAntojo) ? 'block' : 'none';
-        } else {
-            const antojo = document.getElementById('filterAntojoCasa')?.value || 'todos';
-            const matchAntojo = (antojo === 'todos' || card.getAttribute('data-antojo') === antojo);
-            card.style.display = matchAntojo ? 'block' : 'none';
-        }
-    });
+function closeCineVuelo() {
+    const cineView = document.getElementById('cineFullscreenView');
+    if (cineView) {
+        cineView.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        pauseSectionVideos(cineView);
+    }
 }
-
 /* --- SECCIÓN 03: TRIP VISUAL & CINE --- */
 function openCineVuelo() {
     const cineView = document.getElementById('cineFullscreenView');
