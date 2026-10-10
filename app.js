@@ -468,7 +468,18 @@ function openRutasVuelo() {
         initVideoObserver(view);
     }
 }
-
+/* --- FUNCIÓN PARA CERRAR Y VOLVER AL MENÚ --- */
+function closeRutasVuelo() {
+    const view = document.getElementById('rutasFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        // Pausa videos al salir para liberar procesamiento del celular
+        const videos = view.querySelectorAll('video');
+        videos.forEach(video => video.pause());
+    }
+}
 function initVideoObserver(container) {
     if (!('IntersectionObserver' in window)) return;
 

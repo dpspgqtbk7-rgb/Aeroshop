@@ -457,6 +457,10 @@
         }
 
         .btn-back-main {
+            position: relative !important;
+             z-index: 10000 !important; /* Prioridad por encima de cualquier otro botón flotante */
+            pointer-events: auto !important;
+            cursor: pointer;
             pointer-events: auto;
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
