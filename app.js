@@ -1082,8 +1082,8 @@ function openCardModal(section, key) {
     // Detecta si es video o imagen
     const isVideo = data.video.toLowerCase().endsWith('.mp4');
     const mediaTag = isVideo 
-        ? `<video src="${data.video}" autoplay loop muted playsinline webkit-playsinline></video>`
-        : `<img src="${data.video}" alt="${data.title}" style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">`;
+        ? `<video src="${data.video}" autoplay loop muted playsinline webkit-playsinline style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></video>`
+        : `<img src="${data.video}" alt="${data.title}" style="width: 100%; max-height: 320px; object-fit: contain; background: #000; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">`;
 
     const modalBody = document.getElementById('infoModalBody');
     modalBody.innerHTML = `
@@ -1094,7 +1094,21 @@ function openCardModal(section, key) {
     `;
 
     document.getElementById('infoModalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
+  function closeInfoModal() {
+    const overlay = document.getElementById('infoModalOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function closeInfoModalOnOverlay(e) {
+    if (e.target.id === 'infoModalOverlay') {
+        closeInfoModal();
+    }
+}  
 /* --- FUNCIONALIDAD BUZÓN DE SUGERENCIAS Y DUDAS --- */
 function openBuzonModal() {
     const overlay = document.getElementById('buzonModalOverlay');
