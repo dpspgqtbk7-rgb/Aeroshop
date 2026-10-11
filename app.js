@@ -1004,7 +1004,7 @@ const cardDetailsDB = {
     },
     burgergate: {
         title: "Burger Gate 🍔",
-        video: "./burgerg.MP4",
+        video: "./burgerg.mp4",
         badge: "📍 Centro • 🍿 Salado",
         html: `
             <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
@@ -1025,7 +1025,7 @@ const cardDetailsDB = {
     },
     neotokyo: {
         title: "NEO TOKYO (1987) 🚀",
-        video: "./neotokyo.MP4",
+        video: "./neotokyo.mp4",
         badge: "🎬 Animación Experimental • ⏱️ 50m",
         html: `
             <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
