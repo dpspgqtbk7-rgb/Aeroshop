@@ -1046,7 +1046,7 @@ const cardDetailsDB = {
     },
     dubside: {
         title: "DUB SIDE OF THE MOON",
-        video: "./sub.png",
+        video: "./dub.png",
         badge: "🔊 Dub / Reggae / Psicodélico",
         html: `
             <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;">
