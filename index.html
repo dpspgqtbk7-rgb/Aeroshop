@@ -87,7 +87,12 @@
                 <h3 style="margin-bottom: 8px;">Frecuencias 🎧</h3>
                 <p>Una selección sonora para acompañar tu viaje.</p>
             </div>
-
+            <!-- TARJETA 05: DESESCALADA SENSORIAL -->
+            <div class="diferencia-item" style="cursor: pointer;" onclick="openEmergencyVuelo()">
+                <span class="diferencia-num">05</span>
+                <h3 style="margin-bottom: 8px;">Desescalada Sensorial 🌿</h3>
+                <p>Ancla de seguridad, respiración asistida y guía si el viaje se intensifica.</p>
+            </div>
         </div> <!-- /diferencia-grid -->
     </div> <!-- /diferencia-card -->
 </section>
@@ -646,6 +651,105 @@
         </div>
     </div>
 </div> 
+<!-- ========================================== -->
+<!-- VISTA FULLSCREEN: 05. DESESCALADA SENSORIAL -->
+<!-- ========================================== -->
+<div class="emergency-fullscreen-view" id="emergencyFullscreenView">
+    <div class="emergency-container">
+        
+        <!-- Botón Volver -->
+        <div class="emergency-header">
+            <button class="btn-back-emergency" onclick="closeEmergencyVuelo()">
+                ← VOLVER AL MENÚ PRINCIPAL
+            </button>
+        </div>
+
+        <!-- Mensaje de Validación Inmediata (Primera Pantalla) -->
+        <div class="emergency-message-box">
+            <h2>Estás a salvo 🛡️</h2>
+            <p class="emergency-main-msg">Esto es solo una reacción física temporal y va a pasar.</p>
+            <p class="emergency-sub-msg">Tu cuerpo está procesando el efecto. Alcanzó su punto máximo y en pocos minutos se va a regular.</p>
+        </div>
+
+        <!-- Módulo de Respiración Guiada Parasimpática -->
+        <div class="breathing-card">
+            <h3>Respiración Guiada (Ritmo 4-4-6)</h3>
+            
+            <div class="breathing-circle-wrapper">
+                <div class="breathing-circle" id="breathingCircle">
+                    <span id="breathingActionText">Iniciar</span>
+                </div>
+            </div>
+
+            <div class="breathing-status" id="breathingStatusLabel">Presiona para comenzar el ritmo de calma</div>
+
+            <div class="breathing-controls">
+                <button class="btn-breathing" id="btnBreathingToggle" onclick="toggleBreathingGuide()">
+                    ▶️ Iniciar Respiración Guiada
+                </button>
+            </div>
+        </div>
+
+        <!-- Reproductor de Audio Ambiental Nativo (Ruido Marrón) -->
+        <div class="emergency-audio-card">
+            <button class="btn-audio-emergency" id="btnAudioEmergency" onclick="toggleBrownNoise()">
+                <span id="btnAudioText">🎧 Escuchar Ruido Marrón Calmante</span>
+            </button>
+            <span class="audio-hint">Frecuencia continua de baja intensidad para reducir el ruido mental.</span>
+        </div>
+
+        <!-- Cuadrícula de Soluciones Físicas Rápidas -->
+        <div class="emergency-grid-title">
+            <h3>Soluciones Físicas Validadas</h3>
+            <p>Elige una acción simple a la vez. No hay prisa.</p>
+        </div>
+
+        <div class="emergency-solutions-grid">
+            
+            <!-- 1. Pimienta Negra -->
+            <div class="solution-card">
+                <div class="solution-icon">🧂</div>
+                <div class="solution-content">
+                    <h4>Pimienta Negra</h4>
+                    <p class="solution-action">Huele o mastica 2 granos de pimienta negra.</p>
+                    <p class="solution-why">El <em>beta-cariofileno</em> de la pimienta ayuda a suavizar la intensidad del THC en el cerebro.</p>
+                </div>
+            </div>
+
+            <!-- 2. Hidratación y Glucosa -->
+            <div class="solution-card">
+                <div class="solution-icon">🥤</div>
+                <div class="solution-content">
+                    <h4>Hidratación & Glucosa</h4>
+                    <p class="solution-action">Toma un vaso de agua con azúcar, jugo de fruta o bebida isotónica.</p>
+                    <p class="solution-why">Corta la bajada de presión (hipotensión) y recupera los niveles de glucosa en sangre.</p>
+                </div>
+            </div>
+
+            <!-- 3. Estabilización Corporal -->
+            <div class="solution-card">
+                <div class="solution-icon">🧱</div>
+                <div class="solution-content">
+                    <h4>Estabilización Corporal</h4>
+                    <p class="solution-action">Siéntate en el suelo apoyando la espalda en la pared o recuéstate de lado.</p>
+                    <p class="solution-why">Siente el peso de tu cuerpo firme sobre el suelo y evita mareos por postura.</p>
+                </div>
+            </div>
+
+            <!-- 4. Anclaje Sensorial -->
+            <div class="solution-card">
+                <div class="solution-icon">👁️</div>
+                <div class="solution-content">
+                    <h4>Anclaje 5-4-3-2-1</h4>
+                    <p class="solution-action">Nombra 3 objetos que veas alrededor y toca 2 texturas cercanas.</p>
+                    <p class="solution-why">Reconecta la mente con tu espacio presente interrumpiendo pensamientos en bucle.</p>
+                </div>
+            </div>
+
+        </div> <!-- /emergency-solutions-grid -->
+
+    </div> <!-- /emergency-container -->
+</div> <!-- /emergencyFullscreenView -->
     <!-- JAVASCRIPT -->
     <script src="app.js"></script>
 </body>

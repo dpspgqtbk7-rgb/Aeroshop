@@ -1201,3 +1201,162 @@ function filterMusicCards() {
         }
     });
 }
+/* ==========================================
+   SECCIÓN 05: DESESCALADA SENSORIAL (LÓGICA)
+   ========================================== */
+let breathingInterval = null;
+let breathingStep = 0; // 0: Inhalar (4s), 1: Sostener (4s), 2: Exhalar (6s)
+let isBreathingActive = false;
+
+// Generador de Ruido Marrón Nativo (Web Audio API - 0 KB)
+let brownNoiseContext = null;
+let brownNoiseNode = null;
+let isPlayingBrownNoise = false;
+
+function openEmergencyVuelo() {
+    const view = document.getElementById('emergencyFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeEmergencyVuelo() {
+    const view = document.getElementById('emergencyFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        stopBreathingGuide();
+        stopBrownNoise();
+    }
+}
+
+/* LÓGICA DE RESPIRACIÓN GUIADA (4s Inhala - 4s Sostén - 6s Exhala) */
+function toggleBreathingGuide() {
+    if (isBreathingActive) {
+        stopBreathingGuide();
+    } else {
+        startBreathingGuide();
+    }
+}
+
+function startBreathingGuide() {
+    isBreathingActive = true;
+    document.getElementById('btnBreathingToggle').innerText = "⏸️ Pausar Respiración";
+    runBreathingCycle();
+}
+
+function stopBreathingGuide() {
+    isBreathingActive = false;
+    clearTimeout(breathingInterval);
+    const circle = document.getElementById('breathingCircle');
+    const label = document.getElementById('breathingStatusLabel');
+    const actionText = document.getElementById('breathingActionText');
+    const btn = document.getElementById('btnBreathingToggle');
+
+    if (circle) circle.className = 'breathing-circle';
+    if (label) label.innerText = "Presiona para comenzar el ritmo de calma";
+    if (actionText) actionText.innerText = "Iniciar";
+    if (btn) btn.innerText = "▶️ Iniciar Respiración Guiada";
+}
+
+function runBreathingCycle() {
+    if (!isBreathingActive) return;
+
+    const circle = document.getElementById('breathingCircle');
+    const label = document.getElementById('breathingStatusLabel');
+    const actionText = document.getElementById('breathingActionText');
+
+    // FASE 1: INHALAR (4 segundos)
+    circle.className = 'breathing-circle inhale';
+    actionText.innerText = "Inhala";
+    label.innerText = "Inhala suavemente por la nariz (4s)...";
+
+    breathingInterval = setTimeout(() => {
+        if (!isBreathingActive) return;
+
+        // FASE 2: SOSTENER (4 segundos)
+        circle.className = 'breathing-circle hold';
+        actionText.innerText = "Sostén";
+        label.innerText = "Mantén el aire con calma (4s)...";
+
+        breathingInterval = setTimeout(() => {
+            if (!isBreathingActive) return;
+
+            // FASE 3: EXHALAR (6 segundos)
+            circle.className = 'breathing-circle exhale';
+            actionText.innerText = "Exhala";
+            label.innerText = "Suelta el aire despacio por la boca (6s)...";
+
+            breathingInterval = setTimeout(() => {
+                if (isBreathingActive) {
+                    runBreathingCycle(); // Repite el ciclo
+                }
+            }, 6000);
+
+        }, 4000);
+
+    }, 4000);
+}
+
+/* GENERADOR DE RUIDO MARRÓN (PURA WEB AUDIO API) */
+function toggleBrownNoise() {
+    if (isPlayingBrownNoise) {
+        stopBrownNoise();
+    } else {
+        startBrownNoise();
+    }
+}
+
+function startBrownNoise() {
+    try {
+        if (!brownNoiseContext) {
+            brownNoiseContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (brownNoiseContext.state === 'suspended') {
+            brownNoiseContext.resume();
+        }
+
+        const bufferSize = brownNoiseContext.sampleRate * 2;
+        const buffer = brownNoiseContext.createBuffer(1, bufferSize, brownNoiseContext.sampleRate);
+        const output = buffer.getChannelData(0);
+        let lastOut = 0.0;
+
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            output[i] = (lastOut + (0.02 * white)) / 1.02;
+            lastOut = output[i];
+            output[i] *= 3.0; // Ganancia suave
+        }
+
+        brownNoiseNode = brownNoiseContext.createBufferSource();
+        brownNoiseNode.buffer = buffer;
+        brownNoiseNode.loop = true;
+
+        const gainNode = brownNoiseContext.createGain();
+        gainNode.gain.value = 0.15; // Volumen medio-bajo (40%)
+
+        brownNoiseNode.connect(gainNode);
+        gainNode.connect(brownNoiseContext.destination);
+
+        brownNoiseNode.start();
+        isPlayingBrownNoise = true;
+
+        document.getElementById('btnAudioText').innerText = "🔊 Pausar Sonido Relajante";
+    } catch (e) {
+        console.log("AudioContext error:", e);
+    }
+}
+
+function stopBrownNoise() {
+    if (brownNoiseNode) {
+        try {
+            brownNoiseNode.stop();
+            brownNoiseNode.disconnect();
+        } catch (e) {}
+    }
+    isPlayingBrownNoise = false;
+    const btnText = document.getElementById('btnAudioText');
+    if (btnText) btnText.innerText = "🎧 Escuchar Ruido Marrón Calmante";
+}
