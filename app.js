@@ -1299,10 +1299,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================
-   CONTROL DE MODALES (SIN REBOTES DE SCROLL)
+   CONTROL DE MODALES Y BLOQUEO DE SCROLL DE FONDO
    ========================================== */
 function openModalState() {
     document.body.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModalState() {
@@ -1311,17 +1312,19 @@ function closeModalState() {
     );
     if (activeOverlays.length === 0) {
         document.body.classList.remove('modal-open');
+        document.body.style.overflow = 'auto';
     }
 }
 
 /* ==========================================
-   NAVEGACIÓN DE VISTAS FULLSCREEN
+   NAVEGACIÓN DE VISTAS FULLSCREEN (CON SCROLL LOCK)
    ========================================== */
 function closeFullscreenBrand() {
     const view = document.getElementById('brandFullscreenView');
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
+        closeModalState();
     }
 }
 
@@ -1330,6 +1333,7 @@ function openRutasVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
+        openModalState();
         playSectionVideos(view);
     }
 }
@@ -1339,6 +1343,7 @@ function closeRutasVuelo() {
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
+        closeModalState();
     }
 }
 
@@ -1347,6 +1352,7 @@ function openMonchisVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
+        openModalState();
         if (typeof filterMonchisCards === 'function') filterMonchisCards();
         playSectionVideos(view);
     }
@@ -1357,6 +1363,7 @@ function closeMonchisVuelo() {
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
+        closeModalState();
     }
 }
 
@@ -1365,6 +1372,7 @@ function openCineVuelo() {
     if (cineView) {
         cineView.classList.add('active');
         cineView.scrollTop = 0;
+        openModalState();
         if (typeof filterCineCards === 'function') filterCineCards();
         playSectionVideos(cineView);
     }
@@ -1375,6 +1383,7 @@ function closeCineVuelo() {
     if (cineView) {
         cineView.classList.remove('active');
         pauseSectionVideos(cineView);
+        closeModalState();
     }
 }
 
@@ -1383,6 +1392,7 @@ function openMusicVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
+        openModalState();
         if (typeof filterMusicCards === 'function') filterMusicCards();
     }
 }
@@ -1391,16 +1401,17 @@ function closeMusicVuelo() {
     const view = document.getElementById('musicFullscreenView');
     if (view) {
         view.classList.remove('active');
+        closeModalState();
     }
 }
 
-/* --- SECCIÓN 05: PARA LA PÁLIDA (SIN RUIDO VISUAL) --- */
 function openEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
         document.body.classList.add('emergency-active');
         view.classList.add('active');
         view.scrollTop = 0;
+        openModalState();
     }
 }
 
@@ -1409,6 +1420,7 @@ function closeEmergencyVuelo() {
     if (view) {
         view.classList.remove('active');
         document.body.classList.remove('emergency-active');
+        closeModalState();
         stopBreathingGuide();
         stopBrownNoise();
     }
@@ -1762,28 +1774,34 @@ async function registrarGastoAdmin(event) {
 function abrirPromo() {
   const modal = document.getElementById('promoModal');
   if (modal) modal.classList.add('active');
+  openModalState();
 }
 function cerrarPromo() {
   const modal = document.getElementById('promoModal');
   if (modal) modal.classList.remove('active');
+  closeModalState();
 }
 
 function abrirLogin() {
   const modal = document.getElementById('loginModal');
   if (modal) modal.classList.add('active');
+  openModalState();
 }
 function cerrarLogin() {
   const modal = document.getElementById('loginModal');
   if (modal) modal.classList.remove('active');
+  closeModalState();
 }
 
 function abrirPerfil() {
   const modal = document.getElementById('profileModal');
   if (modal) modal.classList.add('active');
+  openModalState();
 }
 function cerrarPerfil() {
   const modal = document.getElementById('profileModal');
   if (modal) modal.classList.remove('active');
+  closeModalState();
 }
 
 function irALoginDesdePromo() {

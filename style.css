@@ -2779,21 +2779,49 @@ body.modal-open {
     font-size: 0.9rem;
 }
 /* ========================================== */
-/* MODALES, OVERLAYS Y ESTILOS DE SESIÓN      */
+/* ESTILOS DE BOTÓN DE PROMO, MODALES Y FIX MÓVIL */
 /* ========================================== */
+
+/* Fix 1: Estilizado del Botón de Registro/Login en Promo Modal */
+.btn-primary {
+  width: 100% !important;
+  padding: 16px 20px !important;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%) !important;
+  color: #0f172a !important;
+  border: none !important;
+  border-radius: 50px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  margin-top: 15px !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important;
+  transition: all 0.25s ease !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  background: #ffffff !important;
+  box-shadow: 0 12px 25px rgba(255,255,255,0.5) !important;
+}
+
+/* Modales y Overlays */
 .modal-overlay {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+  height: 100dvh !important;
   background: rgba(0, 0, 0, 0.75) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1000000 !important; /* Prioridad máxima por encima de la barra */
+  z-index: 1000000 !important;
   padding: 16px;
   pointer-events: auto !important;
 }
@@ -2806,9 +2834,9 @@ body.modal-open {
   background: #ffffff;
   color: #1a1a1a;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   border-radius: 24px;
-  padding: 24px;
+  padding: 28px 24px;
   position: relative;
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   transform: translateY(20px);
@@ -2825,7 +2853,7 @@ body.modal-open {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: #f0f0f0;
+  background: rgba(0, 0, 0, 0.08);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -2836,266 +2864,42 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   z-index: 10;
-}
-
-/* MODAL PROMO BIENVENIDA */
-.promo-card {
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-  color: #fff;
-}
-.promo-card .close-btn {
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-}
-.promo-header .badge {
-  background: rgba(255,255,255,0.2);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: bold;
-}
-.promo-header h2 {
-  font-size: 20px;
-  margin: 12px 0;
-}
-.benefit-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: rgba(255,255,255,0.08);
-  padding: 12px;
-  border-radius: 14px;
-  margin-bottom: 10px;
-}
-.benefit-item h4 {
-  margin: 0 0 2px 0;
-  font-size: 14px;
-}
-.benefit-item p {
-  margin: 0;
-  font-size: 12px;
-  color: #cbd5e0;
-}
-
-/* MODAL LOGIN Y ADIDAS CARD */
-.modal-card.adidas-card {
-  background: #ffffff;
-  color: #000000;
-  border-radius: 16px;
-  padding: 32px 24px;
-  max-width: 420px;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-  text-align: left;
-}
-
-.adidas-brand-header .brand-logo-txt {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: 2px;
-  margin-bottom: 12px;
-  color: #000;
-}
-
-.adidas-brand-header h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 800;
-  line-height: 1.1;
-  text-transform: uppercase;
-  margin: 0 0 10px 0;
-}
-
-.adidas-subtext {
-  color: #555;
-  font-size: 13px;
-  line-height: 1.4;
-  margin-bottom: 20px;
-}
-
-.btn-social-auth {
-  width: 100%;
-  padding: 14px;
-  background: #ffffff;
-  border: 1px solid #000000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 12px;
   transition: background 0.2s;
 }
 
-.btn-social-auth:hover {
-  background: #f4f4f4;
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.18);
 }
 
-/* PERFIL DE USUARIO */
-.profile-user-badge {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+/* Fix 4: Fondo de Carga para Videos (Sin mostrar la portada encimada) */
+.compact-card video, 
+.monchis-card video,
+.rutas-video-inline video {
+    width: 100%;
+    height: 200px !important;
+    object-fit: cover;
+    background: #0f172a radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(15, 23, 42, 1) 100%) !important;
+    display: block;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.user-avatar-img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #000;
-}
-
-.profile-user-badge h3 {
-  margin: 0 0 2px 0;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.profile-user-badge p {
-  margin: 0 0 6px 0;
-  color: #666;
-  font-size: 12px;
-}
-
-.status-pill {
-  background: #000;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 3px 8px;
-  letter-spacing: 1px;
-}
-
-.vuelos-status-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 16px;
-  margin: 20px 0;
-  border-radius: 12px;
-}
-
-.vuelos-box-header {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: 12px;
-  margin-bottom: 12px;
-}
-
-.vuelos-dots-flex {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.vuelo-step {
-  flex: 1;
-  background: #e2e8f0;
-  color: #64748b;
-  padding: 8px 4px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 6px;
-}
-
-.vuelo-step.active {
-  background: #7a9a3b;
-  color: #ffffff;
-}
-
-.vuelos-hint {
-  font-size: 11px;
-  color: #64748b;
-  margin: 0;
-}
-
-.btn-logout-adidas {
-  width: 100%;
-  padding: 12px;
-  background: transparent;
-  border: 1px solid #e11d48;
-  color: #e11d48;
-  font-weight: 800;
-  font-size: 12px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  border-radius: 12px;
-}
-
-/* BARRA FLOTANTE FIJA (BOTTOM NAV) */
-.bottom-nav {
-  position: fixed !important;
-  bottom: 16px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: calc(100% - 32px) !important;
-  max-width: 430px !important;
-  height: 64px !important;
-  background: rgba(15, 23, 42, 0.92) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 40px !important;
-  display: flex !important;
-  justify-content: space-around !important;
-  align-items: center !important;
-  z-index: 90000 !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
-  padding: 0 12px !important;
-}
-
-.nav-item {
-  background: transparent !important;
-  border: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  color: #94a3b8 !important;
-  cursor: pointer !important;
-  flex: 1 !important;
-  transition: all 0.2s ease !important;
-}
-
-.nav-item.active, .nav-item:hover {
-  color: #ffffff !important;
-}
-
-.nav-icon {
-  font-size: 20px !important;
-}
-
-.nav-label {
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
-  text-transform: uppercase !important;
-}
-
-/* FIX RESPONSIVO PARA CELULARES (PORTADA Y AVION) */
+/* Fix 3: Portada y Fondo Continuo en Celulares (Sin cortes) */
 @media (max-width: 600px) {
     .hero-cover {
-        min-height: 280px !important;
+        min-height: 300px !important;
         height: auto !important;
-        padding: 45px 15px 25px 15px !important;
+        padding: 40px 15px 25px 15px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 18px !important;
+        gap: 16px !important;
     }
 
     .hero-cover::before {
-        background: url('./portada.jpg') center top / 100% auto no-repeat !important;
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
+        background: url('./portada.jpg') center top / cover no-repeat !important;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%) !important;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 85%, rgba(0,0,0,0) 100%) !important;
     }
 
     .hero-plane-container {
@@ -3118,6 +2922,7 @@ body.modal-open {
         margin: 0 !important;
     }
 
+    /* Ocultar barra flotante en modo Pálida/Emergencia */
     body.emergency-active .bottom-nav,
     body.emergency-active .cart-floating-btn,
     body.emergency-active .buzon-floating-btn {
