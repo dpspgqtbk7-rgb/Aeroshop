@@ -1275,24 +1275,8 @@ function filterMusicCards() {
     });
 }
 /* ==========================================
-   OPTIMIZACIÓN DE CARGA DE VIDEOS EN MÓVILES
+   OPTIMIZACIÓN DE CARGA DE VIDEOS Y NAVEGACIÓN
    ========================================== */
-document.addEventListener('DOMContentLoaded', () => {
-    // Reproduce videos solo cuando están visibles en pantalla para evitar pantalla negra en iOS
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                video.muted = true;
-                video.playsInline = true;
-                video.play().catch(() => {});
-            } else {
-                video.pause();
-            }
-        });
-    }, { threshold: 0.15 });
-    
-   /* OPTIMIZACIÓN DE CARGA DE VIDEOS EN MÓVILES (EVITA TRABAR EL CELULAR) */
 document.addEventListener('DOMContentLoaded', () => {
     const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1313,6 +1297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videoObserver.observe(video);
     });
 });
+
 /* ==========================================
    CONTROL DE MODALES (SIN REBOTES DE SCROLL)
    ========================================== */
@@ -1330,9 +1315,8 @@ function closeModalState() {
 }
 
 /* ==========================================
-   Navegación Fluida sin Caídas de Scroll
+   NAVEGACIÓN DE VISTAS FULLSCREEN
    ========================================== */
-
 function closeFullscreenBrand() {
     const view = document.getElementById('brandFullscreenView');
     if (view) {
@@ -1429,12 +1413,12 @@ function closeEmergencyVuelo() {
         stopBrownNoise();
     }
 }
+
 /* ==========================================
-   SECCIÓN 05: PARA LA PÁLIDA (RESPIRACIÓN Y AUDIO)
+   SECCIÓN 05: RESPIRACIÓN Y AUDIO
    ========================================== */
 let breathingInterval = null;
 let isBreathingActive = false;
-
 let brownNoiseContext = null;
 let brownNoiseNode = null;
 let isPlayingBrownNoise = false;
@@ -1564,13 +1548,12 @@ function stopBrownNoise() {
     const btnText = document.getElementById('btnAudioText');
     if (btnText) btnText.innerText = "🎧 Escuchar Ruido Marrón Calmante";
 }
+
 /* ==========================================
-   LÓGICA DEL PANEL DE ADMINISTRACIÓN Y CONTABILIDAD UNITARIA
+   PANEL ADMINISTRADOR
    ========================================== */
 let adminInventarioCache = [];
-
-// Extensión para verificar si el usuario conectado es el Administrador
-const ADMIN_EMAIL = "tu_correo_admin@gmail.com"; // Reemplaza por tu correo oficial
+const ADMIN_EMAIL = "tu_correo_admin@gmail.com";
 
 function checkAdminPermission(user) {
     const adminSection = document.getElementById('adminPanelSection');
@@ -1583,7 +1566,6 @@ function checkAdminPermission(user) {
     }
 }
 
-// Escuchador extendido dentro de syncUserProfile
 const originalSyncUserProfile = window.syncUserProfile;
 window.syncUserProfile = async function(user) {
     if (typeof originalSyncUserProfile === 'function') {
@@ -1592,13 +1574,11 @@ window.syncUserProfile = async function(user) {
     checkAdminPermission(user);
 };
 
-// 1. CARGA DEL DASHBOARD FINANCIERO UNITARIO
 async function cargarDashboardAdmin() {
     if (!window.db) return;
     const { collection, getDocs } = window.fbMethods;
 
     try {
-        // Consultar Ventas
         let totalIngresos = 0;
         let totalCogs = 0;
         const ventasSnap = await getDocs(collection(window.db, "transacciones_ventas"));
@@ -1608,14 +1588,12 @@ async function cargarDashboardAdmin() {
             totalCogs += data.costo_unitario || 0;
         });
 
-        // Consultar Gastos y Regalos
         let totalGastos = 0;
         const gastosSnap = await getDocs(collection(window.db, "gastos_e_inversiones"));
         gastosSnap.forEach(doc => {
             totalGastos += doc.data().monto || 0;
         });
 
-        // Cálculo de Utilidad Neta Real
         const utilidadNeta = totalIngresos - (totalCogs + totalGastos);
 
         document.getElementById('dashIngresos').innerText = `$${totalIngresos.toLocaleString()} MXN`;
@@ -1627,15 +1605,12 @@ async function cargarDashboardAdmin() {
     }
 }
 
-// 2. GESTIÓN DE INVENTARIO Y COSTO PROMEDIO UNITARIO
 async function registrarInventarioAdmin(event) {
     event.preventDefault();
     const nombre = document.getElementById('invNombre').value.trim();
     const inversionTotal = parseFloat(document.getElementById('invInversionTotal').value);
     const piezas = parseInt(document.getElementById('invPiezas').value);
     const precioVenta = parseFloat(document.getElementById('invPrecioVenta').value);
-
-    // Costo Base Unitario = Inversión Total / Piezas
     const costoUnitarioBase = inversionTotal / piezas;
 
     try {
@@ -1692,7 +1667,6 @@ function actualizarPrecioSugeridoAdmin() {
     }
 }
 
-// 3. ACREDITACIÓN DE VUELO (SISTEMA 3/3) Y REGISTRO DE VENTA
 async function procesarVentaAdmin(event) {
     event.preventDefault();
     let userQuery = document.getElementById('adminUserUid').value.trim();
@@ -1707,8 +1681,6 @@ async function procesarVentaAdmin(event) {
 
     try {
         const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
-
-        // Búsqueda flexible de usuario por ID corto o UID completo
         let userDocRef = null;
         let userData = null;
 
@@ -1727,31 +1699,21 @@ async function procesarVentaAdmin(event) {
             return;
         }
 
-        // Lógica de Vuelos y Reinicio al Vuelo #3
         let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
-        let consumoDescuento = false;
-
-        if (userData.descuento_bienvenida_activo) {
-            consumoDescuento = true;
-        }
-
         if (nuevosVuelos > 3) {
-            nuevosVuelos = 1; // Reinicia ciclo a 1/3 tras consumir el regalo #3
+            nuevosVuelos = 1;
         }
 
-        // Actualizar Usuario
         await updateDoc(userDocRef, {
             vuelos_acumulados: nuevosVuelos,
             descuento_bienvenida_activo: false
         });
 
-        // Descontar 1 Unidad de Stock
         const prodRef = doc(window.db, "inventario", producto.id);
         await updateDoc(prodRef, {
             stock: producto.stock - 1
         });
 
-        // Auditoría en Transacciones
         const gananciaBruta = montoCobrado - producto.costo_unitario;
         await addDoc(collection(window.db, "transacciones_ventas"), {
             usuario_uid: userDocRef.id,
@@ -1771,7 +1733,6 @@ async function procesarVentaAdmin(event) {
     }
 }
 
-// 4. REGISTRO DE REGALOS Y GASTOS OPERATIVOS
 async function registrarGastoAdmin(event) {
     event.preventDefault();
     const tipo = document.getElementById('gastoTipo').value;
@@ -1794,28 +1755,35 @@ async function registrarGastoAdmin(event) {
         alert("Error al registrar gasto: " + e.message);
     }
 }
-// ==========================================
-// CONTROL DE MODALES Y AUTENTICACIÓN GOOGLE (V10)
-// ==========================================
+
+/* ==========================================
+   CONTROL DE MODALES Y AUTENTICACIÓN GOOGLE
+   ========================================== */
 function abrirPromo() {
-  document.getElementById('promoModal').classList.add('active');
+  const modal = document.getElementById('promoModal');
+  if (modal) modal.classList.add('active');
 }
 function cerrarPromo() {
-  document.getElementById('promoModal').classList.remove('active');
+  const modal = document.getElementById('promoModal');
+  if (modal) modal.classList.remove('active');
 }
 
 function abrirLogin() {
-  document.getElementById('loginModal').classList.add('active');
+  const modal = document.getElementById('loginModal');
+  if (modal) modal.classList.add('active');
 }
 function cerrarLogin() {
-  document.getElementById('loginModal').classList.remove('active');
+  const modal = document.getElementById('loginModal');
+  if (modal) modal.classList.remove('active');
 }
 
 function abrirPerfil() {
-  document.getElementById('profileModal').classList.add('active');
+  const modal = document.getElementById('profileModal');
+  if (modal) modal.classList.add('active');
 }
 function cerrarPerfil() {
-  document.getElementById('profileModal').classList.remove('active');
+  const modal = document.getElementById('profileModal');
+  if (modal) modal.classList.remove('active');
 }
 
 function irALoginDesdePromo() {
@@ -1823,7 +1791,6 @@ function irALoginDesdePromo() {
   abrirLogin();
 }
 
-// Abrir Perfil si ya hay sesión iniciada, o abrir pantalla Login si no
 function abrirPerfilOClick() {
   if (window.auth && window.auth.currentUser) {
     abrirPerfil();
@@ -1832,7 +1799,6 @@ function abrirPerfilOClick() {
   }
 }
 
-// Inicio de sesión real con Google
 async function iniciarSesionGoogle() {
   try {
     if (!window.auth || !window.googleProvider) {
@@ -1847,7 +1813,6 @@ async function iniciarSesionGoogle() {
   }
 }
 
-// Cierre de sesión real
 async function cerrarSesionFirebase() {
   if (window.auth && window.fbMethods) {
     await window.fbMethods.signOut(window.auth);

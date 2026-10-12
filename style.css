@@ -2778,28 +2778,28 @@ body.modal-open {
     align-items: center;
     font-size: 0.9rem;
 }
-/* --- MODALES & OVERLAY --- */
+/* ========================================== */
+/* MODALES, OVERLAYS Y ESTILOS DE SESIÓN      */
+/* ========================================== */
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(8px);
-  display: flex;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  display: none;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  z-index: 1000000 !important; /* Prioridad máxima por encima de la barra */
   padding: 16px;
+  pointer-events: auto !important;
 }
 
 .modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
+  display: flex !important;
 }
 
 .modal-card {
@@ -2810,9 +2810,11 @@ body.modal-open {
   border-radius: 24px;
   padding: 24px;
   position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   transform: translateY(20px);
   transition: transform 0.3s ease;
+  z-index: 1000001 !important;
+  pointer-events: auto !important;
 }
 
 .modal-overlay.active .modal-card {
@@ -2833,95 +2835,10 @@ body.modal-open {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
-/* --- ESTILOS LOGIN (ESTILO CARABIS) --- */
-.login-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.login-header .brand-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-.login-header h3 {
-  font-size: 22px;
-  margin: 0 0 4px 0;
-}
-.login-header p {
-  color: #666;
-  font-size: 13px;
-  margin: 0;
-}
-
-.btn-google {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid #e0e0e0;
-  background: #fff;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  margin-bottom: 16px;
-  transition: background 0.2s;
-}
-.btn-google:hover {
-  background: #f8f9fa;
-}
-
-.divider {
-  text-align: center;
-  border-bottom: 1px solid #eee;
-  line-height: 0.1em;
-  margin: 16px 0 20px;
-}
-.divider span {
-  background: #fff;
-  padding: 0 10px;
-  color: #888;
-  font-size: 12px;
-}
-
-.input-group {
-  margin-bottom: 14px;
-  text-align: left;
-}
-.input-group label {
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  color: #555;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
-}
-.input-group input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background: #f8fafc;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.btn-submit, .btn-primary {
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  background: #7a9a3b; /* Verde similar al ejemplo */
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* --- ESTILOS PROMO MODAL --- */
+/* MODAL PROMO BIENVENIDA */
 .promo-card {
   background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
   color: #fff;
@@ -2960,170 +2877,11 @@ body.modal-open {
   color: #cbd5e0;
 }
 
-/* --- ESTILOS PERFIL --- */
-.profile-card {
-  text-align: center;
-}
-.profile-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 8px;
-  border: 3px solid #7a9a3b;
-}
-.profile-header h3 {
-  margin: 4px 0 2px;
-  font-size: 18px;
-}
-.profile-header p {
-  margin: 0 0 8px;
-  color: #666;
-  font-size: 13px;
-}
-.user-badge {
-  background: #e2e8f0;
-  color: #475569;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: bold;
-}
-.btn-logout {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  background: transparent;
-  color: #ef4444;
-  font-weight: 600;
-  margin-top: 12px;
-  cursor: pointer;
-}
-.profile-menu {
-  margin-top: 20px;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 10px;
-}
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 8px;
-  border-bottom: 1px solid #f8fafc;
-  font-size: 14px;
-}
-
-/* --- BARRA INFERIOR FIJA (BOTTOM NAV) --- */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 65px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 9000;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.nav-item {
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  color: #64748b;
-  cursor: pointer;
-  flex: 1;
-}
-
-.nav-item.active, .nav-item:hover {
-  color: #7a9a3b;
-}
-
-.nav-icon {
-  font-size: 20px;
-}
-
-.nav-label {
-  font-size: 11px;
-  font-weight: 600;
-}
-
-/* Dejar espacio libre al final para que la barra fija no tape el contenido */
-body {
-  padding-bottom: 80px;
-}
-/* ========================================== */
-/* BARRA FIJA ESTILO CÁPSULA OSCURA (FORZADA) */
-/* ========================================== */
-.bottom-nav {
-  position: fixed !important;
-  bottom: 16px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: calc(100% - 32px) !important;
-  max-width: 430px !important;
-  height: 64px !important;
-  background: rgba(15, 23, 42, 0.92) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  border-radius: 40px !important;
-  display: flex !important;
-  justify-content: space-around !important;
-  align-items: center !important;
-  z-index: 999000 !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
-  padding: 0 12px !important;
-}
-
-.nav-item {
-  background: transparent !important;
-  border: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  color: #94a3b8 !important;
-  cursor: pointer !important;
-  flex: 1 !important;
-  transition: all 0.2s ease !important;
-}
-
-.nav-item.active, .nav-item:hover {
-  color: #ffffff !important;
-}
-
-.nav-icon {
-  font-size: 20px !important;
-}
-
-.nav-label {
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
-  text-transform: uppercase !important;
-}
-
-body {
-  padding-bottom: 90px !important;
-}
-
-/* ========================================== */
-/* TARJETA DE LOGIN / REGISTRO ESTILO ADIDAS  */
-/* ========================================== */
+/* MODAL LOGIN Y ADIDAS CARD */
 .modal-card.adidas-card {
   background: #ffffff;
   color: #000000;
-  border-radius: 0px; /* Bordes rectos sobrios estilo Adidas */
+  border-radius: 16px;
   padding: 32px 24px;
   max-width: 420px;
   box-shadow: 0 25px 50px rgba(0,0,0,0.3);
@@ -3141,12 +2899,11 @@ body {
 
 .adidas-brand-header h2 {
   font-family: 'Syne', sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   line-height: 1.1;
   text-transform: uppercase;
   margin: 0 0 10px 0;
-  letter-spacing: -0.5px;
 }
 
 .adidas-subtext {
@@ -3168,6 +2925,7 @@ body {
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
+  border-radius: 12px;
   transition: background 0.2s;
 }
 
@@ -3175,71 +2933,7 @@ body {
   background: #f4f4f4;
 }
 
-.divider-line {
-  margin: 20px 0 16px 0;
-  border-top: 1px solid #e5e5e5;
-  position: relative;
-}
-
-.divider-line span {
-  font-size: 11px;
-  font-weight: 800;
-  color: #666;
-  letter-spacing: 1px;
-  display: block;
-  margin-top: 12px;
-}
-
-.adidas-input-group input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #000000;
-  border-radius: 0;
-  font-size: 14px;
-  box-sizing: border-box;
-  outline: none;
-}
-
-.adidas-input-group input:focus {
-  border-width: 2px;
-}
-
-.checkbox-group {
-  margin: 16px 0 20px 0;
-}
-
-.custom-checkbox {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 12px;
-  color: #333;
-  cursor: pointer;
-}
-
-.btn-adidas-submit {
-  width: 100%;
-  padding: 16px;
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  font-weight: 800;
-  font-size: 14px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: opacity 0.2s;
-}
-
-.btn-adidas-submit:hover {
-  opacity: 0.88;
-}
-
-/* ========================================== */
-/* PERFIL DE USUARIO LOGUEADO                 */
-/* ========================================== */
+/* PERFIL DE USUARIO */
 .profile-user-badge {
   display: flex;
   align-items: center;
@@ -3282,6 +2976,7 @@ body {
   border: 1px solid #e2e8f0;
   padding: 16px;
   margin: 20px 0;
+  border-radius: 12px;
 }
 
 .vuelos-box-header {
@@ -3306,6 +3001,7 @@ body {
   text-align: center;
   font-size: 11px;
   font-weight: 700;
+  border-radius: 6px;
 }
 
 .vuelo-step.active {
@@ -3329,150 +3025,105 @@ body {
   font-size: 12px;
   cursor: pointer;
   letter-spacing: 1px;
-}
-/* ========================================== */
-/* CORRECCIÓN DE SCROLL, FONDO Y AVION EN MÓVIL */
-/* ========================================== */
-
-/* Corrige el salto o corte de fondo azul en iOS Safari */
-html {
-  background-color: #0f172a;
+  border-radius: 12px;
 }
 
-body {
-  background-attachment: scroll !important; /* Desactiva el bug de fixed en móviles */
+/* BARRA FLOTANTE FIJA (BOTTOM NAV) */
+.bottom-nav {
+  position: fixed !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 32px) !important;
+  max-width: 430px !important;
+  height: 64px !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 40px !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  z-index: 90000 !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 12px !important;
 }
 
-/* Ajuste proporcional para el avión en la portada de celular */
-@media (max-width: 600px) {
-  .hero-cover {
-    min-height: 55vh !important;
-    padding: 30px 15px 20px 15px !important;
-  }
-
-  .hero-plane-container {
-    width: 100% !important;
-    max-width: 260px !important;
-    margin: 10px auto 0 auto !important;
-  }
-
-  .hero-plane-img {
-    width: 100% !important;
-    max-width: 200px !important;
-    height: auto !important;
-    object-fit: contain !important;
-  }
+.nav-item {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  color: #94a3b8 !important;
+  cursor: pointer !important;
+  flex: 1 !important;
+  transition: all 0.2s ease !important;
 }
 
-/* Optimización de fluidez por Hardware (GPU) */
-.card-glass, 
-.compact-card, 
-.product-card, 
-.bottom-nav, 
-.btn-add {
-  will-change: transform;
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-/* Ocultar barra inferior en "Para la pálida" para eliminar ruido visual */
-body.emergency-active .bottom-nav,
-body.emergency-active .cart-floating-btn,
-body.emergency-active .buzon-floating-btn {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+.nav-item.active, .nav-item:hover {
+  color: #ffffff !important;
 }
 
-/* Ajuste proporcional de portada en celulares */
+.nav-icon {
+  font-size: 20px !important;
+}
+
+.nav-label {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+/* FIX RESPONSIVO PARA CELULARES (PORTADA Y AVION) */
 @media (max-width: 600px) {
     .hero-cover {
-        min-height: auto !important;
-        padding: 30px 15px 20px 15px !important;
-    }
-
-    .hero-cover::before {
-        background: url('./portada.jpg') center top / cover no-repeat !important;
-    }
-
-    .hero-plane-container {
-        margin-top: 10px !important;
-        margin-bottom: 0 !important;
-    }
-
-    .hero-plane-img {
-        width: 100% !important;
-        max-width: 220px !important;
+        min-height: 280px !important;
         height: auto !important;
-        object-fit: contain !important;
-    }
-}
-/* ========================================== */
-/* FIX DEFINITIVO MÓVIL: PORTADA, SCROLL Y FLUIR */
-/* ========================================== */
-
-/* 1. Fondo de cielo nítido y fijo en capa propia */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    background: url('./fondo.jpg') center center / cover no-repeat;
-    z-index: -1;
-    pointer-events: none;
-    transform: translateZ(0);
-}
-
-/* 2. Ajuste proporcional del Logo y Avión en Celular (Sin cortes) */
-@media (max-width: 600px) {
-    .hero-cover {
-        min-height: 260px !important;
-        height: auto !important;
-        padding: 40px 15px 20px 15px !important;
+        padding: 45px 15px 25px 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
         justify-content: center !important;
-        gap: 15px !important;
+        align-items: center !important;
+        gap: 18px !important;
     }
 
     .hero-cover::before {
         background: url('./portada.jpg') center top / 100% auto no-repeat !important;
-        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%) !important;
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%) !important;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
     }
 
     .hero-plane-container {
-        margin: 0 !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 
     .hero-plane-img {
-        width: 170px !important;
-        max-width: 65% !important;
+        width: 160px !important;
+        max-width: 60% !important;
         height: auto !important;
+        object-fit: contain !important;
     }
 
     .hero-subtitle {
-        font-size: 0.78rem !important;
-        padding: 10px 24px !important;
+        font-size: 0.75rem !important;
+        padding: 10px 22px !important;
         margin: 0 !important;
     }
 
-    /* Rendimiento ultra fluido en móviles */
-    .card-glass, .compact-card, .product-card, .bottom-nav {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        background: rgba(15, 23, 42, 0.94) !important;
+    body.emergency-active .bottom-nav,
+    body.emergency-active .cart-floating-btn,
+    body.emergency-active .buzon-floating-btn {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
-}
-
-/* 3. Ocultar barra flotante en "Para la pálida" */
-body.emergency-active .bottom-nav,
-body.emergency-active .cart-floating-btn,
-body.emergency-active .buzon-floating-btn {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
 }
