@@ -780,27 +780,27 @@
     </div> <!-- /emergency-container -->
 </div> <!-- /emergencyFullscreenView -->
 <!-- SDK Modulares Firebase v10 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMuec9un_x0U2T3AP4SxE1Qwz14Js8HHU",
-            authDomain: "aeroshop-cdmx.firebaseapp.com",
-            projectId: "aeroshop-cdmx",
-            storageBucket: "aeroshop-cdmx.firebasestorage.app",
-            messagingSenderId: "990438625408",
-            appId: "1:990438625408:web:e14f86cb118cf934f29665",
-            measurementId: "G-LEFTFGQ91G"
-        };
+    const firebaseConfig = {
+        apiKey: "AIzaSyCMuec9un_xOU2T3AP4SxElQWz14Js8HHU",
+        authDomain: "aeroshop-cdmx.firebaseapp.com",
+        projectId: "aeroshop-cdmx",
+        storageBucket: "aeroshop-cdmx.firebasestorage.app",
+        messagingSenderId: "990438625408",
+        appId: "1:990438625408:web:e14f86cb118cf934f29665",
+        measurementId: "G-LEFTFGQ91G"
+    };
 
-        const app = initializeApp(firebaseConfig);
-        window.auth = getAuth(app);
-        window.db = getFirestore(app);
-        window.googleProvider = new GoogleAuthProvider();
-        window.fbMethods = { doc, getDoc, setDoc, updateDoc, signInWithPopup, signOut, onAuthStateChanged };
-    </script>
+    const app = initializeApp(firebaseConfig);
+    window.auth = getAuth(app);
+    window.db = getFirestore(app);
+    window.googleProvider = new GoogleAuthProvider();
+    window.fbMethods = { doc, getDoc, setDoc, updateDoc, signInWithPopup, signOut, onAuthStateChanged };
+</script>
     <!-- JAVASCRIPT -->
     <script src="app.js"></script>
 <!-- PANEL DE ADMINISTRACIÓN / APP DEL CAPITÁN (SOLO ADMIN) -->
