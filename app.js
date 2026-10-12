@@ -11,35 +11,11 @@ window.addEventListener('DOMContentLoaded', () => {
                     await syncUserProfile(user);
                 } else {
                     currentUserProfile = null;
-                    document.getElementById('btnLoginGoogle').style.display = 'flex';
-                    document.getElementById('pasaporteActiveCard').style.display = 'none';
                 }
             });
         }
     }, 200);
 });
-async function loginWithGoogle() {
-    try {
-        if (!window.auth || !window.googleProvider) {
-            alert("⚠️ La conexión con Firebase aún está cargando. Por favor, intenta de nuevo en unos segundos.");
-            return;
-        }
-        await window.fbMethods.signInWithPopup(window.auth, window.googleProvider);
-    } catch (error) {
-        console.error("Error al iniciar sesión con Google:", error);
-        if (error.code === 'auth/unauthorized-domain') {
-            alert("⚠️ Dominio no autorizado: Recuerda agregar 'aeroshop7.vercel.app' en Firebase Console > Authentication > Settings > Authorized Domains.");
-        } else if (error.code === 'auth/popup-blocked') {
-            alert("⚠️ Navegador bloqueó la ventana emergente. Permite los pop-ups para continuar.");
-        } else {
-            alert("Error al iniciar sesión: " + error.message);
-        }
-    }
-}
-
-async function logoutGoogle() {
-    await window.fbMethods.signOut(window.auth);
-}
 
 async function syncUserProfile(user) {
     const { doc, getDoc, setDoc } = window.fbMethods;
@@ -69,28 +45,29 @@ async function syncUserProfile(user) {
 function renderPasaporteUI() {
     if (!currentUserProfile) return;
 
-    document.getElementById('btnLoginGoogle').style.display = 'none';
-    document.getElementById('pasaporteActiveCard').style.display = 'flex';
-    document.getElementById('pasaporteUserAvatar').src = currentUserProfile.photoURL;
-    document.getElementById('pasaporteUserName').innerText = currentUserProfile.displayName.split(' ')[0];
-    document.getElementById('pasaporteUserUid').innerText = `#USR-${currentUserProfile.uid.slice(-5).toUpperCase()}`;
+    // Sincronizar datos directamente con la nueva tarjeta de Perfil (Estilo Adidas)
+    const nameElem = document.getElementById('userName');
+    const emailElem = document.getElementById('userEmail');
+    const avatarElem = document.getElementById('userAvatar');
 
+    if (nameElem) nameElem.innerText = currentUserProfile.displayName;
+    if (emailElem) emailElem.innerText = currentUserProfile.email;
+    if (avatarElem && currentUserProfile.photoURL) avatarElem.src = currentUserProfile.photoURL;
+
+    // Conteo de Vuelos (Sistema 3/3)
     const vuelos = currentUserProfile.vuelos_acumulados || 0;
-    
-    // Actualización de estado visual para el sistema 3/3
-    document.getElementById('dot1').classList.toggle('active', vuelos >= 1);
-    document.getElementById('dot2').classList.toggle('active', vuelos >= 2);
-    document.getElementById('dot3').classList.toggle('active', vuelos >= 3);
+    const countText = document.getElementById('vuelosCountText');
+    if (countText) countText.innerText = `${vuelos} / 3 VUELOS`;
 
-    const statusLabel = document.getElementById('flightsStatusText');
-    if (vuelos >= 3) {
-        statusLabel.innerText = "¡REGALO DESBLOQUEADO! 🎁";
-        statusLabel.style.color = "#4ade80";
-    } else {
-        statusLabel.innerText = `Vuelo ${vuelos}/3`;
-        statusLabel.style.color = "#facc15";
-    }
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    if (step1) step1.classList.toggle('active', vuelos >= 1);
+    if (step2) step2.classList.toggle('active', vuelos >= 2);
+    if (step3) step3.classList.toggle('active', vuelos >= 3);
 }
+
 let cart = [];
 const phone = "525561446446";
 let selectedStrain = 'Sativa';
@@ -1796,8 +1773,9 @@ async function registrarGastoAdmin(event) {
         alert("Error al registrar gasto: " + e.message);
     }
 }
-// --- FUNCIONES DE CONTROL DE MODALES ---
-
+// ==========================================
+// CONTROL DE MODALES Y AUTENTICACIÓN GOOGLE (V10)
+// ==========================================
 function abrirPromo() {
   document.getElementById('promoModal').classList.add('active');
 }
@@ -1819,62 +1797,39 @@ function cerrarPerfil() {
   document.getElementById('profileModal').classList.remove('active');
 }
 
-// Abrir perfil si hay usuario, o abrir Login si no ha iniciado sesión
+function irALoginDesdePromo() {
+  cerrarPromo();
+  abrirLogin();
+}
+
+// Abrir Perfil si ya hay sesión iniciada, o abrir pantalla Login si no
 function abrirPerfilOClick() {
-  const user = firebase.auth().currentUser;
-  if (user) {
+  if (window.auth && window.auth.currentUser) {
     abrirPerfil();
   } else {
     abrirLogin();
   }
 }
 
-// Vincula tu botón de perfil original (arriba a la izquierda) a esta función:
-const userAvatarBtn = document.querySelector('.user-avatar-btn'); // Ajusta según la clase de tu botón
-if (userAvatarBtn) {
-  userAvatarBtn.addEventListener('click', abrirPerfilOClick);
-}
-
-// --- INTEGRACIÓN FIREBASE ---
-
-// Observador de estado de autenticación
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // Usuario autenticado: Actualizar los datos en el perfil
-    document.getElementById('userName').textContent = user.displayName || 'Usuario AeroShop';
-    document.getElementById('userEmail').textContent = user.email || '';
-    if (user.photoURL) {
-      document.getElementById('userAvatar').src = user.photoURL;
+// Inicio de sesión real con Google
+async function iniciarSesionGoogle() {
+  try {
+    if (!window.auth || !window.googleProvider) {
+      alert("⚠️ La conexión con Firebase aún está cargando. Intenta de nuevo en unos segundos.");
+      return;
     }
+    await window.fbMethods.signInWithPopup(window.auth, window.googleProvider);
     cerrarLogin();
-  } else {
-    // Usuario no autenticado
-    document.getElementById('userName').textContent = 'Invitado';
-    document.getElementById('userEmail').textContent = '';
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    alert("Error de autenticación: " + error.message);
   }
-});
-
-// Iniciar sesión con Google
-function iniciarSesionGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider)
-    .then((result) => {
-      console.log("Sesión iniciada exitosamente con Google", result.user);
-      cerrarLogin();
-    })
-    .catch((error) => {
-      alert("Error al iniciar sesión: " + error.message);
-    });
 }
 
-// Cerrar sesión
-function cerrarSesionFirebase() {
-  firebase.auth().signOut().then(() => {
+// Cierre de sesión real
+async function cerrarSesionFirebase() {
+  if (window.auth && window.fbMethods) {
+    await window.fbMethods.signOut(window.auth);
     cerrarPerfil();
-    alert("Sesión cerrada correctamente");
-  });
-}
-function irALoginDesdePromo() {
-  cerrarPromo();
-  abrirLogin();
+  }
 }
