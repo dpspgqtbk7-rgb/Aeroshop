@@ -58,10 +58,6 @@
         <button class="btn-logout-pasaporte" onclick="logoutGoogle()" title="Cerrar Sesión">✕</button>
     </div>
 </div>
-    <!-- BOTÓN FLOTANTE CARRITO -->
-    <button class="cart-floating-btn" onclick="toggleCart()">
-        🛒 CARRITO (<span id="cart-count">0</span>)
-    </button>
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
@@ -607,11 +603,6 @@
         </div>
     </div>
 </div>          
-<!-- BOTÓN FLOTANTE DEL BUZÓN (ESQUINA INFERIOR DERECHA) -->
-    <button class="buzon-floating-btn" onclick="openBuzonModal()">
-        📪 BUZÓN DE DUDAS Y RECOMENDACIONES
-    </button>
-
     <!-- VENTANA MODAL DEL BUZÓN -->
     <div class="product-modal-overlay" id="buzonModalOverlay" onclick="closeBuzonOnOverlay(event)">
         <div class="product-modal-card" style="max-width: 550px;">
@@ -899,7 +890,8 @@
         </div>
       </div>
     </div>
-    <button class="btn-primary" onclick="cerrarPromo()">¡EMPEZAR A EXPLORAR!</button>
+    <!-- Botón directo para iniciar sesión o registrarse -->
+    <button class="btn-primary" onclick="irALoginDesdePromo()">¡REGÍSTRATE E INICIA SESIÓN!</button>
   </div>
 </div>
 
@@ -934,7 +926,7 @@
   </div>
 </div>
 
-<!-- 3. MODAL / DESPLEGABLE DE PERFIL DE USUARIO -->
+<!-- 3. MODAL DE PERFIL DE USUARIO -->
 <div id="profileModal" class="modal-overlay">
   <div class="modal-card profile-card">
     <button class="close-btn" onclick="cerrarPerfil()">&times;</button>
@@ -956,29 +948,21 @@
         <span>🎁 Descuento activo</span>
         <strong id="userPromo">Disponible</strong>
       </div>
-      <div class="menu-item">
-        <span>📦 Mis Pedidos</span>
-        <span>❯</span>
-      </div>
-      <div class="menu-item">
-        <span>⚙️ Configuración</span>
-        <span>❯</span>
-      </div>
     </div>
   </div>
 </div>
 
-<!-- 4. BARRA DE NAVEGACIÓN INFERIOR FIJA -->
+<!-- 4. BARRA DE NAVEGACIÓN FIJA ESTILO CÁPSULA OSCURA -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="navegar('inicio')">
+  <button class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
   </button>
-  <button class="nav-item" onclick="abrirCarrito()">
+  <button class="nav-item" onclick="toggleCart()">
     <span class="nav-icon">🛒</span>
-    <span class="nav-label">Carrito</span>
+    <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
   </button>
-  <button class="nav-item" onclick="abrirBuzon()">
+  <button class="nav-item" onclick="openBuzonModal()">
     <span class="nav-icon">📬</span>
     <span class="nav-label">Buzón</span>
   </button>

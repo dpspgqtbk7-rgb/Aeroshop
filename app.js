@@ -1874,3 +1874,7 @@ function cerrarSesionFirebase() {
     alert("Sesión cerrada correctamente");
   });
 }
+function irALoginDesdePromo() {
+  cerrarPromo();
+  abrirLogin();
+}
