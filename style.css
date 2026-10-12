@@ -2475,12 +2475,12 @@ body.modal-open {
     touch-action: pan-y !important;
 }
 /* ==========================================
-   PASAPORTE DIGITAL AEROSHOP (GLASSMORPHISM)
+   PASAPORTE DIGITAL AEROSHOP (GLASSMORPHISM & MOBILE RESPONSIVE)
    ========================================== */
 .pasaporte-bar-container {
     position: fixed;
-    top: 25px;
-    left: 25px;
+    top: 20px;
+    left: 20px;
     z-index: 4000;
 }
 
@@ -2498,14 +2498,16 @@ body.modal-open {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .btn-google-auth img {
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
 }
 
 .btn-google-auth:hover {
@@ -2520,50 +2522,55 @@ body.modal-open {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(250, 204, 21, 0.4);
-    border-radius: 20px;
-    padding: 12px 18px;
+    border-radius: 50px;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .pasaporte-user-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .pasaporte-avatar {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: 2px solid #facc15;
+    flex-shrink: 0;
 }
 
 .pasaporte-username {
     display: block;
     color: #ffffff;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 800;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .pasaporte-uid {
     display: block;
     color: #38bdf8;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-family: monospace;
 }
 
 .pasaporte-flights-counter {
     border-left: 1px solid rgba(255, 255, 255, 0.15);
-    padding-left: 14px;
+    padding-left: 10px;
     text-align: center;
 }
 
 .flights-title {
     display: block;
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     color: #94a3b8;
     letter-spacing: 1px;
     font-weight: 800;
@@ -2571,12 +2578,12 @@ body.modal-open {
 
 .flights-dots {
     display: flex;
-    gap: 6px;
-    margin: 3px 0;
+    gap: 4px;
+    margin: 2px 0;
 }
 
 .flights-dots .dot {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     opacity: 0.25;
     filter: grayscale(100%);
     transition: all 0.3s ease;
@@ -2585,11 +2592,11 @@ body.modal-open {
 .flights-dots .dot.active {
     opacity: 1;
     filter: grayscale(0%);
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 .flights-status-text {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: #facc15;
     font-weight: 700;
 }
@@ -2598,25 +2605,45 @@ body.modal-open {
     background: rgba(255, 255, 255, 0.1);
     border: none;
     color: #94a3b8;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* --- ADAPTACIÓN MÓVIL ANTICOLISIÓN CON CARRITO --- */
 @media (max-width: 600px) {
     .pasaporte-bar-container {
-        top: 15px;
-        left: 15px;
+        top: 12px !important;
+        left: 10px !important;
+        max-width: 58vw; /* Impide que invada el lado del carrito */
     }
-    .pasaporte-card-active {
-        padding: 8px 12px;
-        gap: 10px;
+
+    .btn-google-auth {
+        padding: 8px 12px !important;
+        font-size: 0.72rem !important;
+        max-width: 100%;
     }
-    .pasaporte-avatar {
-        width: 30px;
-        height: 30px;
+
+    .auth-btn-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cart-floating-btn {
+        top: 12px !important;
+        right: 10px !important;
+        padding: 8px 12px !important;
+        font-size: 0.72rem !important;
+    }
+
+    .pasaporte-user-text {
+        display: none; /* En pantallas diminutas oculta el texto largo para dar prioridad a los vuelos */
     }
 }
 /* ==========================================

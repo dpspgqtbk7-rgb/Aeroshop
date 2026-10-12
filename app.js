@@ -18,12 +18,22 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }, 200);
 });
-
 async function loginWithGoogle() {
     try {
+        if (!window.auth || !window.googleProvider) {
+            alert("⚠️ La conexión con Firebase aún está cargando. Por favor, intenta de nuevo en unos segundos.");
+            return;
+        }
         await window.fbMethods.signInWithPopup(window.auth, window.googleProvider);
     } catch (error) {
-        console.error("Error al iniciar sesión:", error);
+        console.error("Error al iniciar sesión con Google:", error);
+        if (error.code === 'auth/unauthorized-domain') {
+            alert("⚠️ Dominio no autorizado: Recuerda agregar 'aeroshop7.vercel.app' en Firebase Console > Authentication > Settings > Authorized Domains.");
+        } else if (error.code === 'auth/popup-blocked') {
+            alert("⚠️ Navegador bloqueó la ventana emergente. Permite los pop-ups para continuar.");
+        } else {
+            alert("Error al iniciar sesión: " + error.message);
+        }
     }
 }
 

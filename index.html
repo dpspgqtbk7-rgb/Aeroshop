@@ -30,34 +30,34 @@
 </head>
 <body>
 <!-- BARRA FLOTANTE / BADGE DEL PASAPORTE DIGITAL -->
-    <div class="pasaporte-bar-container" id="pasaporteBar">
-        <!-- Estado 1: Usuario No Autenticado -->
-        <button class="btn-google-auth" id="btnLoginGoogle" onclick="loginWithGoogle()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-            <span>Activar Pasaporte (10% OFF)</span>
-        </button>
+<div class="pasaporte-bar-container" id="pasaporteBar">
+    <!-- Estado 1: Usuario No Autenticado (Abordar / Iniciar Sesión) -->
+    <button class="btn-google-auth" id="btnLoginGoogle" onclick="loginWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        <span class="auth-btn-text">🎫 Abordar Avión | Pasaporte</span>
+    </button>
 
-        <!-- Estado 2: Usuario Autenticado -->
-        <div class="pasaporte-card-active" id="pasaporteActiveCard" style="display: none;">
-            <div class="pasaporte-user-info">
-                <img id="pasaporteUserAvatar" src="" alt="Avatar" class="pasaporte-avatar">
-                <div>
-                    <span id="pasaporteUserName" class="pasaporte-username">Cargando...</span>
-                    <span id="pasaporteUserUid" class="pasaporte-uid">#USR-0000</span>
-                </div>
+    <!-- Estado 2: Usuario Autenticado -->
+    <div class="pasaporte-card-active" id="pasaporteActiveCard" style="display: none;">
+        <div class="pasaporte-user-info">
+            <img id="pasaporteUserAvatar" src="" alt="Avatar" class="pasaporte-avatar">
+            <div class="pasaporte-user-text">
+                <span id="pasaporteUserName" class="pasaporte-username">Cargando...</span>
+                <span id="pasaporteUserUid" class="pasaporte-uid">#USR-0000</span>
             </div>
-            <div class="pasaporte-flights-counter">
-                <span class="flights-title">VUELOS ACUMULADOS</span>
-                <div class="flights-dots" id="flightsDots">
-                    <span class="dot" id="dot1">✈️</span>
-                    <span class="dot" id="dot2">✈️</span>
-                    <span class="dot" id="dot3">🎁</span>
-                </div>
-                <span class="flights-status-text" id="flightsStatusText">Vuelo 0/3</span>
-            </div>
-            <button class="btn-logout-pasaporte" onclick="logoutGoogle()" title="Cerrar Sesión">✕</button>
         </div>
+        <div class="pasaporte-flights-counter">
+            <span class="flights-title">VUELOS</span>
+            <div class="flights-dots" id="flightsDots">
+                <span class="dot" id="dot1">✈️</span>
+                <span class="dot" id="dot2">✈️</span>
+                <span class="dot" id="dot3">🎁</span>
+            </div>
+            <span class="flights-status-text" id="flightsStatusText">0/3</span>
+        </div>
+        <button class="btn-logout-pasaporte" onclick="logoutGoogle()" title="Cerrar Sesión">✕</button>
     </div>
+</div>
     <!-- BOTÓN FLOTANTE CARRITO -->
     <button class="cart-floating-btn" onclick="toggleCart()">
         🛒 CARRITO (<span id="cart-count">0</span>)
