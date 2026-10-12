@@ -875,5 +875,117 @@
         </div>
     </div>
 </section>
+<!-- 1. POPUP PUBLICITARIO DE BIENVENIDA -->
+<div id="promoModal" class="modal-overlay active">
+  <div class="modal-card promo-card">
+    <button class="close-btn" onclick="cerrarPromo()">&times;</button>
+    <div class="promo-header">
+      <span class="badge">PROMO DE BIENVENIDA ✈️</span>
+      <h2>¡Eleva tu experiencia con AeroShop!</h2>
+    </div>
+    <div class="promo-body">
+      <div class="benefit-item">
+        <span class="icon">🎁</span>
+        <div>
+          <h4>Descuento en tu 1ª compra</h4>
+          <p>Al registrarte e iniciar sesión obtienes un descuento exclusivo de bienvenida.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="icon">✈️</span>
+        <div>
+          <h4>Vuelos gratis / Regalo sorpresa</h4>
+          <p>En la compra de 3 artículos te llevas un regalo totalmente gratis.</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="cerrarPromo()">¡EMPEZAR A EXPLORAR!</button>
+  </div>
+</div>
+
+<!-- 2. MODAL DE INICIO DE SESIÓN ESTILIZADO -->
+<div id="loginModal" class="modal-overlay">
+  <div class="modal-card login-card">
+    <button class="close-btn" onclick="cerrarLogin()">&times;</button>
+    <div class="login-header">
+      <div class="brand-icon">🌿</div>
+      <h3>Iniciar sesión</h3>
+      <p>Bienvenido de vuelta a AeroShop CDMX</p>
+    </div>
+    
+    <button class="btn-google" onclick="iniciarSesionGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.15C3.31 21.36 7.37 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.28C.46 8.21 0 10.05 0 12s.46 3.79 1.28 5.42l4-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.31 2.64 1.28 6.58l4 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+      Continuar con Google
+    </button>
+
+    <div class="divider"><span>o con tu correo</span></div>
+
+    <form onsubmit="iniciarSesionEmail(event)">
+      <div class="input-group">
+        <label>CORREO</label>
+        <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
+      </div>
+      <div class="input-group">
+        <label>CONTRASEÑA</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-submit">Iniciar sesión</button>
+    </form>
+  </div>
+</div>
+
+<!-- 3. MODAL / DESPLEGABLE DE PERFIL DE USUARIO -->
+<div id="profileModal" class="modal-overlay">
+  <div class="modal-card profile-card">
+    <button class="close-btn" onclick="cerrarPerfil()">&times;</button>
+    
+    <div class="profile-header">
+      <img id="userAvatar" src="logo-cookies.png" alt="Avatar" class="profile-avatar">
+      <h3 id="userName">Cargando...</h3>
+      <p id="userEmail">correo@ejemplo.com</p>
+      <span class="user-badge" id="userStatus">Usuario VIP</span>
+      <button class="btn-logout" onclick="cerrarSesionFirebase()">Cerrar sesión</button>
+    </div>
+
+    <div class="profile-menu">
+      <div class="menu-item">
+        <span>✈️ Vuelos acumulados</span>
+        <strong id="userVuelos">0 / 3</strong>
+      </div>
+      <div class="menu-item">
+        <span>🎁 Descuento activo</span>
+        <strong id="userPromo">Disponible</strong>
+      </div>
+      <div class="menu-item">
+        <span>📦 Mis Pedidos</span>
+        <span>❯</span>
+      </div>
+      <div class="menu-item">
+        <span>⚙️ Configuración</span>
+        <span>❯</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. BARRA DE NAVEGACIÓN INFERIOR FIJA -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="navegar('inicio')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Inicio</span>
+  </button>
+  <button class="nav-item" onclick="abrirCarrito()">
+    <span class="nav-icon">🛒</span>
+    <span class="nav-label">Carrito</span>
+  </button>
+  <button class="nav-item" onclick="abrirBuzon()">
+    <span class="nav-icon">📬</span>
+    <span class="nav-label">Buzón</span>
+  </button>
+  <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">Perfil</span>
+  </button>
+</nav>
 </body>
 </html>

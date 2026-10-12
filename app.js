@@ -1796,3 +1796,81 @@ async function registrarGastoAdmin(event) {
         alert("Error al registrar gasto: " + e.message);
     }
 }
+// --- FUNCIONES DE CONTROL DE MODALES ---
+
+function abrirPromo() {
+  document.getElementById('promoModal').classList.add('active');
+}
+function cerrarPromo() {
+  document.getElementById('promoModal').classList.remove('active');
+}
+
+function abrirLogin() {
+  document.getElementById('loginModal').classList.add('active');
+}
+function cerrarLogin() {
+  document.getElementById('loginModal').classList.remove('active');
+}
+
+function abrirPerfil() {
+  document.getElementById('profileModal').classList.add('active');
+}
+function cerrarPerfil() {
+  document.getElementById('profileModal').classList.remove('active');
+}
+
+// Abrir perfil si hay usuario, o abrir Login si no ha iniciado sesión
+function abrirPerfilOClick() {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    abrirPerfil();
+  } else {
+    abrirLogin();
+  }
+}
+
+// Vincula tu botón de perfil original (arriba a la izquierda) a esta función:
+const userAvatarBtn = document.querySelector('.user-avatar-btn'); // Ajusta según la clase de tu botón
+if (userAvatarBtn) {
+  userAvatarBtn.addEventListener('click', abrirPerfilOClick);
+}
+
+// --- INTEGRACIÓN FIREBASE ---
+
+// Observador de estado de autenticación
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Usuario autenticado: Actualizar los datos en el perfil
+    document.getElementById('userName').textContent = user.displayName || 'Usuario AeroShop';
+    document.getElementById('userEmail').textContent = user.email || '';
+    if (user.photoURL) {
+      document.getElementById('userAvatar').src = user.photoURL;
+    }
+    cerrarLogin();
+  } else {
+    // Usuario no autenticado
+    document.getElementById('userName').textContent = 'Invitado';
+    document.getElementById('userEmail').textContent = '';
+  }
+});
+
+// Iniciar sesión con Google
+function iniciarSesionGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      console.log("Sesión iniciada exitosamente con Google", result.user);
+      cerrarLogin();
+    })
+    .catch((error) => {
+      alert("Error al iniciar sesión: " + error.message);
+    });
+}
+
+// Cerrar sesión
+function cerrarSesionFirebase() {
+  firebase.auth().signOut().then(() => {
+    cerrarPerfil();
+    alert("Sesión cerrada correctamente");
+  });
+}
