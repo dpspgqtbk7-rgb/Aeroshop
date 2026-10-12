@@ -1202,23 +1202,50 @@ function filterMusicCards() {
     });
 }
 /* ==========================================
-   SECCIÓN 05: DESESCALADA SENSORIAL (LÓGICA)
+   OPTIMIZACIÓN DE CARGA DE VIDEOS EN MÓVILES
    ========================================== */
-let breathingInterval = null;
-let breathingStep = 0; // 0: Inhalar (4s), 1: Sostener (4s), 2: Exhalar (6s)
-let isBreathingActive = false;
+document.addEventListener('DOMContentLoaded', () => {
+    // Reproduce videos solo cuando están visibles en pantalla para evitar pantalla negra en iOS
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                video.muted = true;
+                video.playsInline = true;
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.15 });
 
-// Generador de Ruido Marrón Nativo (Web Audio API - 0 KB)
-let brownNoiseContext = null;
-let brownNoiseNode = null;
-let isPlayingBrownNoise = false;
+    document.querySelectorAll('video').forEach(video => {
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        videoObserver.observe(video);
+    });
+});
 
+/* ==========================================
+   GESTIÓN DE MODALES Y BOTONES FLOTANTES
+   ========================================== */
+function openModalState() {
+    document.body.classList.add('modal-open');
+}
+
+function closeModalState() {
+    document.body.classList.remove('modal-open');
+}
+
+/* APERTURA Y CIERRE DE VISTAS FULLSCREEN */
 function openEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
-        document.body.style.overflow = 'hidden';
+        openModalState();
     }
 }
 
@@ -1226,13 +1253,93 @@ function closeEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
         view.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        closeModalState();
         stopBreathingGuide();
         stopBrownNoise();
     }
 }
 
-/* LÓGICA DE RESPIRACIÓN GUIADA (4s Inhala - 4s Sostén - 6s Exhala) */
+function openRutasVuelo() {
+    const view = document.getElementById('rutasFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        openModalState();
+    }
+}
+
+function closeRutasVuelo() {
+    const view = document.getElementById('rutasFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        closeModalState();
+    }
+}
+
+function openMonchisVuelo() {
+    const view = document.getElementById('monchisFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        openModalState();
+        if (typeof filterMonchisCards === 'function') filterMonchisCards();
+    }
+}
+
+function closeMonchisVuelo() {
+    const view = document.getElementById('monchisFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        closeModalState();
+    }
+}
+
+function openCineVuelo() {
+    const cineView = document.getElementById('cineFullscreenView');
+    if (cineView) {
+        cineView.classList.add('active');
+        cineView.scrollTop = 0;
+        openModalState();
+        if (typeof filterCineCards === 'function') filterCineCards();
+    }
+}
+
+function closeCineVuelo() {
+    const cineView = document.getElementById('cineFullscreenView');
+    if (cineView) {
+        cineView.classList.remove('active');
+        closeModalState();
+    }
+}
+
+function openMusicVuelo() {
+    const view = document.getElementById('musicFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        openModalState();
+        if (typeof filterMusicCards === 'function') filterMusicCards();
+    }
+}
+
+function closeMusicVuelo() {
+    const view = document.getElementById('musicFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        closeModalState();
+    }
+}
+
+/* ==========================================
+   SECCIÓN 05: PARA LA PÁLIDA (RESPIRACIÓN Y AUDIO)
+   ========================================== */
+let breathingInterval = null;
+let isBreathingActive = false;
+
+let brownNoiseContext = null;
+let brownNoiseNode = null;
+let isPlayingBrownNoise = false;
+
 function toggleBreathingGuide() {
     if (isBreathingActive) {
         stopBreathingGuide();
@@ -1243,7 +1350,8 @@ function toggleBreathingGuide() {
 
 function startBreathingGuide() {
     isBreathingActive = true;
-    document.getElementById('btnBreathingToggle').innerText = "⏸️ Pausar Respiración";
+    const btn = document.getElementById('btnBreathingToggle');
+    if (btn) btn.innerText = "⏸️ Pausar Respiración";
     runBreathingCycle();
 }
 
@@ -1256,7 +1364,7 @@ function stopBreathingGuide() {
     const btn = document.getElementById('btnBreathingToggle');
 
     if (circle) circle.className = 'breathing-circle';
-    if (label) label.innerText = "Presiona para comenzar el ritmo de calma";
+    if (label) label.innerText = "Toca el círculo o presiona el botón para comenzar";
     if (actionText) actionText.innerText = "Iniciar";
     if (btn) btn.innerText = "▶️ Iniciar Respiración Guiada";
 }
@@ -1268,30 +1376,27 @@ function runBreathingCycle() {
     const label = document.getElementById('breathingStatusLabel');
     const actionText = document.getElementById('breathingActionText');
 
-    // FASE 1: INHALAR (4 segundos)
-    circle.className = 'breathing-circle inhale';
-    actionText.innerText = "Inhala";
-    label.innerText = "Inhala suavemente por la nariz (4s)...";
+    if (circle) circle.className = 'breathing-circle inhale';
+    if (actionText) actionText.innerText = "Inhala";
+    if (label) label.innerText = "Inhala suavemente por la nariz (4s)...";
 
     breathingInterval = setTimeout(() => {
         if (!isBreathingActive) return;
 
-        // FASE 2: SOSTENER (4 segundos)
-        circle.className = 'breathing-circle hold';
-        actionText.innerText = "Sostén";
-        label.innerText = "Mantén el aire con calma (4s)...";
+        if (circle) circle.className = 'breathing-circle hold';
+        if (actionText) actionText.innerText = "Sostén";
+        if (label) label.innerText = "Mantén el aire con calma (4s)...";
 
         breathingInterval = setTimeout(() => {
             if (!isBreathingActive) return;
 
-            // FASE 3: EXHALAR (6 segundos)
-            circle.className = 'breathing-circle exhale';
-            actionText.innerText = "Exhala";
-            label.innerText = "Suelta el aire despacio por la boca (6s)...";
+            if (circle) circle.className = 'breathing-circle exhale';
+            if (actionText) actionText.innerText = "Exhala";
+            if (label) label.innerText = "Suelta el aire despacio por la boca (6s)...";
 
             breathingInterval = setTimeout(() => {
                 if (isBreathingActive) {
-                    runBreathingCycle(); // Repite el ciclo
+                    runBreathingCycle();
                 }
             }, 6000);
 
@@ -1300,7 +1405,6 @@ function runBreathingCycle() {
     }, 4000);
 }
 
-/* GENERADOR DE RUIDO MARRÓN (PURA WEB AUDIO API) */
 function toggleBrownNoise() {
     if (isPlayingBrownNoise) {
         stopBrownNoise();
@@ -1327,7 +1431,7 @@ function startBrownNoise() {
             const white = Math.random() * 2 - 1;
             output[i] = (lastOut + (0.02 * white)) / 1.02;
             lastOut = output[i];
-            output[i] *= 3.0; // Ganancia suave
+            output[i] *= 3.0;
         }
 
         brownNoiseNode = brownNoiseContext.createBufferSource();
@@ -1335,7 +1439,7 @@ function startBrownNoise() {
         brownNoiseNode.loop = true;
 
         const gainNode = brownNoiseContext.createGain();
-        gainNode.gain.value = 0.15; // Volumen medio-bajo (40%)
+        gainNode.gain.value = 0.15;
 
         brownNoiseNode.connect(gainNode);
         gainNode.connect(brownNoiseContext.destination);
@@ -1343,7 +1447,8 @@ function startBrownNoise() {
         brownNoiseNode.start();
         isPlayingBrownNoise = true;
 
-        document.getElementById('btnAudioText').innerText = "🔊 Pausar Sonido Relajante";
+        const btnText = document.getElementById('btnAudioText');
+        if (btnText) btnText.innerText = "🔊 Pausar Sonido Relajante";
     } catch (e) {
         console.log("AudioContext error:", e);
     }

@@ -87,11 +87,11 @@
                 <h3 style="margin-bottom: 8px;">Frecuencias 🎧</h3>
                 <p>Una selección sonora para acompañar tu viaje.</p>
             </div>
-            <!-- TARJETA 05: DESESCALADA SENSORIAL -->
-            <div class="diferencia-item" style="cursor: pointer;" onclick="openEmergencyVuelo()">
-                <span class="diferencia-num">05</span>
-                <h3 style="margin-bottom: 8px;">Desescalada Sensorial 🌿</h3>
-                <p>Ancla de seguridad, respiración asistida y guía si el viaje se intensifica.</p>
+           <!-- TARJETA 05: PARA LA PÁLIDA (ESTILO CALMA SBS) -->
+            <div class="diferencia-item card-calma-sbs" style="cursor: pointer;" onclick="openEmergencyVuelo()">
+                <span class="diferencia-num" style="color: #8ebd9e;">05</span>
+                <h3 style="margin-bottom: 8px; color: #f0efe6;">Para la  palida 😵‍💫</h3>
+                <p style="color: #a3b899;">Tu kit de emergencia para la palida</p>
             </div>
         </div> <!-- /diferencia-grid -->
     </div> <!-- /diferencia-card -->
@@ -652,7 +652,7 @@
     </div>
 </div> 
 <!-- ========================================== -->
-<!-- VISTA FULLSCREEN: 05. DESESCALADA SENSORIAL -->
+<!-- VISTA FULLSCREEN: 05. PARA LA PÁLIDA -->
 <!-- ========================================== -->
 <div class="emergency-fullscreen-view" id="emergencyFullscreenView">
     <div class="emergency-container">
@@ -664,11 +664,11 @@
             </button>
         </div>
 
-        <!-- Mensaje de Validación Inmediata (Primera Pantalla) -->
+        <!-- Mensaje de Validación Inmediata -->
         <div class="emergency-message-box">
             <h2>Estás a salvo 🛡️</h2>
             <p class="emergency-main-msg">Esto es solo una reacción física temporal y va a pasar.</p>
-            <p class="emergency-sub-msg">Tu cuerpo está procesando el efecto. Alcanzó su punto máximo y en pocos minutos se va a regular.</p>
+            <p class="emergency-sub-msg">Relax vroski vas a estar bien solo concéntrate en estas recomendaciones 🧘🏽‍♂️</p>
         </div>
 
         <!-- Módulo de Respiración Guiada Parasimpática -->
@@ -676,12 +676,13 @@
             <h3>Respiración Guiada (Ritmo 4-4-6)</h3>
             
             <div class="breathing-circle-wrapper">
-                <div class="breathing-circle" id="breathingCircle">
+                <!-- Se activa tocando el círculo directamente o presionado el botón -->
+                <div class="breathing-circle" id="breathingCircle" onclick="toggleBreathingGuide()" role="button" tabindex="0">
                     <span id="breathingActionText">Iniciar</span>
                 </div>
             </div>
 
-            <div class="breathing-status" id="breathingStatusLabel">Presiona para comenzar el ritmo de calma</div>
+            <div class="breathing-status" id="breathingStatusLabel">Toca el círculo o presiona el botón para comenzar</div>
 
             <div class="breathing-controls">
                 <button class="btn-breathing" id="btnBreathingToggle" onclick="toggleBreathingGuide()">

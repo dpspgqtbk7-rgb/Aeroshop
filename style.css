@@ -2120,3 +2120,311 @@
     font-size: 0.85rem;
     line-height: 1.4;
 }
+/* ==========================================
+   FIX MOBIL: PANTALLA COMPLETA & CARGA DE VIDEOS
+   ========================================== */
+
+/* 1. Control de scroll global sin desplazamientos horizontales */
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 2. Ocultar botones flotantes (Carrito y Buzón) cuando un modal esté abierto */
+body.modal-open {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+body.modal-open .cart-floating-btn,
+body.modal-open .buzon-floating-btn {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* 3. Sellado hermético de Vistas Fullscreen para iOS Safari */
+.monchis-fullscreen-view,
+.rutas-fullscreen-view,
+.brand-fullscreen-view,
+.emergency-fullscreen-view,
+.monchis-fullscreen-view#cineFullscreenView,
+.monchis-fullscreen-view#musicFullscreenView {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    z-index: 20000 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
+
+/* 4. Resguardo visual contra pantalla negra de videos en iOS */
+.compact-card {
+    min-height: 270px !important;
+    background-color: #0f172a !important;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.compact-card video, 
+.monchis-card video,
+.rutas-video-inline video {
+    width: 100%;
+    height: 200px !important;
+    object-fit: cover;
+    background: #111827 url('./portada.jpg') center/cover no-repeat !important;
+    display: block;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 5. Estilo Calma SBS para Tarjeta 05 */
+.diferencia-item.card-calma-sbs {
+    background: rgba(23, 42, 30, 0.88) !important;
+    border: 1px solid #355842 !important;
+    box-shadow: 0 8px 25px rgba(18, 38, 26, 0.4);
+    transition: all 0.3s ease;
+}
+
+.diferencia-item.card-calma-sbs:hover {
+    background: rgba(30, 56, 39, 0.98) !important;
+    border-color: #538866 !important;
+    box-shadow: 0 12px 30px rgba(50, 120, 80, 0.35) !important;
+    transform: translateY(-4px);
+}
+
+/* ESTILOS PANTALLA PARA LA PÁLIDA */
+.emergency-fullscreen-view {
+    background-color: #121c16;
+    padding: 30px 16px 80px 16px;
+    color: #f0efe6;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.emergency-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding-top: max(10px, env(safe-area-inset-top));
+}
+
+.btn-back-emergency {
+    background: #1c2e24;
+    border: 1px solid #334d3d;
+    color: #a3b899;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+    touch-action: manipulation;
+}
+
+.emergency-message-box {
+    background: #1a2a20;
+    border: 1px solid #2d4536;
+    border-radius: 20px;
+    padding: 24px 18px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.emergency-message-box h2 {
+    color: #8ebd9e;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.emergency-main-msg {
+    color: #f0efe6;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.emergency-sub-msg {
+    color: #a3b899;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.breathing-card {
+    background: #17241c;
+    border: 1px solid #283d30;
+    border-radius: 24px;
+    padding: 28px 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.breathing-card h3 {
+    color: #a3b899;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.breathing-circle-wrapper {
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.breathing-circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #426e54 0%, #21382a 100%);
+    border: 3px solid #5a9170;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f0efe6;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 0 25px rgba(66, 110, 84, 0.4);
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.breathing-circle.inhale {
+    transform: scale(1.45);
+    background: radial-gradient(circle, #5b9673 0%, #2d4f3b 100%);
+}
+
+.breathing-circle.hold {
+    transform: scale(1.45);
+    animation: breathingPulse 2s infinite alternate ease-in-out;
+}
+
+.breathing-circle.exhale {
+    transform: scale(1.0);
+}
+
+@keyframes breathingPulse {
+    0% { transform: scale(1.43); }
+    100% { transform: scale(1.47); }
+}
+
+.breathing-status {
+    color: #c0cfba;
+    font-size: 1.02rem;
+    font-weight: 600;
+    min-height: 30px;
+    margin-bottom: 20px;
+}
+
+.btn-breathing {
+    background: #2d4738;
+    color: #f0efe6;
+    border: 1px solid #476c56;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.emergency-audio-card {
+    background: #17241c;
+    border: 1px solid #283d30;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.btn-audio-emergency {
+    background: #23362a;
+    border: 1px solid #3d5e4a;
+    color: #d1dfcc;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    touch-action: manipulation;
+}
+
+.audio-hint {
+    display: block;
+    color: #8fa68c;
+    font-size: 0.8rem;
+    margin-top: 8px;
+}
+
+.emergency-grid-title h3 {
+    color: #f0efe6;
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.emergency-grid-title p {
+    color: #9eb399;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.emergency-solutions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media (min-width: 600px) {
+    .emergency-solutions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.solution-card {
+    background: #19271e;
+    border: 1px solid #2b4033;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.solution-icon {
+    font-size: 1.8rem;
+    background: #111a14;
+    padding: 10px;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.solution-content h4 {
+    color: #f0efe6;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.solution-action {
+    color: #e2ebd8;
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.solution-why {
+    color: #8fa68b;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
