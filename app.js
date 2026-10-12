@@ -1,3 +1,86 @@
+let currentUserProfile = null;
+
+// Escuchador de estado de autenticación
+window.addEventListener('DOMContentLoaded', () => {
+    const checkFirebaseInt = setInterval(() => {
+        if (window.auth && window.fbMethods) {
+            clearInterval(checkFirebaseInt);
+            
+            window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
+                if (user) {
+                    await syncUserProfile(user);
+                } else {
+                    currentUserProfile = null;
+                    document.getElementById('btnLoginGoogle').style.display = 'flex';
+                    document.getElementById('pasaporteActiveCard').style.display = 'none';
+                }
+            });
+        }
+    }, 200);
+});
+
+async function loginWithGoogle() {
+    try {
+        await window.fbMethods.signInWithPopup(window.auth, window.googleProvider);
+    } catch (error) {
+        console.error("Error al iniciar sesión:", error);
+    }
+}
+
+async function logoutGoogle() {
+    await window.fbMethods.signOut(window.auth);
+}
+
+async function syncUserProfile(user) {
+    const { doc, getDoc, setDoc } = window.fbMethods;
+    const userRef = doc(window.db, "usuarios", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+        currentUserProfile = snap.data();
+    } else {
+        // Registro inicial del nuevo Pasajero (Sistema 3/3)
+        currentUserProfile = {
+            uid: user.uid,
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            vuelos_acumulados: 0,
+            descuento_bienvenida_activo: true,
+            favoritos: [],
+            fecha_registro: new Date().toISOString()
+        };
+        await setDoc(userRef, currentUserProfile);
+    }
+
+    renderPasaporteUI();
+}
+
+function renderPasaporteUI() {
+    if (!currentUserProfile) return;
+
+    document.getElementById('btnLoginGoogle').style.display = 'none';
+    document.getElementById('pasaporteActiveCard').style.display = 'flex';
+    document.getElementById('pasaporteUserAvatar').src = currentUserProfile.photoURL;
+    document.getElementById('pasaporteUserName').innerText = currentUserProfile.displayName.split(' ')[0];
+    document.getElementById('pasaporteUserUid').innerText = `#USR-${currentUserProfile.uid.slice(-5).toUpperCase()}`;
+
+    const vuelos = currentUserProfile.vuelos_acumulados || 0;
+    
+    // Actualización de estado visual para el sistema 3/3
+    document.getElementById('dot1').classList.toggle('active', vuelos >= 1);
+    document.getElementById('dot2').classList.toggle('active', vuelos >= 2);
+    document.getElementById('dot3').classList.toggle('active', vuelos >= 3);
+
+    const statusLabel = document.getElementById('flightsStatusText');
+    if (vuelos >= 3) {
+        statusLabel.innerText = "¡REGALO DESBLOQUEADO! 🎁";
+        statusLabel.style.color = "#4ade80";
+    } else {
+        statusLabel.innerText = `Vuelo ${vuelos}/3`;
+        statusLabel.style.color = "#facc15";
+    }
+}
 let cart = [];
 const phone = "525561446446";
 let selectedStrain = 'Sativa';
@@ -470,7 +553,6 @@ function updateCartUI() {
     subtotalSpan.innerText = `$${total.toLocaleString()} MXN`;
     totalSpan.innerText = `$${total.toLocaleString()} MXN`;
 }
-
 function sendWhatsAppOrder() {
     if (cart.length === 0) {
         alert("Tu carrito está vacío.");
@@ -478,15 +560,37 @@ function sendWhatsAppOrder() {
     }
 
     let message = "¡Hola Aeroshop! 🚀 Quisiera realizar el siguiente pedido:\n\n";
-    let total = 0;
+    let subtotal = 0;
 
     cart.forEach(item => {
         const itemSubtotal = item.price * item.quantity;
-        total += itemSubtotal;
+        subtotal += itemSubtotal;
         message += `• *${item.title}* (x${item.quantity}) - $${itemSubtotal} MXN\n`;
     });
 
-    message += `\n*Total estimado:* $${total.toLocaleString()} MXN\n`;
+    let total = subtotal;
+    message += `\n*Subtotal:* $${subtotal.toLocaleString()} MXN\n`;
+
+    // Inyección de Metadatos si el usuario tiene Pasaporte Activo
+    if (currentUserProfile) {
+        message += `\n--- 🎟️ PASAPORTE AEROSHOP ---`;
+        message += `\n*Pasajero:* ${currentUserProfile.displayName}`;
+        message += `\n*ID Cliente:* #USR-${currentUserProfile.uid.slice(-5).toUpperCase()}`;
+        message += `\n*Nivel de Vuelos:* ${currentUserProfile.vuelos_acumulados}/3`;
+
+        // Aplicación automática de promociones del Pasaporte
+        if (currentUserProfile.descuento_bienvenida_activo) {
+            const descuento = subtotal * 0.10;
+            total = subtotal - descuento;
+            message += `\n*PROMO APLICADA:* 10% OFF Bienvenida (-$${descuento.toLocaleString()} MXN)`;
+        } else if (currentUserProfile.vuelos_acumulados >= 3) {
+            message += `\n*PROMO APLICADA:* ¡REGALO ESPECIAL DE VUELO #3 DISPONIBLE! 🎁`;
+        }
+    } else {
+        message += `\n_💡 Tip: Inicia sesión en la web para activar 10% OFF y acumular vuelos._\n`;
+    }
+
+    message += `\n*TOTAL A PAGAR:* $${total.toLocaleString()} MXN\n`;
     message += "\n¿Me pueden confirmar disponibilidad y datos de pago?";
 
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
@@ -1451,4 +1555,234 @@ function stopBrownNoise() {
     isPlayingBrownNoise = false;
     const btnText = document.getElementById('btnAudioText');
     if (btnText) btnText.innerText = "🎧 Escuchar Ruido Marrón Calmante";
+}
+/* ==========================================
+   LÓGICA DEL PANEL DE ADMINISTRACIÓN Y CONTABILIDAD UNITARIA
+   ========================================== */
+let adminInventarioCache = [];
+
+// Extensión para verificar si el usuario conectado es el Administrador
+const ADMIN_EMAIL = "tu_correo_admin@gmail.com"; // Reemplaza por tu correo oficial
+
+function checkAdminPermission(user) {
+    const adminSection = document.getElementById('adminPanelSection');
+    if (user && user.email === ADMIN_EMAIL) {
+        if (adminSection) adminSection.style.display = 'block';
+        cargarDashboardAdmin();
+        cargarInventarioAdmin();
+    } else {
+        if (adminSection) adminSection.style.display = 'none';
+    }
+}
+
+// Escuchador extendido dentro de syncUserProfile
+const originalSyncUserProfile = window.syncUserProfile;
+window.syncUserProfile = async function(user) {
+    if (typeof originalSyncUserProfile === 'function') {
+        await originalSyncUserProfile(user);
+    }
+    checkAdminPermission(user);
+};
+
+// 1. CARGA DEL DASHBOARD FINANCIERO UNITARIO
+async function cargarDashboardAdmin() {
+    if (!window.db) return;
+    const { collection, getDocs } = window.fbMethods;
+
+    try {
+        // Consultar Ventas
+        let totalIngresos = 0;
+        let totalCogs = 0;
+        const ventasSnap = await getDocs(collection(window.db, "transacciones_ventas"));
+        ventasSnap.forEach(doc => {
+            const data = doc.data();
+            totalIngresos += data.monto_cobrado || 0;
+            totalCogs += data.costo_unitario || 0;
+        });
+
+        // Consultar Gastos y Regalos
+        let totalGastos = 0;
+        const gastosSnap = await getDocs(collection(window.db, "gastos_e_inversiones"));
+        gastosSnap.forEach(doc => {
+            totalGastos += doc.data().monto || 0;
+        });
+
+        // Cálculo de Utilidad Neta Real
+        const utilidadNeta = totalIngresos - (totalCogs + totalGastos);
+
+        document.getElementById('dashIngresos').innerText = `$${totalIngresos.toLocaleString()} MXN`;
+        document.getElementById('dashCogs').innerText = `$${totalCogs.toLocaleString()} MXN`;
+        document.getElementById('dashGastos').innerText = `$${totalGastos.toLocaleString()} MXN`;
+        document.getElementById('dashUtilidad').innerText = `$${utilidadNeta.toLocaleString()} MXN`;
+    } catch (e) {
+        console.error("Error al cargar dashboard financiero:", e);
+    }
+}
+
+// 2. GESTIÓN DE INVENTARIO Y COSTO PROMEDIO UNITARIO
+async function registrarInventarioAdmin(event) {
+    event.preventDefault();
+    const nombre = document.getElementById('invNombre').value.trim();
+    const inversionTotal = parseFloat(document.getElementById('invInversionTotal').value);
+    const piezas = parseInt(document.getElementById('invPiezas').value);
+    const precioVenta = parseFloat(document.getElementById('invPrecioVenta').value);
+
+    // Costo Base Unitario = Inversión Total / Piezas
+    const costoUnitarioBase = inversionTotal / piezas;
+
+    try {
+        const { collection, addDoc } = window.fbMethods;
+        await addDoc(collection(window.db, "inventario"), {
+            nombre: nombre,
+            stock: piezas,
+            costo_unitario: costoUnitarioBase,
+            precio_venta: precioVenta,
+            fecha_registro: new Date().toISOString()
+        });
+
+        alert(`✅ Producto registrado. Costo unitario base calculado: $${costoUnitarioBase.toFixed(2)} MXN`);
+        event.target.reset();
+        cargarInventarioAdmin();
+    } catch (e) {
+        alert("Error al registrar inventario: " + e.message);
+    }
+}
+
+async function cargarInventarioAdmin() {
+    if (!window.db) return;
+    const { collection, getDocs } = window.fbMethods;
+    const select = document.getElementById('adminProductSelect');
+    const stockList = document.getElementById('adminStockList');
+
+    select.innerHTML = '<option value="">Selecciona Producto de Inventario...</option>';
+    stockList.innerHTML = '';
+    adminInventarioCache = [];
+
+    const snap = await getDocs(collection(window.db, "inventario"));
+    snap.forEach(docSnap => {
+        const p = { id: docSnap.id, ...docSnap.data() };
+        adminInventarioCache.push(p);
+
+        if (p.stock > 0) {
+            select.innerHTML += `<option value="${p.id}">${p.nombre} (Stock: ${p.stock})</option>`;
+        }
+
+        stockList.innerHTML += `
+            <div class="stock-item-row">
+                <span><strong>${p.nombre}</strong> — ${p.stock} pzas disponibles</span>
+                <span>Costo: $${p.costo_unitario.toFixed(0)} | Venta: $${p.precio_venta}</span>
+            </div>
+        `;
+    });
+}
+
+function actualizarPrecioSugeridoAdmin() {
+    const prodId = document.getElementById('adminProductSelect').value;
+    const prod = adminInventarioCache.find(item => item.id === prodId);
+    if (prod) {
+        document.getElementById('adminMontoCobrado').value = prod.precio_venta;
+    }
+}
+
+// 3. ACREDITACIÓN DE VUELO (SISTEMA 3/3) Y REGISTRO DE VENTA
+async function procesarVentaAdmin(event) {
+    event.preventDefault();
+    let userQuery = document.getElementById('adminUserUid').value.trim();
+    const prodId = document.getElementById('adminProductSelect').value;
+    const montoCobrado = parseFloat(document.getElementById('adminMontoCobrado').value);
+
+    const producto = adminInventarioCache.find(p => p.id === prodId);
+    if (!producto) {
+        alert("Selecciona un producto válido.");
+        return;
+    }
+
+    try {
+        const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
+
+        // Búsqueda flexible de usuario por ID corto o UID completo
+        let userDocRef = null;
+        let userData = null;
+
+        const usersSnap = await getDocs(collection(window.db, "usuarios"));
+        usersSnap.forEach(uDoc => {
+            const data = uDoc.data();
+            const shortUid = `USR-${uDoc.id.slice(-5).toUpperCase()}`;
+            if (uDoc.id === userQuery || shortUid === userQuery.toUpperCase()) {
+                userDocRef = doc(window.db, "usuarios", uDoc.id);
+                userData = data;
+            }
+        });
+
+        if (!userDocRef) {
+            alert("No se encontró ningún pasajero con ese ID.");
+            return;
+        }
+
+        // Lógica de Vuelos y Reinicio al Vuelo #3
+        let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
+        let consumoDescuento = false;
+
+        if (userData.descuento_bienvenida_activo) {
+            consumoDescuento = true;
+        }
+
+        if (nuevosVuelos > 3) {
+            nuevosVuelos = 1; // Reinicia ciclo a 1/3 tras consumir el regalo #3
+        }
+
+        // Actualizar Usuario
+        await updateDoc(userDocRef, {
+            vuelos_acumulados: nuevosVuelos,
+            descuento_bienvenida_activo: false
+        });
+
+        // Descontar 1 Unidad de Stock
+        const prodRef = doc(window.db, "inventario", producto.id);
+        await updateDoc(prodRef, {
+            stock: producto.stock - 1
+        });
+
+        // Auditoría en Transacciones
+        const gananciaBruta = montoCobrado - producto.costo_unitario;
+        await addDoc(collection(window.db, "transacciones_ventas"), {
+            usuario_uid: userDocRef.id,
+            producto_nombre: producto.nombre,
+            monto_cobrado: montoCobrado,
+            costo_unitario: producto.costo_unitario,
+            ganancia_bruta: gananciaBruta,
+            fecha: new Date().toISOString()
+        });
+
+        alert(`🚀 Venta registrada con éxito. Vuelo acreditado: ${nuevosVuelos}/3 al cliente.`);
+        event.target.reset();
+        cargarDashboardAdmin();
+        cargarInventarioAdmin();
+    } catch (e) {
+        alert("Error al procesar la venta: " + e.message);
+    }
+}
+
+// 4. REGISTRO DE REGALOS Y GASTOS OPERATIVOS
+async function registrarGastoAdmin(event) {
+    event.preventDefault();
+    const tipo = document.getElementById('gastoTipo').value;
+    const monto = parseFloat(document.getElementById('gastoMonto').value);
+    const concepto = document.getElementById('gastoConcepto').value.trim();
+
+    try {
+        const { collection, addDoc } = window.fbMethods;
+        await addDoc(collection(window.db, "gastos_e_inversiones"), {
+            tipo: tipo,
+            monto: monto,
+            concepto: concepto,
+            fecha: new Date().toISOString()
+        });
+
+        alert("🔻 Registro contable guardado correctamente.");
+        event.target.reset();
+        cargarDashboardAdmin();
+    } catch (e) {
+        alert("Error al registrar gasto: " + e.message);
+    }
 }

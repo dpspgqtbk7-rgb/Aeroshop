@@ -29,7 +29,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- BARRA FLOTANTE / BADGE DEL PASAPORTE DIGITAL -->
+    <div class="pasaporte-bar-container" id="pasaporteBar">
+        <!-- Estado 1: Usuario No Autenticado -->
+        <button class="btn-google-auth" id="btnLoginGoogle" onclick="loginWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+            <span>Activar Pasaporte (10% OFF)</span>
+        </button>
 
+        <!-- Estado 2: Usuario Autenticado -->
+        <div class="pasaporte-card-active" id="pasaporteActiveCard" style="display: none;">
+            <div class="pasaporte-user-info">
+                <img id="pasaporteUserAvatar" src="" alt="Avatar" class="pasaporte-avatar">
+                <div>
+                    <span id="pasaporteUserName" class="pasaporte-username">Cargando...</span>
+                    <span id="pasaporteUserUid" class="pasaporte-uid">#USR-0000</span>
+                </div>
+            </div>
+            <div class="pasaporte-flights-counter">
+                <span class="flights-title">VUELOS ACUMULADOS</span>
+                <div class="flights-dots" id="flightsDots">
+                    <span class="dot" id="dot1">✈️</span>
+                    <span class="dot" id="dot2">✈️</span>
+                    <span class="dot" id="dot3">🎁</span>
+                </div>
+                <span class="flights-status-text" id="flightsStatusText">Vuelo 0/3</span>
+            </div>
+            <button class="btn-logout-pasaporte" onclick="logoutGoogle()" title="Cerrar Sesión">✕</button>
+        </div>
+    </div>
     <!-- BOTÓN FLOTANTE CARRITO -->
     <button class="cart-floating-btn" onclick="toggleCart()">
         🛒 CARRITO (<span id="cart-count">0</span>)
@@ -751,7 +779,101 @@
 
     </div> <!-- /emergency-container -->
 </div> <!-- /emergencyFullscreenView -->
+<!-- SDK Modulares Firebase v10 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCMuec9un_x0U2T3AP4SxE1Qwz14Js8HHU",
+            authDomain: "aeroshop-cdmx.firebaseapp.com",
+            projectId: "aeroshop-cdmx",
+            storageBucket: "aeroshop-cdmx.firebasestorage.app",
+            messagingSenderId: "990438625408",
+            appId: "1:990438625408:web:e14f86cb118cf934f29665",
+            measurementId: "G-LEFTFGQ91G"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getFirestore(app);
+        window.googleProvider = new GoogleAuthProvider();
+        window.fbMethods = { doc, getDoc, setDoc, updateDoc, signInWithPopup, signOut, onAuthStateChanged };
+    </script>
     <!-- JAVASCRIPT -->
     <script src="app.js"></script>
+<!-- PANEL DE ADMINISTRACIÓN / APP DEL CAPITÁN (SOLO ADMIN) -->
+<section class="admin-dashboard-section" id="adminPanelSection" style="display: none;">
+    <div class="admin-container">
+        <div class="admin-header">
+            <h2>👑 Panel de Control Capitán — Aeroshop</h2>
+            <p>Auditoría de caja, inventario y acreditación de vuelos en tiempo real</p>
+        </div>
+
+        <!-- 1. DASHBOARD FINANCIERO EN TIEMPO REAL -->
+        <div class="financial-grid">
+            <div class="metric-card metric-ingresos">
+                <span class="metric-label">Ingresos Totales</span>
+                <span class="metric-value" id="dashIngresos">$0 MXN</span>
+            </div>
+            <div class="metric-card metric-cogs">
+                <span class="metric-label">Costo Mercancía (COGS)</span>
+                <span class="metric-value" id="dashCogs">$0 MXN</span>
+            </div>
+            <div class="metric-card metric-gastos">
+                <span class="metric-label">Gastos & Regalos</span>
+                <span class="metric-value" id="dashGastos">$0 MXN</span>
+            </div>
+            <div class="metric-card metric-utilidad">
+                <span class="metric-label">Utilidad Neta Real</span>
+                <span class="metric-value" id="dashUtilidad">$0 MXN</span>
+            </div>
+        </div>
+
+        <!-- 2. REGISTRO DE VENTA Y ACREDITACIÓN DE VUELO -->
+        <div class="admin-card">
+            <h3>🎟️ Acreditar Vuelo y Registrar Venta</h3>
+            <form onsubmit="procesarVentaAdmin(event)" class="admin-form">
+                <input type="text" id="adminUserUid" placeholder="ID Cliente (Ej: USR-8921 o UID completo)" required>
+                <select id="adminProductSelect" required onchange="actualizarPrecioSugeridoAdmin()">
+                    <option value="">Selecciona Producto de Inventario...</option>
+                </select>
+                <input type="number" id="adminMontoCobrado" placeholder="Monto Cobrado ($ MXN)" required>
+                <button type="submit" class="btn-admin-action">✅ Confirmar Venta & Sumar Vuelo</button>
+            </form>
+        </div>
+
+        <!-- 3. CONTROL DE INVENTARIO Y COSTO BASE UNITARIO -->
+        <div class="admin-card">
+            <h3>📦 Registrar Stock e Inversión de Lote</h3>
+            <form onsubmit="registrarInventarioAdmin(event)" class="admin-form">
+                <input type="text" id="invNombre" placeholder="Nombre del Producto / Lote" required>
+                <input type="number" id="invInversionTotal" placeholder="Inversión Total ($ MXN)" required>
+                <input type="number" id="invPiezas" placeholder="Número de Piezas Compradas" required>
+                <input type="number" id="invPrecioVenta" placeholder="Precio de Venta Público ($ MXN)" required>
+                <button type="submit" class="btn-admin-action">💾 Cargar a Inventario</button>
+            </form>
+            
+            <h4 style="margin-top: 20px; color: #ffffff;">Stock Actual:</h4>
+            <div id="adminStockList" class="stock-list-container">Cargando inventario...</div>
+        </div>
+
+        <!-- 4. REGISTRO DE REGALOS (VUELO #3), MERMAS Y GASTOS -->
+        <div class="admin-card">
+            <h3>🎁 Registrar Regalo o Gasto Operativo</h3>
+            <form onsubmit="registrarGastoAdmin(event)" class="admin-form">
+                <select id="gastoTipo" required>
+                    <option value="costo_regalo_vuelo3">Regalo de Fidelización (Vuelo #3)</option>
+                    <option value="gasto_operativo">Gasto Operativo / Envío / Empaque</option>
+                    <option value="merma">Merma / Pérdida de Producto</option>
+                </select>
+                <input type="number" id="gastoMonto" placeholder="Costo de Adquisición / Valor ($ MXN)" required>
+                <input type="text" id="gastoConcepto" placeholder="Concepto / Descripción (Ej: Pre-Roll regalo USR-8921)" required>
+                <button type="submit" class="btn-admin-action" style="background: #e11d48;">🔻 Registrar Egreso/Regalo</button>
+            </form>
+        </div>
+    </div>
+</section>
 </body>
 </html>
