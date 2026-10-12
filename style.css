@@ -2428,3 +2428,49 @@ body.modal-open .buzon-floating-btn {
     font-size: 0.85rem;
     line-height: 1.4;
 }
+/* ==========================================
+   FIX DEFINITIVO: OCULTAR BOTONES FLOTANTES Y CONGELAR SCROLL DE FONDO
+   ========================================== */
+
+/* 1. Oculta SOLO los botones flotantes (Carrito y Buzón) al abrir cualquier modal o producto */
+body.modal-open .cart-floating-btn,
+body.modal-open .buzon-floating-btn {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* 2. Congela el scroll del fondo en móviles para que no se mueva la interfaz principal */
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
+/* 3. Asigna prioridad visual superior a todas las ventanas modales */
+.product-modal-overlay,
+.info-modal-overlay,
+.cart-overlay,
+#productModalOverlay,
+#infoModalOverlay,
+#buzonModalOverlay {
+    z-index: 60000 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overscroll-behavior: contain !important;
+}
+
+/* 4. Permite deslizar ÚNICAMENTE el contenido interno del producto o tarjeta */
+.product-modal-card,
+.info-modal-card {
+    max-height: 85vh !important;
+    max-height: 85dvh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+}

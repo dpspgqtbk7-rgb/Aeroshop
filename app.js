@@ -47,11 +47,11 @@ function stopHoverSlider(container) {
     mediaElements.forEach((el, idx) => el.classList.toggle('active', idx === 0));
 }
 /* MANEJO DE VENTANA MODAL DE PRODUCTOS */
-/* MANEJO DE VENTANA MODAL DE PRODUCTOS */
 function openProductModal(productId) {
+    openModalState(); // 👈 ESTA LÍNEA OCULTA LOS BOTONES Y CONGELA EL FONDO
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
-    const strainPillsContainer = document.getElementById('modalStrainPills'); // Nuevo contenedor dinámico
+    const strainPillsContainer = document.getElementById('modalStrainPills');
 
     if (productId === 'donutsdonitav3') {
         currentModalProduct = { title: 'donuts donita v3', price: 850, image: './donusdonitav31.JPG' };
@@ -63,7 +63,6 @@ function openProductModal(productId) {
             <img src="./donusdonitav31.JPG" class="modal-thumb active" onclick="changeModalMedia(this, './donusdonitav31.JPG')">
             <img src="./donutsdonasv3.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsdonasv3.JPG')">
         `;
-        // Botones dinámicos
         strainPillsContainer.innerHTML = `
             <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
             <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
@@ -82,7 +81,6 @@ function openProductModal(productId) {
             <img src="./donutsv22.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv22.JPG')">
             <img src="./donutsv23.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv23.JPG')">
         `;
-        // Botones dinámicos
         strainPillsContainer.innerHTML = `
             <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
             <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
@@ -102,7 +100,6 @@ function openProductModal(productId) {
             <img src="./packman3.png" class="modal-thumb" onclick="changeModalMedia(this, './packman3.png')">
             <img src="./packman5.JPG" class="modal-thumb" onclick="changeModalMedia(this, './packman5.JPG')">
         `;
-        // Botones dinámicos
         strainPillsContainer.innerHTML = `
             <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
             <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
@@ -122,7 +119,6 @@ function openProductModal(productId) {
             <img src="./muhacmeds.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds.jpg')">
             <img src="./muhacmeds2.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds2.jpg')">
         `;
-        // Botones dinámicos
         strainPillsContainer.innerHTML = `
             <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
             <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
@@ -141,26 +137,19 @@ function openProductModal(productId) {
             <img src="./muhamedual 2.JPG" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual 2.JPG')">
             <img src="./muhamedual3.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual3.jpg')">
         `;
-        // Botones dinámicos especiales para Muhamedual
         strainPillsContainer.innerHTML = `
             <button class="strain-pill selected" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
             <button class="strain-pill" onclick="selectStrain(this, 'Sativa')">Sativa</button>
         `;
-        selectedStrain = 'Híbrida'; // Por defecto seleccionamos la primera
+        selectedStrain = 'Híbrida';
     }
 
     document.getElementById('productModalOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-function closeProductModal() {
-    document.getElementById('productModalOverlay').classList.remove('active');
-    document.body.style.overflow = 'auto';
 }
 
-function closeModalOnOverlay(e) {
-    if (e.target.id === 'productModalOverlay') {
-        closeProductModal();
-    }
+function closeProductModal() {
+    document.getElementById('productModalOverlay').classList.remove('active');
+    closeModalState(); // 👈 ESTA LÍNEA DEVUELVE LOS BOTONES Y REGRESA EL SCROLL
 }
 
 function changeModalMedia(thumbEl, src) {
@@ -1074,12 +1063,10 @@ const cardDetailsDB = {
 };
 
 /* MODAL INFORMATIVA GLOBAL PARA TARJETAS COMPACTAS */
-/* MODAL INFORMATIVA GLOBAL (AHORA SOPORTA FOTOS Y VIDEOS) */
 function openCardModal(section, key) {
     const data = cardDetailsDB[key];
     if (!data) return;
 
-    // Detecta si es video o imagen
     const isVideo = data.video.toLowerCase().endsWith('.mp4');
     const mediaTag = isVideo 
         ? `<video src="${data.video}" autoplay loop muted playsinline webkit-playsinline style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);"></video>`
@@ -1094,21 +1081,16 @@ function openCardModal(section, key) {
     `;
 
     document.getElementById('infoModalOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
+    openModalState(); // 👈 ESTA LÍNEA OCULTA LOS BOTONES FLOTANTES
 }
-  function closeInfoModal() {
+
+function closeInfoModal() {
     const overlay = document.getElementById('infoModalOverlay');
     if (overlay) {
         overlay.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        closeModalState(); // 👈 ESTA LÍNEA DEVUELVE LOS BOTONES Y REGRESA EL SCROLL
     }
 }
-
-function closeInfoModalOnOverlay(e) {
-    if (e.target.id === 'infoModalOverlay') {
-        closeInfoModal();
-    }
-}  
 /* --- FUNCIONALIDAD BUZÓN DE SUGERENCIAS Y DUDAS --- */
 function openBuzonModal() {
     const overlay = document.getElementById('buzonModalOverlay');
@@ -1236,7 +1218,12 @@ function openModalState() {
 }
 
 function closeModalState() {
-    document.body.classList.remove('modal-open');
+    const activeOverlays = document.querySelectorAll(
+        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active'
+    );
+    if (activeOverlays.length === 0) {
+        document.body.classList.remove('modal-open');
+    }
 }
 
 /* APERTURA Y CIERRE DE VISTAS FULLSCREEN */
