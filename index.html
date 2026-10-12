@@ -864,22 +864,21 @@
     <button class="btn-primary" onclick="irALoginDesdePromo()">¡REGÍSTRATE E INICIA SESIÓN!</button>
   </div>
 </div>
-
-<!-- 2. MODAL DE INICIO DE SESIÓN / REGISTRO (ESTILO ADIDAS CLUB) -->
+<!-- 2. MODAL DE INICIO DE SESIÓN / REGISTRO (SOLO GOOGLE) -->
 <div id="loginModal" class="modal-overlay">
   <div class="modal-card adidas-card">
     <button class="close-btn" onclick="cerrarLogin()">&times;</button>
     
-    <div class="adidas-brand-header">
+    <div class="adidas-brand-header" style="text-align: center;">
       <div class="brand-logo-txt">🚀 AEROSHOP CLUB</div>
-      <h2>INICIA SESIÓN O REGÍSTRATE.</h2>
-      <p class="adidas-subtext">Accede a vuelos acumulables, regalos en tu 3ª compra, descuentos exclusivos y más.</p>
+      <h2>INICIA SESIÓN O REGÍSTRATE</h2>
+      <p class="adidas-subtext">Accede a vuelos acumulables, regalos en tu 3ª compra y beneficios exclusivos.</p>
     </div>
 
-    <!-- BOTÓN REAL DE GOOGLE -->
-    <div class="social-login-grid">
-      <button class="btn-social-auth btn-google-adidas" onclick="iniciarSesionGoogle()">
-        <svg width="20" height="20" viewBox="0 0 24 24">
+    <!-- BOTÓN ÚNICO OFICIAL DE GOOGLE -->
+    <div class="social-login-grid" style="margin-top: 24px;">
+      <button class="btn-social-auth btn-google-adidas" onclick="iniciarSesionGoogle()" style="justify-content: center; width: 100%;">
+        <svg width="22" height="22" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
           <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.15C3.31 21.36 7.37 24 12 24z"/>
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.28C.46 8.21 0 10.05 0 12s.46 3.79 1.28 5.42l4-3.15z"/>
@@ -888,30 +887,8 @@
         <span>Continuar con Google</span>
       </button>
     </div>
-
-    <div class="divider-line"><span>CORREO ELECTRÓNICO *</span></div>
-
-    <form onsubmit="iniciarSesionEmail(event)">
-      <div class="adidas-input-group">
-        <input type="email" id="loginEmail" placeholder="Ingresa tu correo" required>
-      </div>
-      <div class="adidas-input-group" style="margin-top: 10px;">
-        <input type="password" id="loginPassword" placeholder="Contraseña" required>
-      </div>
-
-      <div class="checkbox-group">
-        <label class="custom-checkbox">
-          <input type="checkbox" checked required>
-          <span class="checkmark"></span>
-          <span>Mantener sesión iniciada. Aplicable a todas las opciones.</span>
-        </label>
-      </div>
-
-      <button type="submit" class="btn-adidas-submit">CONTINUAR ➔</button>
-    </form>
   </div>
 </div>
-
 <!-- 3. MODAL DE PERFIL DE USUARIO AUTENTICADO -->
 <div id="profileModal" class="modal-overlay">
   <div class="modal-card adidas-card profile-logged-card">

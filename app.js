@@ -1300,12 +1300,16 @@ document.addEventListener('DOMContentLoaded', () => {
         videoObserver.observe(video);
     });
 });
-
 /* ==========================================
-   GESTIÓN DE MODALES Y BOTONES FLOTANTES
+   GESTIÓN DE MODALES Y MEMORIA DE SCROLL
    ========================================== */
+let lastScrollY = 0;
+
 function openModalState() {
-    document.body.classList.add('modal-open');
+    if (!document.body.classList.contains('modal-open')) {
+        lastScrollY = window.scrollY || document.documentElement.scrollTop;
+        document.body.classList.add('modal-open');
+    }
 }
 
 function closeModalState() {
@@ -1314,26 +1318,18 @@ function closeModalState() {
     );
     if (activeOverlays.length === 0) {
         document.body.classList.remove('modal-open');
+        // Devolver exactamente a la posición previa antes de abrir
+        window.scrollTo(0, lastScrollY);
     }
 }
 
-/* APERTURA Y CIERRE DE VISTAS FULLSCREEN */
-function openEmergencyVuelo() {
-    const view = document.getElementById('emergencyFullscreenView');
-    if (view) {
-        view.classList.add('active');
-        view.scrollTop = 0;
-        openModalState();
-    }
-}
-
-function closeEmergencyVuelo() {
-    const view = document.getElementById('emergencyFullscreenView');
+/* APERTURA Y CIERRE DE VISTAS FULLSCREEN CON MEMORIA DE SCROLL Y PAUSA DE VIDEOS */
+function closeFullscreenBrand() {
+    const view = document.getElementById('brandFullscreenView');
     if (view) {
         view.classList.remove('active');
+        pauseSectionVideos(view);
         closeModalState();
-        stopBreathingGuide();
-        stopBrownNoise();
     }
 }
 
@@ -1343,6 +1339,7 @@ function openRutasVuelo() {
         view.classList.add('active');
         view.scrollTop = 0;
         openModalState();
+        playSectionVideos(view);
     }
 }
 
@@ -1350,6 +1347,7 @@ function closeRutasVuelo() {
     const view = document.getElementById('rutasFullscreenView');
     if (view) {
         view.classList.remove('active');
+        pauseSectionVideos(view);
         closeModalState();
     }
 }
@@ -1361,6 +1359,7 @@ function openMonchisVuelo() {
         view.scrollTop = 0;
         openModalState();
         if (typeof filterMonchisCards === 'function') filterMonchisCards();
+        playSectionVideos(view);
     }
 }
 
@@ -1368,6 +1367,7 @@ function closeMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
     if (view) {
         view.classList.remove('active');
+        pauseSectionVideos(view);
         closeModalState();
     }
 }
@@ -1379,6 +1379,7 @@ function openCineVuelo() {
         cineView.scrollTop = 0;
         openModalState();
         if (typeof filterCineCards === 'function') filterCineCards();
+        playSectionVideos(cineView);
     }
 }
 
@@ -1386,6 +1387,7 @@ function closeCineVuelo() {
     const cineView = document.getElementById('cineFullscreenView');
     if (cineView) {
         cineView.classList.remove('active');
+        pauseSectionVideos(cineView);
         closeModalState();
     }
 }
@@ -1404,6 +1406,25 @@ function closeMusicVuelo() {
     const view = document.getElementById('musicFullscreenView');
     if (view) {
         view.classList.remove('active');
+        closeModalState();
+    }
+}
+
+function openEmergencyVuelo() {
+    const view = document.getElementById('emergencyFullscreenView');
+    if (view) {
+        view.classList.add('active');
+        view.scrollTop = 0;
+        openModalState();
+    }
+}
+
+function closeEmergencyVuelo() {
+    const view = document.getElementById('emergencyFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        stopBreathingGuide();
+        stopBrownNoise();
         closeModalState();
     }
 }

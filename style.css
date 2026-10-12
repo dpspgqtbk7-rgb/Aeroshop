@@ -3321,3 +3321,48 @@ body {
   cursor: pointer;
   letter-spacing: 1px;
 }
+/* ========================================== */
+/* CORRECCIÓN DE SCROLL, FONDO Y AVION EN MÓVIL */
+/* ========================================== */
+
+/* Corrige el salto o corte de fondo azul en iOS Safari */
+html {
+  background-color: #0f172a;
+}
+
+body {
+  background-attachment: scroll !important; /* Desactiva el bug de fixed en móviles */
+}
+
+/* Ajuste proporcional para el avión en la portada de celular */
+@media (max-width: 600px) {
+  .hero-cover {
+    min-height: 55vh !important;
+    padding: 30px 15px 20px 15px !important;
+  }
+
+  .hero-plane-container {
+    width: 100% !important;
+    max-width: 260px !important;
+    margin: 10px auto 0 auto !important;
+  }
+
+  .hero-plane-img {
+    width: 100% !important;
+    max-width: 200px !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Optimización de fluidez por Hardware (GPU) */
+.card-glass, 
+.compact-card, 
+.product-card, 
+.bottom-nav, 
+.btn-add {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
