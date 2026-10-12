@@ -1322,14 +1322,15 @@ function closeModalState() {
         window.scrollTo(0, lastScrollY);
     }
 }
+/* ==========================================
+   Navegación Fluida sin Caídas de Scroll
+   ========================================== */
 
-/* APERTURA Y CIERRE DE VISTAS FULLSCREEN CON MEMORIA DE SCROLL Y PAUSA DE VIDEOS */
 function closeFullscreenBrand() {
     const view = document.getElementById('brandFullscreenView');
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
-        closeModalState();
     }
 }
 
@@ -1338,7 +1339,6 @@ function openRutasVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         playSectionVideos(view);
     }
 }
@@ -1348,7 +1348,6 @@ function closeRutasVuelo() {
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
-        closeModalState();
     }
 }
 
@@ -1357,7 +1356,6 @@ function openMonchisVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         if (typeof filterMonchisCards === 'function') filterMonchisCards();
         playSectionVideos(view);
     }
@@ -1368,7 +1366,6 @@ function closeMonchisVuelo() {
     if (view) {
         view.classList.remove('active');
         pauseSectionVideos(view);
-        closeModalState();
     }
 }
 
@@ -1377,7 +1374,6 @@ function openCineVuelo() {
     if (cineView) {
         cineView.classList.add('active');
         cineView.scrollTop = 0;
-        openModalState();
         if (typeof filterCineCards === 'function') filterCineCards();
         playSectionVideos(cineView);
     }
@@ -1388,7 +1384,6 @@ function closeCineVuelo() {
     if (cineView) {
         cineView.classList.remove('active');
         pauseSectionVideos(cineView);
-        closeModalState();
     }
 }
 
@@ -1397,7 +1392,6 @@ function openMusicVuelo() {
     if (view) {
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         if (typeof filterMusicCards === 'function') filterMusicCards();
     }
 }
@@ -1406,16 +1400,16 @@ function closeMusicVuelo() {
     const view = document.getElementById('musicFullscreenView');
     if (view) {
         view.classList.remove('active');
-        closeModalState();
     }
 }
 
+/* --- SECCIÓN 05: PARA LA PÁLIDA (SIN RUIDO VISUAL) --- */
 function openEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
+        document.body.classList.add('emergency-active');
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
     }
 }
 
@@ -1423,12 +1417,11 @@ function closeEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
         view.classList.remove('active');
+        document.body.classList.remove('emergency-active');
         stopBreathingGuide();
         stopBrownNoise();
-        closeModalState();
     }
 }
-
 /* ==========================================
    SECCIÓN 05: PARA LA PÁLIDA (RESPIRACIÓN Y AUDIO)
    ========================================== */

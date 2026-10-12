@@ -15,21 +15,31 @@
             margin: 0;
             padding: 0;
         }
+/* ========================================== */
+/* FONDO CIELO NÍTIDO Y FIJO PARA CELULARES   */
+/* ========================================== */
+body {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    color: var(--color-text-main);
+    background-color: #0f172a !important;
+    background-image: none !important; /* Desactivamos el fondo estirado */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
 
-        body {
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-            color: var(--color-text-main);
-            background: url('./fondo.jpg') center/cover fixed no-repeat #0f172a;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', 'Syne', sans-serif;
-            color: var(--color-title-dark);
-            letter-spacing: -0.02em;
-        }
-
+/* Capa fija de nubes a pantalla completa (100% nítida y sin saltos) */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: url('./fondo.jpg') center center / cover no-repeat;
+    z-index: -1;
+    pointer-events: none;
+}
         /* --- BOTÓN FLOTANTE DEL CARRITO --- */
         .cart-floating-btn {
             position: fixed;
@@ -3365,4 +3375,37 @@ body {
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+/* Ocultar barra inferior en "Para la pálida" para eliminar ruido visual */
+body.emergency-active .bottom-nav,
+body.emergency-active .cart-floating-btn,
+body.emergency-active .buzon-floating-btn {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Ajuste proporcional de portada en celulares */
+@media (max-width: 600px) {
+    .hero-cover {
+        min-height: auto !important;
+        padding: 30px 15px 20px 15px !important;
+    }
+
+    .hero-cover::before {
+        background: url('./portada.jpg') center top / cover no-repeat !important;
+    }
+
+    .hero-plane-container {
+        margin-top: 10px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hero-plane-img {
+        width: 100% !important;
+        max-width: 220px !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
 }
