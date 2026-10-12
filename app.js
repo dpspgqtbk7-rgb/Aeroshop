@@ -1291,25 +1291,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, { threshold: 0.15 });
+    
+   /* OPTIMIZACIÓN DE CARGA DE VIDEOS EN MÓVILES (EVITA TRABAR EL CELULAR) */
+document.addEventListener('DOMContentLoaded', () => {
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                video.muted = true;
+                video.playsInline = true;
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('video').forEach(video => {
         video.muted = true;
         video.playsInline = true;
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
         videoObserver.observe(video);
     });
 });
 /* ==========================================
-   GESTIÓN DE MODALES Y MEMORIA DE SCROLL
+   CONTROL DE MODALES (SIN REBOTES DE SCROLL)
    ========================================== */
-let lastScrollY = 0;
-
 function openModalState() {
-    if (!document.body.classList.contains('modal-open')) {
-        lastScrollY = window.scrollY || document.documentElement.scrollTop;
-        document.body.classList.add('modal-open');
-    }
+    document.body.classList.add('modal-open');
 }
 
 function closeModalState() {
@@ -1318,10 +1326,9 @@ function closeModalState() {
     );
     if (activeOverlays.length === 0) {
         document.body.classList.remove('modal-open');
-        // Devolver exactamente a la posición previa antes de abrir
-        window.scrollTo(0, lastScrollY);
     }
 }
+
 /* ==========================================
    Navegación Fluida sin Caídas de Scroll
    ========================================== */
