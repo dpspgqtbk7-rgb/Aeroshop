@@ -987,6 +987,8 @@
     </div>
 
     <!-- TARJETA DE PROGRESO DE VUELOS (SISTEMA 3 VUELOS) -->
+     <!-- RASTREADOR DE PEDIDO EN TIEMPO REAL PARA EL CLIENTE -->
+<div id="customerOrderStatusBox" style="margin-bottom: 20px;"></div>
     <div class="vuelos-status-box">
       <div class="vuelos-box-header">
         <span>ESTATUS DE VUELOS ACUMULADOS</span>
@@ -1018,6 +1020,10 @@
 
 <!-- 4. BARRA DE NAVEGACIÓN FIJA CÁPSULA OSCURA -->
 <nav class="bottom-nav">
+   <button class="nav-item" id="adminNavBtn" style="display: none; color: #facc15 !important;" onclick="abrirPanelAdminDirecto()">
+  <span class="nav-icon">👑</span>
+  <span class="nav-label">Capitán</span>
+</button> 
   <button class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>

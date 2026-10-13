@@ -3485,3 +3485,48 @@ body.modal-open {
         border-radius: 22px !important;
     }
 }
+/* ==========================================
+   RASTREADOR DE PEDIDOS Y BOTÓN CAPITÁN
+   ========================================== */
+.order-status-card {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    border-radius: 20px !important;
+    padding: 18px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+    text-align: left !important;
+}
+
+.order-status-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+}
+
+.order-status-badge {
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    text-transform: uppercase !important;
+}
+
+.order-status-badge.pendiente {
+    background: rgba(250, 204, 21, 0.2) !important;
+    color: #facc15 !important;
+    border: 1px solid #facc15 !important;
+}
+
+.order-status-badge.entregado {
+    background: rgba(74, 222, 128, 0.2) !important;
+    color: #4ade80 !important;
+    border: 1px solid #4ade80 !important;
+}
+
+.order-items-summary {
+    font-size: 0.85rem !important;
+    color: #cbd5e1 !important;
+    line-height: 1.5 !important;
+    margin-bottom: 8px !important;
+}

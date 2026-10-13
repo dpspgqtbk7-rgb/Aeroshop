@@ -2161,3 +2161,77 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+/* Función para abrir el panel Admin desde la barra flotante */
+function abrirPanelAdminDirecto() {
+    cerrarTodasLasVistas();
+    const adminSection = document.getElementById('adminPanelSection');
+    if (adminSection) {
+        adminSection.style.display = 'block';
+        adminSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+/* Modificar checkAdminPermission para mostrar el botón 👑 en la barra inferior */
+const originalCheckAdminPermission = checkAdminPermission;
+checkAdminPermission = function(user) {
+    if (typeof originalCheckAdminPermission === 'function') {
+        originalCheckAdminPermission(user);
+    }
+    const adminBtn = document.getElementById('adminNavBtn');
+    if (user && user.email === ADMIN_EMAIL) {
+        if (adminBtn) adminBtn.style.display = 'flex';
+    } else {
+        if (adminBtn) adminBtn.style.display = 'none';
+    }
+};
+
+/* Cargar el estatus del pedido activo en el Pasaporte del Cliente */
+async function renderRastreadorPedidoCliente() {
+    if (!currentUserProfile || !window.db) return;
+    const container = document.getElementById('customerOrderStatusBox');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    try {
+        const { collection, getDocs, query, where } = window.fbMethods;
+        const snap = await getDocs(collection(window.db, "pedidos_pendientes"));
+        
+        let pedidoActivo = null;
+        snap.forEach(docSnap => {
+            const data = docSnap.data();
+            if (data.usuario_uid === currentUserProfile.uid && data.estatus === "PENDIENTE") {
+                pedidoActivo = data;
+            }
+        });
+
+        if (pedidoActivo) {
+            const items = pedidoActivo.productos.map(p => `${p.title} (x${p.quantity})`).join(', ');
+            container.innerHTML = `
+                <div class="order-status-card">
+                    <div class="order-status-header">
+                        <strong style="color: #ffffff; font-size: 0.9rem;">🛵 ESTADO DE TU PEDIDO</strong>
+                        <span class="order-status-badge pendiente">🟡 EN CAMINO</span>
+                    </div>
+                    <div class="order-items-summary">
+                        <strong>Artículos:</strong> ${items}
+                    </div>
+                    <div style="font-size: 0.78rem; color: #38bdf8;">
+                        ✨ <em>En cuanto recibas tu paquete, el Capitán acreditará tu vuelo a este pasaporte.</em>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (e) {
+        console.error("Error al cargar rastreador de pedido:", e);
+    }
+}
+
+/* Integrar la renderización del rastreador en el pasaporte */
+const originalRenderPasaporteUI = renderPasaporteUI;
+renderPasaporteUI = function() {
+    if (typeof originalRenderPasaporteUI === 'function') {
+        originalRenderPasaporteUI();
+    }
+    renderRastreadorPedidoCliente();
+};
