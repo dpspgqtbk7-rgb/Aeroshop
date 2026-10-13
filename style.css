@@ -3033,3 +3033,34 @@ body.modal-open .bottom-nav {
         bottom: calc(15px + env(safe-area-inset-bottom)) !important;
     }
 }
+/* ==========================================
+   FIX DEFINITIVO: PORTADA Y LOGO AEROSHOP EN CELULARES
+   ========================================== */
+@media (max-width: 600px) {
+    /* Ajuste de altura del contenedor hero en móvil */
+    .hero-cover {
+        min-height: 480px !important;
+        padding: 20px 15px 30px 15px !important;
+    }
+
+    /* Ajuste de la imagen de portada para que NUNCA se corte */
+    .hero-cover::before {
+        background-image: url('./portada.jpg') !important;
+        background-position: center top 15px !important;
+        background-size: 92% auto !important; /* Escala todo el logo AEROSHOP al ancho del celular */
+        background-repeat: no-repeat !important;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%) !important;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%) !important;
+    }
+
+    /* Posicionamiento del avión para no encimarse con las letras */
+    .hero-plane-container {
+        margin-top: 130px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .hero-plane-img {
+        width: 180px !important;
+        max-width: 65% !important;
+    }
+}
