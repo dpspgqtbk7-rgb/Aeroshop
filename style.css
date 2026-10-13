@@ -2982,7 +2982,7 @@ body.modal-open .bottom-nav {
     background: transparent !important;
     border: none !important;
     color: #94a3b8 !important;
-    display: flex !important;
+    display: flex ;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;

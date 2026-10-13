@@ -5,10 +5,10 @@ function initAuthListener() {
         window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
             if (user) {
                 await syncUserProfile(user);
-                checkAdminPermission(user);
+                
             } else {
                 currentUserProfile = null;
-                checkAdminPermission(null);
+                
             }
         });
     } else {
@@ -1735,7 +1735,7 @@ function stopBrownNoise() {
 let adminInventarioCache = [];
 const ADMIN_EMAIL = "aeroshop.37@gmail.com";
 
-function checkAdminPermission(user) {
+ {
     const adminSection = document.getElementById('adminPanelSection');
     if (user && user.email === ADMIN_EMAIL) {
         if (adminSection) adminSection.style.display = 'block';
@@ -1751,7 +1751,7 @@ window.syncUserProfile = async function(user) {
     if (typeof originalSyncUserProfile === 'function') {
         await originalSyncUserProfile(user);
     }
-    checkAdminPermission(user);
+   ;
 };
 
 async function cargarDashboardAdmin() {
@@ -2253,20 +2253,6 @@ function renderPasaporteUI() {
     if (typeof renderRastreadorPedidoCliente === 'function') renderRastreadorPedidoCliente();
 }
 
-/* Modificar checkAdminPermission para mostrar el botón 👑 en la barra inferior */
-const originalCheckAdminPermission = checkAdminPermission;
-checkAdminPermission = function(user) {
-    if (typeof originalCheckAdminPermission === 'function') {
-        originalCheckAdminPermission(user);
-    }
-    const adminBtn = document.getElementById('adminNavBtn');
-    if (user && user.email === ADMIN_EMAIL) {
-        if (adminBtn) adminBtn.style.display = 'flex';
-    } else {
-        if (adminBtn) adminBtn.style.display = 'none';
-    }
-};
-
 /* Cargar el estatus del pedido activo en el Pasaporte del Cliente */
 async function renderRastreadorPedidoCliente() {
     if (!currentUserProfile || !window.db) return;
@@ -2355,36 +2341,37 @@ function iniciarEscanerQR() {
         container.style.display = 'none';
     });
 }
-// Verificar si el usuario logueado es el Administrador
+// ==========================================
+// CONTROL DE ACCESO DE ADMINISTRADOR (CAPITÁN)
+// ==========================================
 function checkAdminPermission(user) {
     const adminSection = document.getElementById('adminPanelSection');
     const adminBtn = document.getElementById('adminNavBtn');
+    const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
 
-    if (user && user.email) {
-        console.log("🔍 Correo detectado por Firebase:", user.email);
-    } else {
-        console.log("🔍 No hay usuario autenticado.");
-    }
-
-    if (user && user.email && user.email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim()) {
+    if (userEmail === ADMIN_EMAIL.toLowerCase().trim()) {
         console.log("✅ ¡Acceso de Administrador Concedido!");
-        if (adminSection) {
-            adminSection.style.display = 'block';
-            adminSection.classList.add('active');
-            adminSection.classList.remove('hidden');
-        }
-        if (adminBtn) adminBtn.style.display = 'flex';
-        
-        if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
-        if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
+        if (adminBtn) adminBtn.style.setProperty('display', 'flex', 'important');
     } else {
-        if (adminSection) adminSection.style.display = 'none';
-        if (adminBtn) adminBtn.style.display = 'none';
+        console.log("🔒 Usuario no es Administrador o no hay sesión.");
+        if (adminSection) {
+            adminSection.style.display = 'none';
+            adminSection.classList.remove('active');
+        }
+        if (adminBtn) adminBtn.style.setProperty('display', 'none', 'important');
     }
 }
 
-// Función activada por el botón 👑 Capitán de la barra inferior
 function abrirPanelAdminDirecto() {
+    const user = window.auth ? window.auth.currentUser : null;
+    const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
+
+    // Validar sesión activa de Administrador antes de mostrar el panel
+    if (!user || userEmail !== ADMIN_EMAIL.toLowerCase().trim()) {
+        alert("🔒 Acceso restringido: Debes iniciar sesión con la cuenta de Capitán (aeroshop.37@gmail.com).");
+        return;
+    }
+
     const adminSection = document.getElementById('adminPanelSection');
     if (adminSection) {
         if (typeof cerrarTodasLasVistas === 'function') {
@@ -2397,7 +2384,5 @@ function abrirPanelAdminDirecto() {
 
         if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
         if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
-    } else {
-        console.warn("⚠️ No se encontró el elemento #adminPanelSection en el HTML.");
     }
 }
