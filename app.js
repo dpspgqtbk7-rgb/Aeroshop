@@ -777,52 +777,125 @@ function filterCineCards() {
    BASE DE DATOS COMPLETA DE TARJETAS (01, 02, 03)
    ========================================== */
 const cardDetailsDB = {
+// --- DENTRO DE const cardDetailsDB = { ... } EN app.js ---
 
-
-// --- EN LA SECCIÓN DE MONCHIS ---
+// --- SECCIÓN MONCHIS ---
 oreo: {
-    title: "Oreo Fritas Crujientes 🍪🔥",
+    title: "Bolitas de Oreo Mágicas 🍩",
     video: "./OREO.MP4",
-    badge: "🏠 Casa • 🍩 Dulce • ⚡ 8 min",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Galletas Oreo empanizadas en masa suave de hot cakes y fritas al momento, espolvoreadas con azúcar glass y chocolate.</p>`
+    badge: "🏠 Supervivencia en Casa • 🍿 Dulce",
+    html: `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">🛒 Ingredientes:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">2 paquetes de galletas Oreo, 2 cucharadas de queso crema y 200 g de chocolate blanco para cobertura.</p>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">👨‍🍳 Preparación:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Triturar las galletas en procesador o bolsa (reservar 1 cucharada del polvo para decorar). Mezclar el polvo con el queso crema hasta integrar una masa moldeable. Aceitar ligeramente las manos, formar bolitas, sumergirlas en el chocolate blanco derretido y espolvorear la galleta reservada encima antes de enfriar.</p>
+        </div>
+        <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 12px; border-radius: 8px;">
+            <strong style="color: #4ade80;">✈️ Nivel de Bajón:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">4/5 — Rápido, fácil y súper chocolatoso</span>
+        </div>
+    `
 },
 cotorras: {
-    title: "Las Cotorras 🌮🍻",
+    title: "Taco Austero de Jamón y Mayo (Estilo Slobo / La Cotorrisa) 🌮",
     video: "./cotorras.MP4",
-    badge: "📍 Centro • 🍿 Salado",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Tacos de guisado colosales y tortas ahogadas con porciones generosas en el Centro Histórico.</p>`
+    badge: "🏠 Supervivencia en Casa • 🍿 Salado / Bajón Express",
+    html: `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">🛒 Ingredientes:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Tortilla de maíz, mayonesa al gusto y rebanadas de jamón de pavo o pierna.</p>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">👨‍🍳 Preparación:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Calentar la tortilla de maíz directamente en el comal. Untar una capa generosa de mayonesa sobre la tortilla caliente, agregar 2 o 3 rebanadas de jamón dobladas, enrollar en forma de taco y disfrutar.</p>
+        </div>
+        <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 12px; border-radius: 8px;">
+            <strong style="color: #4ade80;">✈️ Nivel de Bajón:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">3/5 — El salvavidas definitivo de las 3:00 AM</span>
+        </div>
+    `
 },
 salchicha_hawaiana: {
-    title: "Salchichas Hawaianas Glaseadas 🌭🍍",
+    title: "La Salchicha Slushelta de Gumball 🌭🧀",
     video: "./salchicha.MP4",
-    badge: "🏠 Casa • 🍿 Salado • 🍳 10 min",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Salchichas sazonadas con piña en almíbar, salsa BBQ y un toque de chipotle.</p>`
+    badge: "🏠 Supervivencia en Casa • 🍿 Salado / Monchis Extremo",
+    html: `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">🛒 Ingredientes:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Salchichas rojas para asar, tocino, tocineta, nuggets de pollo, papas a la francesa y queso cheddar para nachos.</p>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">👨‍🍳 Preparación:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Derretir mantequilla en una olla y mezclar con abundante queso cheddar caliente. En sartén, freír tocino, tocineta y las salchichas rojas cortadas a la mitad. En la misma grasa, dorar nuggets, papas a la francesa y salchichas picadas. Montar la base con las salchichas abiertas, bañar con queso cheddar, colocar encima el tocino, las papas, las salchichas en trozos y coronar con los nuggets.</p>
+        </div>
+        <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 12px; border-radius: 8px;">
+            <strong style="color: #4ade80;">✈️ Nivel de Bajón:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">5/5 — Bomba calórica de sabor ilimitado</span>
+        </div>
+    `
 },
 pan_muerto: {
-    title: "Pan de Muerto Relleno 🍞🍫",
+    title: "Pan de Muerto con Magnum Planchado 🍞🍦",
     video: "./pan-de-muerto.MP4",
-    badge: "🏠 Casa • 🍩 Dulce",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Pan suave rebozado con crema de avellana, helado de vainilla y nuez tostada.</p>`
+    badge: "🏠 Supervivencia en Casa • 🍿 Dulce / Experiencia Térmica",
+    html: `
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">🛒 Ingredientes:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Pan de muerto azucarado tradicional, 1 paleta Magnum (vainilla con cubierta de chocolate y almendras) y jarabe de chocolate.</p>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.05); padding: 14px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.1);">
+            <strong style="color: #facc15; display: block; margin-bottom: 8px;">👨‍🍳 Preparación:</strong>
+            <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;">Hacer un corte lateral en forma de bolsillo al pan de muerto. Introducir la paleta Magnum entera dentro del corte. Colocar en una sandwichera o plancha caliente de 3 a 5 minutos hasta que la superficie del pan quede crujiente y dorada. Servir caliente y dipear en el jarabe de chocolate.</p>
+        </div>
+        <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 12px; border-radius: 8px;">
+            <strong style="color: #4ade80;">✈️ Nivel de Bajón:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">5/5 — Choque térmico crujiente/helado</span>
+        </div>
+    `
 },
 
-// --- EN LA SECCIÓN DE CINE ---
+// --- SECCIÓN CINE ---
 robots: {
-    title: "LOVE, DEATH & ROBOTS 🤖🌌",
+    title: "LOVE, DEATH & ROBOTS 🤖🌀",
     video: "./robots.MP4",
-    badge: "🎬 Antología Animada • 🔞 18+",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Antología de cortometrajes con animación hiperrealista y episodios de ciencia ficción profunda.</p>`
+    badge: "🎬 Psicodelia & Sci-Fi • ✈️✈️✈️✈️✈️ (5/5)",
+    html: `
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 12px;"><strong>📺 Dónde ver:</strong> Netflix</p>
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;"><strong>🌀 ¿Por qué es perfecto para el viaje?:</strong> Es un buffet de episodios independientes con estilos que van desde el fotorrealismo 3D hasta el cel-shading cyberpunk y la rotoscopía surrealista. Capítulos como <em>Jibaro</em>, <em>The Very Pulse of the Machine</em>, <em>Zima Blue</em> y <em>The Witness</em> brindan estimulación sensorial pura, paisajes alienígenas y texturas metálicas luminosas que elevan la percepción al máximo.</p>
+        <div style="background: rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; padding: 12px; border-radius: 8px;">
+            <strong style="color: #38bdf8;">✈️ Nivel de Vuelo:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">5/5 — Hipnótico & Ultra Inmersivo</span>
+        </div>
+    `
 },
 congreso: {
-    title: "THE CONGRESS (EL CONGRESO) 💊🎨",
+    title: "THE CONGRESS (2013) 👁️🎭",
     video: "./congreso.MP4",
-    badge: "🎬 Animación Surrealista • ⏱️ 2h 02m",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Mezcla de live-action y animación tradicional que explora mundos psicodélicos digitales.</p>`
+    badge: "🎬 Animación Surrealista • ✈️✈️✈️✈️✈️ (5/5)",
+    html: `
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 12px;"><strong>📺 Dónde ver:</strong> Apple TV / Prime Video / Cineteca / Archivos de Internet</p>
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;"><strong>🌀 ¿Por qué es perfecto para el viaje?:</strong> Inicia en <em>Live-Action</em> con actores reales y muta a mitad de la trama hacia una alucinante animación surrealista dibujada a mano al estilo de los años 30. Sus más de 60,000 fotogramas abordan avatares digitales, simulaciones químicas y la pérdida de la realidad.</p>
+        <div style="background: rgba(56, 189, 248, 0.15); border-left: 4px solid #38bdf8; padding: 12px; border-radius: 8px;">
+            <strong style="color: #38bdf8;">✈️ Nivel de Vuelo:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">5/5 — Rotoscopía & Mindfuck</span>
+        </div>
+    `
 },
 grasa_fria: {
-    title: "GRASA FRÍA 🧊🌭",
+    title: "CHILLED GREESE 🍟🚗",
     video: "./grasa-fria.MP4",
-    badge: "🎬 Cortometraje Bizarro • 🌀 Experimental",
-    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Pieza de arte conceptual que desafía los sentidos con texturas y sonido ASMR.</p>`
+    badge: "🎬 Comedia Absurda • ✈️✈️✈️ (3/5)",
+    html: `
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 12px;"><strong>📺 Dónde ver:</strong> TikTok / YouTube Originals</p>
+        <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6; margin-bottom: 16px;"><strong>🌀 ¿Por qué es perfecto para el viaje?:</strong> Diálogos reales, humor cannabis y situaciones absurdas de amigos en el auto a las 3:00 AM. Su animación de trazos simples y ritmo relajado es ideal para soltar la risa, despejar la mente y abrir el apetito antes del bajón.</p>
+        <div style="background: rgba(250, 204, 21, 0.15); border-left: 4px solid #facc15; padding: 12px; border-radius: 8px;">
+            <strong style="color: #facc15;">✈️ Nivel de Vuelo:</strong>
+            <span style="color: #f8fafc; font-size: 0.9rem; display: block; margin-top: 4px;">3/5 — Relax, Risas & Monchis</span>
+        </div>
+    `
 },
     // --- SECCIÓN 01: RUTAS DE VUELO ---
     cenart: {

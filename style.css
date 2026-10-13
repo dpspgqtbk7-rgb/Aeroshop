@@ -2975,3 +2975,61 @@ body.modal-open .bottom-nav {
 .legal-disclaimer-box strong {
     color: #0f172a;
 }
+/* --- BARRA DE NAVEGACIÓN FIJA FLOTANTE (ESTILO CÁPSULA GLASS) --- */
+.bottom-nav {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 25000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    background: rgba(15, 23, 42, 0.92) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 50px !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.1) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 420px !important;
+}
+
+.nav-item {
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    text-decoration: none !important;
+}
+
+.nav-item.active, .nav-item:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.nav-icon {
+    font-size: 1.2rem !important;
+    line-height: 1 !important;
+    margin-bottom: 2px !important;
+}
+
+.nav-label {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+}
+
+/* Evita que la barra de navegación del navegador Safari en iPhone choque con el menú */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .bottom-nav {
+        bottom: calc(15px + env(safe-area-inset-bottom)) !important;
+    }
+}
