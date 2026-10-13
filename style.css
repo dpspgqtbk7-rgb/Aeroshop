@@ -1548,74 +1548,56 @@ body::before {
     }
 }
 /* ==========================================
-   OPTIMIZACIONES EXCLUSIVAS PARA CELULARES
+   FIX DEFINITIVO: PORTADA LIMPIA EN CELULAR (SIN LOGO DUPLICADO NI ESPACIOS)
    ========================================== */
 @media (max-width: 600px) {
-    /* 1. Mueve el carrito abajo a la derecha para acceso cómodo con el pulgar */
-    .cart-floating-btn {
-        top: auto !important;
-        bottom: 20px !important;
-        right: 15px !important;
-        padding: 10px 18px !important;
-        font-size: 0.78rem !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+    /* 1. Ocultar el logo redundante de nubes para dejar únicamente el logo metálico plateado oficial */
+    .hero-logo-nubes-mobile {
+        display: none !important;
     }
 
-    /* 2. Ajuste de títulos gigantes para pantallas pequeñas */
-    .about-card h2, 
-    .diferencia-card h2 {
-        font-size: 1.8rem !important;
-    }
-    
-    .rutas-info-card h2 {
-        font-size: 1.35rem !important;
-    }
-
-    /* 3. Optimización de espacios y margenes internos en tarjetas */
-    .rutas-content-overlay {
-        padding: 75px 10px 40px 10px !important;
-    }
-
-    .rutas-info-card, 
-    .about-card, 
-    .diferencia-card {
-        padding: 18px !important;
-        border-radius: 18px !important;
-    }
-
-    /* 4. Barra de filtros con deslizado horizontal (scroll táctil suave) */
-    .filtros-zonas {
+    /* 2. Ajuste compacto del contenedor principal de la portada */
+    .hero-cover {
+        min-height: auto !important;
+        height: auto !important;
+        padding: 20px 15px 25px 15px !important;
         display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
+        flex-direction: column !important;
         justify-content: flex-start !important;
-        padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
+        align-items: center !important;
     }
 
-    .btn-filtro {
-        flex-shrink: 0;
-        white-space: nowrap;
+    /* 3. Escala y encuadre del logo metálico de AEROSHOP */
+    .hero-cover::before {
+        background-image: url('./portada.jpg') !important;
+        background-position: center top 10px !important;
+        background-size: 92% auto !important;
+        background-repeat: no-repeat !important;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%) !important;
     }
 
-    /* 5. Ventana modal de producto ajustada a pantalla móvil */
-    .product-modal-card {
-        padding: 20px !important;
-        max-height: 92vh;
+    /* 4. Posición del avión justo debajo del logo sin huecos gigantes */
+    .hero-plane-container {
+        margin-top: 135px !important;
+        margin-bottom: 15px !important;
     }
 
-    .modal-media-wrapper {
-        height: 250px !important;
+    .hero-plane-img {
+        width: 175px !important;
+        max-width: 60% !important;
+        height: auto !important;
     }
 
-    .modal-title {
-        font-size: 1.6rem !important;
+    /* 5. Botón ajustado */
+    .hero-subtitle {
+        font-size: 0.78rem !important;
+        padding: 12px 26px !important;
+        margin-top: 10px !important;
+        margin-bottom: 20px !important;
     }
-
-    .modal-price {
-        font-size: 1.4rem !important;
-    }
-}/* --- TARJETAS COMPACTAS (FORMATO CUADRÍCULA) --- */
+}
+/* --- TARJETAS COMPACTAS (FORMATO CUADRÍCULA) --- */
 .compact-card {
     cursor: pointer;
     position: relative;
