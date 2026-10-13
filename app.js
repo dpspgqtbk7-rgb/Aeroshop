@@ -1695,7 +1695,7 @@ function stopBrownNoise() {
    PANEL ADMINISTRADOR
    ========================================== */
 let adminInventarioCache = [];
-const ADMIN_EMAIL = "tu_correo_admin@gmail.com";
+const ADMIN_EMAIL = "aeroshop.37@gmail.com";
 
 function checkAdminPermission(user) {
     const adminSection = document.getElementById('adminPanelSection');
