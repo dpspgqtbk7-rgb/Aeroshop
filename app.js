@@ -1,16 +1,56 @@
 let currentUserProfile = null;
-
-// Escuchador de estado de autenticación
-window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
-    if (user) {
-        await syncUserProfile(user);
-        checkAdminPermission(user);
+// Iniciar escuchador cuando Firebase esté listo
+function initAuthListener() {
+    if (window.fbMethods && window.auth && window.fbMethods.onAuthStateChanged) {
+        window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
+            if (user) {
+                await syncUserProfile(user);
+                checkAdminPermission(user);
+            } else {
+                currentUserProfile = null;
+                checkAdminPermission(null);
+            }
+        });
     } else {
-        currentUserProfile = null;
-        checkAdminPermission(null); // Oculta el panel y botón al cerrar sesión
+        setTimeout(initAuthListener, 100);
     }
-});
+}
+initAuthListener();
 
+// Sincronizar usuario asegurando siempre el campo 'uid'
+async function syncUserProfile(user) {
+    if (!user || !window.fbMethods || !window.db) return;
+    const { doc, getDoc, setDoc } = window.fbMethods;
+    const userRef = doc(window.db, "usuarios", user.uid);
+
+    try {
+        const snap = await getDoc(userRef);
+
+        if (snap.exists()) {
+            currentUserProfile = { uid: user.uid, ...snap.data() };
+        } else {
+            currentUserProfile = {
+                uid: user.uid,
+                displayName: user.displayName || user.email.split('@')[0],
+                nombre_real: user.displayName || '',
+                apodo: '',
+                email: user.email,
+                photoURL: user.photoURL || '',
+                vuelos_acumulados: 0,
+                descuento_bienvenida_activo: true,
+                favoritos: [],
+                historial_compras: [],
+                fecha_registro: new Date().toISOString(),
+                acepto_aviso_privacidad: true
+            };
+            await setDoc(userRef, currentUserProfile);
+        }
+
+        renderPasaporteUI();
+    } catch (e) {
+        console.error("Error al sincronizar perfil:", e);
+    }
+}
 async function syncUserProfile(user) {
     const { doc, getDoc, setDoc } = window.fbMethods;
     const userRef = doc(window.db, "usuarios", user.uid);
@@ -1920,11 +1960,13 @@ function cerrarLogin() {
   if (modal) modal.classList.remove('active');
   closeModalState();
 }
-
 function abrirPerfil() {
-  const modal = document.getElementById('profileModal');
-  if (modal) modal.classList.add('active');
-  openModalState();
+    const modal = document.getElementById('profileModal');
+    if (modal) {
+        renderPasaporteUI(); // <--- ESTA ES LA LÍNEA NUEVA QUE GENERA Y MUESTRA EL QR
+        modal.classList.add('active');
+    }
+    openModalState();
 }
 function cerrarPerfil() {
   const modal = document.getElementById('profileModal');
