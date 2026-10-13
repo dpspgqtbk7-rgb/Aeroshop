@@ -1398,7 +1398,7 @@ function filterMusicCards() {
     });
 }
 /* ==========================================
-   OPTIMIZACIÓN DE CARGA DE VIDEOS Y NAVEGACIÓN
+   OPTIMIZACIÓN DE CARGA DE VIDEOS Y NAVEGACIÓN (FIX SAFARI / IOS)
    ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const videoObserver = new IntersectionObserver((entries) => {
@@ -1407,7 +1407,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 video.muted = true;
                 video.playsInline = true;
-                video.play().catch(() => {});
+                video.setAttribute('webkit-playsinline', 'true');
+                
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Oculta el fallo de reproducción automática sin mostrar ícono de error
+                    });
+                }
             } else {
                 video.pause();
             }
@@ -1417,10 +1424,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('video').forEach(video => {
         video.muted = true;
         video.playsInline = true;
+        video.setAttribute('webkit-playsinline', 'true');
         videoObserver.observe(video);
     });
 });
-
 /* ==========================================
    CONTROL DE MODALES Y BLOQUEO DE SCROLL DE FONDO
    ========================================== */

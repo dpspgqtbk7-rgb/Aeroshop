@@ -3103,3 +3103,291 @@ body.modal-open .bottom-nav {
         margin-bottom: 20px !important;
     }
 }
+/* ==========================================
+   1. FIX COMPLETO PARA EL PERFIL EN MÓVIL (TEMA OSCURO GLASS)
+   ========================================== */
+#profileModal .modal-card,
+.profile-fullscreen-card {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9) !important;
+    border-radius: 28px !important;
+    padding: 24px 18px !important;
+}
+
+#profileModal .profile-header-banner {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+#profileModal .badge-pasaporte {
+    background: rgba(56, 189, 248, 0.15) !important;
+    color: #38bdf8 !important;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    letter-spacing: 1px !important;
+    display: inline-block !important;
+}
+
+#profileModal .profile-main-title {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 1.6rem !important;
+    color: #ffffff !important;
+    margin-top: 8px !important;
+}
+
+#profileModal .profile-user-hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 20px 15px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin-bottom: 20px !important;
+    text-align: center !important;
+}
+
+#profileModal .user-avatar-large {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid #facc15 !important;
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3) !important;
+    margin-bottom: 15px !important;
+}
+
+#profileModal .user-details-form {
+    width: 100% !important;
+}
+
+#profileModal .status-pill-badge {
+    display: inline-block !important;
+    font-size: 0.8rem !important;
+    font-weight: 800 !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    margin-bottom: 15px !important;
+}
+
+#profileModal .status-pill-badge.normal {
+    background: rgba(56, 189, 248, 0.2) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+}
+
+#profileModal .status-pill-badge.vip {
+    background: rgba(250, 204, 21, 0.2) !important;
+    color: #facc15 !important;
+    border: 1px solid #facc15 !important;
+}
+
+#profileModal .input-field-group {
+    margin-bottom: 12px !important;
+    text-align: left !important;
+}
+
+#profileModal .input-field-group label {
+    display: block !important;
+    font-size: 0.78rem !important;
+    color: #94a3b8 !important;
+    margin-bottom: 4px !important;
+    font-weight: 700 !important;
+}
+
+#profileModal .profile-input {
+    width: 100% !important;
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    color: #ffffff !important;
+    font-size: 0.9rem !important;
+    outline: none !important;
+}
+
+#profileModal .profile-input:focus {
+    border-color: #facc15 !important;
+}
+
+#profileModal .profile-email-text {
+    font-size: 0.82rem !important;
+    color: #94a3b8 !important;
+    margin: 10px 0 !important;
+    word-break: break-all !important;
+}
+
+#profileModal .btn-save-profile {
+    width: 100% !important;
+    background: #facc15 !important;
+    color: #0f172a !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    font-weight: 800 !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    margin-top: 6px !important;
+    transition: transform 0.2s !important;
+}
+
+#profileModal .vuelos-status-box {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    padding: 18px 15px !important;
+    margin-bottom: 20px !important;
+}
+
+#profileModal .vuelos-box-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 0.75rem !important;
+    color: #94a3b8 !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+}
+
+#profileModal .vuelos-box-header strong {
+    color: #facc15 !important;
+    font-size: 0.9rem !important;
+}
+
+#profileModal .vuelos-dots-flex {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: space-between !important;
+    margin-bottom: 12px !important;
+}
+
+#profileModal .vuelo-step {
+    flex: 1 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 10px 6px !important;
+    text-align: center !important;
+    font-size: 0.78rem !important;
+    color: #64748b !important;
+    font-weight: 700 !important;
+}
+
+#profileModal .vuelo-step.active {
+    background: rgba(56, 189, 248, 0.15) !important;
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+}
+
+#profileModal .vuelo-step.gift.active {
+    background: rgba(250, 204, 21, 0.15) !important;
+    border-color: #facc15 !important;
+    color: #facc15 !important;
+}
+
+#profileModal .vuelos-hint {
+    font-size: 0.78rem !important;
+    color: #cbd5e1 !important;
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+#profileModal .purchased-products-section h3 {
+    font-size: 1.05rem !important;
+    color: #ffffff !important;
+    margin-bottom: 12px !important;
+}
+
+#profileModal .purchased-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+    gap: 12px !important;
+}
+
+#profileModal .empty-purchases-box {
+    grid-column: 1 / -1 !important;
+    text-align: center !important;
+    padding: 24px 15px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.15) !important;
+    border-radius: 16px !important;
+}
+
+#profileModal .empty-purchases-box span {
+    font-size: 1.8rem !important;
+    display: block !important;
+    margin-bottom: 6px !important;
+}
+
+#profileModal .empty-purchases-box p {
+    color: #94a3b8 !important;
+    font-size: 0.88rem !important;
+    margin: 0 !important;
+}
+
+#profileModal .btn-logout-adidas {
+    width: 100% !important;
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #f87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    margin-top: 20px !important;
+}
+
+/* ==========================================
+   2. REEMPLAZO DEL ÍCONO DE ERROR DE VIDEO POR TEXTO DE CARGA
+   ========================================== */
+.compact-card {
+    position: relative !important;
+    background: #0f172a !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    min-height: 260px !important;
+}
+
+/* Texto de carga en el fondo antes de reproducir */
+.compact-card::before {
+    content: 'Relax bro 🧘🏽‍♂️ ya casi carga tu video 🛸✨' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 200px !important;
+    background: #090d16 !important;
+    color: #facc15 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 20px !important;
+    z-index: 0 !important;
+    box-sizing: border-box !important;
+    line-height: 1.4 !important;
+}
+
+.compact-card video {
+    position: relative !important;
+    z-index: 1 !important;
+    background: transparent !important;
+}
+
+/* Ocultar los controles de error nativos de Safari iOS */
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-panel {
+    display: none !important;
+    -webkit-appearance: none !important;
+    opacity: 0 !important;
+}
