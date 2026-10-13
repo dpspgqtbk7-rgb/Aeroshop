@@ -2355,3 +2355,49 @@ function iniciarEscanerQR() {
         container.style.display = 'none';
     });
 }
+// Verificar si el usuario logueado es el Administrador
+function checkAdminPermission(user) {
+    const adminSection = document.getElementById('adminPanelSection');
+    const adminBtn = document.getElementById('adminNavBtn');
+
+    if (user && user.email) {
+        console.log("🔍 Correo detectado por Firebase:", user.email);
+    } else {
+        console.log("🔍 No hay usuario autenticado.");
+    }
+
+    if (user && user.email && user.email.toLowerCase().trim() === ADMIN_EMAIL.toLowerCase().trim()) {
+        console.log("✅ ¡Acceso de Administrador Concedido!");
+        if (adminSection) {
+            adminSection.style.display = 'block';
+            adminSection.classList.add('active');
+            adminSection.classList.remove('hidden');
+        }
+        if (adminBtn) adminBtn.style.display = 'flex';
+        
+        if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
+        if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
+    } else {
+        if (adminSection) adminSection.style.display = 'none';
+        if (adminBtn) adminBtn.style.display = 'none';
+    }
+}
+
+// Función activada por el botón 👑 Capitán de la barra inferior
+function abrirPanelAdminDirecto() {
+    const adminSection = document.getElementById('adminPanelSection');
+    if (adminSection) {
+        if (typeof cerrarTodasLasVistas === 'function') {
+            cerrarTodasLasVistas();
+        }
+        adminSection.style.display = 'block';
+        adminSection.classList.add('active');
+        adminSection.classList.remove('hidden');
+        adminSection.scrollIntoView({ behavior: 'smooth' });
+
+        if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
+        if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
+    } else {
+        console.warn("⚠️ No se encontró el elemento #adminPanelSection en el HTML.");
+    }
+}
