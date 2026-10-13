@@ -26,16 +26,19 @@ async function syncUserProfile(user) {
         currentUserProfile = snap.data();
     } else {
         // Registro inicial del nuevo Pasajero (Sistema 3/3)
-        currentUserProfile = {
-            uid: user.uid,
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-            vuelos_acumulados: 0,
-            descuento_bienvenida_activo: true,
-            favoritos: [],
-            fecha_registro: new Date().toISOString()
-        };
+currentUserProfile = {
+    uid: user.uid,
+    displayName: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL,
+    vuelos_acumulados: 0,
+    descuento_bienvenida_activo: true,
+    favoritos: [],
+    fecha_registro: new Date().toISOString(),
+    acepto_aviso_privacidad: true,
+    fecha_aceptacion_privacidad: new Date().toISOString(),
+    version_aviso: "v1.0-LFPDPPP"
+};
         await setDoc(userRef, currentUserProfile);
     }
 
@@ -774,6 +777,53 @@ function filterCineCards() {
    BASE DE DATOS COMPLETA DE TARJETAS (01, 02, 03)
    ========================================== */
 const cardDetailsDB = {
+
+
+// --- EN LA SECCIÓN DE MONCHIS ---
+oreo: {
+    title: "Oreo Fritas Crujientes 🍪🔥",
+    video: "./OREO.MP4",
+    badge: "🏠 Casa • 🍩 Dulce • ⚡ 8 min",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Galletas Oreo empanizadas en masa suave de hot cakes y fritas al momento, espolvoreadas con azúcar glass y chocolate.</p>`
+},
+cotorras: {
+    title: "Las Cotorras 🌮🍻",
+    video: "./cotorras.MP4",
+    badge: "📍 Centro • 🍿 Salado",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Tacos de guisado colosales y tortas ahogadas con porciones generosas en el Centro Histórico.</p>`
+},
+salchicha_hawaiana: {
+    title: "Salchichas Hawaianas Glaseadas 🌭🍍",
+    video: "./salchicha.MP4",
+    badge: "🏠 Casa • 🍿 Salado • 🍳 10 min",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Salchichas sazonadas con piña en almíbar, salsa BBQ y un toque de chipotle.</p>`
+},
+pan_muerto: {
+    title: "Pan de Muerto Relleno 🍞🍫",
+    video: "./pan-de-muerto.MP4",
+    badge: "🏠 Casa • 🍩 Dulce",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Pan suave rebozado con crema de avellana, helado de vainilla y nuez tostada.</p>`
+},
+
+// --- EN LA SECCIÓN DE CINE ---
+robots: {
+    title: "LOVE, DEATH & ROBOTS 🤖🌌",
+    video: "./robots.MP4",
+    badge: "🎬 Antología Animada • 🔞 18+",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Antología de cortometrajes con animación hiperrealista y episodios de ciencia ficción profunda.</p>`
+},
+congreso: {
+    title: "THE CONGRESS (EL CONGRESO) 💊🎨",
+    video: "./congreso.MP4",
+    badge: "🎬 Animación Surrealista • ⏱️ 2h 02m",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Mezcla de live-action y animación tradicional que explora mundos psicodélicos digitales.</p>`
+},
+grasa_fria: {
+    title: "GRASA FRÍA 🧊🌭",
+    video: "./grasa-fria.MP4",
+    badge: "🎬 Cortometraje Bizarro • 🌀 Experimental",
+    html: `<p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">Pieza de arte conceptual que desafía los sentidos con texturas y sonido ASMR.</p>`
+},
     // --- SECCIÓN 01: RUTAS DE VUELO ---
     cenart: {
         title: "CENART (Centro Nacional de las Artes) 📍 Sur",
@@ -1836,4 +1886,21 @@ async function cerrarSesionFirebase() {
     await window.fbMethods.signOut(window.auth);
     cerrarPerfil();
   }
+}
+function cerrarTodasLasVistas() {
+    closeProductModal();
+    closeInfoModal();
+    closeBuzonModal();
+    cerrarPromo();
+    cerrarLogin();
+    cerrarPerfil();
+    closeRutasVuelo();
+    closeMonchisVuelo();
+    closeCineVuelo();
+    closeMusicVuelo();
+    closeEmergencyVuelo();
+    closeFullscreenBrand();
+    const cartOverlay = document.getElementById('cartOverlay');
+    if (cartOverlay) cartOverlay.style.display = 'none';
+    closeModalState();
 }

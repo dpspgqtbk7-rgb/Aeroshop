@@ -2932,3 +2932,46 @@ body.modal-open {
         pointer-events: none !important;
     }
 }
+/* --- AL FINAL DE TU STYLE.CSS --- */
+
+/* Ajuste del logo móvil en la portada */
+.hero-logo-nubes-mobile {
+    display: none;
+    width: 220px;
+    max-width: 80vw;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.4));
+    margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+    .hero-logo-nubes-mobile {
+        display: block !important;
+    }
+}
+
+/* Ocultamiento de la barra inferior flotante cuando se abre un modal */
+body.modal-open .bottom-nav {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Estilos de la caja de aviso de privacidad */
+.legal-disclaimer-box {
+    margin-top: 16px;
+    background: rgba(15, 23, 42, 0.05);
+    border-left: 3px solid #0f172a;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #475569;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.legal-disclaimer-box strong {
+    color: #0f172a;
+}

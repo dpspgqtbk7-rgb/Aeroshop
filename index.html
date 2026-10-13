@@ -32,6 +32,7 @@
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
+<img src="./logo-nubes.png" alt="Aero Shop Nubes" class="hero-logo-nubes-mobile">
         <div class="hero-plane-container">
             <img src="./avion.png" alt="Avión Aeroshop" class="hero-plane-img">
         </div>
@@ -354,7 +355,37 @@
 
             <!-- Grid de recomendaciones Monchis -->
      <div class="monchis-cards-grid" id="monchisGrid">
-<div class="monchis-cards-grid" id="monchisGrid">
+<div class="compact-card" data-tipo="casa" data-antojo="dulce" onclick="openCardModal('monchis', 'oreo')">
+    <video src="./OREO.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🏠 Casa • 🍩 Dulce</span>
+        <h4>Oreo Fritas Crujientes 🍪🔥</h4>
+    </div>
+</div>
+
+<div class="compact-card" data-tipo="calle" data-zona="centro" data-antojo="salado" onclick="openCardModal('monchis', 'cotorras')">
+    <video src="./cotorras.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">📍 Centro • 🍿 Salado</span>
+        <h4>Las Cotorras 🌮🍻</h4>
+    </div>
+</div>
+
+<div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchicha_hawaiana')">
+    <video src="./salchicha.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🏠 Casa • 🍿 Salado</span>
+        <h4>Salchichas Hawaianas Glaseadas 🌭🍍</h4>
+    </div>
+</div>
+
+<div class="compact-card" data-tipo="casa" data-antojo="dulce" onclick="openCardModal('monchis', 'pan_muerto')">
+    <video src="./pan-de-muerto.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🏠 Casa • 🍩 Dulce</span>
+        <h4>Pan de Muerto Relleno 🍞🍫</h4>
+    </div>
+</div>
 
     <!-- SPOTS DE CALLE -->
     <div class="compact-card" data-tipo="calle" data-zona="sur" data-antojo="salado" onclick="openCardModal('monchis', 'losperros')">
@@ -501,6 +532,29 @@
 
         <!-- Grid de Tarjetas Compactas de Cine -->
         <div class="monchis-cards-grid" id="cineGrid">
+            <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'robots')">
+    <video src="./robots.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🎬 Antología Animada</span>
+        <h4>LOVE, DEATH & ROBOTS 🤖🌌</h4>
+    </div>
+</div>
+
+<div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'congreso')">
+    <video src="./congreso.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🎬 Animación Surrealista</span>
+        <h4>THE CONGRESS (EL CONGRESO) 💊🎨</h4>
+    </div>
+</div>
+
+<div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'grasa_fria')">
+    <video src="./grasa-fria.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <div class="compact-card-body">
+        <span class="badge-tag">🎬 Cortometraje Bizarro</span>
+        <h4>GRASA FRÍA 🧊🌭</h4>
+    </div>
+</div>
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'pastoral')">
                 <video src="./pastoral.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
@@ -876,6 +930,10 @@
     </div>
 
     <!-- BOTÓN ÚNICO OFICIAL DE GOOGLE -->
+<div class="legal-disclaimer-box">
+  <strong>Consentimiento de Datos Personales:</strong><br>
+  Al presionar <strong>"Continuar con Google"</strong>, declaras expresamente que eres mayor de edad, que has leído nuestro <strong>Aviso de Privacidad</strong> y otorgas tu consentimiento para que <strong>AEROSHOP</strong> recabe y trate tus datos (nombre, correo e historial de vuelo) exclusivamente con fines estadísticos internos, personalización de servicio y la acreditación de promociones en tu pasaporte digital. Tus datos están protegidos y no serán compartidos ni comercializados con terceros.
+</div>
     <div class="social-login-grid" style="margin-top: 24px;">
       <button class="btn-social-auth btn-google-adidas" onclick="iniciarSesionGoogle()" style="justify-content: center; width: 100%;">
         <svg width="22" height="22" viewBox="0 0 24 24">
