@@ -2149,3 +2149,15 @@ sendWhatsAppOrder = async function() {
     // Ejecutar el envío de WhatsApp original
     originalSendWhatsAppOrder();
 };
+/* Cierre intuitivo tocando el fondo oscuro del perfil */
+document.addEventListener('DOMContentLoaded', () => {
+    const profileModal = document.getElementById('profileModal');
+    if (profileModal) {
+        profileModal.addEventListener('click', (e) => {
+            // Si el usuario da clic o toca el fondo oscuro fuera de la tarjeta
+            if (e.target === profileModal) {
+                cerrarPerfil();
+            }
+        });
+    }
+});
