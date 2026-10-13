@@ -1,20 +1,14 @@
 let currentUserProfile = null;
 
 // Escuchador de estado de autenticación
-window.addEventListener('DOMContentLoaded', () => {
-    const checkFirebaseInt = setInterval(() => {
-        if (window.auth && window.fbMethods) {
-            clearInterval(checkFirebaseInt);
-            
-            window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
-                if (user) {
-                    await syncUserProfile(user);
-                } else {
-                    currentUserProfile = null;
-                }
-            });
-        }
-    }, 200);
+window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
+    if (user) {
+        await syncUserProfile(user);
+        checkAdminPermission(user);
+    } else {
+        currentUserProfile = null;
+        checkAdminPermission(null); // Oculta el panel y botón al cerrar sesión
+    }
 });
 
 async function syncUserProfile(user) {
@@ -2166,13 +2160,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 /* Función para abrir el panel Admin desde la barra flotante */
-function abrirPanelAdminDirecto() {
-    cerrarTodasLasVistas();
-    const adminSection = document.getElementById('adminPanelSection');
-    if (adminSection) {
-        adminSection.style.display = 'block';
-        adminSection.scrollIntoView({ behavior: 'smooth' });
+function renderPasaporteUI() {
+    if (!currentUserProfile) return;
+
+    // 1. Cargar Código QR
+    const qrImg = document.getElementById('userQrCodeImg');
+    if (qrImg && currentUserProfile.uid) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUserProfile.uid)}`;
     }
+
+    // 2. Datos del perfil
+    const avatarElem = document.getElementById('userAvatar');
+    const emailElem = document.getElementById('userEmail');
+    if (avatarElem && currentUserProfile.photoURL) avatarElem.src = currentUserProfile.photoURL;
+    if (emailElem) emailElem.innerText = currentUserProfile.email;
+
+    const inputNombre = document.getElementById('editNombreReal');
+    const inputApodo = document.getElementById('editApodo');
+    if (inputNombre) inputNombre.value = currentUserProfile.nombre_real || currentUserProfile.displayName || '';
+    if (inputApodo) inputApodo.value = currentUserProfile.apodo || '';
+
+    // 3. Conteo de Vuelos y Estatus VIP
+    const vuelos = currentUserProfile.vuelos_acumulados || 0;
+    const countText = document.getElementById('vuelosCountText');
+    const vipBadge = document.getElementById('userVipBadge');
+
+    if (countText) countText.innerText = `${vuelos} / 3 VUELOS`;
+
+    if (vipBadge) {
+        if (vuelos >= 3) {
+            vipBadge.innerText = "PASAJERO VIP ✈️🔥";
+            vipBadge.className = "status-pill-badge vip";
+        } else {
+            vipBadge.innerText = "PASAJERO FRECUENTE 🛫";
+            vipBadge.className = "status-pill-badge normal";
+        }
+    }
+
+    // 4. Progreso de los 3 pasos (Vuelos)
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    if (step1) step1.classList.toggle('active', vuelos >= 1);
+    if (step2) step2.classList.toggle('active', vuelos >= 2);
+    if (step3) step3.classList.toggle('active', vuelos >= 3);
+
+    // 5. Historial y Rastreador
+    if (typeof renderHistorialProductos === 'function') renderHistorialProductos();
+    if (typeof renderRastreadorPedidoCliente === 'function') renderRastreadorPedidoCliente();
 }
 
 /* Modificar checkAdminPermission para mostrar el botón 👑 en la barra inferior */
