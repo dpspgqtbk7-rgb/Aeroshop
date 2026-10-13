@@ -5,16 +5,17 @@ function initAuthListener() {
         window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
             if (user) {
                 await syncUserProfile(user);
-                
+                checkAdminPermission(user); // 👈 LÍNEA CLAVE: Evalúa y muestra la corona 👑
             } else {
                 currentUserProfile = null;
-                
+                checkAdminPermission(null); // 👈 Oculta la corona al cerrar sesión
             }
         });
     } else {
         setTimeout(initAuthListener, 100);
     }
 }
+initAuthListener();
 initAuthListener();
 
 // Sincronizar usuario asegurando siempre el campo 'uid'
@@ -1734,25 +1735,6 @@ function stopBrownNoise() {
    ========================================== */
 let adminInventarioCache = [];
 const ADMIN_EMAIL = "aeroshop.37@gmail.com";
-
- {
-    const adminSection = document.getElementById('adminPanelSection');
-    if (user && user.email === ADMIN_EMAIL) {
-        if (adminSection) adminSection.style.display = 'block';
-        cargarDashboardAdmin();
-        cargarInventarioAdmin();
-    } else {
-        if (adminSection) adminSection.style.display = 'none';
-    }
-}
-
-const originalSyncUserProfile = window.syncUserProfile;
-window.syncUserProfile = async function(user) {
-    if (typeof originalSyncUserProfile === 'function') {
-        await originalSyncUserProfile(user);
-    }
-   ;
-};
 
 async function cargarDashboardAdmin() {
     if (!window.db) return;
