@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- LIBRERÍA DE ESCÁNER DE CÓDIGO QR -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <!-- TÍTULO OFICIAL SEO -->
@@ -846,7 +848,14 @@
                 <span class="metric-value" id="dashUtilidad">$0 MXN</span>
             </div>
         </div>
-
+<!-- MÓDULO DE ESCÁNER DE CÓDIGO QR CON CÁMARA -->
+<div class="admin-card" style="text-align: center;">
+    <h3>📷 Escáner QR de Pasaporte</h3>
+    <button type="button" class="btn-admin-action" style="background: #eab308; color: #000; font-weight: 800; margin-bottom: 12px;" onclick="iniciarEscanerQR()">
+        📸 Abrir Cámara para Escanear QR
+    </button>
+    <div id="qrReaderContainer" style="width: 100%; max-width: 320px; margin: 0 auto; display: none; border-radius: 16px; overflow: hidden; border: 2px solid #facc15;"></div>
+</div>
         <!-- 2. REGISTRO DE VENTA Y ACREDITACIÓN DE VUELO -->
         <div class="admin-card">
             <h3>🎟️ Acreditar Vuelo y Registrar Venta</h3>
@@ -968,7 +977,11 @@
       <div class="user-details-form">
         <!-- Badge de Estatus -->
         <div id="userVipBadge" class="status-pill-badge">PASAJERO EN CURSO 🛫</div>
-
+<!-- CÓDIGO QR DEL PASAPORTE DIGITAL -->
+<div style="text-align: center; margin: 15px 0;">
+  <img id="userQrCodeImg" src="" alt="Código QR Pasaporte" style="width: 120px; height: 120px; border-radius: 12px; border: 2px solid #facc15; padding: 4px; background: #ffffff;">
+  <span style="display: block; font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Escanea este QR con el Capitán para acreditar vuelo</span>
+</div>
         <!-- Campos Editables -->
         <div class="input-field-group">
           <label>Nombre Completo:</label>

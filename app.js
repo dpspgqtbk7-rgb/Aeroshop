@@ -47,7 +47,11 @@ currentUserProfile = {
 
 function renderPasaporteUI() {
     if (!currentUserProfile) return;
-
+// Generación dinámica de QR con la API oficial de QRServer
+const qrImg = document.getElementById('userQrCodeImg');
+if (qrImg && currentUserProfile.uid) {
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${currentUserProfile.uid}`;
+}
     // Sincronizar datos directamente con la nueva tarjeta de Perfil (Estilo Adidas)
     const nameElem = document.getElementById('userName');
     const emailElem = document.getElementById('userEmail');
@@ -2235,3 +2239,41 @@ renderPasaporteUI = function() {
     }
     renderRastreadorPedidoCliente();
 };
+/* ==========================================
+   SISTEMA DE ESCÁNER DE CÓDIGO QR PARA EL ADMIN
+   ========================================== */
+let html5QrScanner = null;
+
+function iniciarEscanerQR() {
+    const container = document.getElementById('qrReaderContainer');
+    if (!container) return;
+
+    container.style.display = 'block';
+
+    if (!html5QrScanner) {
+        html5QrScanner = new Html5Qrcode("qrReaderContainer");
+    }
+
+    const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+    html5QrScanner.start(
+        { facingMode: "environment" }, // Usa la cámara trasera del celular
+        config,
+        (decodedText) => {
+            // Cuando detecta un QR válido
+            document.getElementById('adminUserUid').value = decodedText;
+            alert(`✅ ¡QR Escaneado con éxito! Cliente detectado: ${decodedText}`);
+            
+            // Detener la cámara
+            html5QrScanner.stop().then(() => {
+                container.style.display = 'none';
+            });
+        },
+        (errorMessage) => {
+            // Ignorar errores menores de búsqueda de marco
+        }
+    ).catch(err => {
+        alert("⚠️ Error al acceder a la cámara: Permiso denegado o dispositivo sin cámara.");
+        container.style.display = 'none';
+    });
+}
