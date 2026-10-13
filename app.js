@@ -1977,3 +1977,168 @@ function cerrarTodasLasVistas() {
     if (cartOverlay) cartOverlay.style.display = 'none';
     closeModalState();
 }
+// 1. Sincronización y Renderizado del Perfil Ampliado
+async function syncUserProfile(user) {
+    const { doc, getDoc, setDoc } = window.fbMethods;
+    const userRef = doc(window.db, "usuarios", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+        currentUserProfile = snap.data();
+    } else {
+        // Registro inicial
+        currentUserProfile = {
+            uid: user.uid,
+            displayName: user.displayName || '',
+            nombre_real: user.displayName || '',
+            apodo: '',
+            email: user.email,
+            photoURL: user.photoURL,
+            vuelos_acumulados: 0,
+            descuento_bienvenida_activo: true,
+            historial_compras: [],
+            fecha_registro: new Date().toISOString(),
+            acepto_aviso_privacidad: true
+        };
+        await setDoc(userRef, currentUserProfile);
+    }
+
+    renderPasaporteUI();
+}
+
+function renderPasaporteUI() {
+    if (!currentUserProfile) return;
+
+    // Foto y Correo
+    const avatarElem = document.getElementById('userAvatar');
+    const emailElem = document.getElementById('userEmail');
+    if (avatarElem && currentUserProfile.photoURL) avatarElem.src = currentUserProfile.photoURL;
+    if (emailElem) emailElem.innerText = currentUserProfile.email;
+
+    // Campos Editables (Nombre Real y Apodo)
+    const inputNombre = document.getElementById('editNombreReal');
+    const inputApodo = document.getElementById('editApodo');
+    if (inputNombre) inputNombre.value = currentUserProfile.nombre_real || currentUserProfile.displayName || '';
+    if (inputApodo) inputApodo.value = currentUserProfile.apodo || '';
+
+    // Conteo y Tipo de Pasajero (VIP o Normal)
+    const vuelos = currentUserProfile.vuelos_acumulados || 0;
+    const countText = document.getElementById('vuelosCountText');
+    const vipBadge = document.getElementById('userVipBadge');
+
+    if (countText) countText.innerText = `${vuelos} / 3 VUELOS`;
+
+    if (vipBadge) {
+        if (vuelos >= 3) {
+            vipBadge.innerText = "PASAJERO VIP ✈️🔥";
+            vipBadge.className = "status-pill-badge vip";
+        } else {
+            vipBadge.innerText = "PASAJERO FRECUENTE 🛫";
+            vipBadge.className = "status-pill-badge normal";
+        }
+    }
+
+    // Pasos de Vuelo
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    if (step1) step1.classList.toggle('active', vuelos >= 1);
+    if (step2) step2.classList.toggle('active', vuelos >= 2);
+    if (step3) step3.classList.toggle('active', vuelos >= 3);
+
+    // Renderizar Historial de Productos Adquiridos
+    renderHistorialProductos();
+}
+
+// 2. Guardar Nombre Real y Apodo en Firebase
+async function guardarDatosPerfil() {
+    if (!currentUserProfile || !window.auth.currentUser) return;
+
+    const nuevoNombre = document.getElementById('editNombreReal').value.trim();
+    const nuevoApodo = document.getElementById('editApodo').value.trim();
+
+    try {
+        const { doc, updateDoc } = window.fbMethods;
+        const userRef = doc(window.db, "usuarios", currentUserProfile.uid);
+
+        await updateDoc(userRef, {
+            nombre_real: nuevoNombre,
+            displayName: nuevoNombre,
+            apodo: nuevoApodo
+        });
+
+        currentUserProfile.nombre_real = nuevoNombre;
+        currentUserProfile.displayName = nuevoNombre;
+        currentUserProfile.apodo = nuevoApodo;
+
+        alert("✅ Perfil actualizado correctamente.");
+    } catch (e) {
+        console.error("Error al actualizar perfil:", e);
+        alert("⚠️ Hubo un error al guardar los cambios: " + e.message);
+    }
+}
+
+// 3. Renderizar el Historial de Productos Comprados
+function renderHistorialProductos() {
+    const grid = document.getElementById('purchasedProductsGrid');
+    if (!grid) return;
+
+    const compras = currentUserProfile.historial_compras || [];
+
+    if (compras.length === 0) {
+        grid.innerHTML = `<div class="empty-purchases-box"><span>🛒</span><p>sin productos adquiridos</p></div>`;
+    } else {
+        grid.innerHTML = compras.map(item => `
+            <div class="purchased-item-card">
+                <img src="${item.image || './portada.jpg'}" alt="${item.title}">
+                <div class="purchased-item-info">
+                    <h4>${item.title}</h4>
+                    <span class="purchased-date">Adquirido: ${new Date(item.fecha).toLocaleDateString()}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// 4. Actualización Automática al Pedir por WhatsApp
+const originalSendWhatsAppOrder = sendWhatsAppOrder;
+sendWhatsAppOrder = async function() {
+    if (cart.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+    }
+
+    // Registrar compras en el perfil de Firebase si hay sesión iniciada
+    if (currentUserProfile && window.auth.currentUser) {
+        try {
+            const { doc, updateDoc } = window.fbMethods;
+            const userRef = doc(window.db, "usuarios", currentUserProfile.uid);
+
+            const nuevasCompras = cart.map(item => ({
+                title: item.title,
+                image: item.image,
+                price: item.price,
+                fecha: new Date().toISOString()
+            }));
+
+            const historialActualizado = [...(currentUserProfile.historial_compras || []), ...nuevasCompras];
+            let nuevosVuelos = (currentUserProfile.vuelos_acumulados || 0) + 1;
+            if (nuevosVuelos > 3) nuevosVuelos = 1; // Reinicia ciclo de 3
+
+            await updateDoc(userRef, {
+                historial_compras: historialActualizado,
+                vuelos_acumulados: nuevosVuelos
+            });
+
+            currentUserProfile.historial_compras = historialActualizado;
+            currentUserProfile.vuelos_acumulados = nuevosVuelos;
+            renderPasaporteUI();
+        } catch (e) {
+            console.error("Error al guardar pedido en historial:", e);
+        }
+    }
+
+    // Ejecutar el envío de WhatsApp original
+    originalSendWhatsAppOrder();
+};

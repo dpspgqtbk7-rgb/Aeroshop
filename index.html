@@ -948,34 +948,71 @@
   </div>
 </div>
 <!-- 3. MODAL DE PERFIL DE USUARIO AUTENTICADO -->
+<!-- MODAL DE PERFIL Y PASAPORTE DIGITAL A PANTALLA COMPLETA -->
 <div id="profileModal" class="modal-overlay">
-  <div class="modal-card adidas-card profile-logged-card">
+  <div class="modal-card profile-fullscreen-card">
     <button class="close-btn" onclick="cerrarPerfil()">&times;</button>
     
-    <div class="profile-user-badge">
-      <img id="userAvatar" src="logo-cookies.png" alt="Avatar" class="user-avatar-img">
-      <div>
-        <h3 id="userName">Cargando...</h3>
-        <p id="userEmail">correo@ejemplo.com</p>
-        <span class="status-pill">PASAJERO VIP ✈️</span>
+    <!-- ENCABEZADO DEL PASAPORTE -->
+    <div class="profile-header-banner">
+      <span class="badge-pasaporte">🎟️ PASAPORTE DE VUELO DIGITAL</span>
+      <h2 class="profile-main-title">AEROSHOP CLUB</h2>
+    </div>
+
+    <!-- SECCIÓN USUARIO EDITABLE -->
+    <div class="profile-user-hero">
+      <div class="avatar-wrapper">
+        <img id="userAvatar" src="logo-cookies.png" alt="Avatar Pasajero" class="user-avatar-large">
+      </div>
+
+      <div class="user-details-form">
+        <!-- Badge de Estatus -->
+        <div id="userVipBadge" class="status-pill-badge">PASAJERO EN CURSO 🛫</div>
+
+        <!-- Campos Editables -->
+        <div class="input-field-group">
+          <label>Nombre Completo:</label>
+          <input type="text" id="editNombreReal" placeholder="Ej. Angel Zahid Galicia" class="profile-input">
+        </div>
+
+        <div class="input-field-group">
+          <label>Apodo / Alias de Vuelo:</label>
+          <input type="text" id="editApodo" placeholder="Ej. El Capitán 420" class="profile-input">
+        </div>
+
+        <p id="userEmail" class="profile-email-text">correo@ejemplo.com</p>
+
+        <button class="btn-save-profile" onclick="guardarDatosPerfil()">💾 Guardar Cambios</button>
       </div>
     </div>
 
-    <!-- TARJETA DE VUELOS ACUMULADOS -->
+    <!-- TARJETA DE PROGRESO DE VUELOS (SISTEMA 3 VUELOS) -->
     <div class="vuelos-status-box">
       <div class="vuelos-box-header">
-        <span>MIS VUELOS</span>
+        <span>ESTATUS DE VUELOS ACUMULADOS</span>
         <strong id="vuelosCountText">0 / 3 VUELOS</strong>
       </div>
       <div class="vuelos-dots-flex">
-        <div class="vuelo-step active" id="step1">✈️ Vuelo 1</div>
+        <div class="vuelo-step" id="step1">✈️ Vuelo 1</div>
         <div class="vuelo-step" id="step2">✈️ Vuelo 2</div>
-        <div class="vuelo-step gift" id="step3">🎁 Regalo</div>
+        <div class="vuelo-step gift" id="step3">🎁 Regalo Vuelo #3</div>
       </div>
-      <p class="vuelos-hint">¡En tu 3ª compra obtienes un producto de regalo totalmente gratis!</p>
+      <p class="vuelos-hint">💡 <em>¡En tu 3ª compra obtienes un producto de regalo totalmente gratis!</em></p>
     </div>
 
-    <button class="btn-logout-adidas" onclick="cerrarSesionFirebase()">CERRAR SESIÓN</button>
+    <!-- HISTORIAL DE PRODUCTOS ADQUIRIDOS -->
+    <div class="purchased-products-section">
+      <h3>📦 Mis Productos Adquiridos</h3>
+      <div id="purchasedProductsGrid" class="purchased-grid">
+        <!-- JS inyectará las tarjetas de productos comprados o el mensaje "sin productos adquiridos" -->
+      </div>
+    </div>
+
+    <!-- BOTÓN CERRAR SESIÓN -->
+    <div class="profile-footer">
+      <button class="btn-logout-adidas" onclick="cerrarSesionFirebase()">CERRAR SESIÓN</button>
+    </div>
+
   </div>
 </div>
 
