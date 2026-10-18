@@ -3530,3 +3530,48 @@ body.modal-open {
     line-height: 1.5 !important;
     margin-bottom: 8px !important;
 }
+/* ==========================================
+   BANNER Y ESTILOS PARA LA HORA 4:20
+   ========================================== */
+#bannerHora420 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #15803d, #facc15, #a855f7, #15803d);
+    background-size: 300% 300%;
+    color: #000000;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    text-align: center;
+    padding: 10px 15px;
+    z-index: 999999;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    animation: gradientShift 3s ease infinite, pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
+    100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.9); }
+}
+
+/* Etiqueta de precio tachado cuando la promo está activa */
+.precio-original-tachado {
+    text-decoration: line-through;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-right: 6px;
+}
+
+.precio-420-destacado {
+    color: #4ade80 !important;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+}

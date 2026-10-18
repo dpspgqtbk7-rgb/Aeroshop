@@ -245,107 +245,66 @@ function stopHoverSlider(container) {
     const mediaElements = container.querySelectorAll('img, video');
     mediaElements.forEach((el, idx) => el.classList.toggle('active', idx === 0));
 }
-
-function openProductModal(productId) {
+/* ==========================================
+   VENTANA MODAL DINÁMICA DE PRODUCTO (FIRESTORE)
+   ========================================== */
+async function openProductModal(productId) {
     openModalState();
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
     const strainPillsContainer = document.getElementById('modalStrainPills');
 
-    if (productId === 'donutsdonitav3') {
-        currentModalProduct = { title: 'donuts donita v3', price: 850, image: './donusdonitav31.JPG' };
-        document.getElementById('modalTitle').innerText = 'donuts donita v3';
-        document.getElementById('modalPrice').innerText = '$850 MXN';
-        document.getElementById('modalDescription').innerText = 'dónuts v3 llega en este nuevo modelo en forma de dona mágica ✨🪴, disponible en indica, sativa , hibrida';
-        mediaContainer.innerHTML = `<img src="./donusdonitav31.JPG" class="modal-main-image" alt="donuts donita v3">`;
-        thumbnailsContainer.innerHTML = `
-            <img src="./donusdonitav31.JPG" class="modal-thumb active" onclick="changeModalMedia(this, './donusdonitav31.JPG')">
-            <img src="./donutsdonasv3.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsdonasv3.JPG')">
-        `;
-        strainPillsContainer.innerHTML = `
-            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
-        `;
-        selectedStrain = 'Sativa';
+    if (!window.db || !window.fbMethods) return;
 
-    } else if (productId === 'donutsv2') {
-        currentModalProduct = { title: 'Donuts v2', price: 700, image: './donutsv22.JPG' };
-        document.getElementById('modalTitle').innerText = 'Donuts v2';
-        document.getElementById('modalPrice').innerText = '$700 MXN';
-        document.getElementById('modalDescription').innerText = 'donuts switch v2 2g';
-        mediaContainer.innerHTML = `<video src="./donuts1.mp4" autoplay loop muted playsinline class="modal-main-image"></video>`;
-        thumbnailsContainer.innerHTML = `
-            <video src="./donuts1.mp4" class="modal-thumb active" onclick="changeModalMedia(this, './donuts1.mp4')" muted></video>
-            <img src="./donutsv22.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv22.JPG')">
-            <img src="./donutsv23.JPG" class="modal-thumb" onclick="changeModalMedia(this, './donutsv23.JPG')">
-        `;
-        strainPillsContainer.innerHTML = `
-            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
-        `;
-        selectedStrain = 'Sativa';
+    try {
+        const { doc, getDoc } = window.fbMethods;
+        const snap = await getDoc(doc(window.db, "productos", productId));
 
-    } else if (productId === 'packman3g') {
-        currentModalProduct = { title: 'PACKMAN 3g + Pre-Roll', price: 950, image: './packman1.png' };
-        document.getElementById('modalTitle').innerText = 'PACKMAN 3g + Pre-Roll';
-        document.getElementById('modalPrice').innerHTML = '<span style="text-decoration: line-through; color: #94a3b8; font-size: 1.2rem; margin-right: 8px;">$1,300 MXN</span> <span style="color: #facc15;">$950 MXN</span>';
-        document.getElementById('modalDescription').innerText = 'Packman 3g Disposable Live Resin + Liquid Diamonds en colaboración con PartyBoyz, acompañado de un .5g Infused Pre-Roll de máxima potencia e increíble sabor.';
-        mediaContainer.innerHTML = `<img src="./packman1.png" class="modal-main-image" alt="PACKMAN 3g">`;
-        thumbnailsContainer.innerHTML = `
-            <img src="./packman1.png" class="modal-thumb active" onclick="changeModalMedia(this, './packman1.png')">
-            <img src="./packman2.png" class="modal-thumb" onclick="changeModalMedia(this, './packman2.png')">
-            <img src="./packman3.png" class="modal-thumb" onclick="changeModalMedia(this, './packman3.png')">
-            <img src="./packman5.JPG" class="modal-thumb" onclick="changeModalMedia(this, './packman5.JPG')">
-        `;
-        strainPillsContainer.innerHTML = `
-            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
-        `;
-        selectedStrain = 'Sativa';
+        if (snap.exists()) {
+            const p = snap.data();
+            
+            // Recálculo de precio para Hora 4:20
+            const precioCalculado = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
 
-    } else if (productId === 'muhacmeds') {
-        currentModalProduct = { title: 'MUHACMEDS 2g', price: 700, image: './Muhacmeds1.JPG' };
-        document.getElementById('modalTitle').innerText = 'MUHACMEDS 2g';
-        document.getElementById('modalPrice').innerText = '$700 MXN';
-        document.getElementById('modalDescription').innerText = 'MUHACMEDS 2g, es una colaboración que no solo es estéticamente cool si no que junta ambas marcas lideres en el mercado de las mieles, MUHAMEDS y COOKIES.';
-        mediaContainer.innerHTML = `<img src="./Muhacmeds1.JPG" class="modal-main-image" alt="MUHACMEDS 2g">`;
-        thumbnailsContainer.innerHTML = `
-            <img src="./Muhacmeds1.JPG" class="modal-thumb active" onclick="changeModalMedia(this, './Muhacmeds1.JPG')">
-            <img src="./MUHACMEDS.png" class="modal-thumb" onclick="changeModalMedia(this, './MUHACMEDS.png')">
-            <img src="./muhacmeds.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds.jpg')">
-            <img src="./muhacmeds2.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhacmeds2.jpg')">
-        `;
-        strainPillsContainer.innerHTML = `
-            <button class="strain-pill selected" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Indica')">Indica</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
-        `;
-        selectedStrain = 'Sativa';
+            currentModalProduct = {
+                id: snap.id,
+                title: p.titulo,
+                price: precioCalculado,
+                image: p.imagen
+            };
 
-    } else if (productId === 'muhamedual') {
-        currentModalProduct = { title: 'MUHAMEDual 2g', price: 800, image: './muhamedual 2.JPG' };
-        document.getElementById('modalTitle').innerText = 'MUHAMEDual 2g';
-        document.getElementById('modalPrice').innerText = '$800 MXN';
-        document.getElementById('modalDescription').innerText = 'Muhameds de nuevo sorprendiéndonos nuevamente y ahora con este nuevo modelo muhamedual, con doble variante de wax, y doble resistencia, ya sea que elijas quemar hibrida o sativa o ambas 😵‍💫.';
-        mediaContainer.innerHTML = `<video src="./muhadual.mp4" autoplay loop muted playsinline class="modal-main-image"></video>`;
-        thumbnailsContainer.innerHTML = `
-            <video src="./muhadual.mp4" class="modal-thumb active" onclick="changeModalMedia(this, './muhadual.mp4')" muted></video>
-            <img src="./muhamedual 2.JPG" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual 2.JPG')">
-            <img src="./muhamedual3.jpg" class="modal-thumb" onclick="changeModalMedia(this, './muhamedual3.jpg')">
-        `;
-        strainPillsContainer.innerHTML = `
-            <button class="strain-pill selected" onclick="selectStrain(this, 'Híbrida')">Híbrida</button>
-            <button class="strain-pill" onclick="selectStrain(this, 'Sativa')">Sativa</button>
-        `;
-        selectedStrain = 'Híbrida';
+            document.getElementById('modalTitle').innerText = p.titulo;
+            
+            document.getElementById('modalPrice').innerHTML = window.esPromo420Activa
+                ? `<span class="precio-original-tachado">$${p.precio} MXN</span> <span class="precio-420-destacado">$${precioCalculado} MXN</span>`
+                : `$${p.precio} MXN`;
+
+            document.getElementById('modalDescription').innerText = p.descripcion || 'Sin descripción disponible.';
+
+            // Renderizar elemento multimedia principal (Imagen o Video)
+            const isVideo = p.imagen.toLowerCase().endsWith('.mp4');
+            mediaContainer.innerHTML = isVideo
+                ? `<video src="${p.imagen}" autoplay loop muted playsinline class="modal-main-image"></video>`
+                : `<img src="${p.imagen}" class="modal-main-image" alt="${p.titulo}">`;
+
+            // Miniaturas (Miniatura principal)
+            thumbnailsContainer.innerHTML = isVideo
+                ? `<video src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')" muted></video>`
+                : `<img src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')">`;
+
+            // Renderizar Variedades / Cepas dinámicas desde Firestore
+            const variedades = p.variedades || ['Sativa', 'Indica', 'Híbrida'];
+            strainPillsContainer.innerHTML = variedades.map((strain, index) => `
+                <button class="strain-pill ${index === 0 ? 'selected' : ''}" onclick="selectStrain(this, '${strain}')">${strain}</button>
+            `).join('');
+
+            selectedStrain = variedades[0] || 'Sativa';
+            document.getElementById('productModalOverlay').classList.add('active');
+        }
+    } catch (e) {
+        console.error("Error al abrir modal de producto:", e);
     }
-
-    document.getElementById('productModalOverlay').classList.add('active');
 }
-
 function closeProductModal() {
     document.getElementById('productModalOverlay').classList.remove('active');
     closeModalState();
@@ -552,187 +511,130 @@ function closeModalState() {
         document.body.style.overflow = 'auto';
     }
 }
-
-function openFullscreenBrand(brandKey) {
+/* ==========================================
+   VISTAS FULLSCREEN POR MARCA (DINÁMICAS Y CON HORA 4:20)
+   ========================================== */
+async function openFullscreenBrand(brandKey) {
     const view = document.getElementById('brandFullscreenView');
     const content = document.getElementById('brandFullscreenContent');
+    if (!view || !content) return;
 
-    const donutsDonitaV3CardHTML = `
-        <div class="donuts-product-card" onclick="openProductModal('donutsdonitav3')">
-            <span class="product-tag-new" style="color: #fb7185; border-color: rgba(251, 113, 133, 0.4); background: rgba(17, 24, 39, 0.9);">NUEVO LANZAMIENTO</span>
-            <div class="product-img-slider" style="background: rgba(255,255,255,0.05); border-color: rgba(251, 113, 133, 0.3);" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1">
-                <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2">
-            </div>
-            <div style="margin-bottom: 16px;">
-                <div class="product-name" style="color:#ffffff;">donuts donita v3</div>
-                <div class="product-subtitle" style="color:#9ca3af;">Dona Mágica ✨🪴 • Sativa / Indica / Híbrida</div>
-                <div class="product-price" style="color:#fb7185;">$850 MXN</div>
-            </div>
-            <button class="donuts-btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
-        </div>
-    `;
+    content.innerHTML = '<div style="text-align:center; padding:100px; color:#fff;">Cargando catálogo oficial...</div>';
+    view.classList.add('active');
+    view.scrollTop = 0;
+    openModalState();
 
-    const donutsV2CardHTML = `
-        <div class="donuts-product-card" onclick="openProductModal('donutsv2')">
-            <span class="product-tag-new" style="color: #fb7185; border-color: rgba(251, 113, 133, 0.4); background: rgba(17, 24, 39, 0.9);">NUEVO LANZAMIENTO</span>
-            <div class="product-img-slider" style="background: rgba(255,255,255,0.05); border-color: rgba(251, 113, 133, 0.3);" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                <video src="./donuts1.mp4" autoplay loop muted playsinline class="active"></video>
-                <img src="./donutsv22.JPG" alt="Donuts v2 2">
-                <img src="./donutsv23.JPG" alt="Donuts v2 3">
-            </div>
-            <div style="margin-bottom: 16px;">
-                <div class="product-name" style="color:#ffffff;">Donuts v2</div>
-                <div class="product-subtitle" style="color:#9ca3af;">donuts switch v2 2g</div>
-                <div class="product-price" style="color:#fb7185;">$700 MXN</div>
-            </div>
-            <button class="donuts-btn-add" onclick="event.stopPropagation(); openProductModal('donutsv2')">Ver Más Información</button>
-        </div>
-    `;
+    let productosMarcaHTML = '';
+    
+    // Consulta dinámica a Firestore por marca
+    if (window.db && window.fbMethods) {
+        try {
+            const { collection, getDocs, query, where } = window.fbMethods;
+            const q = query(collection(window.db, "productos"), where("marca", "==", brandKey));
+            const snap = await getDocs(q);
 
-    const packman3gCardHTML = `
-        <div class="product-card card-glass" style="background: rgba(15, 23, 42, 0.92); border: 2px solid #38bdf8; box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);" onclick="openProductModal('packman3g')">
-            <span class="product-tag-sale" style="background: #facc15; color: #0f172a; border: none; font-weight: 800;">¡REBAJA!</span>
-            <div class="product-img-slider" style="background: rgba(255,255,255,0.05); border-color: rgba(56, 189, 248, 0.3);" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                <img src="./packman1.png" class="active" alt="Packman 3g 1">
-                <img src="./packman2.png" alt="Packman 3g 2">
-                <img src="./packman3.png" alt="Packman 3g 3">
-                <img src="./packman5.JPG" alt="Packman 3g 4">
-            </div>
-            <div>
-                <div class="product-name" style="color:#ffffff;">PACKMAN 3g + Pre-Roll</div>
-                <div class="product-subtitle" style="color:#94a3b8;">Packman × PartyBoyz • Live Resin + .5G Infused</div>
-                <div class="product-price">
-                    <span style="text-decoration: line-through; color: #64748b; font-size: 0.95rem; margin-right: 6px;">$1,300 MXN</span>
-                    <span style="color: #facc15; font-weight: 800;">$950 MXN</span>
-                </div>
-            </div>
-            <button class="btn-add" style="background: linear-gradient(135deg, #facc15 0%, #eab308 100%); color:#0f172a; font-weight: 800; border: none;" onclick="event.stopPropagation(); openProductModal('packman3g')">Ver Más Información</button>
-        </div>
-    `;
+            snap.forEach(docSnap => {
+                const p = docSnap.data();
+                
+                // Recálculo de precio para la Hora 4:20 (40% OFF)
+                const precioFinal = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
+                
+                const HTMLPrecio = window.esPromo420Activa 
+                    ? `<span class="precio-original-tachado">$${p.precio} MXN</span><span class="precio-420-destacado">$${precioFinal} MXN</span>`
+                    : `$${p.precio} MXN`;
 
-    const muhacmedsCardHTML = `
-        <div class="product-card card-glass" style="background: rgba(15, 17, 21, 0.88); border: 1px solid rgba(212, 175, 55, 0.4);" onclick="openProductModal('muhacmeds')">
-            <span class="product-tag-collab">COLABORACIÓN</span>
-            <div class="product-img-slider" style="background: rgba(255,255,255,0.08); border-color: rgba(212, 175, 55, 0.3);" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1">
-                <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2">
-                <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3">
-                <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4">
-            </div>
-            <div>
-                <div class="product-name" style="color:#ffffff;">MUHACMEDS 2g</div>
-                <div class="product-subtitle" style="color:#94a3b8;">Muha Meds × Cookies • Sativa / Indica / Híbrida</div>
-                <div class="product-price" style="color:#d4af37;">$700 MXN</div>
-            </div>
-            <button class="btn-add" style="background: linear-gradient(135deg, #d4af37 0%, #aa8210 100%); color:#000;" onclick="event.stopPropagation(); openProductModal('muhacmeds')">Ver Más Información</button>
-        </div>
-    `;
+                const mediaTag = p.imagen.endsWith('.mp4')
+                    ? `<video src="${p.imagen}" autoplay loop muted playsinline class="active"></video>`
+                    : `<img src="${p.imagen}" class="active" alt="${p.titulo}">`;
 
-    const muhamedualCardHTML = `
-        <div class="product-card card-glass" style="background: rgba(15, 17, 21, 0.88); border: 1px solid rgba(56, 189, 248, 0.4);" onclick="openProductModal('muhamedual')">
-            <span class="product-tag-new">NUEVO LANZAMIENTO</span>
-            <div class="product-img-slider" style="background: rgba(255,255,255,0.08); border-color: rgba(56, 189, 248, 0.3);" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-                <video src="./muhadual.mp4" autoplay loop muted playsinline class="active"></video>
-                <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2">
-                <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3">
-            </div>
-            <div>
-                <div class="product-name" style="color:#ffffff;">MUHAMEDual 2g</div>
-                <div class="product-subtitle" style="color:#94a3b8;">Muha Meds • Doble variante & doble resistencia</div>
-                <div class="product-price" style="color:#38bdf8;">$800 MXN</div>
-            </div>
-            <button class="btn-add" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); color:#000;" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
-        </div>
-    `;
+                productosMarcaHTML += `
+                    <div class="product-card card-glass" style="${p.agotado ? 'opacity:0.6;' : ''}">
+                        <span class="${p.agotado ? 'product-tag-sale' : 'product-tag-new'}">
+                            ${p.agotado ? 'AGOTADO' : p.marca.toUpperCase()}
+                        </span>
+                        <div class="product-img-slider">${mediaTag}</div>
+                        <div>
+                            <div class="product-name" style="color:#ffffff;">${p.titulo}</div>
+                            <div class="product-subtitle" style="color:#94a3b8;">${p.descripcion.slice(0, 50)}...</div>
+                            <div class="product-price">${HTMLPrecio}</div>
+                        </div>
+                        <button class="btn-add" ${p.agotado ? 'disabled style="background:#64748b; cursor:not-allowed;"' : ''} onclick="event.stopPropagation(); addToCart('${p.titulo}', ${precioFinal}, '${p.imagen}')">
+                            ${p.agotado ? 'Sin Stock' : 'Agregar al Carrito'}
+                        </button>
+                    </div>
+                `;
+            });
+        } catch (e) {
+            console.error("Error al cargar marca desde Firestore:", e);
+        }
+    }
 
+    if (!productosMarcaHTML) {
+        productosMarcaHTML = `<p style="text-align: center; color: #94a3b8; grid-column: 1/-1;">No hay productos registrados aún para esta marca.</p>`;
+    }
+
+    // Plantillas visuales por marca
     if (brandKey === 'muhameds') {
         content.className = 'theme-muhameds-full';
         content.innerHTML = `
             <img src="./fondo-espacial.jpg" class="muha-bg-fixed" alt="Fondo">
             <div class="brand-hero-common">
                 <div class="muha-brand-group">
-                    <img src="./logo-muhameds.png" alt="Muha Meds Logo" class="muha-hero-logo">
+                    <img src="./logo-muhameds.png" alt="Muha Meds" class="muha-hero-logo">
                     <img src="./MUHAMEDSINTERFAZ.png" alt="MUHAMEDS" class="muha-hero-title-img">
                 </div>
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()" title="Ver Productos">↓</button>
+                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
             <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${muhamedualCardHTML}${muhacmedsCardHTML}</div>
-            </div>
-        `;
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
     } else if (brandKey === 'cookies') {
         content.className = 'theme-cookies-full';
         content.innerHTML = `
             <div class="brand-hero-common">
-                <img src="./logo-cookies-texto-removebg-preview.png" class="cookies-hero-logo" alt="Cookies Logo">
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()" title="Ver Productos">↓</button>
+                <img src="./logo-cookies-texto-removebg-preview.png" class="cookies-hero-logo" alt="Cookies">
+                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
             <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${muhacmedsCardHTML}</div>
-            </div>
-        `;
-    } else if (brandKey === 'backwoods') {
-        content.className = 'theme-backwoods-full';
-        content.innerHTML = `
-            <div class="brand-hero-common">
-                <div>
-                    <img src="./logo-backwoods.png" alt="Backwoods" style="max-width: 250px; margin-bottom: 15px;">
-                    <div class="muha-hero-title" style="color: #e11d48;">BACKWOODS</div>
-                </div>
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()" title="Ver Productos">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <p style="text-align: center; color: #94a3b8; font-size: 1.1rem;">Próximamente más novedades de Backwoods.</p>
-            </div>
-        `;
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
     } else if (brandKey === 'donuts') {
         content.className = 'theme-donuts-full';
         content.innerHTML = `
             <img src="./fondoslog.jpg" class="muha-bg-fixed" alt="Fondo Donuts">
             <div class="brand-hero-common">
-                <img src="./donutslogointerfaz.png" class="donuts-interface-logo" alt="Donuts Logo Interfaz">
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()" title="Ver Productos">↓</button>
+                <img src="./donutslogointerfaz.png" class="donuts-interface-logo" alt="Donuts">
+                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
             <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">
-                    ${donutsDonitaV3CardHTML}
-                    ${donutsV2CardHTML}
-                    <div class="donuts-product-card">
-                        <span class="product-tag-new" style="color: #fb7185; border-color: rgba(251, 113, 133, 0.4); background: rgba(17, 24, 39, 0.9);">EDICIÓN ESPECIAL</span>
-                        <div class="donuts-img-box"><img src="./donutslogointerfaz.png" alt="Donuts 2g"></div>
-                        <div style="margin-bottom: 16px;">
-                            <div class="product-name" style="color:#ffffff;">DONUTS 2g Disposable</div>
-                            <div class="product-subtitle" style="color:#9ca3af;">Fryd Extracts Presents • Sativa / Indica</div>
-                            <div class="product-price" style="color:#fb7185;">$750 MXN</div>
-                        </div>
-                        <button class="donuts-btn-add" onclick="event.stopPropagation(); addToCart('DONUTS 2g Disposable', 750, './donutslogointerfaz.png')">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        `;
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
     } else if (brandKey === 'packman') {
         content.className = 'theme-packman-full';
         content.innerHTML = `
             <img src="./packmanfondo.jpg" class="muha-bg-fixed" alt="Fondo Packman">
             <div class="brand-hero-common">
                 <div class="muha-brand-group">
-                    <img src="./packmanmarcas.png" alt="Packman Logo" class="packman-hero-logo">
+                    <img src="./packmanmarcas.png" alt="Packman" class="packman-hero-logo">
                     <img src="./PACKMANSEGUNDOLOGO.png" alt="PACKMAN" class="packman-hero-title-img">
                 </div>
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()" title="Ver Productos">↓</button>
+                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
             <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${packman3gCardHTML}</div>
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    } else {
+        content.className = 'theme-backwoods-full';
+        content.innerHTML = `
+            <div class="brand-hero-common">
+                <img src="./logo-backwoods.png" alt="Backwoods" style="max-width:250px; margin-bottom:15px;">
+                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
-        `;
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
     }
-
-    view.classList.add('active');
-    view.scrollTop = 0;
-    openModalState();
 }
-
 function closeFullscreenBrand() {
     const view = document.getElementById('brandFullscreenView');
     if (view) {
@@ -1483,3 +1385,181 @@ async function eliminarProductoCapitan(prodId) {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(cargarProductosTienda, 800);
 });
+/* ==========================================
+   LÓGICA COMPLETA DE HORA 4:20 Y RECALCULO
+   ========================================== */
+window.esPromo420Activa = false;
+
+function iniciarReloj420() {
+    setInterval(() => {
+        const ahora = new Date();
+        const hora = ahora.getHours();     // 16 = 4 PM
+        const minutos = ahora.getMinutes();
+        const segundos = ahora.getSeconds();
+
+        // Rango activo: 16:20:00 a 16:24:59
+        const es420 = (hora === 16 && minutos >= 20 && minutos < 25);
+
+        if (es420 && !window.esPromo420Activa) {
+            const segundosRestantes = 299 - ((minutos - 20) * 60 + segundos);
+            activarPromo420(segundosRestantes);
+        } else if (!es420 && window.esPromo420Activa) {
+            desactivarPromo420();
+        } else if (es420 && window.esPromo420Activa) {
+            // Actualizar contador del banner
+            const segs = 299 - ((minutos - 20) * 60 + segundos);
+            const min = Math.floor(segs / 60);
+            const sec = segs % 60;
+            const banner = document.getElementById('bannerHora420');
+            if (banner) {
+                banner.innerHTML = `🔥 ¡HORA 4:20 ACTIVA! 40% OFF EN TODO EL CATÁLOGO 🔥 (${min}:${sec < 10 ? '0' : ''}${sec})`;
+            }
+        }
+    }, 1000);
+}
+
+function activarPromo420(segundosRestantes) {
+    window.esPromo420Activa = true;
+    let banner = document.getElementById('bannerHora420');
+    if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'bannerHora420';
+        document.body.prepend(banner);
+    }
+    banner.style.display = 'block';
+    
+    // Recargar catálogo para mostrar los precios con el 40% de descuento
+    if (typeof cargarProductosTienda === 'function') {
+        cargarProductosTienda();
+    }
+}
+
+function desactivarPromo420() {
+    window.esPromo420Activa = false;
+    const banner = document.getElementById('bannerHora420');
+    if (banner) banner.style.display = 'none';
+
+    // Restaurar precios normales en el catálogo
+    if (typeof cargarProductosTienda === 'function') {
+        cargarProductosTienda();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', iniciarReloj420);
+/* ==========================================
+   PROCESAMIENTO DE VENTAS Y VUELOS EN VIVO (CAPITÁN)
+   ========================================== */
+
+// 1. Cargar productos dinámicos de Firestore en el select de ventas
+async function cargarInventarioAdmin() {
+    if (!window.db || !window.fbMethods) return;
+    const { collection, getDocs } = window.fbMethods;
+    const select = document.getElementById('adminProductSelect');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Selecciona Producto del Catálogo...</option>';
+    window.adminInventarioCache = [];
+
+    try {
+        const snap = await getDocs(collection(window.db, "productos"));
+        snap.forEach(docSnap => {
+            const p = { id: docSnap.id, ...docSnap.data() };
+            window.adminInventarioCache.push(p);
+
+            if (p.stock > 0 && !p.agotado) {
+                select.innerHTML += `<option value="${p.id}">${p.titulo} (Stock: ${p.stock} pzas - $${p.precio} MXN)</option>`;
+            }
+        });
+    } catch (e) {
+        console.error("Error al cargar inventario para ventas:", e);
+    }
+}
+
+// 2. Actualizar precio sugerido al seleccionar un producto
+function actualizarPrecioSugeridoAdmin() {
+    const prodId = document.getElementById('adminProductSelect').value;
+    const prod = (window.adminInventarioCache || []).find(item => item.id === prodId);
+    if (prod) {
+        document.getElementById('adminMontoCobrado').value = prod.precio;
+    }
+}
+
+// 3. Procesar venta, descontar stock en Firestore y acreditar vuelo al cliente
+async function procesarVentaAdmin(event) {
+    event.preventDefault();
+    let userQuery = document.getElementById('adminUserUid').value.trim();
+    const prodId = document.getElementById('adminProductSelect').value;
+    const montoCobrado = parseFloat(document.getElementById('adminMontoCobrado').value);
+
+    const producto = (window.adminInventarioCache || []).find(p => p.id === prodId);
+    if (!producto) {
+        alert("Selecciona un producto válido del catálogo.");
+        return;
+    }
+
+    try {
+        const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
+        let userDocRef = null;
+        let userData = null;
+
+        // Buscar al cliente por UID completo o ID corto (#USR-XXXXX)
+        const usersSnap = await getDocs(collection(window.db, "usuarios"));
+        usersSnap.forEach(uDoc => {
+            const data = uDoc.data();
+            const shortUid = `USR-${uDoc.id.slice(-5).toUpperCase()}`;
+            if (uDoc.id === userQuery || shortUid === userQuery.toUpperCase()) {
+                userDocRef = doc(window.db, "usuarios", uDoc.id);
+                userData = data;
+            }
+        });
+
+        if (!userDocRef) {
+            alert("⚠️ No se encontró ningún pasajero registrado con ese ID o UID.");
+            return;
+        }
+
+        // Acreditar vuelo (ciclo de 1 a 3)
+        let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
+        if (nuevosVuelos > 3) {
+            nuevosVuelos = 1;
+        }
+
+        await updateDoc(userDocRef, {
+            vuelos_acumulados: nuevosVuelos,
+            descuento_bienvenida_activo: false
+        });
+
+        // Descontar stock e invocar 'agotado' si llega a cero
+        const nuevoStock = producto.stock - 1;
+        const prodRef = doc(window.db, "productos", producto.id);
+        await updateDoc(prodRef, {
+            stock: nuevoStock,
+            agotado: nuevoStock <= 0
+        });
+
+        // Registrar transacción contable
+        const costoUnitario = producto.costo || 0;
+        const gananciaBruta = montoCobrado - costoUnitario;
+        
+        await addDoc(collection(window.db, "transacciones_ventas"), {
+            usuario_uid: userDocRef.id,
+            producto_nombre: producto.titulo,
+            monto_cobrado: montoCobrado,
+            costo_unitario: costoUnitario,
+            ganancia_bruta: gananciaBruta,
+            fecha: new Date().toISOString()
+        });
+
+        alert(`🚀 ¡VENTA REGISTRADA CON ÉXITO!\n\n• Pasajero: ${userData.nombre_real || userData.displayName}\n• Vuelo Acreditado: ${nuevosVuelos}/3\n• Quedan: ${nuevoStock} pzas de ${producto.titulo}`);
+        
+        event.target.reset();
+
+        // Actualizar todos los módulos en pantalla
+        if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
+        if (typeof cargarProductosTienda === 'function') cargarProductosTienda();
+        if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
+
+    } catch (e) {
+        alert("Error al procesar la venta: " + e.message);
+    }
+}
