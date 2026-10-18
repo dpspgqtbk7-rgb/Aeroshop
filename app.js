@@ -249,7 +249,6 @@ function stopHoverSlider(container) {
    VENTANA MODAL DINÁMICA DE PRODUCTO (FIRESTORE)
    ========================================== */
 async function openProductModal(productId) {
-    openModalState();
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
     const strainPillsContainer = document.getElementById('modalStrainPills');
@@ -261,9 +260,9 @@ async function openProductModal(productId) {
         const snap = await getDoc(doc(window.db, "productos", productId));
 
         if (snap.exists()) {
+            openModalState(); // Solo bloquea el scroll SI el producto fue encontrado
             const p = snap.data();
             
-            // Recálculo de precio para Hora 4:20
             const precioCalculado = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
 
             currentModalProduct = {
@@ -281,18 +280,15 @@ async function openProductModal(productId) {
 
             document.getElementById('modalDescription').innerText = p.descripcion || 'Sin descripción disponible.';
 
-            // Renderizar elemento multimedia principal (Imagen o Video)
             const isVideo = p.imagen.toLowerCase().endsWith('.mp4');
             mediaContainer.innerHTML = isVideo
                 ? `<video src="${p.imagen}" autoplay loop muted playsinline class="modal-main-image"></video>`
                 : `<img src="${p.imagen}" class="modal-main-image" alt="${p.titulo}">`;
 
-            // Miniaturas (Miniatura principal)
             thumbnailsContainer.innerHTML = isVideo
                 ? `<video src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')" muted></video>`
                 : `<img src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')">`;
 
-            // Renderizar Variedades / Cepas dinámicas desde Firestore
             const variedades = p.variedades || ['Sativa', 'Indica', 'Híbrida'];
             strainPillsContainer.innerHTML = variedades.map((strain, index) => `
                 <button class="strain-pill ${index === 0 ? 'selected' : ''}" onclick="selectStrain(this, '${strain}')">${strain}</button>
@@ -300,16 +296,15 @@ async function openProductModal(productId) {
 
             selectedStrain = variedades[0] || 'Sativa';
             document.getElementById('productModalOverlay').classList.add('active');
+        } else {
+            console.warn("⚠️ El producto no se encuentra en Firestore:", productId);
+            closeModalState(); // Desbloquea la pantalla para evitar que se congele
         }
     } catch (e) {
         console.error("Error al abrir modal de producto:", e);
+        closeModalState(); // Desbloquea la pantalla si ocurre un error de red
     }
 }
-function closeProductModal() {
-    document.getElementById('productModalOverlay').classList.remove('active');
-    closeModalState();
-}
-
 function changeModalMedia(thumbEl, src) {
     const container = document.getElementById('modalMediaContainer');
     const isVideo = src.toLowerCase().endsWith('.mp4');
@@ -1324,10 +1319,33 @@ async function guardarProductoCapitan(event) {
     const precio = parseFloat(document.getElementById('catPrecio').value);
     const costo = parseFloat(document.getElementById('catCosto').value);
     const marca = document.getElementById('catMarca').value;
-    const imagen = document.getElementById('catImagen').value.trim();
+    const urlManual = document.getElementById('catImagen').value.trim();
+    const archivoInput = document.getElementById('catArchivoMedia');
     const variedadesRaw = document.getElementById('catVariedades').value.trim();
     const stock = parseInt(document.getElementById('catStock').value);
     const descripcion = document.getElementById('catDescripcion').value.trim();
+
+    let imagenFinal = urlManual;
+
+    // Si el usuario seleccionó un archivo local (foto o video), subirlo a Firebase Storage
+    if (archivoInput && archivoInput.files.length > 0) {
+        const file = archivoInput.files[0];
+        const storageRef = window.fbMethods.ref(window.storage, `productos/${Date.now()}_${file.name}`);
+        
+        try {
+            alert("⏳ Subiendo multimedia a la nube, por favor espera un momento...");
+            const snapshot = await window.fbMethods.uploadBytes(storageRef, file);
+            imagenFinal = await window.fbMethods.getDownloadURL(snapshot.ref);
+        } catch (err) {
+            alert("⚠️ Error al subir la foto/video: " + err.message);
+            return;
+        }
+    }
+
+    if (!imagenFinal) {
+        alert("Por favor selecciona un archivo o ingresa una URL de imagen/video.");
+        return;
+    }
 
     const variedades = variedadesRaw ? variedadesRaw.split(',').map(v => v.trim()) : ['Sativa', 'Indica', 'Híbrida'];
 
@@ -1338,7 +1356,7 @@ async function guardarProductoCapitan(event) {
             precio,
             costo,
             marca,
-            imagen,
+            imagen: imagenFinal,
             variedades,
             stock,
             descripcion,
@@ -1346,14 +1364,15 @@ async function guardarProductoCapitan(event) {
             fecha_registro: new Date().toISOString()
         });
 
-        alert("✅ ¡Producto publicado con éxito en la tienda!");
+        alert("✅ ¡Producto con foto/video publicado con éxito!");
         event.target.reset();
-        cargarProductosTienda();
+        if (typeof cargarProductosTienda === 'function') {
+            cargarProductosTienda();
+        }
     } catch (e) {
         alert("⚠️ Error al publicar producto: " + e.message);
     }
 }
-
 // 3. Cambiar el estado entre Disponible y Agotado
 async function toggleEstadoAgotado(prodId, estadoActual) {
     try {
@@ -1563,3 +1582,53 @@ async function procesarVentaAdmin(event) {
         alert("Error al procesar la venta: " + e.message);
     }
 }
+// Función para filtrar tarjetas de Rutas de Vuelo por Zona
+function filterRutasCards(zonaSeleccionada) {
+    const cards = document.querySelectorAll('#rutasGrid .compact-card');
+    cards.forEach(card => {
+        const zonaCard = card.getAttribute('data-zona');
+        if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaCard === zonaSeleccionada) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Event Listeners para los botones de zona de Rutas de Vuelo
+document.addEventListener('DOMContentLoaded', () => {
+    const botonesFiltroRutas = document.querySelectorAll('.filtros-zonas .btn-filtro');
+    botonesFiltroRutas.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            botonesFiltroRutas.forEach(b => b.classList.remove('activo'));
+            e.target.classList.add('activo');
+            const zona = e.target.getAttribute('data-zona');
+            filterRutasCards(zona);
+        });
+    });
+});
+// Función para filtrar tarjetas de Rutas de Vuelo por Zona
+function filterRutasCards(zonaSeleccionada) {
+    const cards = document.querySelectorAll('#rutasGrid .compact-card');
+    cards.forEach(card => {
+        const zonaCard = card.getAttribute('data-zona');
+        if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaCard === zonaSeleccionada) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Escuchador de clics para los botones de zona
+document.addEventListener('DOMContentLoaded', () => {
+    const botonesFiltroRutas = document.querySelectorAll('.filtros-zonas .btn-filtro');
+    botonesFiltroRutas.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            botonesFiltroRutas.forEach(b => b.classList.remove('activo'));
+            e.target.classList.add('activo');
+            const zona = e.target.getAttribute('data-zona');
+            filterRutasCards(zona);
+        });
+    });
+});
