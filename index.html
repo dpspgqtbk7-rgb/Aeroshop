@@ -824,6 +824,35 @@
 <!-- PANEL DE ADMINISTRACIÓN / APP DEL CAPITÁN (SOLO ADMIN) -->
 <section class="admin-dashboard-section" id="adminPanelSection" style="display: none;">
     <div class="admin-container">
+        <!-- MÓDULO DE GESTIÓN COMPLETA DE PRODUCTOS (CAPITÁN) -->
+<div class="admin-card">
+    <h3>✨ Añadir Nuevo Producto al Catálogo</h3>
+    <form onsubmit="guardarProductoCapitan(event)" class="admin-form">
+        <input type="text" id="catTitulo" placeholder="Nombre del Producto (Ej: MUHAMEDS 2g)" required>
+        <input type="number" id="catPrecio" placeholder="Precio Público ($ MXN)" required>
+        <input type="number" id="catCosto" placeholder="Costo de Adquisición ($ MXN)" required>
+        <select id="catMarca" required>
+            <option value="">Selecciona la Marca...</option>
+            <option value="muhameds">Muha Meds</option>
+            <option value="cookies">Cookies</option>
+            <option value="donuts">Donuts</option>
+            <option value="packman">Packman</option>
+            <option value="backwoods">Backwoods</option>
+        </select>
+        <input type="text" id="catImagen" placeholder="URL de la Foto o Video (Ej: ./muhadual.mp4 o https://...)" required>
+        <input type="text" id="catVariedades" placeholder="Variedades separadas por coma (Ej: Sativa, Indica, Híbrida)">
+        <input type="number" id="catStock" placeholder="Stock Inicial (Piezas)" value="10" required>
+        <textarea id="catDescripcion" placeholder="Descripción breve del producto..." style="grid-column: 1 / -1; padding: 12px; border-radius: 12px; background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2);" rows="3" required></textarea>
+        <button type="submit" class="btn-admin-action" style="grid-column: 1 / -1; background: #38bdf8; color: #000; font-weight: 800;">
+            🚀 Publicar Producto en la Web
+        </button>
+    </form>
+
+    <h4 style="margin-top: 25px; color: #ffffff;">📋 Productos Publicados en Catálogo:</h4>
+    <div id="catListaProductosAdmin" class="stock-list-container" style="margin-top: 10px;">
+        Cargando catálogo en vivo...
+    </div>
+</div>
         <div class="admin-header">
             <h2>👑 Panel de Control Capitán — Aeroshop</h2>
             <p>Auditoría de caja, inventario y acreditación de vuelos en tiempo real</p>
