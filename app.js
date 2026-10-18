@@ -10,6 +10,53 @@ let currentModalProduct = {
     image: './Muhacmeds1.JPG'
 };
 let currentMonchisTab = 'calle';
+let savedScrollPosition = 0;
+
+/* ==========================================
+   0. GESTIÓN DE SCROLL Y ESTADO DE MODALES
+   ========================================== */
+function saveMainScrollPosition() {
+    if (!document.body.classList.contains('modal-open')) {
+        savedScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    }
+}
+
+function restoreMainScrollPosition() {
+    window.scrollTo({ top: savedScrollPosition, behavior: 'instant' });
+}
+
+function openModalState() {
+    saveMainScrollPosition();
+    document.body.classList.add('modal-open');
+}
+
+function closeModalState() {
+    const activeOverlays = document.querySelectorAll(
+        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active'
+    );
+    if (activeOverlays.length === 0) {
+        document.body.classList.remove('modal-open');
+        restoreMainScrollPosition();
+    }
+}
+
+function closeModalOnOverlay(event) {
+    if (event.target.id === 'productModalOverlay') {
+        closeProductModal();
+    }
+}
+
+function closeInfoModalOnOverlay(event) {
+    if (event.target.id === 'infoModalOverlay') {
+        closeInfoModal();
+    }
+}
+
+function closeBuzonOnOverlay(event) {
+    if (event.target.id === 'buzonModalOverlay') {
+        closeBuzonModal();
+    }
+}
 
 /* ==========================================
    1. AUTENTICACIÓN Y SINCRONIZACIÓN DE USUARIOS
@@ -69,25 +116,21 @@ async function syncUserProfile(user) {
 function renderPasaporteUI() {
     if (!currentUserProfile) return;
 
-    // 1. Código QR Dinámico
     const qrImg = document.getElementById('userQrCodeImg');
     if (qrImg && currentUserProfile.uid) {
         qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUserProfile.uid)}`;
     }
 
-    // 2. Avatar y Correo
     const avatarElem = document.getElementById('userAvatar');
     const emailElem = document.getElementById('userEmail');
     if (avatarElem && currentUserProfile.photoURL) avatarElem.src = currentUserProfile.photoURL;
     if (emailElem) emailElem.innerText = currentUserProfile.email;
 
-    // 3. Nombres editables
     const inputNombre = document.getElementById('editNombreReal');
     const inputApodo = document.getElementById('editApodo');
     if (inputNombre) inputNombre.value = currentUserProfile.nombre_real || currentUserProfile.displayName || '';
     if (inputApodo) inputApodo.value = currentUserProfile.apodo || '';
 
-    // 4. Vuelos y Badge VIP
     const vuelos = currentUserProfile.vuelos_acumulados || 0;
     const countText = document.getElementById('vuelosCountText');
     const vipBadge = document.getElementById('userVipBadge');
@@ -104,7 +147,6 @@ function renderPasaporteUI() {
         }
     }
 
-    // 5. Pasos
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step3 = document.getElementById('step3');
@@ -113,7 +155,6 @@ function renderPasaporteUI() {
     if (step2) step2.classList.toggle('active', vuelos >= 2);
     if (step3) step3.classList.toggle('active', vuelos >= 3);
 
-    // 6. Componentes del perfil
     renderHistorialProductos();
     renderRastreadorPedidoCliente();
 }
@@ -208,13 +249,139 @@ async function renderRastreadorPedidoCliente() {
 }
 
 /* ==========================================
-   2. CARRUSEL Y VENTANA MODAL DE PRODUCTOS
+   2. PRODUCTOS DESTACADOS Y BASE LOCAL
    ========================================== */
-function scrollToBrandProducts() {
-    const target = document.getElementById('brandProductsSection');
-    if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+const localProductsDB = {
+    donutsdonitav3: {
+        titulo: "donuts donita v3",
+        precio: 850,
+        descripcion: "Dona Mágica ✨🪴. Excelente potencia, extractos limpios y terpenos frutales. Disponible en Sativa, Indica e Híbrida.",
+        imagen: "./donusdonitav31.JPG",
+        variedades: ["Sativa", "Indica", "Híbrida"]
+    },
+    packman3g: {
+        titulo: "PACKMAN 3g + Pre-Roll",
+        precio: 950,
+        descripcion: "Edición especial Packman × PartyBoyz. Incluye 3G de Live Resin + .5G Infused Pre-Roll con sabor intenso.",
+        imagen: "./packman1.png",
+        variedades: ["Sativa", "Indica", "Híbrida"]
+    },
+    muhacmeds: {
+        titulo: "MUHACMEDS 2g",
+        precio: 700,
+        descripcion: "Colaboración oficial Muha Meds × Cookies. Alta pureza, aceite claro, terpenos naturales y boquilla de flujo suave.",
+        imagen: "./Muhacmeds1.JPG",
+        variedades: ["Sativa", "Indica", "Híbrida"]
+    },
+    muhamedual: {
+        titulo: "MUHAMEDual 2g",
+        precio: 800,
+        descripcion: "Disposable Muha Meds con doble tanque y variante seleccionable. Dos sabores y perfiles en un solo dispositivo.",
+        imagen: "./muhadual.mp4",
+        variedades: ["Sativa", "Indica", "Híbrida"]
     }
+};
+
+async function openProductModal(productId) {
+    const mediaContainer = document.getElementById('modalMediaContainer');
+    const thumbnailsContainer = document.getElementById('modalThumbnails');
+    const strainPillsContainer = document.getElementById('modalStrainPills');
+
+    let productData = null;
+
+    if (window.db && window.fbMethods) {
+        try {
+            const { doc, getDoc } = window.fbMethods;
+            const snap = await getDoc(doc(window.db, "productos", productId));
+            if (snap.exists()) {
+                productData = { id: snap.id, ...snap.data() };
+            }
+        } catch (e) {
+            console.log("Consulta Firestore diferida, usando catálogo local:", e);
+        }
+    }
+
+    if (!productData && localProductsDB[productId]) {
+        const lp = localProductsDB[productId];
+        productData = {
+            id: productId,
+            titulo: lp.titulo,
+            precio: lp.precio,
+            descripcion: lp.descripcion,
+            imagen: lp.imagen,
+            variedades: lp.variedades
+        };
+    }
+
+    if (productData) {
+        openModalState();
+
+        const precioCalculado = window.esPromo420Activa ? Math.round(productData.precio * 0.60) : productData.precio;
+
+        currentModalProduct = {
+            id: productData.id,
+            title: productData.titulo,
+            price: precioCalculado,
+            image: productData.imagen
+        };
+
+        document.getElementById('modalTitle').innerText = productData.titulo;
+        
+        document.getElementById('modalPrice').innerHTML = window.esPromo420Activa
+            ? `<span class="precio-original-tachado">$${productData.precio} MXN</span> <span class="precio-420-destacado">$${precioCalculado} MXN</span>`
+            : `$${productData.precio} MXN`;
+
+        document.getElementById('modalDescription').innerText = productData.descripcion || 'Sin descripción disponible.';
+
+        const isVideo = productData.imagen.toLowerCase().endsWith('.mp4');
+        mediaContainer.innerHTML = isVideo
+            ? `<video src="${productData.imagen}" autoplay loop muted playsinline class="modal-main-image"></video>`
+            : `<img src="${productData.imagen}" class="modal-main-image" alt="${productData.titulo}">`;
+
+        thumbnailsContainer.innerHTML = isVideo
+            ? `<video src="${productData.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${productData.imagen}')" muted></video>`
+            : `<img src="${productData.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${productData.imagen}')">`;
+
+        const variedades = productData.variedades || ['Sativa', 'Indica', 'Híbrida'];
+        strainPillsContainer.innerHTML = variedades.map((strain, index) => `
+            <button type="button" class="strain-pill ${index === 0 ? 'selected' : ''}" onclick="selectStrain(this, '${strain}')">${strain}</button>
+        `).join('');
+
+        selectedStrain = variedades[0] || 'Sativa';
+        document.getElementById('productModalOverlay').classList.add('active');
+    } else {
+        alert("⚠️ Información de producto no disponible.");
+    }
+}
+
+function closeProductModal() {
+    const overlay = document.getElementById('productModalOverlay');
+    if (overlay) overlay.classList.remove('active');
+    closeModalState();
+}
+
+function changeModalMedia(thumbEl, src) {
+    const container = document.getElementById('modalMediaContainer');
+    const isVideo = src.toLowerCase().endsWith('.mp4');
+    if (isVideo) {
+        container.innerHTML = `<video src="${src}" autoplay loop muted playsinline class="modal-main-image"></video>`;
+    } else {
+        container.innerHTML = `<img src="${src}" class="modal-main-image" alt="Producto">`;
+    }
+    document.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+    thumbEl.classList.add('active');
+}
+
+function selectStrain(btnEl, strain) {
+    selectedStrain = strain;
+    document.querySelectorAll('.strain-pill').forEach(b => b.classList.remove('selected'));
+    btnEl.classList.add('selected');
+}
+
+function addModalProductToCart() {
+    const itemTitle = `${currentModalProduct.title} (${selectedStrain})`;
+    addToCart(itemTitle, currentModalProduct.price, currentModalProduct.image);
+    closeProductModal();
 }
 
 function startHoverSlider(container) {
@@ -245,96 +412,26 @@ function stopHoverSlider(container) {
     const mediaElements = container.querySelectorAll('img, video');
     mediaElements.forEach((el, idx) => el.classList.toggle('active', idx === 0));
 }
-/* ==========================================
-   VENTANA MODAL DINÁMICA DE PRODUCTO (FIRESTORE)
-   ========================================== */
-async function openProductModal(productId) {
-    const mediaContainer = document.getElementById('modalMediaContainer');
-    const thumbnailsContainer = document.getElementById('modalThumbnails');
-    const strainPillsContainer = document.getElementById('modalStrainPills');
 
-    if (!window.db || !window.fbMethods) return;
-
-    try {
-        const { doc, getDoc } = window.fbMethods;
-        const snap = await getDoc(doc(window.db, "productos", productId));
-
-        if (snap.exists()) {
-            openModalState(); // Solo bloquea el scroll SI el producto fue encontrado
-            const p = snap.data();
-            
-            const precioCalculado = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
-
-            currentModalProduct = {
-                id: snap.id,
-                title: p.titulo,
-                price: precioCalculado,
-                image: p.imagen
-            };
-
-            document.getElementById('modalTitle').innerText = p.titulo;
-            
-            document.getElementById('modalPrice').innerHTML = window.esPromo420Activa
-                ? `<span class="precio-original-tachado">$${p.precio} MXN</span> <span class="precio-420-destacado">$${precioCalculado} MXN</span>`
-                : `$${p.precio} MXN`;
-
-            document.getElementById('modalDescription').innerText = p.descripcion || 'Sin descripción disponible.';
-
-            const isVideo = p.imagen.toLowerCase().endsWith('.mp4');
-            mediaContainer.innerHTML = isVideo
-                ? `<video src="${p.imagen}" autoplay loop muted playsinline class="modal-main-image"></video>`
-                : `<img src="${p.imagen}" class="modal-main-image" alt="${p.titulo}">`;
-
-            thumbnailsContainer.innerHTML = isVideo
-                ? `<video src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')" muted></video>`
-                : `<img src="${p.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${p.imagen}')">`;
-
-            const variedades = p.variedades || ['Sativa', 'Indica', 'Híbrida'];
-            strainPillsContainer.innerHTML = variedades.map((strain, index) => `
-                <button class="strain-pill ${index === 0 ? 'selected' : ''}" onclick="selectStrain(this, '${strain}')">${strain}</button>
-            `).join('');
-
-            selectedStrain = variedades[0] || 'Sativa';
-            document.getElementById('productModalOverlay').classList.add('active');
-        } else {
-            console.warn("⚠️ El producto no se encuentra en Firestore:", productId);
-            closeModalState(); // Desbloquea la pantalla para evitar que se congele
-        }
-    } catch (e) {
-        console.error("Error al abrir modal de producto:", e);
-        closeModalState(); // Desbloquea la pantalla si ocurre un error de red
+function scrollToBrandProducts() {
+    const target = document.getElementById('brandProductsSection');
+    if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
     }
-}
-function changeModalMedia(thumbEl, src) {
-    const container = document.getElementById('modalMediaContainer');
-    const isVideo = src.toLowerCase().endsWith('.mp4');
-    if (isVideo) {
-        container.innerHTML = `<video src="${src}" autoplay loop muted playsinline class="modal-main-image"></video>`;
-    } else {
-        container.innerHTML = `<img src="${src}" class="modal-main-image" alt="Producto">`;
-    }
-    document.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
-    thumbEl.classList.add('active');
-}
-
-function selectStrain(btnEl, strain) {
-    selectedStrain = strain;
-    document.querySelectorAll('.strain-pill').forEach(b => b.classList.remove('selected'));
-    btnEl.classList.add('selected');
-}
-
-function addModalProductToCart() {
-    const itemTitle = `${currentModalProduct.title} (${selectedStrain})`;
-    addToCart(itemTitle, currentModalProduct.price, currentModalProduct.image);
-    closeProductModal();
 }
 
 /* ==========================================
-   3. CARRITO DE COMPRAS Y PEDIDO A WHATSAPP
+   3. CARRITO DE COMPRAS Y PEDIDOS
    ========================================== */
 function toggleCart() {
     const overlay = document.getElementById('cartOverlay');
-    overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
+    if (overlay.style.display === 'flex') {
+        overlay.style.display = 'none';
+        closeModalState();
+    } else {
+        overlay.style.display = 'flex';
+        openModalState();
+    }
 }
 
 function addToCart(title, price, image) {
@@ -345,7 +442,10 @@ function addToCart(title, price, image) {
         cart.push({ title, price, image, quantity: 1 });
     }
     updateCartUI();
-    toggleCart();
+    const overlay = document.getElementById('cartOverlay');
+    if (overlay.style.display !== 'flex') {
+        toggleCart();
+    }
 }
 
 function changeQty(title, delta) {
@@ -381,9 +481,9 @@ function updateCartUI() {
                     <div class="cart-item-title">${item.title}</div>
                     <div class="cart-item-price">$${item.price * item.quantity} MXN</div>
                     <div class="qty-controls">
-                        <button class="qty-btn" onclick="changeQty('${item.title}', -1)">-</button>
+                        <button type="button" class="qty-btn" onclick="changeQty('${item.title}', -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button class="qty-btn" onclick="changeQty('${item.title}', 1)">+</button>
+                        <button type="button" class="qty-btn" onclick="changeQty('${item.title}', 1)">+</button>
                     </div>
                 </div>
             `;
@@ -442,13 +542,11 @@ function sendWhatsAppOrder() {
 
     const targetUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
-    // Guardado en segundo plano en Firebase
     if (currentUserProfile && window.auth && window.auth.currentUser) {
         registrarPedidoEnHistorialFirebase(cart);
     }
 
-    // Redirección inmediata (Evita el bloqueo de emergentes en iOS / Android)
-    window.location.href = targetUrl;
+    window.open(targetUrl, '_blank');
 }
 
 async function registrarPedidoEnHistorialFirebase(items) {
@@ -474,8 +572,199 @@ async function registrarPedidoEnHistorialFirebase(items) {
 }
 
 /* ==========================================
-   4. CONTROL DE MODALES Y VISTAS FULLSCREEN
+   4. FUNCIONALIDAD BUZÓN DE MENSAJES
    ========================================== */
+function openBuzonModal() {
+    const overlay = document.getElementById('buzonModalOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        openModalState();
+    }
+}
+
+function closeBuzonModal() {
+    const overlay = document.getElementById('buzonModalOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        closeModalState();
+    }
+}
+
+function sendBuzonWhatsApp(event) {
+    event.preventDefault();
+
+    const tipo = document.getElementById('buzonTipo')?.value || 'Consulta';
+    const nombre = document.getElementById('buzonNombre')?.value.trim() || 'Pasajero Anónimo';
+    const mensaje = document.getElementById('buzonMensaje')?.value.trim();
+
+    if (!mensaje) {
+        alert("Por favor escribe tu mensaje o recomendación.");
+        return;
+    }
+
+    let text = `¡Hola Aeroshop! 📬 Mensaje desde el Buzón:\n\n`;
+    text += `• *Tipo:* ${tipo}\n`;
+    text += `• *De:* ${nombre}\n`;
+    text += `• *Detalles:* ${mensaje}\n`;
+
+    const targetUrl = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    closeBuzonModal();
+    window.open(targetUrl, '_blank');
+}
+
+/* ==========================================
+   5. CATALOGO POR MARCAS Y FULLSCREEN
+   ========================================== */
+const defaultBrandProducts = {
+    muhameds: [
+        { id: 'muhacmeds', titulo: "MUHACMEDS 2g", marca: "muhameds", precio: 700, descripcion: "Muha Meds × Cookies • Edición Especial Live Resin.", imagen: "./Muhacmeds1.JPG" },
+        { id: 'muhamedual', titulo: "MUHAMEDual 2g", marca: "muhameds", precio: 800, descripcion: "Doble tanque con variante seleccionable y alta potencia.", imagen: "./muhadual.mp4" }
+    ],
+    cookies: [
+        { id: 'cookies_dual', titulo: "Cookies Dual Chamber 2g", marca: "cookies", precio: 850, descripcion: "Dos cepas exclusivas en un solo dispositivo ergonómico.", imagen: "./logo-cookies.png" }
+    ],
+    donuts: [
+        { id: 'donutsdonitav3', titulo: "donuts donita v3", marca: "donuts", precio: 850, descripcion: "Dona Mágica ✨🪴. Batería recargable y extracción limpia.", imagen: "./donusdonitav31.JPG" }
+    ],
+    packman: [
+        { id: 'packman3g', titulo: "PACKMAN 3g + Pre-Roll", marca: "packman", precio: 950, descripcion: "Packman × PartyBoyz • 3G Live Resin + .5G Infused Pre-Roll.", imagen: "./packman1.png" }
+    ],
+    backwoods: [
+        { id: 'backwoods_cigar', titulo: "Backwoods Select Wraps (Pack 5)", marca: "backwoods", precio: 250, descripcion: "Hojas de tabaco natural seleccionadas a mano.", imagen: "./logo-backwoods.png" }
+    ]
+};
+
+async function openFullscreenBrand(brandKey) {
+    const view = document.getElementById('brandFullscreenView');
+    const content = document.getElementById('brandFullscreenContent');
+    if (!view || !content) return;
+
+    openModalState();
+    view.classList.add('active');
+    view.scrollTop = 0;
+
+    let productosMarcaList = [...(defaultBrandProducts[brandKey] || [])];
+
+    if (window.db && window.fbMethods) {
+        try {
+            const { collection, getDocs, query, where } = window.fbMethods;
+            const q = query(collection(window.db, "productos"), where("marca", "==", brandKey));
+            const snap = await getDocs(q);
+
+            snap.forEach(docSnap => {
+                const p = { id: docSnap.id, ...docSnap.data() };
+                const idx = productosMarcaList.findIndex(item => item.id === p.id);
+                if (idx > -1) {
+                    productosMarcaList[idx] = p;
+                } else {
+                    productosMarcaList.push(p);
+                }
+            });
+        } catch (e) {
+            console.log("Error al consultar marca en Firestore:", e);
+        }
+    }
+
+    let productosMarcaHTML = productosMarcaList.map(p => {
+        const precioFinal = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
+        const HTMLPrecio = window.esPromo420Activa 
+            ? `<span class="precio-original-tachado">$${p.precio} MXN</span><span class="precio-420-destacado">$${precioFinal} MXN</span>`
+            : `$${p.precio} MXN`;
+
+        const isVideo = p.imagen.toLowerCase().endsWith('.mp4');
+        const mediaTag = isVideo
+            ? `<video src="${p.imagen}" autoplay loop muted playsinline class="active"></video>`
+            : `<img src="${p.imagen}" class="active" alt="${p.titulo}">`;
+
+        return `
+            <div class="product-card card-glass" style="${p.agotado ? 'opacity:0.6;' : ''}" onclick="openProductModal('${p.id}')">
+                <span class="${p.agotado ? 'product-tag-sale' : 'product-tag-new'}">
+                    ${p.agotado ? 'AGOTADO' : (p.marca || 'AEROSHOP').toUpperCase()}
+                </span>
+                <div class="product-img-slider">${mediaTag}</div>
+                <div>
+                    <div class="product-name" style="color:#ffffff;">${p.titulo}</div>
+                    <div class="product-subtitle" style="color:#94a3b8;">${(p.descripcion || '').slice(0, 50)}...</div>
+                    <div class="product-price">${HTMLPrecio}</div>
+                </div>
+                <button type="button" class="btn-add" ${p.agotado ? 'disabled style="background:#64748b; cursor:not-allowed;"' : ''} onclick="event.stopPropagation(); addToCart('${p.titulo}', ${precioFinal}, '${p.imagen}')">
+                    ${p.agotado ? 'Sin Stock' : 'Agregar al Carrito'}
+                </button>
+            </div>
+        `;
+    }).join('');
+
+    if (brandKey === 'muhameds') {
+        content.className = 'theme-muhameds-full';
+        content.innerHTML = `
+            <img src="./fondo-espacial.jpg" class="muha-bg-fixed" alt="Fondo">
+            <div class="brand-hero-common">
+                <div class="muha-brand-group">
+                    <img src="./logo-muhameds.png" alt="Muha Meds" class="muha-hero-logo">
+                    <img src="./MUHAMEDSINTERFAZ.png" alt="MUHAMEDS" class="muha-hero-title-img">
+                </div>
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    } else if (brandKey === 'cookies') {
+        content.className = 'theme-cookies-full';
+        content.innerHTML = `
+            <div class="brand-hero-common">
+                <img src="./logo-cookies-texto-removebg-preview.png" class="cookies-hero-logo" alt="Cookies">
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    } else if (brandKey === 'donuts') {
+        content.className = 'theme-donuts-full';
+        content.innerHTML = `
+            <img src="./fondoslog.jpg" class="muha-bg-fixed" alt="Fondo Donuts">
+            <div class="brand-hero-common">
+                <img src="./donutslogointerfaz.png" class="donuts-interface-logo" alt="Donuts">
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    } else if (brandKey === 'packman') {
+        content.className = 'theme-packman-full';
+        content.innerHTML = `
+            <img src="./packmanfondo.jpg" class="muha-bg-fixed" alt="Fondo Packman">
+            <div class="brand-hero-common">
+                <div class="muha-brand-group">
+                    <img src="./packmanmarcas.png" alt="Packman" class="packman-hero-logo">
+                    <img src="./PACKMANSEGUNDOLOGO.png" alt="PACKMAN" class="packman-hero-title-img">
+                </div>
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    } else {
+        content.className = 'theme-backwoods-full';
+        content.innerHTML = `
+            <div class="brand-hero-common">
+                <img src="./logo-backwoods.png" alt="Backwoods" style="max-width:250px; margin-bottom:15px;">
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+    }
+}
+
+function closeFullscreenBrand() {
+    const view = document.getElementById('brandFullscreenView');
+    if (view) {
+        view.classList.remove('active');
+        pauseSectionVideos(view);
+        closeModalState();
+    }
+}
+
 function playSectionVideos(container) {
     if (!container) return;
     const heroVideo = container.querySelector('.monchis-hero-video, #cineHeroVideo');
@@ -492,159 +781,12 @@ function pauseSectionVideos(container) {
     videos.forEach(video => video.pause());
 }
 
-function openModalState() {
-    document.body.classList.add('modal-open');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModalState() {
-    const activeOverlays = document.querySelectorAll(
-        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active'
-    );
-    if (activeOverlays.length === 0) {
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = 'auto';
-    }
-}
-/* ==========================================
-   VISTAS FULLSCREEN POR MARCA (DINÁMICAS Y CON HORA 4:20)
-   ========================================== */
-async function openFullscreenBrand(brandKey) {
-    const view = document.getElementById('brandFullscreenView');
-    const content = document.getElementById('brandFullscreenContent');
-    if (!view || !content) return;
-
-    content.innerHTML = '<div style="text-align:center; padding:100px; color:#fff;">Cargando catálogo oficial...</div>';
-    view.classList.add('active');
-    view.scrollTop = 0;
-    openModalState();
-
-    let productosMarcaHTML = '';
-    
-    // Consulta dinámica a Firestore por marca
-    if (window.db && window.fbMethods) {
-        try {
-            const { collection, getDocs, query, where } = window.fbMethods;
-            const q = query(collection(window.db, "productos"), where("marca", "==", brandKey));
-            const snap = await getDocs(q);
-
-            snap.forEach(docSnap => {
-                const p = docSnap.data();
-                
-                // Recálculo de precio para la Hora 4:20 (40% OFF)
-                const precioFinal = window.esPromo420Activa ? Math.round(p.precio * 0.60) : p.precio;
-                
-                const HTMLPrecio = window.esPromo420Activa 
-                    ? `<span class="precio-original-tachado">$${p.precio} MXN</span><span class="precio-420-destacado">$${precioFinal} MXN</span>`
-                    : `$${p.precio} MXN`;
-
-                const mediaTag = p.imagen.endsWith('.mp4')
-                    ? `<video src="${p.imagen}" autoplay loop muted playsinline class="active"></video>`
-                    : `<img src="${p.imagen}" class="active" alt="${p.titulo}">`;
-
-                productosMarcaHTML += `
-                    <div class="product-card card-glass" style="${p.agotado ? 'opacity:0.6;' : ''}">
-                        <span class="${p.agotado ? 'product-tag-sale' : 'product-tag-new'}">
-                            ${p.agotado ? 'AGOTADO' : p.marca.toUpperCase()}
-                        </span>
-                        <div class="product-img-slider">${mediaTag}</div>
-                        <div>
-                            <div class="product-name" style="color:#ffffff;">${p.titulo}</div>
-                            <div class="product-subtitle" style="color:#94a3b8;">${p.descripcion.slice(0, 50)}...</div>
-                            <div class="product-price">${HTMLPrecio}</div>
-                        </div>
-                        <button class="btn-add" ${p.agotado ? 'disabled style="background:#64748b; cursor:not-allowed;"' : ''} onclick="event.stopPropagation(); addToCart('${p.titulo}', ${precioFinal}, '${p.imagen}')">
-                            ${p.agotado ? 'Sin Stock' : 'Agregar al Carrito'}
-                        </button>
-                    </div>
-                `;
-            });
-        } catch (e) {
-            console.error("Error al cargar marca desde Firestore:", e);
-        }
-    }
-
-    if (!productosMarcaHTML) {
-        productosMarcaHTML = `<p style="text-align: center; color: #94a3b8; grid-column: 1/-1;">No hay productos registrados aún para esta marca.</p>`;
-    }
-
-    // Plantillas visuales por marca
-    if (brandKey === 'muhameds') {
-        content.className = 'theme-muhameds-full';
-        content.innerHTML = `
-            <img src="./fondo-espacial.jpg" class="muha-bg-fixed" alt="Fondo">
-            <div class="brand-hero-common">
-                <div class="muha-brand-group">
-                    <img src="./logo-muhameds.png" alt="Muha Meds" class="muha-hero-logo">
-                    <img src="./MUHAMEDSINTERFAZ.png" alt="MUHAMEDS" class="muha-hero-title-img">
-                </div>
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${productosMarcaHTML}</div>
-            </div>`;
-    } else if (brandKey === 'cookies') {
-        content.className = 'theme-cookies-full';
-        content.innerHTML = `
-            <div class="brand-hero-common">
-                <img src="./logo-cookies-texto-removebg-preview.png" class="cookies-hero-logo" alt="Cookies">
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${productosMarcaHTML}</div>
-            </div>`;
-    } else if (brandKey === 'donuts') {
-        content.className = 'theme-donuts-full';
-        content.innerHTML = `
-            <img src="./fondoslog.jpg" class="muha-bg-fixed" alt="Fondo Donuts">
-            <div class="brand-hero-common">
-                <img src="./donutslogointerfaz.png" class="donuts-interface-logo" alt="Donuts">
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${productosMarcaHTML}</div>
-            </div>`;
-    } else if (brandKey === 'packman') {
-        content.className = 'theme-packman-full';
-        content.innerHTML = `
-            <img src="./packmanfondo.jpg" class="muha-bg-fixed" alt="Fondo Packman">
-            <div class="brand-hero-common">
-                <div class="muha-brand-group">
-                    <img src="./packmanmarcas.png" alt="Packman" class="packman-hero-logo">
-                    <img src="./PACKMANSEGUNDOLOGO.png" alt="PACKMAN" class="packman-hero-title-img">
-                </div>
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${productosMarcaHTML}</div>
-            </div>`;
-    } else {
-        content.className = 'theme-backwoods-full';
-        content.innerHTML = `
-            <div class="brand-hero-common">
-                <img src="./logo-backwoods.png" alt="Backwoods" style="max-width:250px; margin-bottom:15px;">
-                <button class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
-            </div>
-            <div class="muha-products-container" id="brandProductsSection">
-                <div class="muha-cards-grid">${productosMarcaHTML}</div>
-            </div>`;
-    }
-}
-function closeFullscreenBrand() {
-    const view = document.getElementById('brandFullscreenView');
-    if (view) {
-        view.classList.remove('active');
-        pauseSectionVideos(view);
-        closeModalState();
-    }
-}
-
 function openRutasVuelo() {
     const view = document.getElementById('rutasFullscreenView');
     if (view) {
+        openModalState();
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         playSectionVideos(view);
     }
 }
@@ -661,9 +803,9 @@ function closeRutasVuelo() {
 function openMonchisVuelo() {
     const view = document.getElementById('monchisFullscreenView');
     if (view) {
+        openModalState();
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         filterMonchisCards();
         playSectionVideos(view);
     }
@@ -681,9 +823,9 @@ function closeMonchisVuelo() {
 function openCineVuelo() {
     const cineView = document.getElementById('cineFullscreenView');
     if (cineView) {
+        openModalState();
         cineView.classList.add('active');
         cineView.scrollTop = 0;
-        openModalState();
         filterCineCards();
         playSectionVideos(cineView);
     }
@@ -701,9 +843,9 @@ function closeCineVuelo() {
 function openMusicVuelo() {
     const view = document.getElementById('musicFullscreenView');
     if (view) {
+        openModalState();
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
         filterMusicCards();
     }
 }
@@ -719,10 +861,10 @@ function closeMusicVuelo() {
 function openEmergencyVuelo() {
     const view = document.getElementById('emergencyFullscreenView');
     if (view) {
+        openModalState();
         document.body.classList.add('emergency-active');
         view.classList.add('active');
         view.scrollTop = 0;
-        openModalState();
     }
 }
 
@@ -738,7 +880,228 @@ function closeEmergencyVuelo() {
 }
 
 /* ==========================================
-   5. FILTROS Y BASE DE DATOS LOCAL
+   6. BASE DE DATOS LOCAL Y DETALLES DE TARJETAS
+   ========================================== */
+const cardDetailsDB = {
+    // RUTAS DE VUELO
+    lagoalgo: {
+        title: "LagoAlgo — Bosque de Chapultepec 🚣🏻‍♂️",
+        video: "./lago-algo.MP4",
+        badge: "📍 Poniente • ✈️✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Espacio cultural y gastronómico inmerso en la 2da Sección del Bosque de Chapultepec. Rodeado de naturaleza, arquitectura brutalista e instalaciones de arte contemporáneo con vistas despejadas al lago.</p>`
+    },
+    cenart: {
+        title: "CENART (Centro Nacional de las Artes) 🎭",
+        video: "./cenart-hero.mp4",
+        badge: "📍 Sur • ✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Amplios jardines con áreas verdes tranquilas, zonas de sombra debajo de árboles frondosos y arquitectura icónica. Ideal para relajarse con música en audífonos o disfrutar ensayos de danza y teatro al aire libre.</p>`
+    },
+    chapultepec: {
+        title: "Cineteca de Chapultepec 🎬🌿",
+        video: "./chapultepec.mp4",
+        badge: "📍 Poniente • ✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Foros al aire libre en la 4ta Sección de Chapultepec. Cuenta con proyecciones nocturnas gratuitas, senderos elevados y miradores con atardeceres increíbles.</p>`
+    },
+    laguna: {
+        title: "Laguna CDMX 🏭🎨",
+        video: "./LAGUNA.MP4",
+        badge: "📍 Centro • ✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Antigua fábrica reconvertida en laboratorio creativo en la colonia Doctores. Alberga estudios de arquitectura, galerías independientes y cafés de especialidad.</p>`
+    },
+    jardin: {
+        title: "Jardín Escénico Chapultepec 🌺",
+        video: "./jardin.mp4",
+        badge: "📍 Poniente • ✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Rodeado por el Auditorio Nacional, un pabellón botánico y escénico con humedales urbanos, senderos de madera y luz tenue durante el atardecer.</p>`
+    },
+    eden: {
+        title: "Jardín El Edén CU 🍃📜",
+        video: "./eden.mp4",
+        badge: "📍 Sur • ✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Secreto guardado detrás de la Facultad de Filosofía y Letras en Ciudad Universitaria. Espacio sombreado, ambiente estudiantil pacífico y naturaleza silvestre.</p>`
+    },
+    soumaya: {
+        title: "Museo Soumaya & Plaza Carso 🏛️✨",
+        video: "./soumaya.mp4",
+        badge: "📍 Poniente • ✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Estructura hexagonal brillante con espejos orgánicos. Gran spot para caminar de noche, observar reflejos metálicos e iluminación urbana.</p>`
+    },
+    muac: {
+        title: "MUAC CU (Museo de Arte Contemporáneo) 🏛️🍃",
+        video: "./muac.mp4",
+        badge: "📍 Sur • ✈️✈️✈️✈️✈️",
+        html: `<p style="color: #cbd5e1;">Ubicado en el Centro Cultural Universitario. Paisaje volcánico de piedra negra, exposiciones inmersivas e instalaciones sonoras de gran escala.</p>`
+    },
+
+    // MONCHIS EN CALLE Y CASA
+    oreo: {
+        title: "Oreo Fritas Crujientes 🍩🍪",
+        video: "./OREO.MP4",
+        badge: "🏠 Casa • 🍩 Dulce",
+        html: `<p style="color: #cbd5e1;">Galletas Oreo pasadas por masa de hotcakes espesa y fritas hasta dorar. Servidas con azúcar glass y jarabe de chocolate caliente.</p>`
+    },
+    cotorras: {
+        title: "Las Cotorras 🌮🍻",
+        video: "./cotorras.MP4",
+        badge: "📍 Centro • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Tacos de guisado generosos en tortilla hecha a mano. Salsa de chicharrón prensado, suadero y papas al hilo irresistibles para bajón rápido.</p>`
+    },
+    salchicha_hawaiana: {
+        title: "Salchichas Hawaianas Glaseadas 🌭🍍",
+        video: "./salchicha.MP4",
+        badge: "🏠 Casa • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Salchichas de pavo cortadas en pulpo, salteadas con piña en almíbar, salsa BBQ dulce y queso manchego fundido sobre pan tostado con mantequilla.</p>`
+    },
+    pan_muerto: {
+        title: "Pan de Muerto Relleno 🍞🍫",
+        video: "./pan-de-muerto.MP4",
+        badge: "🏠 Casa • 🍩 Dulce",
+        html: `<p style="color: #cbd5e1;">Pan tradicional con azahar, abierto por la mitad y cortado con helado de vainilla, crema de avellanas y trozos de conejito de chocolate.</p>`
+    },
+    losperros: {
+        title: "Los Perros de San Antonio 🌭🌶️",
+        video: "./losperros.MP4",
+        badge: "📍 Sur • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Hot dogs gigantes de doble salchicha enrollada en tocino, bañados en chili beans casero, jalapeños en almíbar y cebolla caramelizada.</p>`
+    },
+    burgergate: {
+        title: "Burger Gate 🍔🔥",
+        video: "./burgerg.mp4",
+        badge: "📍 Centro • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Smash burgers con bordes ultra crujientes, queso americano derretido, tocino ahumado y salsa secreta sobre pan brioche de papa.</p>`
+    },
+    pizzadog: {
+        title: "PizzaDog Express 🌭🍕",
+        video: "./pizza-dog.MP4",
+        badge: "🏠 Supervivencia en Casa • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Pan de hot dog relleno con salchicha, salsa pomodoro italiana, orégano, capas gruesas de queso mozzarella y pepperoni al horno.</p>`
+    },
+    sandwich: {
+        title: "Sándwich Monchoso de 3 Pisos 🥪",
+        video: "./sandwich.MP4",
+        badge: "🏠 Supervivencia en Casa • 🍿 Salado",
+        html: `<p style="color: #cbd5e1;">Pan blanco dorado en sartén con mantequilla, triple queso cheddar, jamón de pavo dorado, pepinillos dulces y aderezo chipotle.</p>`
+    },
+    salchichas: {
+        title: "Salchichas BBQ de Ricardo Pérez 🌭✨",
+        video: "./salchichasbbq.MP4",
+        badge: "🏠 Supervivencia en Casa • 🧂 Salado",
+        html: `<p style="color: #cbd5e1;">La receta del comediante: Salchichas fritas en mantequilla con salsa inglesa, jugo maggi, catsup y abundante salsa BBQ picante.</p>`
+    },
+
+    // CINE & TRIP VISUAL
+    robots: {
+        title: "LOVE, DEATH & ROBOTS 🤖🌌",
+        video: "./robots.MP4",
+        badge: "🎬 Antología Animada",
+        html: `<p style="color: #cbd5e1;">Episodios autoconclusivos con animación fotorrealista y cyberpunk. Historias futuristas sobre IA, monstruos marinos y viajes espaciales.</p>`
+    },
+    congreso: {
+        title: "THE CONGRESS (EL CONGRESO) 💊🎨",
+        video: "./congreso.MP4",
+        badge: "🎬 Animación Surrealista",
+        html: `<p style="color: #cbd5e1;">Una actriz vende sus derechos digitales a un estudio cinematográfico. Al entrar al mundo animado, se desata una fantasía psicodélica y colorida.</p>`
+    },
+    grasa_fria: {
+        title: "GRASA FRÍA 🧊🌭",
+        video: "./grasa-fria.MP4",
+        badge: "🎬 Cortometraje Bizarro",
+        html: `<p style="color: #cbd5e1;">Experimento visual atrapante lleno de texturas, sonidos ASMR gastronómicos y animación fluida que desconecta la mente.</p>`
+    },
+    pastoral: {
+        title: "PASTORAL: TO DIE IN THE COUNTRY 👁️",
+        video: "./pastoral.MP4",
+        badge: "🎬 Drama Experimental",
+        html: `<p style="color: #cbd5e1;">Obra maestra del cine vanguardista japonés de Shūji Terayama. Un viaje cinematográfico lleno de simbolismos visuales y estéticas surrealistas.</p>`
+    },
+    neotokyo: {
+        title: "NEO TOKYO (1987) 🚀",
+        video: "./neotokyo.mp4",
+        badge: "🎬 Animación Experimental",
+        html: `<p style="color: #cbd5e1;">Tres cortos de anime ochentero dirigidos por los creadores de Akira. Un laberinto steampunk, carreras de alta velocidad y mundos futuristas.</p>`
+    },
+    dandadan: {
+        title: "DANDADAN 👻🛸",
+        video: "./dandadan.MP4",
+        badge: "🎬 Comedia Absurda",
+        html: `<p style="color: #cbd5e1;">Alienígenas, fantasmas japoneses y comedia desenfrenada con secuencias de animación dinámicas cargadas de neón y acción impredecible.</p>`
+    },
+    void: {
+        title: "ENTER THE VOID (2009) 👁️‍🗨️🌀",
+        video: "./VOID.MP4",
+        badge: "🎬 Psicodélica & Inmersiva",
+        html: `<p style="color: #cbd5e1;">Dirigida por Gaspar Noé. Perspectiva flotante en primera persona sobre la vida nocturna en Tokio, llena de luces estroboscópicas y experiencias extracorporales.</p>`
+    },
+    belladonna: {
+        title: "BELLADONNA OF SADNESS (1973) 👁️‍🗨️",
+        video: "./BELLADONNA.MP4",
+        badge: "🎬 Anime Psicodélico",
+        html: `<p style="color: #cbd5e1;">Ilustraciones de acuarela animadas con estéticas de los años 70. Una experiencia auditiva y visual llena de arte abstracto.</p>`
+    },
+    puparia: {
+        title: "PUPARIA (2020) 👁️‍🗨️🌀",
+        video: "./PUPARIA.MP4",
+        badge: "🍿 Cortometraje Anime",
+        html: `<p style="color: #cbd5e1;">Cortometraje de 3 minutos creado a mano por Shingo Tamagawa. Expresiones faciales hipnóticas y paisajes con detalles artísticos alucinantes.</p>`
+    },
+    goodtrip: {
+        title: "HAVE A GOOD TRIP (2020) 🍿🌀",
+        video: "./GOOD-TRIP.MP4",
+        badge: "🍿 Documental & Comedia",
+        html: `<p style="color: #cbd5e1;">Celebridades y comediantes relatan sus anécdotas más graciosas con psicodélicos, acompañadas de recreaciones animadas disparatadas.</p>`
+    },
+    entergalactic: {
+        title: "ENTERGALACTIC (2022) 🎨🎶",
+        video: "./ENTERGALACTIC.MP4",
+        badge: "🎨 Animación & Álbum Visual",
+        html: `<p style="color: #cbd5e1;">Creado por Kid Cudi. Historia de amor urbana ambientada en Nueva York con estética de pintura cómic y soundtrack synthwave.</p>`
+    },
+
+    // FRECUENCIAS
+    dubside: {
+        title: "DUB SIDE OF THE MOON 🎧",
+        video: "./dub.png",
+        badge: "✨ Trip Conceptual • Reggae Dub",
+        html: `<p style="color: #cbd5e1;">Reinterpretación Dub / Reggae completa del legendario álbum 'The Dark Side of the Moon' de Pink Floyd por Easy Star All-Stars.</p>`
+    }
+};
+
+function openCardModal(section, key) {
+    const data = cardDetailsDB[key];
+    if (!data) return;
+
+    const isVideo = data.video.toLowerCase().endsWith('.mp4');
+    const mediaTag = isVideo 
+        ? `<video src="${data.video}" autoplay loop muted playsinline style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; margin-bottom: 20px;"></video>`
+        : `<img src="${data.video}" alt="${data.title}" style="width: 100%; max-height: 320px; object-fit: contain; background: #000; border-radius: 16px; margin-bottom: 20px;">`;
+
+    const modalBody = document.getElementById('infoModalBody');
+    if (modalBody) {
+        modalBody.innerHTML = `
+            ${mediaTag}
+            <span class="badge-tag" style="margin-bottom: 10px; display: inline-block;">${data.badge}</span>
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: #ffffff;">${data.title}</h2>
+            ${data.html}
+        `;
+    }
+
+    const overlay = document.getElementById('infoModalOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        openModalState();
+    }
+}
+
+function closeInfoModal() {
+    const overlay = document.getElementById('infoModalOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        closeModalState();
+    }
+}
+
+/* ==========================================
+   7. FILTROS DE SECCIONES
    ========================================== */
 function switchMonchisTab(tab) {
     currentMonchisTab = tab;
@@ -816,55 +1179,32 @@ function filterMusicCards() {
     });
 }
 
-const cardDetailsDB = {
-    oreo: {
-        title: "Bolitas de Oreo Mágicas 🍩",
-        video: "./OREO.MP4",
-        badge: "🏠 Supervivencia en Casa • 🍿 Dulce",
-        html: `<p style="color: #cbd5e1;">Triturar galletas Oreo, mezclar con queso crema, formar bolitas y bañar en chocolate blanco.</p>`
-    },
-    cotorras: {
-        title: "Taco Austero de Jamón y Mayo 🌮",
-        video: "./cotorras.MP4",
-        badge: "🏠 Supervivencia en Casa • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Tortilla caliente de comal con mayonesa y jamón de pavo.</p>`
-    }
-};
-
-function openCardModal(section, key) {
-    const data = cardDetailsDB[key];
-    if (!data) return;
-
-    const isVideo = data.video.toLowerCase().endsWith('.mp4');
-    const mediaTag = isVideo 
-        ? `<video src="${data.video}" autoplay loop muted playsinline style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 16px; margin-bottom: 20px;"></video>`
-        : `<img src="${data.video}" alt="${data.title}" style="width: 100%; max-height: 320px; object-fit: contain; background: #000; border-radius: 16px; margin-bottom: 20px;">`;
-
-    const modalBody = document.getElementById('infoModalBody');
-    if (modalBody) {
-        modalBody.innerHTML = `
-            ${mediaTag}
-            <span class="badge-tag" style="margin-bottom: 10px; display: inline-block;">${data.badge}</span>
-            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: #ffffff;">${data.title}</h2>
-            ${data.html}
-        `;
-    }
-
-    const overlay = document.getElementById('infoModalOverlay');
-    if (overlay) overlay.classList.add('active');
-    openModalState();
+function filterRutasCards(zonaSeleccionada) {
+    const cards = document.querySelectorAll('#rutasGrid .compact-card');
+    cards.forEach(card => {
+        const zonaCard = card.getAttribute('data-zona');
+        if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaCard === zonaSeleccionada) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 }
 
-function closeInfoModal() {
-    const overlay = document.getElementById('infoModalOverlay');
-    if (overlay) {
-        overlay.classList.remove('active');
-        closeModalState();
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const botonesFiltroRutas = document.querySelectorAll('.filtros-zonas .btn-filtro');
+    botonesFiltroRutas.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            botonesFiltroRutas.forEach(b => b.classList.remove('activo'));
+            e.target.classList.add('activo');
+            const zona = e.target.getAttribute('data-zona');
+            filterRutasCards(zona);
+        });
+    });
+});
 
 /* ==========================================
-   6. RESPIRACIÓN Y AUDIO EMERGENCIAL
+   8. RESPIRACIÓN Y AUDIO EMERGENCIAL
    ========================================== */
 let breathingInterval = null;
 let isBreathingActive = false;
@@ -997,7 +1337,7 @@ function stopBrownNoise() {
 }
 
 /* ==========================================
-   7. PANEL DE CONTROL Y ADMINISTRACIÓN (CAPITÁN)
+   9. PANEL DE ADMINISTRACIÓN (CAPITÁN)
    ========================================== */
 function checkAdminPermission(user) {
     const adminSection = document.getElementById('adminPanelSection');
@@ -1020,7 +1360,8 @@ function abrirPanelAdminDirecto() {
     const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
 
     if (!user || userEmail !== ADMIN_EMAIL.toLowerCase().trim()) {
-        alert("🔒 Acceso restringido: Debes iniciar sesión con la cuenta de Capitán.");
+        alert("🔒 Acceso restringido: Debes iniciar sesión con la cuenta oficial del Capitán.");
+        abrirLogin();
         return;
     }
 
@@ -1033,6 +1374,7 @@ function abrirPanelAdminDirecto() {
 
         cargarDashboardAdmin();
         cargarInventarioAdmin();
+        cargarProductosTienda();
     }
 }
 
@@ -1095,7 +1437,7 @@ function iniciarEscanerQR() {
                         const data = userSnap.data();
                         alert(`✅ Pasajero Detectado: ${data.nombre_real || data.displayName || 'Sin nombre'}\nVuelos acumulados: ${data.vuelos_acumulados || 0}/3`);
                     } else {
-                        alert(`⚠️ Código QR escaneado: (${decodedText}), cliente registrado en input.`);
+                        alert(`⚠️ Código QR escaneado: (${decodedText}), cliente registrado en el campo.`);
                     }
                 }
             });
@@ -1107,41 +1449,277 @@ function iniciarEscanerQR() {
     });
 }
 
+async function cargarProductosTienda() {
+    if (!window.db || !window.fbMethods) return;
+    const { collection, getDocs } = window.fbMethods;
+
+    try {
+        const snap = await getDocs(collection(window.db, "productos"));
+        const gridDestacados = document.getElementById('featuredGrid');
+        const listaAdmin = document.getElementById('catListaProductosAdmin');
+
+        if (listaAdmin) listaAdmin.innerHTML = '';
+
+        snap.forEach(docSnap => {
+            const p = { id: docSnap.id, ...docSnap.data() };
+
+            if (listaAdmin) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'stock-item-row';
+                itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px; border-radius: 12px; margin-bottom: 8px;';
+                itemDiv.innerHTML = `
+                    <div>
+                        <strong style="color:#fff;">${p.titulo}</strong> (${p.marca ? p.marca.toUpperCase() : 'GENERAL'}) 
+                        <br><span style="font-size:0.8rem; color:#94a3b8;">Precio: $${p.precio} MXN | Stock: ${p.stock} pzas | Estatus: ${p.agotado ? '🔴 AGOTADO' : '🟢 DISPONIBLE'}</span>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" onclick="toggleEstadoAgotado('${p.id}', ${p.agotado || false})" style="background:${p.agotado ? '#22c55e' : '#e11d48'}; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer;">
+                            ${p.agotado ? 'Reactivar' : 'Marcar Agotado'}
+                        </button>
+                        <button type="button" onclick="eliminarProductoCapitan('${p.id}')" style="background:#64748b; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer;">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+                listaAdmin.appendChild(itemDiv);
+            }
+        });
+    } catch (e) {
+        console.error("Error al cargar productos desde Firestore:", e);
+    }
+}
+
+async function guardarProductoCapitan(event) {
+    event.preventDefault();
+
+    const titulo = document.getElementById('catTitulo')?.value.trim();
+    const precio = parseFloat(document.getElementById('catPrecio')?.value);
+    const costo = parseFloat(document.getElementById('catCosto')?.value || 0);
+    const marca = document.getElementById('catMarca')?.value;
+    const urlManual = document.getElementById('catImagen')?.value.trim();
+    const archivoInput = document.getElementById('catArchivoMedia');
+    const variedadesRaw = document.getElementById('catVariedades')?.value.trim();
+    const stock = parseInt(document.getElementById('catStock')?.value || 10);
+    const descripcion = document.getElementById('catDescripcion')?.value.trim();
+
+    let imagenFinal = urlManual;
+
+    if (archivoInput && archivoInput.files.length > 0) {
+        const file = archivoInput.files[0];
+        const storageRef = window.fbMethods.ref(window.storage, `productos/${Date.now()}_${file.name}`);
+        
+        try {
+            alert("⏳ Subiendo multimedia a la nube, por favor espera un momento...");
+            const snapshot = await window.fbMethods.uploadBytes(storageRef, file);
+            imagenFinal = await window.fbMethods.getDownloadURL(snapshot.ref);
+        } catch (err) {
+            alert("⚠️ Error al subir foto/video: " + err.message);
+            return;
+        }
+    }
+
+    if (!imagenFinal) {
+        alert("Por favor selecciona un archivo o ingresa una URL de imagen/video.");
+        return;
+    }
+
+    const variedades = variedadesRaw ? variedadesRaw.split(',').map(v => v.trim()) : ['Sativa', 'Indica', 'Híbrida'];
+
+    try {
+        const { collection, addDoc } = window.fbMethods;
+        await addDoc(collection(window.db, "productos"), {
+            titulo,
+            precio,
+            costo,
+            marca,
+            imagen: imagenFinal,
+            variedades,
+            stock,
+            descripcion,
+            agotado: false,
+            fecha_registro: new Date().toISOString()
+        });
+
+        alert("✅ ¡Producto publicado con éxito!");
+        event.target.reset();
+        cargarProductosTienda();
+    } catch (e) {
+        alert("⚠️ Error al publicar producto: " + e.message);
+    }
+}
+
+async function toggleEstadoAgotado(prodId, estadoActual) {
+    try {
+        const { doc, updateDoc } = window.fbMethods;
+        const prodRef = doc(window.db, "productos", prodId);
+        await updateDoc(prodRef, { agotado: !estadoActual });
+        cargarProductosTienda();
+    } catch (e) {
+        alert("Error al cambiar estatus: " + e.message);
+    }
+}
+
+async function eliminarProductoCapitan(prodId) {
+    if (!confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
+    try {
+        const { doc, deleteDoc } = window.fbMethods;
+        await deleteDoc(doc(window.db, "productos", prodId));
+        alert("🗑️ Producto eliminado.");
+        cargarProductosTienda();
+    } catch (e) {
+        alert("Error al eliminar: " + e.message);
+    }
+}
+
+async function cargarInventarioAdmin() {
+    if (!window.db || !window.fbMethods) return;
+    const { collection, getDocs } = window.fbMethods;
+    const select = document.getElementById('adminProductSelect');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Selecciona Producto del Catálogo...</option>';
+    window.adminInventarioCache = [];
+
+    try {
+        const snap = await getDocs(collection(window.db, "productos"));
+        snap.forEach(docSnap => {
+            const p = { id: docSnap.id, ...docSnap.data() };
+            window.adminInventarioCache.push(p);
+
+            if (p.stock > 0 && !p.agotado) {
+                select.innerHTML += `<option value="${p.id}">${p.titulo} (Stock: ${p.stock} pzas - $${p.precio} MXN)</option>`;
+            }
+        });
+    } catch (e) {
+        console.error("Error al cargar inventario para ventas:", e);
+    }
+}
+
+function actualizarPrecioSugeridoAdmin() {
+    const prodId = document.getElementById('adminProductSelect').value;
+    const prod = (window.adminInventarioCache || []).find(item => item.id === prodId);
+    if (prod) {
+        document.getElementById('adminMontoCobrado').value = prod.precio;
+    }
+}
+
+async function procesarVentaAdmin(event) {
+    event.preventDefault();
+    let userQuery = document.getElementById('adminUserUid').value.trim();
+    const prodId = document.getElementById('adminProductSelect').value;
+    const montoCobrado = parseFloat(document.getElementById('adminMontoCobrado').value);
+
+    const producto = (window.adminInventarioCache || []).find(p => p.id === prodId);
+    if (!producto) {
+        alert("Selecciona un producto válido del catálogo.");
+        return;
+    }
+
+    try {
+        const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
+        let userDocRef = null;
+        let userData = null;
+
+        const usersSnap = await getDocs(collection(window.db, "usuarios"));
+        usersSnap.forEach(uDoc => {
+            const data = uDoc.data();
+            const shortUid = `USR-${uDoc.id.slice(-5).toUpperCase()}`;
+            if (uDoc.id === userQuery || shortUid === userQuery.toUpperCase()) {
+                userDocRef = doc(window.db, "usuarios", uDoc.id);
+                userData = data;
+            }
+        });
+
+        if (!userDocRef) {
+            alert("⚠️ No se encontró ningún pasajero registrado con ese ID o UID.");
+            return;
+        }
+
+        let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
+        if (nuevosVuelos > 3) nuevosVuelos = 1;
+
+        await updateDoc(userDocRef, {
+            vuelos_acumulados: nuevosVuelos,
+            descuento_bienvenida_activo: false
+        });
+
+        const nuevoStock = producto.stock - 1;
+        const prodRef = doc(window.db, "productos", producto.id);
+        await updateDoc(prodRef, {
+            stock: nuevoStock,
+            agotado: nuevoStock <= 0
+        });
+
+        const costoUnitario = producto.costo || 0;
+        const gananciaBruta = montoCobrado - costoUnitario;
+        
+        await addDoc(collection(window.db, "transacciones_ventas"), {
+            usuario_uid: userDocRef.id,
+            producto_nombre: producto.titulo,
+            monto_cobrado: montoCobrado,
+            costo_unitario: costoUnitario,
+            ganancia_bruta: gananciaBruta,
+            fecha: new Date().toISOString()
+        });
+
+        alert(`🚀 ¡VENTA REGISTRADA CON ÉXITO!\n\n• Pasajero: ${userData.nombre_real || userData.displayName}\n• Vuelo Acreditado: ${nuevosVuelos}/3\n• Quedan: ${nuevoStock} pzas de ${producto.titulo}`);
+        
+        event.target.reset();
+
+        cargarDashboardAdmin();
+        cargarProductosTienda();
+        cargarInventarioAdmin();
+
+    } catch (e) {
+        alert("Error al procesar la venta: " + e.message);
+    }
+}
+
 /* ==========================================
-   8. MANEJO DE MODALES DE INICIO Y PERFIL
+   10. CONTROL DE MODALES DE SESIÓN Y PROMO
    ========================================== */
 function abrirPromo() {
     const modal = document.getElementById('promoModal');
-    if (modal) modal.classList.add('active');
-    openModalState();
+    if (modal) {
+        modal.classList.add('active');
+        openModalState();
+    }
 }
 function cerrarPromo() {
     const modal = document.getElementById('promoModal');
-    if (modal) modal.classList.remove('active');
-    closeModalState();
+    if (modal) {
+        modal.classList.remove('active');
+        closeModalState();
+    }
 }
 function abrirLogin() {
     const modal = document.getElementById('loginModal');
-    if (modal) modal.classList.add('active');
-    openModalState();
+    if (modal) {
+        modal.classList.add('active');
+        openModalState();
+    }
 }
 function cerrarLogin() {
     const modal = document.getElementById('loginModal');
-    if (modal) modal.classList.remove('active');
-    closeModalState();
+    if (modal) {
+        modal.classList.remove('active');
+        closeModalState();
+    }
 }
 function abrirPerfil() {
     const modal = document.getElementById('profileModal');
     if (modal) {
         renderPasaporteUI();
         modal.classList.add('active');
+        openModalState();
     }
-    openModalState();
 }
 function cerrarPerfil() {
     const modal = document.getElementById('profileModal');
-    if (modal) modal.classList.remove('active');
-    closeModalState();
+    if (modal) {
+        modal.classList.remove('active');
+        closeModalState();
+    }
 }
 function irALoginDesdePromo() {
     cerrarPromo();
@@ -1176,6 +1754,7 @@ async function cerrarSesionFirebase() {
 function cerrarTodasLasVistas() {
     closeProductModal();
     closeInfoModal();
+    closeBuzonModal();
     cerrarPromo();
     cerrarLogin();
     cerrarPerfil();
@@ -1191,7 +1770,7 @@ function cerrarTodasLasVistas() {
 }
 
 /* ==========================================
-   9. PROMO HORA 4:20 (AUTOMÁTICA 5 MINUTOS)
+   11. PROMO HORA 4:20
    ========================================== */
 window.esPromo420Activa = false;
 
@@ -1200,223 +1779,8 @@ function iniciarReloj420() {
         const ahora = new Date();
         const hora = ahora.getHours();     
         const minutos = ahora.getMinutes();
-
-        const es420 = (hora === 16 && minutos >= 20 && minutos < 25);
-
-        if (es420 && !window.esPromo420Activa) {
-            activarPromo420();
-        } else if (!es420 && window.esPromo420Activa) {
-            desactivarPromo420();
-        }
-    }, 1000);
-}
-
-function activarPromo420() {
-    window.esPromo420Activa = true;
-    let banner = document.getElementById('bannerHora420');
-    if (!banner) {
-        banner = document.createElement('div');
-        banner.id = 'bannerHora420';
-        banner.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: linear-gradient(90deg, #16a34a, #eab308, #16a34a);
-            color: #000; font-weight: 800; text-align: center;
-            padding: 10px; z-index: 999999; font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        `;
-        document.body.prepend(banner);
-    }
-    banner.style.display = 'block';
-    banner.innerHTML = `🔥 ¡HORA 4:20 ACTIVA! 40% OFF EN TODO EL CATÁLOGO 🔥`;
-}
-
-function desactivarPromo420() {
-    window.esPromo420Activa = false;
-    const banner = document.getElementById('bannerHora420');
-    if (banner) banner.style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', iniciarReloj420);
-/* ==========================================
-   GESTIÓN DE CATÁLOGO DINÁMICO EN FIRESTORE
-   ========================================== */
-
-// 1. Cargar productos en la tienda y en el panel Capitán
-async function cargarProductosTienda() {
-    if (!window.db || !window.fbMethods) return;
-    const { collection, getDocs } = window.fbMethods;
-
-    try {
-        const snap = await getDocs(collection(window.db, "productos"));
-        const gridDestacados = document.getElementById('featuredGrid');
-        const listaAdmin = document.getElementById('catListaProductosAdmin');
-
-        if (listaAdmin) listaAdmin.innerHTML = '';
-        if (gridDestacados) gridDestacados.innerHTML = '';
-
-        snap.forEach(docSnap => {
-            const p = { id: docSnap.id, ...docSnap.data() };
-
-            // A) RENDERIZAR EN EL PANEL DEL CAPITÁN
-            if (listaAdmin) {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'stock-item-row';
-                itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px; border-radius: 12px; margin-bottom: 8px;';
-                itemDiv.innerHTML = `
-                    <div>
-                        <strong style="color:#fff;">${p.titulo}</strong> (${p.marca.toUpperCase()}) 
-                        <br><span style="font-size:0.8rem; color:#94a3b8;">Precio: $${p.precio} MXN | Stock: ${p.stock} pzas | Estatus: ${p.agotado ? '🔴 AGOTADO' : '🟢 DISPONIBLE'}</span>
-                    </div>
-                    <div style="display:flex; gap:6px;">
-                        <button onclick="toggleEstadoAgotado('${p.id}', ${p.agotado || false})" style="background:${p.agotado ? '#22c55e' : '#e11d48'}; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer;">
-                            ${p.agotado ? 'Reactivar' : 'Marcar Agotado'}
-                        </button>
-                        <button onclick="eliminarProductoCapitan('${p.id}')" style="background:#64748b; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer;">
-                            🗑️
-                        </button>
-                    </div>
-                `;
-                listaAdmin.appendChild(itemDiv);
-            }
-
-            // B) RENDERIZAR EN LA TIENDA PRINCIPAL
-            if (gridDestacados) {
-                const card = document.createElement('div');
-                card.className = 'product-card card-glass';
-                if (p.agotado) card.style.opacity = '0.6';
-
-                const mediaTag = p.imagen.endsWith('.mp4')
-                    ? `<video src="${p.imagen}" autoplay loop muted playsinline class="active"></video>`
-                    : `<img src="${p.imagen}" class="active" alt="${p.titulo}">`;
-
-                card.innerHTML = `
-                    <span class="${p.agotado ? 'product-tag-sale' : 'product-tag-new'}" style="${p.agotado ? 'background:#ef4444; color:#fff;' : ''}">
-                        ${p.agotado ? 'AGOTADO' : p.marca.toUpperCase()}
-                    </span>
-                    <div class="product-img-slider">${mediaTag}</div>
-                    <div>
-                        <div class="product-name">${p.titulo}</div>
-                        <div class="product-subtitle">${p.descripcion.slice(0, 60)}...</div>
-                        <div class="product-price">$${p.precio} MXN</div>
-                    </div>
-                    <button class="btn-add" ${p.agotado ? 'disabled style="background:#64748b; cursor:not-allowed;"' : ''} onclick="event.stopPropagation(); addToCart('${p.titulo}', ${p.precio}, '${p.imagen}')">
-                        ${p.agotado ? 'Sin Stock Disponible' : 'Agregar al Carrito'}
-                    </button>
-                `;
-                gridDestacados.appendChild(card);
-            }
-        });
-    } catch (e) {
-        console.error("Error al cargar productos desde Firestore:", e);
-    }
-}
-
-// 2. Guardar un nuevo producto en Firebase desde el Panel Capitán
-async function guardarProductoCapitan(event) {
-    event.preventDefault();
-
-    const titulo = document.getElementById('catTitulo').value.trim();
-    const precio = parseFloat(document.getElementById('catPrecio').value);
-    const costo = parseFloat(document.getElementById('catCosto').value);
-    const marca = document.getElementById('catMarca').value;
-    const urlManual = document.getElementById('catImagen').value.trim();
-    const archivoInput = document.getElementById('catArchivoMedia');
-    const variedadesRaw = document.getElementById('catVariedades').value.trim();
-    const stock = parseInt(document.getElementById('catStock').value);
-    const descripcion = document.getElementById('catDescripcion').value.trim();
-
-    let imagenFinal = urlManual;
-
-    // Si el usuario seleccionó un archivo local (foto o video), subirlo a Firebase Storage
-    if (archivoInput && archivoInput.files.length > 0) {
-        const file = archivoInput.files[0];
-        const storageRef = window.fbMethods.ref(window.storage, `productos/${Date.now()}_${file.name}`);
-        
-        try {
-            alert("⏳ Subiendo multimedia a la nube, por favor espera un momento...");
-            const snapshot = await window.fbMethods.uploadBytes(storageRef, file);
-            imagenFinal = await window.fbMethods.getDownloadURL(snapshot.ref);
-        } catch (err) {
-            alert("⚠️ Error al subir la foto/video: " + err.message);
-            return;
-        }
-    }
-
-    if (!imagenFinal) {
-        alert("Por favor selecciona un archivo o ingresa una URL de imagen/video.");
-        return;
-    }
-
-    const variedades = variedadesRaw ? variedadesRaw.split(',').map(v => v.trim()) : ['Sativa', 'Indica', 'Híbrida'];
-
-    try {
-        const { collection, addDoc } = window.fbMethods;
-        await addDoc(collection(window.db, "productos"), {
-            titulo,
-            precio,
-            costo,
-            marca,
-            imagen: imagenFinal,
-            variedades,
-            stock,
-            descripcion,
-            agotado: false,
-            fecha_registro: new Date().toISOString()
-        });
-
-        alert("✅ ¡Producto con foto/video publicado con éxito!");
-        event.target.reset();
-        if (typeof cargarProductosTienda === 'function') {
-            cargarProductosTienda();
-        }
-    } catch (e) {
-        alert("⚠️ Error al publicar producto: " + e.message);
-    }
-}
-// 3. Cambiar el estado entre Disponible y Agotado
-async function toggleEstadoAgotado(prodId, estadoActual) {
-    try {
-        const { doc, updateDoc } = window.fbMethods;
-        const prodRef = doc(window.db, "productos", prodId);
-        await updateDoc(prodRef, {
-            agotado: !estadoActual
-        });
-        cargarProductosTienda();
-    } catch (e) {
-        alert("Error al cambiar estatus: " + e.message);
-    }
-}
-
-// 4. Eliminar producto del catálogo
-async function eliminarProductoCapitan(prodId) {
-    if (!confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
-    try {
-        const { doc, deleteDoc } = window.fbMethods;
-        await deleteDoc(doc(window.db, "productos", prodId));
-        alert("🗑️ Producto eliminado.");
-        cargarProductosTienda();
-    } catch (e) {
-        alert("Error al eliminar: " + e.message);
-    }
-}
-
-// Cargar catálogo automáticamente al iniciar la página
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(cargarProductosTienda, 800);
-});
-/* ==========================================
-   LÓGICA COMPLETA DE HORA 4:20 Y RECALCULO
-   ========================================== */
-window.esPromo420Activa = false;
-
-function iniciarReloj420() {
-    setInterval(() => {
-        const ahora = new Date();
-        const hora = ahora.getHours();     // 16 = 4 PM
-        const minutos = ahora.getMinutes();
         const segundos = ahora.getSeconds();
 
-        // Rango activo: 16:20:00 a 16:24:59
         const es420 = (hora === 16 && minutos >= 20 && minutos < 25);
 
         if (es420 && !window.esPromo420Activa) {
@@ -1425,7 +1789,6 @@ function iniciarReloj420() {
         } else if (!es420 && window.esPromo420Activa) {
             desactivarPromo420();
         } else if (es420 && window.esPromo420Activa) {
-            // Actualizar contador del banner
             const segs = 299 - ((minutos - 20) * 60 + segundos);
             const min = Math.floor(segs / 60);
             const sec = segs % 60;
@@ -1446,189 +1809,17 @@ function activarPromo420(segundosRestantes) {
         document.body.prepend(banner);
     }
     banner.style.display = 'block';
-    
-    // Recargar catálogo para mostrar los precios con el 40% de descuento
-    if (typeof cargarProductosTienda === 'function') {
-        cargarProductosTienda();
-    }
+    cargarProductosTienda();
 }
 
 function desactivarPromo420() {
     window.esPromo420Activa = false;
     const banner = document.getElementById('bannerHora420');
     if (banner) banner.style.display = 'none';
-
-    // Restaurar precios normales en el catálogo
-    if (typeof cargarProductosTienda === 'function') {
-        cargarProductosTienda();
-    }
+    cargarProductosTienda();
 }
 
-document.addEventListener('DOMContentLoaded', iniciarReloj420);
-/* ==========================================
-   PROCESAMIENTO DE VENTAS Y VUELOS EN VIVO (CAPITÁN)
-   ========================================== */
-
-// 1. Cargar productos dinámicos de Firestore en el select de ventas
-async function cargarInventarioAdmin() {
-    if (!window.db || !window.fbMethods) return;
-    const { collection, getDocs } = window.fbMethods;
-    const select = document.getElementById('adminProductSelect');
-    if (!select) return;
-
-    select.innerHTML = '<option value="">Selecciona Producto del Catálogo...</option>';
-    window.adminInventarioCache = [];
-
-    try {
-        const snap = await getDocs(collection(window.db, "productos"));
-        snap.forEach(docSnap => {
-            const p = { id: docSnap.id, ...docSnap.data() };
-            window.adminInventarioCache.push(p);
-
-            if (p.stock > 0 && !p.agotado) {
-                select.innerHTML += `<option value="${p.id}">${p.titulo} (Stock: ${p.stock} pzas - $${p.precio} MXN)</option>`;
-            }
-        });
-    } catch (e) {
-        console.error("Error al cargar inventario para ventas:", e);
-    }
-}
-
-// 2. Actualizar precio sugerido al seleccionar un producto
-function actualizarPrecioSugeridoAdmin() {
-    const prodId = document.getElementById('adminProductSelect').value;
-    const prod = (window.adminInventarioCache || []).find(item => item.id === prodId);
-    if (prod) {
-        document.getElementById('adminMontoCobrado').value = prod.precio;
-    }
-}
-
-// 3. Procesar venta, descontar stock en Firestore y acreditar vuelo al cliente
-async function procesarVentaAdmin(event) {
-    event.preventDefault();
-    let userQuery = document.getElementById('adminUserUid').value.trim();
-    const prodId = document.getElementById('adminProductSelect').value;
-    const montoCobrado = parseFloat(document.getElementById('adminMontoCobrado').value);
-
-    const producto = (window.adminInventarioCache || []).find(p => p.id === prodId);
-    if (!producto) {
-        alert("Selecciona un producto válido del catálogo.");
-        return;
-    }
-
-    try {
-        const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
-        let userDocRef = null;
-        let userData = null;
-
-        // Buscar al cliente por UID completo o ID corto (#USR-XXXXX)
-        const usersSnap = await getDocs(collection(window.db, "usuarios"));
-        usersSnap.forEach(uDoc => {
-            const data = uDoc.data();
-            const shortUid = `USR-${uDoc.id.slice(-5).toUpperCase()}`;
-            if (uDoc.id === userQuery || shortUid === userQuery.toUpperCase()) {
-                userDocRef = doc(window.db, "usuarios", uDoc.id);
-                userData = data;
-            }
-        });
-
-        if (!userDocRef) {
-            alert("⚠️ No se encontró ningún pasajero registrado con ese ID o UID.");
-            return;
-        }
-
-        // Acreditar vuelo (ciclo de 1 a 3)
-        let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
-        if (nuevosVuelos > 3) {
-            nuevosVuelos = 1;
-        }
-
-        await updateDoc(userDocRef, {
-            vuelos_acumulados: nuevosVuelos,
-            descuento_bienvenida_activo: false
-        });
-
-        // Descontar stock e invocar 'agotado' si llega a cero
-        const nuevoStock = producto.stock - 1;
-        const prodRef = doc(window.db, "productos", producto.id);
-        await updateDoc(prodRef, {
-            stock: nuevoStock,
-            agotado: nuevoStock <= 0
-        });
-
-        // Registrar transacción contable
-        const costoUnitario = producto.costo || 0;
-        const gananciaBruta = montoCobrado - costoUnitario;
-        
-        await addDoc(collection(window.db, "transacciones_ventas"), {
-            usuario_uid: userDocRef.id,
-            producto_nombre: producto.titulo,
-            monto_cobrado: montoCobrado,
-            costo_unitario: costoUnitario,
-            ganancia_bruta: gananciaBruta,
-            fecha: new Date().toISOString()
-        });
-
-        alert(`🚀 ¡VENTA REGISTRADA CON ÉXITO!\n\n• Pasajero: ${userData.nombre_real || userData.displayName}\n• Vuelo Acreditado: ${nuevosVuelos}/3\n• Quedan: ${nuevoStock} pzas de ${producto.titulo}`);
-        
-        event.target.reset();
-
-        // Actualizar todos los módulos en pantalla
-        if (typeof cargarDashboardAdmin === 'function') cargarDashboardAdmin();
-        if (typeof cargarProductosTienda === 'function') cargarProductosTienda();
-        if (typeof cargarInventarioAdmin === 'function') cargarInventarioAdmin();
-
-    } catch (e) {
-        alert("Error al procesar la venta: " + e.message);
-    }
-}
-// Función para filtrar tarjetas de Rutas de Vuelo por Zona
-function filterRutasCards(zonaSeleccionada) {
-    const cards = document.querySelectorAll('#rutasGrid .compact-card');
-    cards.forEach(card => {
-        const zonaCard = card.getAttribute('data-zona');
-        if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaCard === zonaSeleccionada) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// Event Listeners para los botones de zona de Rutas de Vuelo
 document.addEventListener('DOMContentLoaded', () => {
-    const botonesFiltroRutas = document.querySelectorAll('.filtros-zonas .btn-filtro');
-    botonesFiltroRutas.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            botonesFiltroRutas.forEach(b => b.classList.remove('activo'));
-            e.target.classList.add('activo');
-            const zona = e.target.getAttribute('data-zona');
-            filterRutasCards(zona);
-        });
-    });
-});
-// Función para filtrar tarjetas de Rutas de Vuelo por Zona
-function filterRutasCards(zonaSeleccionada) {
-    const cards = document.querySelectorAll('#rutasGrid .compact-card');
-    cards.forEach(card => {
-        const zonaCard = card.getAttribute('data-zona');
-        if (zonaSeleccionada === 'todo' || zonaSeleccionada === 'todos' || zonaCard === zonaSeleccionada) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// Escuchador de clics para los botones de zona
-document.addEventListener('DOMContentLoaded', () => {
-    const botonesFiltroRutas = document.querySelectorAll('.filtros-zonas .btn-filtro');
-    botonesFiltroRutas.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            botonesFiltroRutas.forEach(b => b.classList.remove('activo'));
-            e.target.classList.add('activo');
-            const zona = e.target.getAttribute('data-zona');
-            filterRutasCards(zona);
-        });
-    });
+    iniciarReloj420();
+    setTimeout(cargarProductosTienda, 800);
 });

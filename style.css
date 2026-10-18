@@ -3653,3 +3653,34 @@ body.modal-open {
     font-size: 0.7rem !important;
     color: #94a3b8 !important;
 }
+/* Bloqueo hermético del scroll de fondo sin desplazamientos */
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
+/* Ocultamiento suave de la barra flotante al abrir cualquier vista */
+body.modal-open .bottom-nav,
+body.modal-open .cart-floating-btn,
+body.modal-open .buzon-floating-btn {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Ajuste de z-index y capas para modales */
+#buzonModalOverlay,
+#productModalOverlay,
+#infoModalOverlay,
+#profileModal,
+#loginModal,
+#promoModal {
+    z-index: 100000 !important;
+}
+
+.product-modal-card,
+.info-modal-card {
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
