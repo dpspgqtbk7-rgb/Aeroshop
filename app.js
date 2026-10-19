@@ -32,7 +32,7 @@ function openModalState() {
 
 function closeModalState() {
     const activeOverlays = document.querySelectorAll(
-        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active'
+        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active, #faqModalOverlay.active'
     );
     if (activeOverlays.length === 0) {
         document.body.classList.remove('modal-open');
@@ -55,6 +55,12 @@ function closeInfoModalOnOverlay(event) {
 function closeBuzonOnOverlay(event) {
     if (event.target.id === 'buzonModalOverlay') {
         closeBuzonModal();
+    }
+}
+
+function closeFaqOnOverlay(event) {
+    if (event.target.id === 'faqModalOverlay') {
+        closeFaqModal();
     }
 }
 
@@ -249,7 +255,7 @@ async function renderRastreadorPedidoCliente() {
 }
 
 /* ==========================================
-   2. PRODUCTOS DESTACADOS Y BASE LOCAL
+   2. PRODUCTOS DESTACADOS Y BASE LOCAL (CON MÚLTIPLES FOTOS)
    ========================================== */
 const localProductsDB = {
     donutsdonitav3: {
@@ -257,6 +263,7 @@ const localProductsDB = {
         precio: 850,
         descripcion: "Dona Mágica ✨🪴. Excelente potencia, extractos limpios y terpenos frutales. Disponible en Sativa, Indica e Híbrida.",
         imagen: "./donusdonitav31.JPG",
+        imagenes: ["./donusdonitav31.JPG", "./donutsdonasv3.JPG"],
         variedades: ["Sativa", "Indica", "Híbrida"]
     },
     packman3g: {
@@ -264,6 +271,7 @@ const localProductsDB = {
         precio: 950,
         descripcion: "Edición especial Packman × PartyBoyz. Incluye 3G de Live Resin + .5G Infused Pre-Roll con sabor intenso.",
         imagen: "./packman1.png",
+        imagenes: ["./packman1.png", "./packman2.png", "./packman3.png", "./packman5.JPG"],
         variedades: ["Sativa", "Indica", "Híbrida"]
     },
     muhacmeds: {
@@ -271,6 +279,7 @@ const localProductsDB = {
         precio: 700,
         descripcion: "Colaboración oficial Muha Meds × Cookies. Alta pureza, aceite claro, terpenos naturales y boquilla de flujo suave.",
         imagen: "./Muhacmeds1.JPG",
+        imagenes: ["./Muhacmeds1.JPG", "./MUHACMEDS.png", "./muhacmeds.jpg", "./muhacmeds2.jpg"],
         variedades: ["Sativa", "Indica", "Híbrida"]
     },
     muhamedual: {
@@ -278,6 +287,7 @@ const localProductsDB = {
         precio: 800,
         descripcion: "Disposable Muha Meds con doble tanque y variante seleccionable. Dos sabores y perfiles en un solo dispositivo.",
         imagen: "./muhadual.mp4",
+        imagenes: ["./muhadual.mp4", "./muhamedual 2.JPG", "./muhamedual3.jpg"],
         variedades: ["Sativa", "Indica", "Híbrida"]
     }
 };
@@ -309,6 +319,7 @@ async function openProductModal(productId) {
             precio: lp.precio,
             descripcion: lp.descripcion,
             imagen: lp.imagen,
+            imagenes: lp.imagenes || [lp.imagen],
             variedades: lp.variedades
         };
     }
@@ -316,13 +327,17 @@ async function openProductModal(productId) {
     if (productData) {
         openModalState();
 
+        const listaFotos = productData.imagenes && productData.imagenes.length > 0 
+            ? productData.imagenes 
+            : [productData.imagen];
+
         const precioCalculado = window.esPromo420Activa ? Math.round(productData.precio * 0.60) : productData.precio;
 
         currentModalProduct = {
             id: productData.id,
             title: productData.titulo,
             price: precioCalculado,
-            image: productData.imagen
+            image: listaFotos[0]
         };
 
         document.getElementById('modalTitle').innerText = productData.titulo;
@@ -333,14 +348,18 @@ async function openProductModal(productId) {
 
         document.getElementById('modalDescription').innerText = productData.descripcion || 'Sin descripción disponible.';
 
-        const isVideo = productData.imagen.toLowerCase().endsWith('.mp4');
-        mediaContainer.innerHTML = isVideo
-            ? `<video src="${productData.imagen}" autoplay loop muted playsinline class="modal-main-image"></video>`
-            : `<img src="${productData.imagen}" class="modal-main-image" alt="${productData.titulo}">`;
+        const mainSrc = listaFotos[0];
+        const isVideoMain = mainSrc.toLowerCase().endsWith('.mp4');
+        mediaContainer.innerHTML = isVideoMain
+            ? `<video src="${mainSrc}" autoplay loop muted playsinline class="modal-main-image"></video>`
+            : `<img src="${mainSrc}" class="modal-main-image" alt="${productData.titulo}">`;
 
-        thumbnailsContainer.innerHTML = isVideo
-            ? `<video src="${productData.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${productData.imagen}')" muted></video>`
-            : `<img src="${productData.imagen}" class="modal-thumb active" onclick="changeModalMedia(this, '${productData.imagen}')">`;
+        thumbnailsContainer.innerHTML = listaFotos.map((src, idx) => {
+            const isVid = src.toLowerCase().endsWith('.mp4');
+            return isVid
+                ? `<video src="${src}" class="modal-thumb ${idx === 0 ? 'active' : ''}" onclick="changeModalMedia(this, '${src}')" muted></video>`
+                : `<img src="${src}" class="modal-thumb ${idx === 0 ? 'active' : ''}" onclick="changeModalMedia(this, '${src}')" alt="Vista ${idx + 1}">`;
+        }).join('');
 
         const variedades = productData.variedades || ['Sativa', 'Indica', 'Híbrida'];
         strainPillsContainer.innerHTML = variedades.map((strain, index) => `
@@ -572,7 +591,7 @@ async function registrarPedidoEnHistorialFirebase(items) {
 }
 
 /* ==========================================
-   4. FUNCIONALIDAD BUZÓN DE MENSAJES
+   4. FUNCIONALIDAD BUZÓN Y PREGUNTAS FRECUENTES (FAQ)
    ========================================== */
 function openBuzonModal() {
     const overlay = document.getElementById('buzonModalOverlay');
@@ -610,6 +629,22 @@ function sendBuzonWhatsApp(event) {
     const targetUrl = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
     closeBuzonModal();
     window.open(targetUrl, '_blank');
+}
+
+function openFaqModal() {
+    const overlay = document.getElementById('faqModalOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        openModalState();
+    }
+}
+
+function closeFaqModal() {
+    const overlay = document.getElementById('faqModalOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        closeModalState();
+    }
 }
 
 /* ==========================================
@@ -1533,6 +1568,7 @@ async function guardarProductoCapitan(event) {
             costo,
             marca,
             imagen: imagenFinal,
+            imagenes: [imagenFinal],
             variedades,
             stock,
             descripcion,
@@ -1755,6 +1791,7 @@ function cerrarTodasLasVistas() {
     closeProductModal();
     closeInfoModal();
     closeBuzonModal();
+    closeFaqModal();
     cerrarPromo();
     cerrarLogin();
     cerrarPerfil();

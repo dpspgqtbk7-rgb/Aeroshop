@@ -661,6 +661,56 @@
             </form>
         </div>
     </div>
+    <!-- VENTANA MODAL DE PREGUNTAS FRECUENTES (FAQ) -->
+    <div class="product-modal-overlay" id="faqModalOverlay" onclick="closeFaqOnOverlay(event)">
+        <div class="product-modal-card" style="max-width: 650px;">
+            <button type="button" class="modal-close-btn" onclick="closeFaqModal()">&times;</button>
+            
+            <h2 class="modal-title" style="font-size: 1.8rem; margin-bottom: 8px;">❓ Preguntas Frecuentes</h2>
+            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">
+                Conoce nuestras políticas de entrega, garantías y seguridad de compra en AeroShop CDMX.
+            </p>
+
+            <div class="faq-modal-list" style="display: flex; flex-direction: column; gap: 16px; text-align: left;">
+                
+                <!-- PREGUNTA 1: ENTREGA -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px;">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">🛵 ¿Cómo es la entrega?</h3>
+                    <p style="color: #334155; font-size: 0.92rem; line-height: 1.5; margin-bottom: 6px;">
+                        • <strong>Punto Medio:</strong> Realizamos entregas personales en puntos medios seguros de la Zona CDMX.<br>
+                        • <strong>Envíos Express:</strong> Contamos con envíos vía Didi Entrega o Uber *(Nota: AeroShop no se hace responsable por decomisos en el trayecto de la plataforma)*.<br>
+                        • <strong>Tiempos:</strong> La entrega se puede realizar el mismo día, sujeto a disponibilidad de horario y zona.
+                    </p>
+                </div>
+
+                <!-- PREGUNTA 2: GARANTÍA Y POLÍTICAS -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px;">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">🛡️ ¿Hay Garantía?</h3>
+                    <p style="color: #334155; font-size: 0.92rem; line-height: 1.5; margin-bottom: 8px;">
+                        <strong>¡Sí!</strong> AeroShop es una de las únicas tiendas que cuenta con garantía directa por fallas de fábrica.
+                    </p>
+                    <div style="background: #fff; border-left: 4px solid #38bdf8; padding: 12px; border-radius: 8px; font-size: 0.88rem; color: #1e293b; line-height: 1.5;">
+                        <strong>📜 Política y Cobertura de Garantía:</strong>
+                        <ul style="margin-top: 6px; padding-left: 18px;">
+                            <li><strong>Fallas de funcionamiento elegibles:</strong> Solo aplica cambio si el dispositivo no sale vapor, no prende, no quema el extracto o viene chorreado de origen.</li>
+                            <li><strong>Reporte de derrame/chorreado:</strong> Si el producto llega chorreado, debe notificarse e informar el <em>mismo día de la recepción</em> adjuntando evidencia clara en foto o video.</li>
+                            <li><strong>Plazo de garantía:</strong> Todos los demás fallos de funcionamiento cuentan con un plazo de <strong>1 semana de garantía</strong>, sujeto a validación previa.</li>
+                            <li><strong>Exclusiones:</strong> No se aceptan garantías en productos dañados accidentalmente por el usuario (por ejemplo, sobrecalentamiento de la batería por dejarlo conectado a la corriente demasiado tiempo, caídas o golpes).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- PREGUNTA 3: SEGURIDAD -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px;">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">🔒 ¿Es seguro comprar en AeroShop?</h3>
+                    <p style="color: #334155; font-size: 0.92rem; line-height: 1.5;">
+                        Totalmente. Somos un colectivo formal con años de experiencia en la CDMX. Puedes consultar nuestras referencias, recibir atención directa y personalizada por WhatsApp, rastrear tu pedido desde tu perfil y acumular vuelos en tu pasaporte digital.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
    <!-- ========================================== -->
 <!-- VISTA FULLSCREEN: 04. FRECUENCIAS -->
 <!-- ========================================== -->
@@ -1065,13 +1115,13 @@
 
   </div>
 </div>
-
 <!-- 4. BARRA DE NAVEGACIÓN FIJA CÁPSULA OSCURA -->
 <nav class="bottom-nav">
    <button class="nav-item" id="adminNavBtn" style="display: none; color: #facc15 !important;" onclick="abrirPanelAdminDirecto()">
-  <span class="nav-icon">👑</span>
-  <span class="nav-label">Capitán</span>
-</button> 
+      <span class="nav-icon">👑</span>
+      <span class="nav-label">Capitán</span>
+   </button> 
+   
   <button class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
@@ -1085,6 +1135,11 @@
   <button class="nav-item" onclick="openBuzonModal()">
     <span class="nav-icon">📬</span>
     <span class="nav-label">Buzón</span>
+  </button>
+
+  <button class="nav-item" onclick="openFaqModal()">
+    <span class="nav-icon">❓</span>
+    <span class="nav-label">FAQ</span>
   </button>
 
   <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">

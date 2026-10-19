@@ -3684,3 +3684,25 @@ body.modal-open .buzon-floating-btn {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
 }
+/* Ajuste de capas para el modal de FAQ */
+#faqModalOverlay {
+    z-index: 100000 !important;
+}
+
+/* Scroll interno suave para la lista de FAQ */
+.faq-modal-list {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ajuste automático de la barra inferior con 5 o 6 botones */
+.bottom-nav {
+    max-width: 460px !important;
+    padding: 6px 12px !important;
+}
+
+.bottom-nav .nav-item {
+    padding: 4px 8px !important;
+}
