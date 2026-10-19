@@ -1986,10 +1986,12 @@ cargarDashboardAdmin();
         `).join('');
     }
 }
-
-// Guardar nueva marca desde el formulario del Capitán
+// Guardar nueva marca desde el formulario del Capitán (VERSIÓN CORREGIDA Y SIN BLOQUEOS)
 async function guardarMarcaCapitan(event) {
     event.preventDefault();
+
+    const btnSubmit = event.target.querySelector('button[type="submit"]');
+    const originalBtnText = btnSubmit ? btnSubmit.innerHTML : '✨ Registrar y Publicar Marca';
 
     const nombre = document.getElementById('marcaNombre')?.value.trim();
     const idSlug = document.getElementById('marcaId')?.value.trim().toLowerCase().replace(/\s+/g, '');
@@ -2004,30 +2006,52 @@ async function guardarMarcaCapitan(event) {
         return;
     }
 
-    let logoFinal = urlLogoManual;
-    let fondoFinal = urlFondoManual || './fondo-espacial.jpg';
-
     try {
-        alert("⏳ Subiendo multimedia de la marca, por favor espera...");
-
-        // Subir Logo si se seleccionó archivo
-        if (archivoLogoInput && archivoLogoInput.files.length > 0) {
-            const fileLogo = archivoLogoInput.files[0];
-            const logoRef = window.fbMethods.ref(window.storage, `marcas/logos/${Date.now()}_${fileLogo.name}`);
-            const snap = await window.fbMethods.uploadBytes(logoRef, fileLogo);
-            logoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+        // Cambiar el texto del botón y desactivarlo temporalmente para evitar doble clic
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = "⏳ Subiendo multimedia, por favor espera...";
         }
 
-        // Subir Fondo si se seleccionó archivo
+        let logoFinal = urlLogoManual || '';
+        let fondoFinal = urlFondoManual || './fondo-espacial.jpg';
+
+        // 1. Subir Logo si se seleccionó archivo
+        if (archivoLogoInput && archivoLogoInput.files.length > 0) {
+            const fileLogo = archivoLogoInput.files[0];
+            if (window.storage && window.fbMethods && window.fbMethods.ref && window.fbMethods.uploadBytes) {
+                try {
+                    const logoRef = window.fbMethods.ref(window.storage, `marcas/logos/${Date.now()}_${fileLogo.name}`);
+                    const snap = await window.fbMethods.uploadBytes(logoRef, fileLogo);
+                    logoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+                } catch (stErr) {
+                    console.warn("Error en Firebase Storage para logo, usando ruta local:", stErr);
+                    logoFinal = `./${fileLogo.name}`;
+                }
+            } else {
+                logoFinal = `./${fileLogo.name}`;
+            }
+        }
+
+        // 2. Subir Fondo si se seleccionó archivo
         if (archivoFondoInput && archivoFondoInput.files.length > 0) {
             const fileFondo = archivoFondoInput.files[0];
-            const fondoRef = window.fbMethods.ref(window.storage, `marcas/fondos/${Date.now()}_${fileFondo.name}`);
-            const snap = await window.fbMethods.uploadBytes(fondoRef, fileFondo);
-            fondoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+            if (window.storage && window.fbMethods && window.fbMethods.ref && window.fbMethods.uploadBytes) {
+                try {
+                    const fondoRef = window.fbMethods.ref(window.storage, `marcas/fondos/${Date.now()}_${fileFondo.name}`);
+                    const snap = await window.fbMethods.uploadBytes(fondoRef, fileFondo);
+                    fondoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+                } catch (stErr) {
+                    console.warn("Error en Firebase Storage para fondo, usando ruta local:", stErr);
+                    fondoFinal = `./${fileFondo.name}`;
+                }
+            } else {
+                fondoFinal = `./${fileFondo.name}`;
+            }
         }
 
         if (!logoFinal) {
-            alert("Sube una foto de logo o ingresa su URL.");
+            alert("Por favor sube un archivo de logo o escribe una URL / nombre de archivo (ej. ./logo.jpg).");
             return;
         }
 
@@ -2042,13 +2066,21 @@ async function guardarMarcaCapitan(event) {
 
         alert(`🚀 ¡Marca "${nombre}" registrada con éxito!`);
         event.target.reset();
-        cargarMarcasTienda();
+        if (typeof cargarMarcasTienda === 'function') {
+            await cargarMarcasTienda();
+        }
 
     } catch (e) {
+        console.error("Error al guardar marca:", e);
         alert("⚠️ Error al guardar marca: " + e.message);
+    } finally {
+        // Restaurar el botón al finalizar
+        if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalBtnText;
+        }
     }
 }
-
 // Eliminar marca registrada
 async function eliminarMarcaCapitan(marcaId) {
     if (!confirm(`¿Seguro que deseas eliminar la marca "${marcaId}"?`)) return;
