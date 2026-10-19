@@ -3706,3 +3706,22 @@ body.modal-open .buzon-floating-btn {
 .bottom-nav .nav-item {
     padding: 4px 8px !important;
 }
+/* TEMATIZACIÓN PANTALLA COMPLETA MARCA FRYD */
+.theme-fryd-full {
+    background: linear-gradient(180deg, #090d16 0%, #1e092b 50%, #090d16 100%);
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+.fryd-hero-logo {
+    animation: floatLogo 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatLogo {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+    100% {
+        transform: translateY(-10px) scale(1.03);
+    }
+}

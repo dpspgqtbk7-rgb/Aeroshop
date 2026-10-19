@@ -101,6 +101,22 @@
         </div>
 
         <div class="products-grid" id="featuredGrid">
+            <div class="product-card card-glass" onclick="openProductModal('frydovni')">
+    <span class="product-tag-new">NUEVO 🛸</span>
+    <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
+        <video src="./frydgomas.mp4" autoplay loop muted playsinline class="active"></video>
+        <img src="./frydgomas2.jpg" alt="FRYD 2">
+        <img src="./-56.jpg" alt="FRYD 3">
+    </div>
+    <div>
+        <div class="product-name">FRYD Ovni 🛸 + Gomitas</div>
+        <div class="product-subtitle">2G Liquid Batter + Live Resin</div>
+        <div class="product-price">$850 MXN</div>
+    </div>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); addToCart('FRYD Ovni 🛸 + Gomitas 2g', 850, './frydgomas2.jpg')">
+        Agregar al Carrito
+    </button>
+</div>
          <!-- PRODUCTO DONUTS DONITA V3 -->
 <div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
     <span class="product-tag-new">NUEVO LANZAMIENTO</span>
@@ -192,6 +208,9 @@
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('packman')">
                 <img src="./packmanmarcas.png" alt="Packman">
+                <div class="brand-logo-card" onclick="openFullscreenBrand('fryd')">
+                <img src="./FRYD.jpg" alt="FRYD Extracts" style="border-radius: 50%; object-fit: cover;">
+            </div>
             </div>
         </div>
     </section>

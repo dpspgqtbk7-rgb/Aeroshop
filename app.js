@@ -258,6 +258,14 @@ async function renderRastreadorPedidoCliente() {
    2. PRODUCTOS DESTACADOS Y BASE LOCAL (CON MÚLTIPLES FOTOS)
    ========================================== */
 const localProductsDB = {
+    frydovni: {
+        titulo: "FRYD Ovni 🛸 + Gomitas 2g",
+        precio: 870,
+        descripcion: "Edición Especial FRYD × Alien 🛸. Dispositivo 2G de Liquid Batter + Live Resin e incluye Gomitas Infundidas. Potencia extrema, excelente sabor frutal y terpenos limpios.",
+        imagen: "./frydgomas.mp4",
+        imagenes: ["./frydovni.mp4", "./frydgomas2.jpg", "./-56.jpg", "./FRYD.jpg"],
+        variedades: ["Sativa", "Indica", "Híbrida"]
+    },
     donutsdonitav3: {
         titulo: "donuts donita v3",
         precio: 850,
@@ -651,6 +659,9 @@ function closeFaqModal() {
    5. CATALOGO POR MARCAS Y FULLSCREEN
    ========================================== */
 const defaultBrandProducts = {
+    fryd: [
+        { id: 'frydovni', titulo: "FRYD Ovni 🛸 + Gomitas 2g", marca: "fryd", precio: 850, descripcion: "Liquid Batter + Live Resin + Gomitas Infundidas 🛸.", imagen: "./frydovni.mp4" }
+    ],
     muhameds: [
         { id: 'muhacmeds', titulo: "MUHACMEDS 2g", marca: "muhameds", precio: 700, descripcion: "Muha Meds × Cookies • Edición Especial Live Resin.", imagen: "./Muhacmeds1.JPG" },
         { id: 'muhamedual', titulo: "MUHAMEDual 2g", marca: "muhameds", precio: 800, descripcion: "Doble tanque con variante seleccionable y alta potencia.", imagen: "./muhadual.mp4" }
@@ -764,6 +775,7 @@ async function openFullscreenBrand(brandKey) {
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
+            
     } else if (brandKey === 'packman') {
         content.className = 'theme-packman-full';
         content.innerHTML = `
@@ -772,6 +784,20 @@ async function openFullscreenBrand(brandKey) {
                 <div class="muha-brand-group">
                     <img src="./packmanmarcas.png" alt="Packman" class="packman-hero-logo">
                     <img src="./PACKMANSEGUNDOLOGO.png" alt="PACKMAN" class="packman-hero-title-img">
+                </div>
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML}</div>
+            </div>`;
+            } else if (brandKey === 'fryd') {
+        content.className = 'theme-fryd-full';
+        content.innerHTML = `
+            <img src="./fondo-espacial.jpg" class="muha-bg-fixed" alt="Fondo FRYD">
+            <div class="brand-hero-common">
+                <div class="muha-brand-group">
+                    <img src="./FRYD.jpg" alt="FRYD Logo" class="fryd-hero-logo" style="max-width: 170px; border-radius: 50%; box-shadow: 0 0 30px rgba(236, 72, 153, 0.7); margin-bottom: 15px;">
+                    <h1 style="color: #ffffff; font-size: 2.2rem; font-weight: 900; letter-spacing: 2px; text-shadow: 0 0 15px rgba(236,72,153,0.8);">FRYD EXTRACTS</h1>
                 </div>
                 <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
             </div>
@@ -788,6 +814,7 @@ async function openFullscreenBrand(brandKey) {
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
+            
     }
 }
 
