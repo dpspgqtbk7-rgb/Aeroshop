@@ -187,12 +187,13 @@
     </div>
     <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
 </div>
-    <!-- NUESTRAS MARCAS -->
+   <!-- NUESTRAS MARCAS -->
     <section style="padding: 20px 20px 80px 20px;" id="nuestras-marcas">
         <div class="section-title-container" style="margin-bottom: 35px;">
             <img src="./nuestras-marcas.png" alt="Nuestras Marcas" class="title-img-marcas">
         </div>
-<div class="brands-selector-grid">
+
+        <div class="brands-selector-grid" id="brandsSelectorGrid">
             <div class="brand-logo-card" onclick="openFullscreenBrand('muhameds')">
                 <img src="./logo-muhameds.png" alt="Muha Meds">
             </div>
@@ -210,8 +211,6 @@
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('fryd')">
                 <img src="./FRYD.jpg" alt="FRYD Extracts" style="border-radius: 50%; object-fit: cover;">
-            </div>
-        </div>
             </div>
         </div>
     </section>
@@ -902,6 +901,31 @@
     <div class="admin-container">
         <!-- MÓDULO DE GESTIÓN COMPLETA DE PRODUCTOS (CAPITÁN) -->
 <div class="admin-card">
+    <!-- MÓDULO DE REGISTRO DE NUEVAS MARCAS -->
+        <div class="admin-card">
+            <h3>🏷️ Registrar Nueva Marca en el Catálogo</h3>
+            <form onsubmit="guardarMarcaCapitan(event)" class="admin-form">
+                <input type="text" id="marcaNombre" placeholder="Nombre de la Marca (Ej: FRYD, DANK, TRAP)" required>
+                <input type="text" id="marcaId" placeholder="ID corto sin espacios (Ej: fryd, dank)" required>
+                
+                <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Logo de la Marca (Archivo o URL):</label>
+                <input type="file" id="marcaLogoArchivo" accept="image/*" style="padding: 10px; background: #1e293b; color: #fff; border-radius: 12px;">
+                <input type="text" id="marcaLogoUrl" placeholder="O URL directa de Logo (Ej: ./FRYD.jpg)">
+
+                <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Fondo Personalizado (Archivo o URL):</label>
+                <input type="file" id="marcaFondoArchivo" accept="image/*" style="padding: 10px; background: #1e293b; color: #fff; border-radius: 12px;">
+                <input type="text" id="marcaFondoUrl" placeholder="O URL directa de Fondo (Ej: ./frydfondo.jpg)">
+
+                <button type="submit" class="btn-admin-action" style="grid-column: 1 / -1; background: #a855f7; color: #fff;">
+                    ✨ Registrar y Publicar Marca
+                </button>
+            </form>
+
+            <h4 style="margin-top: 20px; color: #ffffff;">📋 Marcas Activas en la Web:</h4>
+            <div id="adminMarcasLista" class="stock-list-container" style="margin-top: 10px;">
+                Cargando marcas...
+            </div>
+        </div>
     <h3>✨ Añadir Nuevo Producto al Catálogo</h3>
     <form onsubmit="guardarProductoCapitan(event)" class="admin-form">
         <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Subir Foto o Video del Producto:</label>

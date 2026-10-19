@@ -790,10 +790,10 @@ async function openFullscreenBrand(brandKey) {
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
-            } else if (brandKey === 'fryd') {
+           } else if (brandKey === 'fryd') {
         content.className = 'theme-fryd-full';
         content.innerHTML = `
-            <img src="./fondo-espacial.jpg" class="muha-bg-fixed" alt="Fondo FRYD">
+            <img src="./frydfondo.jpg" class="muha-bg-fixed" alt="Fondo FRYD">
             <div class="brand-hero-common">
                 <div class="muha-brand-group">
                     <img src="./FRYD.jpg" alt="FRYD Logo" class="fryd-hero-logo" style="max-width: 170px; border-radius: 50%; box-shadow: 0 0 30px rgba(236, 72, 153, 0.7); margin-bottom: 15px;">
@@ -804,6 +804,7 @@ async function openFullscreenBrand(brandKey) {
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
+            
     } else {
         content.className = 'theme-backwoods-full';
         content.innerHTML = `
@@ -814,7 +815,27 @@ async function openFullscreenBrand(brandKey) {
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
-            
+          
+        // Buscar si es una marca dinámica registrada por el Capitán
+        const marcaPersonalizada = (window.marcasCache || []).find(m => m.id === brandKey);
+        const fondoUsar = marcaPersonalizada ? (marcaPersonalizada.fondo || './fondo-espacial.jpg') : './fondo-espacial.jpg';
+        const logoUsar = marcaPersonalizada ? marcaPersonalizada.logo : './logo-backwoods.png';
+        const tituloUsar = marcaPersonalizada ? marcaPersonalizada.nombre.toUpperCase() : 'BACKWOODS';
+
+        content.className = 'theme-fryd-full';
+        content.innerHTML = `
+            <img src="${fondoUsar}" class="muha-bg-fixed" alt="Fondo ${tituloUsar}">
+            <div class="brand-hero-common">
+                <div class="muha-brand-group">
+                    <img src="${logoUsar}" alt="${tituloUsar}" class="fryd-hero-logo" style="max-width: 200px; max-height:180px; object-fit:contain; margin-bottom: 15px;">
+                    <h1 style="color: #ffffff; font-size: 2.2rem; font-weight: 900; letter-spacing: 2px;">${tituloUsar}</h1>
+                </div>
+                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+            </div>
+            <div class="muha-products-container" id="brandProductsSection">
+                <div class="muha-cards-grid">${productosMarcaHTML.length > 0 ? productosMarcaHTML : '<p style="color:#94a3b8; text-align:center; grid-column:1/-1;">Próximamente productos de esta marca.</p>'}</div>
+            </div>`;
+    
     }
 }
 
@@ -1263,6 +1284,13 @@ document.addEventListener('DOMContentLoaded', () => {
             filterRutasCards(zona);
         });
     });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    iniciarReloj420();
+    setTimeout(() => {
+        cargarProductosTienda();
+        cargarMarcasTienda();
+    }, 800);
 });
 
 /* ==========================================
@@ -1886,4 +1914,150 @@ function desactivarPromo420() {
 document.addEventListener('DOMContentLoaded', () => {
     iniciarReloj420();
     setTimeout(cargarProductosTienda, 800);
-});
+});// ==========================================
+// GESTIÓN DINÁMICA DE MARCAS Y CATALOGO
+// ==========================================
+
+// Cargar Marcas en la web y en los selectores del Admin
+async function cargarMarcasTienda() {
+    if (!window.db || !window.fbMethods) return;
+    const { collection, getDocs } = window.fbMethods;
+
+    const selectMarca = document.getElementById('catMarca');
+    const brandsGrid = document.getElementById('brandsSelectorGrid');
+    const listaMarcasAdmin = document.getElementById('adminMarcasLista');
+cargarDashboardAdmin();
+    cargarInventarioAdmin();
+    cargarProductosTienda();
+    cargarMarcasTienda(); // 👈 Añadir esta línea
+    // Marcas por defecto
+    const marcasBase = [
+        { id: 'muhameds', nombre: 'Muha Meds', logo: './logo-muhameds.png' },
+        { id: 'cookies', nombre: 'Cookies', logo: './logo-cookies.png' },
+        { id: 'backwoods', nombre: 'Backwoods', logo: './logo-backwoods.png' },
+        { id: 'donuts', nombre: 'Donuts', logo: './donutslogomarcas.png' },
+        { id: 'packman', nombre: 'Packman', logo: './packmanmarcas.png' },
+        { id: 'fryd', nombre: 'FRYD', logo: './FRYD.jpg' }
+    ];
+
+    window.marcasCache = [...marcasBase];
+
+    try {
+        const snap = await getDocs(collection(window.db, "marcas"));
+        snap.forEach(docSnap => {
+            const m = { id: docSnap.id, ...docSnap.data() };
+            if (!window.marcasCache.some(existing => existing.id === m.id)) {
+                window.marcasCache.push(m);
+            }
+        });
+    } catch (e) {
+        console.log("Carga de marcas Firestore diferida:", e);
+    }
+
+    // 1. Actualizar el <select> del formulario de productos
+    if (selectMarca) {
+        selectMarca.innerHTML = '<option value="">Selecciona la Marca...</option>';
+        window.marcasCache.forEach(m => {
+            selectMarca.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
+        });
+    }
+
+    // 2. Renderizar cuadrícula de marcas en la página principal
+    if (brandsGrid) {
+        brandsGrid.innerHTML = window.marcasCache.map(m => `
+            <div class="brand-logo-card" onclick="openFullscreenBrand('${m.id}')">
+                <img src="${m.logo}" alt="${m.nombre}" style="${m.id === 'fryd' ? 'border-radius: 50%; object-fit: cover;' : ''}">
+            </div>
+        `).join('');
+    }
+
+    // 3. Renderizar lista de administración de marcas
+    if (listaMarcasAdmin) {
+        listaMarcasAdmin.innerHTML = window.marcasCache.map(m => `
+            <div class="stock-item-row" style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 10px 14px; border-radius: 12px; margin-bottom: 8px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${m.logo}" style="width:35px; height:35px; object-fit:contain; border-radius:6px;">
+                    <strong style="color:#fff;">${m.nombre}</strong> <span style="font-size:0.75rem; color:#94a3b8;">(ID: ${m.id})</span>
+                </div>
+                ${['muhameds','cookies','backwoods','donuts','packman','fryd'].includes(m.id) 
+                    ? '<span style="color:#facc15; font-size:0.8rem;">Sistema Base</span>' 
+                    : `<button type="button" onclick="eliminarMarcaCapitan('${m.id}')" style="background:#e11d48; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer;">🗑️ Eliminar</button>`}
+            </div>
+        `).join('');
+    }
+}
+
+// Guardar nueva marca desde el formulario del Capitán
+async function guardarMarcaCapitan(event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById('marcaNombre')?.value.trim();
+    const idSlug = document.getElementById('marcaId')?.value.trim().toLowerCase().replace(/\s+/g, '');
+    const urlLogoManual = document.getElementById('marcaLogoUrl')?.value.trim();
+    const urlFondoManual = document.getElementById('marcaFondoUrl')?.value.trim();
+
+    const archivoLogoInput = document.getElementById('marcaLogoArchivo');
+    const archivoFondoInput = document.getElementById('marcaFondoArchivo');
+
+    if (!nombre || !idSlug) {
+        alert("Por favor completa el nombre y el identificador único de la marca.");
+        return;
+    }
+
+    let logoFinal = urlLogoManual;
+    let fondoFinal = urlFondoManual || './fondo-espacial.jpg';
+
+    try {
+        alert("⏳ Subiendo multimedia de la marca, por favor espera...");
+
+        // Subir Logo si se seleccionó archivo
+        if (archivoLogoInput && archivoLogoInput.files.length > 0) {
+            const fileLogo = archivoLogoInput.files[0];
+            const logoRef = window.fbMethods.ref(window.storage, `marcas/logos/${Date.now()}_${fileLogo.name}`);
+            const snap = await window.fbMethods.uploadBytes(logoRef, fileLogo);
+            logoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+        }
+
+        // Subir Fondo si se seleccionó archivo
+        if (archivoFondoInput && archivoFondoInput.files.length > 0) {
+            const fileFondo = archivoFondoInput.files[0];
+            const fondoRef = window.fbMethods.ref(window.storage, `marcas/fondos/${Date.now()}_${fileFondo.name}`);
+            const snap = await window.fbMethods.uploadBytes(fondoRef, fileFondo);
+            fondoFinal = await window.fbMethods.getDownloadURL(snap.ref);
+        }
+
+        if (!logoFinal) {
+            alert("Sube una foto de logo o ingresa su URL.");
+            return;
+        }
+
+        const { doc, setDoc } = window.fbMethods;
+        await setDoc(doc(window.db, "marcas", idSlug), {
+            nombre,
+            id: idSlug,
+            logo: logoFinal,
+            fondo: fondoFinal,
+            fecha_creacion: new Date().toISOString()
+        });
+
+        alert(`🚀 ¡Marca "${nombre}" registrada con éxito!`);
+        event.target.reset();
+        cargarMarcasTienda();
+
+    } catch (e) {
+        alert("⚠️ Error al guardar marca: " + e.message);
+    }
+}
+
+// Eliminar marca registrada
+async function eliminarMarcaCapitan(marcaId) {
+    if (!confirm(`¿Seguro que deseas eliminar la marca "${marcaId}"?`)) return;
+    try {
+        const { doc, deleteDoc } = window.fbMethods;
+        await deleteDoc(doc(window.db, "marcas", marcaId));
+        alert("🗑️ Marca eliminada.");
+        cargarMarcasTienda();
+    } catch (e) {
+        alert("Error al eliminar la marca: " + e.message);
+    }
+}
