@@ -41,7 +41,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="🚀 AEROSHOP - Catálogo Oficial & Lifestyle CDMX">
     <meta property="og:description" content="Eleva tu experiencia. Consulta disponibilidad, productos destacados y realiza tu pedido directo por WhatsApp.">
-    <meta property="og:image" content="https://tu-dominio.com/portada.jpg"> <!-- Aquí irá la imagen de vista previa cuando subas tu sitio -->
+    <meta property="og:image" content="https://tu-dominio.com/portada.jpg"> 
     <meta property="og:url" content="https://tu-dominio.com">
     
     <!-- FUENTES OFICIALES -->
@@ -55,9 +55,9 @@
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
-<img src="./logo-nubes.png" alt="Aero Shop Nubes" class="hero-logo-nubes-mobile">
+<img src="./logo-nubes.png" alt="Aero Shop Nubes" class="hero-logo-nubes-mobile" loading="lazy">
         <div class="hero-plane-container">
-            <img src="./avion.png" alt="Avión Aeroshop" class="hero-plane-img">
+            <img src="./avion.png" alt="Avión Aeroshop" class="hero-plane-img" loading="lazy">
         </div>
         <a href="#quienes-somos" class="hero-subtitle">ELEVA TU EXPERIENCIA</a>
     </section>
@@ -72,7 +72,6 @@
     </section>
 
    <!-- DIFERENCIA -->
-<!-- DIFERENCIA -->
 <section class="diferencia-section" id="que-nos-diferencia">
     <div class="diferencia-card card-glass">
         <h2>¿Qué nos diferencia?</h2>
@@ -118,19 +117,20 @@
         </div> <!-- /diferencia-grid -->
     </div> <!-- /diferencia-card -->
 </section>
+
     <!-- PRODUCTOS DESTACADOS -->
     <section class="featured-section" id="productos-destacados">
         <div class="section-title-container">
-            <img src="./titulo-destacados.png" alt="Productos Destacados" class="title-img-destacados">
+            <img src="./titulo-destacados.png" alt="Productos Destacados" class="title-img-destacados" loading="lazy">
         </div>
 
         <div class="products-grid" id="featuredGrid">
             <div class="product-card card-glass" onclick="openProductModal('frydovni')">
     <span class="product-tag-new">NUEVO 🛸</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
-        <video src="./frydgomas.mp4" autoplay loop muted playsinline class="active"></video>
-        <img src="./frydgomas2.jpg" alt="FRYD 2">
-        <img src="./-56.jpg" alt="FRYD 3">
+        <video data-src="./frydgomas.mp4" loop muted playsinline class="lazy-video active"></video>
+        <img src="./frydgomas2.jpg" alt="FRYD 2" loading="lazy">
+        <img src="./-56.jpg" alt="FRYD 3" loading="lazy">
     </div>
     <div>
         <div class="product-name">FRYD Ovni 🛸 + Gomitas</div>
@@ -145,8 +145,8 @@
 <div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
     <span class="product-tag-new">NUEVO LANZAMIENTO</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
-        <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1">
-        <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2">
+        <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1" loading="lazy">
+        <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2" loading="lazy">
     </div>
     <div>
         <div class="product-name">donuts donita v3</div>
@@ -159,7 +159,7 @@
 <div class="product-card card-glass" onclick="openProductModal('besos2g')">
     <span class="product-tag-new">NUEVO 💋</span>
     <div class="product-img-slider">
-        <img src="./besos.jpg" class="active" alt="Besos Liquid Diamonds 2g">
+        <img src="./besos.jpg" class="active" alt="Besos Liquid Diamonds 2g" loading="lazy">
     </div>
     <div>
         <div class="product-name">Besos Liquid Diamonds 2g 💋</div>
@@ -172,10 +172,10 @@
 <div class="product-card card-glass" onclick="openProductModal('packman3g')">
     <span class="product-tag-sale">¡REBAJA!</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
-        <img src="./packman1.png" class="active" alt="Packman 3g 1">
-        <img src="./packman2.png" alt="Packman 3g 2">
-        <img src="./packman3.png" alt="Packman 3g 3">
-        <img src="./packman5.JPG" alt="Packman 3g 4">
+        <img src="./packman1.png" class="active" alt="Packman 3g 1" loading="lazy">
+        <img src="./packman2.png" alt="Packman 3g 2" loading="lazy">
+        <img src="./packman3.png" alt="Packman 3g 3" loading="lazy">
+        <img src="./packman5.JPG" alt="Packman 3g 4" loading="lazy">
     </div>
     <div>
         <div class="product-name">PACKMAN 3g + Pre-Roll</div>
@@ -192,10 +192,10 @@
 <div class="product-card card-glass" onclick="openProductModal('muhacmeds')">
     <span class="product-tag-collab">COLABORACIÓN</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
-        <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1">
-        <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2">
-        <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3">
-        <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4">
+        <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1" loading="lazy">
+        <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2" loading="lazy">
+        <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3" loading="lazy">
+        <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4" loading="lazy">
     </div>
     <div>
         <div class="product-name">MUHACMEDS 2g</div>
@@ -212,9 +212,9 @@
          onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)"
          ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
         <!-- Agregamos autoplay y class="active" -->
-        <video src="./muhadual.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata" class="active"></video>
-        <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2">
-        <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3">
+        <video data-src="./muhadual.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video active"></video>
+        <img src="./muhamedual 2.JPG" alt="MUHAMEDual 2g 2" loading="lazy">
+        <img src="./muhamedual3.jpg" alt="MUHAMEDual 2g 3" loading="lazy">
     </div>
     <div>
         <div class="product-name">MUHAMEDual 2g</div>
@@ -226,27 +226,27 @@
    <!-- NUESTRAS MARCAS -->
     <section style="padding: 20px 20px 80px 20px;" id="nuestras-marcas">
         <div class="section-title-container" style="margin-bottom: 35px;">
-            <img src="./nuestras-marcas.png" alt="Nuestras Marcas" class="title-img-marcas">
+            <img src="./nuestras-marcas.png" alt="Nuestras Marcas" class="title-img-marcas" loading="lazy">
         </div>
 
         <div class="brands-selector-grid" id="brandsSelectorGrid">
             <div class="brand-logo-card" onclick="openFullscreenBrand('muhameds')">
-                <img src="./logo-muhameds.png" alt="Muha Meds">
+                <img src="./logo-muhameds.png" alt="Muha Meds" loading="lazy">
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('cookies')">
-                <img src="./logo-cookies.png" alt="Cookies">
+                <img src="./logo-cookies.png" alt="Cookies" loading="lazy">
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('backwoods')">
-                <img src="./logo-backwoods.png" alt="Backwoods">
+                <img src="./logo-backwoods.png" alt="Backwoods" loading="lazy">
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('donuts')">
-                <img src="./donutslogomarcas.png" alt="Donuts" class="img-donuts-brand">
+                <img src="./donutslogomarcas.png" alt="Donuts" class="img-donuts-brand" loading="lazy">
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('packman')">
-                <img src="./packmanmarcas.png" alt="Packman">
+                <img src="./packmanmarcas.png" alt="Packman" loading="lazy">
             </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('fryd')">
-                <img src="./FRYD.jpg" alt="FRYD Extracts" style="border-radius: 50%; object-fit: cover;">
+                <img src="./FRYD.jpg" alt="FRYD Extracts" style="border-radius: 50%; object-fit: cover;" loading="lazy">
             </div>
         </div>
     </section>
@@ -287,7 +287,7 @@
         <!-- Grid de Tarjetas Compactas -->
         <div class="rutas-grid" id="rutasGrid">
 <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'lagoalgo')">
-                <video src="./lago-algo.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./lago-algo.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️✈️</span>
                     <h4>LagoAlgo — Bosque de Chapultepec</h4>
@@ -295,7 +295,7 @@
             </div>
             <!-- CENART -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'cenart')">
-                <video src="./cenart-hero.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./cenart-hero.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️</span>
                     <h4>CENART (Centro Nacional de las Artes)</h4>
@@ -304,7 +304,7 @@
 
             <!-- CINETECA CHAPULTEPEC -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'chapultepec')">
-                <video src="./chapultepec.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./chapultepec.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Cineteca de Chapultepec</h4>
@@ -313,7 +313,7 @@
 
             <!-- LAGUNA CDMX -->
             <div class="compact-card" data-zona="centro" onclick="openCardModal('rutas', 'laguna')">
-                <video src="./LAGUNA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./LAGUNA.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Centro • ✈️✈️✈️✈️</span>
                     <h4>Laguna CDMX</h4>
@@ -322,7 +322,7 @@
 
             <!-- JARDÍN ESCÉNICO -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'jardin')">
-                <video src="./jardin.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./jardin.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️</span>
                     <h4>Jardín Escénico Chapultepec</h4>
@@ -331,7 +331,7 @@
 
             <!-- JARDÍN EL EDÉN CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'eden')">
-                <video src="./eden.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./eden.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️</span>
                     <h4>Jardín El Edén CU</h4>
@@ -340,7 +340,7 @@
 
             <!-- MUSEO SOUMAYA -->
             <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'soumaya')">
-                <video src="./soumaya.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./soumaya.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
                     <h4>Museo Soumaya</h4>
@@ -349,7 +349,7 @@
 
             <!-- MUAC CU -->
             <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'muac')">
-                <video src="./muac.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./muac.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️✈️</span>
                     <h4>MUAC CU (Museo de Arte Contemporáneo)</h4>
@@ -413,7 +413,7 @@
             <!-- Grid de recomendaciones Monchis -->
      <div class="monchis-cards-grid" id="monchisGrid">
 <div class="compact-card" data-tipo="casa" data-antojo="dulce" onclick="openCardModal('monchis', 'oreo')">
-    <video src="./OREO.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <video data-src="./OREO.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
     <div class="compact-card-body">
         <span class="badge-tag">🏠 Casa • 🍩 Dulce</span>
         <h4>Oreo Fritas Crujientes 🍪🔥</h4>
@@ -421,7 +421,7 @@
 </div>
 
 <div class="compact-card" data-tipo="calle" data-zona="centro" data-antojo="salado" onclick="openCardModal('monchis', 'cotorras')">
-    <video src="./cotorras.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <video data-src="./cotorras.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
     <div class="compact-card-body">
         <span class="badge-tag">📍 Centro • 🍿 Salado</span>
         <h4>Las Cotorras 🌮🍻</h4>
@@ -429,7 +429,7 @@
 </div>
 
 <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchicha_hawaiana')">
-    <video src="./salchicha.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <video data-src="./salchicha.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
     <div class="compact-card-body">
         <span class="badge-tag">🏠 Casa • 🍿 Salado</span>
         <h4>Salchichas Hawaianas Glaseadas 🌭🍍</h4>
@@ -437,7 +437,7 @@
 </div>
 
 <div class="compact-card" data-tipo="casa" data-antojo="dulce" onclick="openCardModal('monchis', 'pan_muerto')">
-    <video src="./pan-de-muerto.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+    <video data-src="./pan-de-muerto.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
     <div class="compact-card-body">
         <span class="badge-tag">🏠 Casa • 🍩 Dulce</span>
         <h4>Pan de Muerto Relleno 🍞🍫</h4>
@@ -446,7 +446,7 @@
 
     <!-- SPOTS DE CALLE -->
     <div class="compact-card" data-tipo="calle" data-zona="sur" data-antojo="salado" onclick="openCardModal('monchis', 'losperros')">
-        <video src="./losperros.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+        <video data-src="./losperros.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">📍 Sur • 🍿 Salado</span>
             <h4>Los Perros de San Antonio 🌭</h4>
@@ -454,7 +454,7 @@
     </div>
 
     <div class="compact-card" data-tipo="calle" data-zona="centro" data-antojo="salado" onclick="openCardModal('monchis', 'burgergate')">
-        <video src="./burgerg.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+        <video data-src="./burgerg.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">📍 Centro • 🍿 Salado</span>
             <h4>Burger Gate 🍔</h4>
@@ -463,7 +463,7 @@
 
     <!-- RECETAS EN CASA -->
     <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'pizzadog')">
-        <video src="./pizza-dog.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+        <video data-src="./pizza-dog.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">🏠 Supervivencia en Casa • 🍿 Salado</span>
             <h4>PizzaDog Express 🌭🍕</h4>
@@ -471,7 +471,7 @@
     </div>
 
     <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'sandwich')">
-        <video src="./sandwich.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+        <video data-src="./sandwich.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">🏠 Supervivencia en Casa • 🍿 Salado</span>
             <h4>Sándwich Monchoso de 3 Pisos 🥪</h4>
@@ -479,7 +479,7 @@
     </div>
 
     <div class="compact-card" data-tipo="casa" data-antojo="salado" onclick="openCardModal('monchis', 'salchichas')">
-        <video src="./salchichasbbq.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+        <video data-src="./salchichasbbq.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">🏠 Supervivencia en Casa • 🧂 Salado</span>
             <h4>Salchichas BBQ de Ricardo Pérez 🌭</h4>
@@ -571,8 +571,8 @@
 
         <!-- Video Hero CON IMAGEN DE PORTADA (poster) -->
         <div class="monchis-hero-container" style="margin-bottom: 25px;">
-            <video id="cineHeroVideo" class="monchis-hero-video" poster="./aeroshopvisual.jpg" autoplay loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
-                <source src="./videode03.mp4" type="video/mp4">
+            <video id="cineHeroVideo" class="monchis-hero-video lazy-video" poster="./aeroshopvisual.jpg" loop muted playsinline webkit-playsinline preload="metadata" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">
+                <source data-src="./videode03.mp4" type="video/mp4">
             </video>
         </div>
 
@@ -588,11 +588,10 @@
         </div>
 
         <!-- Grid de Tarjetas Compactas de Cine -->
-     <!-- Grid de Tarjetas Compactas de Cine -->
         <div class="monchis-cards-grid" id="cineGrid">
             <!-- 1. LOVE, DEATH & ROBOTS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'robots')">
-                <video src="./robots.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./robots.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Antología Animada • ✈️✈️✈️✈️✈️</span>
                     <h4>LOVE, DEATH & ROBOTS 🤖🌀</h4>
@@ -601,7 +600,7 @@
 
             <!-- 2. THE CONGRESS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'congreso')">
-                <video src="./congreso.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./congreso.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Animación Surrealista • ✈️✈️✈️✈️✈️</span>
                     <h4>THE CONGRESS (2013) 👁️🎭</h4>
@@ -610,7 +609,7 @@
 
             <!-- 3. CHILLED GREESE -->
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'grasa_fria')">
-                <video src="./grasa-fria.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./grasa-fria.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Comedia Absurda & Risas • ✈️✈️✈️</span>
                     <h4>CHILLED GREESE 🍟🚗</h4>
@@ -619,7 +618,7 @@
 
             <!-- 4. PASTORAL -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'pastoral')">
-                <video src="./pastoral.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./pastoral.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Drama Experimental • ✈️✈️✈️✈️✈️</span>
                     <h4>PASTORAL: TO DIE IN THE COUNTRY 👁️</h4>
@@ -628,7 +627,7 @@
 
             <!-- 5. NEO TOKYO -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'neotokyo')">
-                <video src="./neotokyo.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./neotokyo.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Animación Experimental • ✈️✈️✈️✈️</span>
                     <h4>NEO TOKYO (1987) 🚀</h4>
@@ -637,7 +636,7 @@
 
             <!-- 6. DANDADAN -->
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'dandadan')">
-                <video src="./dandadan.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./dandadan.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Comedia Absurda • ✈️✈️✈️✈️✈️</span>
                     <h4>DANDADAN 👾🛸</h4>
@@ -646,7 +645,7 @@
 
             <!-- 7. ENTER THE VOID -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'void')">
-                <video src="./VOID.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./VOID.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Psicodélica & Inmersiva • ✈️✈️✈️✈️✈️</span>
                     <h4>ENTER THE VOID (2009) 🏙️🌀</h4>
@@ -655,7 +654,7 @@
 
             <!-- 8. BELLADONNA OF SADNESS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'belladonna')">
-                <video src="./BELLADONNA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./BELLADONNA.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Anime Psicodélico • ✈️✈️✈️✈️✈️</span>
                     <h4>BELLADONNA OF SADNESS (1973) 🌸👁️</h4>
@@ -664,7 +663,7 @@
 
             <!-- 9. PUPARIA -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'puparia')">
-                <video src="./PUPARIA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./PUPARIA.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Cortometraje Anime • ✈️✈️✈️✈️✈️</span>
                     <h4>PUPARIA 👁️✨</h4>
@@ -673,7 +672,7 @@
 
             <!-- 10. HAVE A GOOD TRIP -->
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'goodtrip')">
-                <video src="./GOOD-TRIP.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./GOOD-TRIP.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🍿 Documental & Comedia • ✈️✈️✈️✈️</span>
                     <h4>HAVE A GOOD TRIP 🍄🧠</h4>
@@ -682,7 +681,7 @@
 
             <!-- 11. ENTERGALACTIC -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'entergalactic')">
-                <video src="./ENTERGALACTIC.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <video data-src="./ENTERGALACTIC.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎨 Animación & Romance Urbano • ✈️✈️✈️✈️</span>
                     <h4>ENTERGALACTIC 🎨🌌</h4>
@@ -810,7 +809,7 @@
             <!-- TARJETA MUSICAL DUB SIDE -->
             <div class="music-card" data-categoria="trip-conceptual" onclick="openCardModal('music', 'dubside')">
                 <div class="music-cover-wrapper">
-                    <img src="./dub.png" alt="Dub Side of the Moon">
+                    <img src="./dub.png" alt="Dub Side of the Moon" loading="lazy">
                 </div>
                 <h4>DUB SIDE OF THE MOON</h4>
                 <p>Easy Star All-Stars</p>
@@ -948,139 +947,7 @@
     </script>
     <!-- JAVASCRIPT -->
   <script src="app.js" defer></script>
-<!-- PANEL DE ADMINISTRACIÓN / APP DEL CAPITÁN (SOLO ADMIN) -->
-<section class="admin-dashboard-section" id="adminPanelSection" style="display: none;">
-    <div class="admin-container">
-        <!-- MÓDULO DE GESTIÓN COMPLETA DE PRODUCTOS (CAPITÁN) -->
-<div class="admin-card">
-    <!-- MÓDULO DE REGISTRO DE NUEVAS MARCAS -->
-        <div class="admin-card">
-            <h3>🏷️ Registrar Nueva Marca en el Catálogo</h3>
-            <form onsubmit="guardarMarcaCapitan(event)" class="admin-form">
-                <input type="text" id="marcaNombre" placeholder="Nombre de la Marca (Ej: FRYD, DANK, TRAP)" required>
-                <input type="text" id="marcaId" placeholder="ID corto sin espacios (Ej: fryd, dank)" required>
-                
-                <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Logo de la Marca (Archivo o URL):</label>
-                <input type="file" id="marcaLogoArchivo" accept="image/*" style="padding: 10px; background: #1e293b; color: #fff; border-radius: 12px;">
-                <input type="text" id="marcaLogoUrl" placeholder="O URL directa de Logo (Ej: ./FRYD.jpg)">
 
-                <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Fondo Personalizado (Archivo o URL):</label>
-                <input type="file" id="marcaFondoArchivo" accept="image/*" style="padding: 10px; background: #1e293b; color: #fff; border-radius: 12px;">
-                <input type="text" id="marcaFondoUrl" placeholder="O URL directa de Fondo (Ej: ./frydfondo.jpg)">
-
-                <button type="submit" class="btn-admin-action" style="grid-column: 1 / -1; background: #a855f7; color: #fff;">
-                    ✨ Registrar y Publicar Marca
-                </button>
-            </form>
-
-            <h4 style="margin-top: 20px; color: #ffffff;">📋 Marcas Activas en la Web:</h4>
-            <div id="adminMarcasLista" class="stock-list-container" style="margin-top: 10px;">
-                Cargando marcas...
-            </div>
-        </div>
-    <h3>✨ Añadir Nuevo Producto al Catálogo</h3>
-    <form onsubmit="guardarProductoCapitan(event)" class="admin-form">
-        <label style="color: #94a3b8; font-size: 0.85rem; grid-column: 1 / -1;">Subir Foto o Video del Producto:</label>
-<input type="file" id="catArchivoMedia" accept="image/*,video/*" style="grid-column: 1 / -1; padding: 10px; background: #1e293b; color: #fff; border-radius: 12px;">
-<input type="text" id="catImagen" placeholder="O ingresa URL manual (Ej: ./muhadual.mp4)">
-        <select id="catMarca" required>
-            <option value="">Selecciona la Marca...</option>
-            <option value="muhameds">Muha Meds</option>
-            <option value="cookies">Cookies</option>
-            <option value="donuts">Donuts</option>
-            <option value="packman">Packman</option>
-            <option value="backwoods">Backwoods</option>
-        </select>
-        <input type="text" id="catImagen" placeholder="URL de la Foto o Video (Ej: ./muhadual.mp4 o https://...)" required>
-        <input type="text" id="catVariedades" placeholder="Variedades separadas por coma (Ej: Sativa, Indica, Híbrida)">
-        <input type="number" id="catStock" placeholder="Stock Inicial (Piezas)" value="10" required>
-        <textarea id="catDescripcion" placeholder="Descripción breve del producto..." style="grid-column: 1 / -1; padding: 12px; border-radius: 12px; background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2);" rows="3" required></textarea>
-        <button type="submit" class="btn-admin-action" style="grid-column: 1 / -1; background: #38bdf8; color: #000; font-weight: 800;">
-            🚀 Publicar Producto en la Web
-        </button>
-    </form>
-
-    <h4 style="margin-top: 25px; color: #ffffff;">📋 Productos Publicados en Catálogo:</h4>
-    <div id="catListaProductosAdmin" class="stock-list-container" style="margin-top: 10px;">
-        Cargando catálogo en vivo...
-    </div>
-</div>
-        <div class="admin-header">
-            <h2>👑 Panel de Control Capitán — Aeroshop</h2>
-            <p>Auditoría de caja, inventario y acreditación de vuelos en tiempo real</p>
-        </div>
-
-        <!-- 1. DASHBOARD FINANCIERO EN TIEMPO REAL -->
-        <div class="financial-grid">
-            <div class="metric-card metric-ingresos">
-                <span class="metric-label">Ingresos Totales</span>
-                <span class="metric-value" id="dashIngresos">$0 MXN</span>
-            </div>
-            <div class="metric-card metric-cogs">
-                <span class="metric-label">Costo Mercancía (COGS)</span>
-                <span class="metric-value" id="dashCogs">$0 MXN</span>
-            </div>
-            <div class="metric-card metric-gastos">
-                <span class="metric-label">Gastos & Regalos</span>
-                <span class="metric-value" id="dashGastos">$0 MXN</span>
-            </div>
-            <div class="metric-card metric-utilidad">
-                <span class="metric-label">Utilidad Neta Real</span>
-                <span class="metric-value" id="dashUtilidad">$0 MXN</span>
-            </div>
-        </div>
-<!-- MÓDULO DE ESCÁNER DE CÓDIGO QR CON CÁMARA -->
-<div class="admin-card" style="text-align: center;">
-    <h3>📷 Escáner QR de Pasaporte</h3>
-    <button type="button" class="btn-admin-action" style="background: #eab308; color: #000; font-weight: 800; margin-bottom: 12px;" onclick="iniciarEscanerQR()">
-        📸 Abrir Cámara para Escanear QR
-    </button>
-    <div id="qrReaderContainer" style="width: 100%; max-width: 320px; margin: 0 auto; display: none; border-radius: 16px; overflow: hidden; border: 2px solid #facc15;"></div>
-</div>
-        <!-- 2. REGISTRO DE VENTA Y ACREDITACIÓN DE VUELO -->
-        <div class="admin-card">
-            <h3>🎟️ Acreditar Vuelo y Registrar Venta</h3>
-            <form onsubmit="procesarVentaAdmin(event)" class="admin-form">
-                <input type="text" id="adminUserUid" placeholder="ID Cliente (Ej: USR-8921 o UID completo)" required>
-                <select id="adminProductSelect" required onchange="actualizarPrecioSugeridoAdmin()">
-                    <option value="">Selecciona Producto de Inventario...</option>
-                </select>
-                <input type="number" id="adminMontoCobrado" placeholder="Monto Cobrado ($ MXN)" required>
-                <button type="submit" class="btn-admin-action">✅ Confirmar Venta & Sumar Vuelo</button>
-            </form>
-        </div>
-
-        <!-- 3. CONTROL DE INVENTARIO Y COSTO BASE UNITARIO -->
-        <div class="admin-card">
-            <h3>📦 Registrar Stock e Inversión de Lote</h3>
-            <form onsubmit="registrarInventarioAdmin(event)" class="admin-form">
-                <input type="text" id="invNombre" placeholder="Nombre del Producto / Lote" required>
-                <input type="number" id="invInversionTotal" placeholder="Inversión Total ($ MXN)" required>
-                <input type="number" id="invPiezas" placeholder="Número de Piezas Compradas" required>
-                <input type="number" id="invPrecioVenta" placeholder="Precio de Venta Público ($ MXN)" required>
-                <button type="submit" class="btn-admin-action">💾 Cargar a Inventario</button>
-            </form>
-            
-            <h4 style="margin-top: 20px; color: #ffffff;">Stock Actual:</h4>
-            <div id="adminStockList" class="stock-list-container">Cargando inventario...</div>
-        </div>
-
-        <!-- 4. REGISTRO DE REGALOS (VUELO #3), MERMAS Y GASTOS -->
-        <div class="admin-card">
-            <h3>🎁 Registrar Regalo o Gasto Operativo</h3>
-            <form onsubmit="registrarGastoAdmin(event)" class="admin-form">
-                <select id="gastoTipo" required>
-                    <option value="costo_regalo_vuelo3">Regalo de Fidelización (Vuelo #3)</option>
-                    <option value="gasto_operativo">Gasto Operativo / Envío / Empaque</option>
-                    <option value="merma">Merma / Pérdida de Producto</option>
-                </select>
-                <input type="number" id="gastoMonto" placeholder="Costo de Adquisición / Valor ($ MXN)" required>
-                <input type="text" id="gastoConcepto" placeholder="Concepto / Descripción (Ej: Pre-Roll regalo USR-8921)" required>
-                <button type="submit" class="btn-admin-action" style="background: #e11d48;">🔻 Registrar Egreso/Regalo</button>
-            </form>
-        </div>
-    </div>
-</section>
 <!-- 1. POPUP PUBLICITARIO DE BIENVENIDA -->
 <div id="promoModal" class="modal-overlay active">
   <div class="modal-card promo-card">
@@ -1161,7 +1028,6 @@
 <!-- CÓDIGO QR DEL PASAPORTE DIGITAL -->
 <div style="text-align: center; margin: 15px 0;">
   <img id="userQrCodeImg" src="" alt="Código QR Pasaporte" style="width: 120px; height: 120px; border-radius: 12px; border: 2px solid #facc15; padding: 4px; background: #ffffff;">
-  <span style="display: block; font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">Escanea este QR con el Capitán para acreditar vuelo</span>
 </div>
         <!-- Campos Editables -->
         <div class="input-field-group">
@@ -1213,11 +1079,6 @@
 </div>
 <!-- 4. BARRA DE NAVEGACIÓN FIJA CÁPSULA OSCURA -->
 <nav class="bottom-nav">
-   <button class="nav-item" id="adminNavBtn" style="display: none; color: #facc15 !important;" onclick="abrirPanelAdminDirecto()">
-      <span class="nav-icon">👑</span>
-      <span class="nav-label">Capitán</span>
-   </button> 
-   
   <button class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>

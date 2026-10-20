@@ -5,12 +5,11 @@ function vibrar(duracion = 25) {
     try {
       navigator.vibrate(duracion);
     } catch (e) {
-      // Ignorar silenciosamente en navegadores que lo tengan desactivado por sistema
+      // Ignorar silenciosamente
     }
   }
 }
 let currentUserProfile = null;
-const ADMIN_EMAIL = "aeroshop.37@gmail.com";
 const phone = "525561446446";
 
 let cart = [];
@@ -83,10 +82,8 @@ function initAuthListener() {
         window.fbMethods.onAuthStateChanged(window.auth, async (user) => {
             if (user) {
                 await syncUserProfile(user);
-                checkAdminPermission(user);
             } else {
                 currentUserProfile = null;
-                checkAdminPermission(null);
             }
         });
     } else {
@@ -271,8 +268,8 @@ async function renderRastreadorPedidoCliente() {
 const localProductsDB = {
     besos2g: {
         titulo: "Besos Liquid Diamonds 2g 💋✨",
-        precio: 850, // Ajusta el precio en MXN si lo necesitas
-        descripcion: "BESOS Liquid Diamonds 2G: una fórmula de máxima potencia cargada con 2,000 mg de diamantes líquidos puros que desatan una explosión de cereza negra jugosa y moras silvestres en cada inhalación. Diseñado en un hardware negro mate soft-touch altamente discreto, con visor de extracto transparente y puerto recargable USB-C para aprovechar hasta la última gota, este dispositivo te garantiza un despegue suave hacia una claridad mental eufórica combinada con una cómoda relajación corporal, la escala perfecta para mantener el vuelo alto sin turbulencias durante tus recorridos por la ciudad.",
+        precio: 850, 
+        descripcion: "BESOS Liquid Diamonds 2G: una fórmula de máxima potencia cargada con 2,000 mg de diamantes líquidos puros que desatan una explosión de cereza negra jugosa y moras silvestres en cada inhalación...",
         imagen: "./besos.jpg",
         imagenes: ["./besos.jpg"],
         variedades: ["Sativa", "Indica", "Híbrida"]
@@ -280,7 +277,7 @@ const localProductsDB = {
     frydovni: {
         titulo: "FRYD Ovni 🛸 + Gomitas 2g",
         precio: 870,
-        descripcion: "Edición Especial FRYD × Alien 🛸. Dispositivo 2G de Liquid Batter + Live Resin e incluye Gomitas Infundidas. Potencia extrema, excelente sabor frutal y terpenos limpios.",
+        descripcion: "Edición Especial FRYD × Alien 🛸. Dispositivo 2G de Liquid Batter + Live Resin e incluye Gomitas Infundidas.",
         imagen: "./frydgomas.mp4",
         imagenes: ["./frydovni.mp4", "./frydgomas2.jpg", "./-56.jpg", "./FRYD.jpg"],
         variedades: ["Sativa", "Indica", "Híbrida"]
@@ -320,7 +317,7 @@ const localProductsDB = {
 };
 
 async function openProductModal(productId) {
-    vibrar(15); // 📳 Vibración suave al abrir modal
+    vibrar(15);
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
     const strainPillsContainer = document.getElementById('modalStrainPills');
@@ -482,7 +479,7 @@ function toggleCart() {
 }
 
 function addToCart(title, price, image) {
-    vibrar(35); // 📳 Vibración táctil al agregar al carrito
+    vibrar(35);
     const existingIndex = cart.findIndex(item => item.title === title);
     if (existingIndex > -1) {
         cart[existingIndex].quantity += 1;
@@ -855,7 +852,6 @@ async function openFullscreenBrand(brandKey) {
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
             </div>`;
           
-        // Buscar si es una marca dinámica registrada por el Capitán
         const marcaPersonalizada = (window.marcasCache || []).find(m => m.id === brandKey);
         const fondoUsar = marcaPersonalizada ? (marcaPersonalizada.fondo || './fondo-espacial.jpg') : './fondo-espacial.jpg';
         const logoUsar = marcaPersonalizada ? marcaPersonalizada.logo : './logo-backwoods.png';
@@ -1005,7 +1001,6 @@ function closeEmergencyVuelo() {
    6. BASE DE DATOS LOCAL Y DETALLES DE TARJETAS
    ========================================== */
 const cardDetailsDB = {
-    // RUTAS DE VUELO
     lagoalgo: {
         title: "LagoAlgo — Bosque de Chapultepec 🌊🛩️",
         video: "./lago-algo.MP4",
@@ -1024,13 +1019,6 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Churubusco)</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro General Anaya (Línea 2) / Metro Tasqueña.</p>
-            
-            <!-- MAPA ILUSTRADO DEL CENART -->
-            <div style="text-align: center; margin: 16px 0;">
-                <img src="./cenart-mapas.jpg" alt="Mapa del CENART" style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.5);">
-                <span style="display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">📍 Mapa oficial del CENART — Ubicación de pasillos y áreas verdes</span>
-            </div>
-
             <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Pista de aterrizaje mítica bañada en colores terracota y torres posmodernas. Aterrizar en sus jardines con tu vape a escuchar ensayos de jazz al aire libre o performances mientras baja el sol es elevar la percepción al 100%.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Turbinas de Arte & Sonido)</p>
         `
@@ -1075,7 +1063,6 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Reserva Ecológica, UNAM)</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metrobús Centro Cultural Universitario / Metro Universidad (Línea 3).</p>
-            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🚌 Ruta Pumabús:</strong> Consulta el Mapa de Rutas de Pumabús (cenart-mapas.jpg / Guía de Rutas) usando la Ruta 3 o Ruta 10 para hacer landing exacto en la reserva.</p>
             <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Santuario natural escondido entre rocas de piedra volcánica. Cero ruido de motores ni interferencias: solo tú, la vegetación silvestre y un ambiente de paz absoluta para desconectar los transmisores y recargar el pasaporte de vuelo.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️ (3/5 — Trance Volcánico & Paz)</p>
         `
@@ -1098,13 +1085,11 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Centro Cultural Universitario, UNAM)</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metrobús CCU / Metro Universidad (Línea 3).</p>
-            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🚌 Ruta Pumabús:</strong> Revisa la imagen de Rutas de Pumabús para tomar la Ruta 3 (CCU) saliendo directo del Metro Universidad y llegar a la terminal sin turbulencias.</p>
             <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> La meca del arte contemporáneo en el sur de la capital. Su fachada oblicua de cristal flotando sobre espejos de agua te prepara para instalaciones sonoras, luminosas y experiencias conceptuales que te reconfiguran la cabeza.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Vuelo Transatlántico Visual)</p>
         `
     },
-    // MONCHIS EN CALLE Y CASA
-   oreo: {
+    oreo: {
         title: "Bolitas de Oreo (3 Ingredientes) 🍩",
         video: "./OREO.MP4",
         badge: "🏠 Casa • 🍿 Dulce • ✈️✈️✈️✈️",
@@ -1177,7 +1162,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏙️ Monchis en la Calle • 🍿 Salado</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ubicación:</strong> 📍 Centro CDMX (Cerca de Metro Bellas Artes / Allende - Línea 2)</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Especialidad:</strong> Tacos de guisado atascados, tostadas gigantes y micheladas preparadas. El lugar definitivo para bajear con comida casera mexicana de barrio en pleno Centro Histórico.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Especialidad:</strong> Tacos de guisado atascados, tostadas gigantes y micheladas preparadas.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
         `
     },
@@ -1203,7 +1188,6 @@ const cardDetailsDB = {
             <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️✈️ (5/5)</p>
         `
     },
-    // CINE & TRIP VISUAL
     robots: {
         title: "LOVE, DEATH & ROBOTS 🤖🌀",
         video: "./robots.MP4",
@@ -1211,7 +1195,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Psicodelia & Animación / Sci-Fi</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Antología con animación 3D fotorrealista, cel-shading y rotoscopía. Episodios como Jibaro, The Very Pulse of the Machine, Zima Blue y The Witness generan estimulación sensorial pura.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Antología con animación 3D fotorrealista, cel-shading y rotoscopía.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Estimulación Sensorial)</p>
         `
     },
@@ -1222,7 +1206,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Psicodelia & Animación / Viaje Mental</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Apple TV / Prime Video / Cineteca / Archivos de Internet</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Comienza en Live-Action y muta a mitad de la película a una animación alucinante dibujada a mano al estilo vintage de los años 30 sobre avatares digitales y simulaciones.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Comienza en Live-Action y muta a mitad de la película a una animación alucinante.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Viaje Mental)</p>
         `
     },
@@ -1233,7 +1217,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Comedia Absurda & Risas</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> TikTok / YouTube Originals</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Cortos animados con humor cannabis, diálogos reales en el auto a las 3:00 AM y situaciones disparatadas para soltar la risa y abrir el apetito.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Cortos animados con humor cannabis.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️ (3/5 — Risas & Apetito)</p>
         `
     },
@@ -1244,7 +1228,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cine Experimental / Surrealismo Vanguardista</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Archivos de Internet / Cineteca</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Obra maestra de Shūji Terayama. Un viaje poético repleto de estética teatral vanguardista, colores primarios hiper-saturados, máscaras, personajes de circo y memorias de la infancia alteradas.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Obra maestra de Shūji Terayama. Un viaje poético repleto de estética teatral vanguardista.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Vanguardia & Trance Filosófico)</p>
         `
     },
@@ -1255,7 +1239,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Antología Anime Sci-Fi / Cyberpunk Vintage</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> YouTube / Prime Video / Archivos de Internet</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Tres cortometrajes dirigidos por genios del anime (incluyendo a Katsuhiro Otomo, creador de Akira). Sombras cyber-noir, laberintos retro-futuristas, carreras mortales de autos y surrealismo japonés de los 80s.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Tres cortometrajes dirigidos por genios del anime.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Retro Cyberpunk & Nostalgia)</p>
         `
     },
@@ -1266,7 +1250,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Anime / Acción Sci-Fi, Aliens & Yokai</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix / Crunchyroll</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Una explosión de animación ultra fluida, paletas de colores neón frenéticas, aliens estrambóticos, maldiciones japonesas y un ritmo frenético. Visualmente desquiciada de la mejor manera posible.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Una explosión de animación ultra fluida.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Adrenalina & Colores)</p>
         `
     },
@@ -1277,7 +1261,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cine de Autor / Viaje Astral & Psicodelia Neón</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Tubi / Prime Video (Renta)</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Dirigida por Gaspar Noé. Toda la película está grabada en primera persona (POV) sobrevolando un Tokio hiper-saturado de luces neón, geometría fractal, clubes subterráneos y reencarnación. Una inmersión sensorial densa y brutalmente estallada.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Dirigida por Gaspar Noé. Toda la película está grabada en primera persona (POV).</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Inmersión Neón & Mindfuck)</p>
         `
     },
@@ -1288,7 +1272,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Anime Clásico / Psicodelia 70s & Arte Acuarela</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Prime Video (Renta) / Cineteca / Archivos de Internet</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Pieza vanguardista del anime japonés de los 70s construida con acuarelas fluidas que se funden en pantalla, música jazz/rock progresivo experimental e imaginería psicodélica barroca. Es literalmente una galería de arte en movimiento.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Pieza vanguardista del anime japonés de los 70s construida con acuarelas fluidas.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Trippy Retro & Galería de Arte)</p>
         `
     },
@@ -1298,8 +1282,8 @@ const cardDetailsDB = {
         badge: "🍿 Cortometraje Surrealista • ✈️✈️✈️✈️✈️",
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cortometraje / Anime Surrealista & Arte Visual</p>
-            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> YouTube (Canal oficial de Shingo Tamagawa)</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Son solo 3 minutos de animación independiente hecha completamente a mano fotograma por fotograma durante años. El detalle artístico es sobrecogedor: miradas profundas, colores vívidos, criaturas míticas y un silencio espiritual que provoca escalofríos visuales.</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> YouTube</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Son solo 3 minutos de animación independiente hecha completamente a mano.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Arte Puro & Trance)</p>
         `
     },
@@ -1310,7 +1294,7 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Documental / Comedia & Psicodelia</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Celebridades, músicos y comediantes (A$AP Rocky, Sting, Nick Offerman, Carrie Fisher) relatan sus historias reales de mal viajes y experiencias místicas, recreadas con animaciones absurdas y un todo humorístico muy ligero para reírse en pleno vuelo.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Celebridades, músicos y comediantes relatan sus historias reales de mal viajes.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Risas, Historias & Relax)</p>
         `
     },
@@ -1321,12 +1305,10 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Animación / Romance Urbano & Psicodelia</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
-            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Creada por Kid Cudi, es una experiencia estética pura. Su animación neón estilo cómic en movimiento combinada con un soundtrack hip-hop/lo-fi impecable te envuelve en una atmósfera neoyorquina super chill, romántica y llena de color.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Creada por Kid Cudi, es una experiencia estética pura.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Chill, Aesthetic & Sound)</p>
         `
     },
-
-    // FRECUENCIAS
     dubside: {
         title: "DUB SIDE OF THE MOON 🎧",
         video: "./dub.png",
@@ -1473,10 +1455,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 document.addEventListener('DOMContentLoaded', () => {
     iniciarReloj420();
-    setTimeout(() => {
-        cargarProductosTienda();
-        cargarMarcasTienda();
-    }, 800);
 });
 
 /* ==========================================
@@ -1489,7 +1467,7 @@ let brownNoiseNode = null;
 let isPlayingBrownNoise = false;
 
 function toggleBreathingGuide() {
-    vibrar([40, 60, 40]); // 📳 Doble pulso táctil
+    vibrar([40, 60, 40]);
     if (isBreathingActive) {
         stopBreathingGuide();
     } else {
@@ -1614,411 +1592,6 @@ function stopBrownNoise() {
 }
 
 /* ==========================================
-   9. PANEL DE ADMINISTRACIÓN (CAPITÁN)
-   ========================================== */
-/* ==========================================
-   FUNCIONES FALTANTES DEL PANEL DEL CAPITÁN
-   ========================================== */
-
-// 1. Registrar Stock e Inversión de Lote
-async function registrarInventarioAdmin(event) {
-    event.preventDefault();
-    if (!window.db || !window.fbMethods) return;
-
-    const nombre = document.getElementById('invNombre').value.trim();
-    const inversionTotal = parseFloat(document.getElementById('invInversionTotal').value);
-    const piezas = parseInt(document.getElementById('invPiezas').value);
-    const precioVenta = parseFloat(document.getElementById('invPrecioVenta').value);
-
-    const costoUnitario = inversionTotal / piezas;
-
-    try {
-        const { collection, addDoc } = window.fbMethods;
-        await addDoc(collection(window.db, "productos"), {
-            titulo: nombre,
-            precio: precioVenta,
-            costo: costoUnitario,
-            stock: piezas,
-            marca: "general",
-            imagen: "./portada.jpg",
-            agotado: false,
-            fecha_registro: new Date().toISOString()
-        });
-
-        alert(`📦 ¡Lote registrado!\n\n• Producto: ${nombre}\n• Costo Unitario Calculado: $${costoUnitario.toFixed(2)} MXN\n• Piezas en Stock: ${piezas}`);
-        event.target.reset();
-        
-        cargarDashboardAdmin();
-        cargarProductosTienda();
-        cargarInventarioAdmin();
-    } catch (e) {
-        alert("⚠️ Error al registrar lote: " + e.message);
-    }
-}
-
-// 2. Registrar Regalo (Vuelo #3), Mermas o Gastos Operativos
-async function registrarGastoAdmin(event) {
-    event.preventDefault();
-    if (!window.db || !window.fbMethods) return;
-
-    const tipo = document.getElementById('gastoTipo').value;
-    const monto = parseFloat(document.getElementById('gastoMonto').value);
-    const concepto = document.getElementById('gastoConcepto').value.trim();
-
-    try {
-        const { collection, addDoc } = window.fbMethods;
-        await addDoc(collection(window.db, "gastos_e_inversiones"), {
-            tipo,
-            monto,
-            concepto,
-            fecha: new Date().toISOString()
-        });
-
-        alert("🔻 Gasto/Regalo registrado correctamente.");
-        event.target.reset();
-        cargarDashboardAdmin();
-    } catch (e) {
-        alert("⚠️ Error al registrar gasto: " + e.message);
-    }
-}
-   function checkAdminPermission(user) {
-    const adminSection = document.getElementById('adminPanelSection');
-    const adminBtn = document.getElementById('adminNavBtn');
-    const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
-
-    if (userEmail === ADMIN_EMAIL.toLowerCase().trim()) {
-        if (adminBtn) adminBtn.style.setProperty('display', 'flex', 'important');
-    } else {
-        if (adminSection) {
-            adminSection.style.display = 'none';
-            adminSection.classList.remove('active');
-        }
-        if (adminBtn) adminBtn.style.setProperty('display', 'none', 'important');
-    }
-}
-
-function abrirPanelAdminDirecto() {
-    const user = window.auth ? window.auth.currentUser : null;
-    const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
-
-    if (!user || userEmail !== ADMIN_EMAIL.toLowerCase().trim()) {
-        alert("🔒 Acceso restringido: Debes iniciar sesión con la cuenta oficial del Capitán.");
-        abrirLogin();
-        return;
-    }
-
-    const adminSection = document.getElementById('adminPanelSection');
-    if (adminSection) {
-        cerrarTodasLasVistas();
-        adminSection.style.display = 'block';
-        adminSection.classList.add('active');
-        adminSection.scrollIntoView({ behavior: 'smooth' });
-
-        cargarDashboardAdmin();
-        cargarInventarioAdmin();
-        cargarProductosTienda();
-    }
-}
-
-async function cargarDashboardAdmin() {
-    if (!window.db) return;
-    const { collection, getDocs } = window.fbMethods;
-
-    try {
-        let totalIngresos = 0;
-        let totalCogs = 0;
-        const ventasSnap = await getDocs(collection(window.db, "transacciones_ventas"));
-        ventasSnap.forEach(docSnap => {
-            const data = docSnap.data();
-            totalIngresos += data.monto_cobrado || 0;
-            totalCogs += data.costo_unitario || 0;
-        });
-
-        let totalGastos = 0;
-        const gastosSnap = await getDocs(collection(window.db, "gastos_e_inversiones"));
-        gastosSnap.forEach(docSnap => {
-            totalGastos += docSnap.data().monto || 0;
-        });
-
-        const utilidadNeta = totalIngresos - (totalCogs + totalGastos);
-
-        document.getElementById('dashIngresos').innerText = `$${totalIngresos.toLocaleString()} MXN`;
-        document.getElementById('dashCogs').innerText = `$${totalCogs.toLocaleString()} MXN`;
-        document.getElementById('dashGastos').innerText = `$${totalGastos.toLocaleString()} MXN`;
-        document.getElementById('dashUtilidad').innerText = `$${utilidadNeta.toLocaleString()} MXN`;
-    } catch (e) {
-        console.error("Error al cargar dashboard financiero:", e);
-    }
-}
-
-let html5QrScanner = null;
-function iniciarEscanerQR() {
-    const container = document.getElementById('qrReaderContainer');
-    if (!container) return;
-
-    container.style.display = 'block';
-
-    if (!html5QrScanner) {
-        html5QrScanner = new Html5Qrcode("qrReaderContainer");
-    }
-
-    const config = { fps: 10, qrbox: { width: 220, height: 220 } };
-
-    html5QrScanner.start(
-        { facingMode: "environment" },
-        config,
-        async (decodedText) => {
-            html5QrScanner.stop().then(async () => {
-                container.style.display = 'none';
-                document.getElementById('adminUserUid').value = decodedText;
-
-                if (window.db && window.fbMethods) {
-                    const { doc, getDoc } = window.fbMethods;
-                    const userSnap = await getDoc(doc(window.db, "usuarios", decodedText));
-                    if (userSnap.exists()) {
-                        const data = userSnap.data();
-                        alert(`✅ Pasajero Detectado: ${data.nombre_real || data.displayName || 'Sin nombre'}\nVuelos acumulados: ${data.vuelos_acumulados || 0}/3`);
-                    } else {
-                        alert(`⚠️ Código QR escaneado: (${decodedText}), cliente registrado en el campo.`);
-                    }
-                }
-            });
-        },
-        (errorMessage) => {}
-    ).catch(err => {
-        alert("⚠️ Error de cámara: Permiso denegado o dispositivo sin cámara.");
-        container.style.display = 'none';
-    });
-}
-
-async function cargarProductosTienda() {
-    if (!window.db || !window.fbMethods) return;
-    const { collection, getDocs } = window.fbMethods;
-
-    try {
-        const snap = await getDocs(collection(window.db, "productos"));
-        const gridDestacados = document.getElementById('featuredGrid');
-        const listaAdmin = document.getElementById('catListaProductosAdmin');
-
-        if (listaAdmin) listaAdmin.innerHTML = '';
-
-        snap.forEach(docSnap => {
-            const p = { id: docSnap.id, ...docSnap.data() };
-
-            if (listaAdmin) {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'stock-item-row';
-                itemDiv.style.cssText = 'display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px; border-radius: 12px; margin-bottom: 8px;';
-                itemDiv.innerHTML = `
-                    <div>
-                        <strong style="color:#fff;">${p.titulo}</strong> (${p.marca ? p.marca.toUpperCase() : 'GENERAL'}) 
-                        <br><span style="font-size:0.8rem; color:#94a3b8;">Precio: $${p.precio} MXN | Stock: ${p.stock} pzas | Estatus: ${p.agotado ? '🔴 AGOTADO' : '🟢 DISPONIBLE'}</span>
-                    </div>
-                    <div style="display:flex; gap:6px;">
-                        <button type="button" onclick="toggleEstadoAgotado('${p.id}', ${p.agotado || false})" style="background:${p.agotado ? '#22c55e' : '#e11d48'}; color:#fff; border:none; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer;">
-                            ${p.agotado ? 'Reactivar' : 'Marcar Agotado'}
-                        </button>
-                        <button type="button" onclick="eliminarProductoCapitan('${p.id}')" style="background:#64748b; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer;">
-                            🗑️
-                        </button>
-                    </div>
-                `;
-                listaAdmin.appendChild(itemDiv);
-            }
-        });
-    } catch (e) {
-        console.error("Error al cargar productos desde Firestore:", e);
-    }
-}
-
-async function guardarProductoCapitan(event) {
-    event.preventDefault();
-
-    const titulo = document.getElementById('catTitulo')?.value.trim();
-    const precio = parseFloat(document.getElementById('catPrecio')?.value);
-    const costo = parseFloat(document.getElementById('catCosto')?.value || 0);
-    const marca = document.getElementById('catMarca')?.value;
-    const urlManual = document.getElementById('catImagen')?.value.trim();
-    const archivoInput = document.getElementById('catArchivoMedia');
-    const variedadesRaw = document.getElementById('catVariedades')?.value.trim();
-    const stock = parseInt(document.getElementById('catStock')?.value || 10);
-    const descripcion = document.getElementById('catDescripcion')?.value.trim();
-
-    let imagenFinal = urlManual;
-
-    if (archivoInput && archivoInput.files.length > 0) {
-        const file = archivoInput.files[0];
-        const storageRef = window.fbMethods.ref(window.storage, `productos/${Date.now()}_${file.name}`);
-        
-        try {
-            alert("⏳ Subiendo multimedia a la nube, por favor espera un momento...");
-            const snapshot = await window.fbMethods.uploadBytes(storageRef, file);
-            imagenFinal = await window.fbMethods.getDownloadURL(snapshot.ref);
-        } catch (err) {
-            alert("⚠️ Error al subir foto/video: " + err.message);
-            return;
-        }
-    }
-
-    if (!imagenFinal) {
-        alert("Por favor selecciona un archivo o ingresa una URL de imagen/video.");
-        return;
-    }
-
-    const variedades = variedadesRaw ? variedadesRaw.split(',').map(v => v.trim()) : ['Sativa', 'Indica', 'Híbrida'];
-
-    try {
-        const { collection, addDoc } = window.fbMethods;
-        await addDoc(collection(window.db, "productos"), {
-            titulo,
-            precio,
-            costo,
-            marca,
-            imagen: imagenFinal,
-            imagenes: [imagenFinal],
-            variedades,
-            stock,
-            descripcion,
-            agotado: false,
-            fecha_registro: new Date().toISOString()
-        });
-
-        alert("✅ ¡Producto publicado con éxito!");
-        event.target.reset();
-        cargarProductosTienda();
-    } catch (e) {
-        alert("⚠️ Error al publicar producto: " + e.message);
-    }
-}
-
-async function toggleEstadoAgotado(prodId, estadoActual) {
-    try {
-        const { doc, updateDoc } = window.fbMethods;
-        const prodRef = doc(window.db, "productos", prodId);
-        await updateDoc(prodRef, { agotado: !estadoActual });
-        cargarProductosTienda();
-    } catch (e) {
-        alert("Error al cambiar estatus: " + e.message);
-    }
-}
-
-async function eliminarProductoCapitan(prodId) {
-    if (!confirm("¿Seguro que deseas eliminar este producto del catálogo?")) return;
-    try {
-        const { doc, deleteDoc } = window.fbMethods;
-        await deleteDoc(doc(window.db, "productos", prodId));
-        alert("🗑️ Producto eliminado.");
-        cargarProductosTienda();
-    } catch (e) {
-        alert("Error al eliminar: " + e.message);
-    }
-}
-
-async function cargarInventarioAdmin() {
-    if (!window.db || !window.fbMethods) return;
-    const { collection, getDocs } = window.fbMethods;
-    const select = document.getElementById('adminProductSelect');
-    if (!select) return;
-
-    select.innerHTML = '<option value="">Selecciona Producto del Catálogo...</option>';
-    window.adminInventarioCache = [];
-
-    try {
-        const snap = await getDocs(collection(window.db, "productos"));
-        snap.forEach(docSnap => {
-            const p = { id: docSnap.id, ...docSnap.data() };
-            window.adminInventarioCache.push(p);
-
-            if (p.stock > 0 && !p.agotado) {
-                select.innerHTML += `<option value="${p.id}">${p.titulo} (Stock: ${p.stock} pzas - $${p.precio} MXN)</option>`;
-            }
-        });
-    } catch (e) {
-        console.error("Error al cargar inventario para ventas:", e);
-    }
-}
-
-function actualizarPrecioSugeridoAdmin() {
-    const prodId = document.getElementById('adminProductSelect').value;
-    const prod = (window.adminInventarioCache || []).find(item => item.id === prodId);
-    if (prod) {
-        document.getElementById('adminMontoCobrado').value = prod.precio;
-    }
-}
-
-async function procesarVentaAdmin(event) {
-    event.preventDefault();
-    let userQuery = document.getElementById('adminUserUid').value.trim();
-    const prodId = document.getElementById('adminProductSelect').value;
-    const montoCobrado = parseFloat(document.getElementById('adminMontoCobrado').value);
-
-    const producto = (window.adminInventarioCache || []).find(p => p.id === prodId);
-    if (!producto) {
-        alert("Selecciona un producto válido del catálogo.");
-        return;
-    }
-
-    try {
-        const { collection, getDocs, doc, updateDoc, addDoc } = window.fbMethods;
-        let userDocRef = null;
-        let userData = null;
-
-        const usersSnap = await getDocs(collection(window.db, "usuarios"));
-        usersSnap.forEach(uDoc => {
-            const data = uDoc.data();
-            const shortUid = `USR-${uDoc.id.slice(-5).toUpperCase()}`;
-            if (uDoc.id === userQuery || shortUid === userQuery.toUpperCase()) {
-                userDocRef = doc(window.db, "usuarios", uDoc.id);
-                userData = data;
-            }
-        });
-
-        if (!userDocRef) {
-            alert("⚠️ No se encontró ningún pasajero registrado con ese ID o UID.");
-            return;
-        }
-
-        let nuevosVuelos = (userData.vuelos_acumulados || 0) + 1;
-        if (nuevosVuelos > 3) nuevosVuelos = 1;
-
-        await updateDoc(userDocRef, {
-            vuelos_acumulados: nuevosVuelos,
-            descuento_bienvenida_activo: false
-        });
-
-        const nuevoStock = producto.stock - 1;
-        const prodRef = doc(window.db, "productos", producto.id);
-        await updateDoc(prodRef, {
-            stock: nuevoStock,
-            agotado: nuevoStock <= 0
-        });
-
-        const costoUnitario = producto.costo || 0;
-        const gananciaBruta = montoCobrado - costoUnitario;
-        
-        await addDoc(collection(window.db, "transacciones_ventas"), {
-            usuario_uid: userDocRef.id,
-            producto_nombre: producto.titulo,
-            monto_cobrado: montoCobrado,
-            costo_unitario: costoUnitario,
-            ganancia_bruta: gananciaBruta,
-            fecha: new Date().toISOString()
-        });
-
-        alert(`🚀 ¡VENTA REGISTRADA CON ÉXITO!\n\n• Pasajero: ${userData.nombre_real || userData.displayName}\n• Vuelo Acreditado: ${nuevosVuelos}/3\n• Quedan: ${nuevoStock} pzas de ${producto.titulo}`);
-        
-        event.target.reset();
-
-        cargarDashboardAdmin();
-        cargarProductosTienda();
-        cargarInventarioAdmin();
-
-    } catch (e) {
-        alert("Error al procesar la venta: " + e.message);
-    }
-}
-
-/* ==========================================
    10. CONTROL DE MODALES DE SESIÓN Y PROMO
    ========================================== */
 function abrirPromo() {
@@ -2033,7 +1606,7 @@ function cerrarPromo() {
     const modal = document.getElementById('promoModal');
     if (modal) {
         modal.classList.remove('active');
-        modal.style.display = 'none'; // Cierre inmediato sin retardo
+        modal.style.display = 'none'; 
         closeModalState();
     }
 }
@@ -2155,36 +1728,27 @@ function activarPromo420(segundosRestantes) {
         document.body.prepend(banner);
     }
     banner.style.display = 'block';
-    cargarProductosTienda();
 }
 
 function desactivarPromo420() {
     window.esPromo420Activa = false;
     const banner = document.getElementById('bannerHora420');
     if (banner) banner.style.display = 'none';
-    cargarProductosTienda();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     iniciarReloj420();
-    setTimeout(cargarProductosTienda, 800);
-});// ==========================================
+});
+
+// ==========================================
 // GESTIÓN DINÁMICA DE MARCAS Y CATALOGO
 // ==========================================
-
-// Cargar Marcas en la web y en los selectores del Admin
 async function cargarMarcasTienda() {
     if (!window.db || !window.fbMethods) return;
     const { collection, getDocs } = window.fbMethods;
 
-    const selectMarca = document.getElementById('catMarca');
     const brandsGrid = document.getElementById('brandsSelectorGrid');
-    const listaMarcasAdmin = document.getElementById('adminMarcasLista');
-cargarDashboardAdmin();
-    cargarInventarioAdmin();
-    cargarProductosTienda();
-    cargarMarcasTienda(); // 👈 Añadir esta línea
-    // Marcas por defecto
+
     const marcasBase = [
         { id: 'muhameds', nombre: 'Muha Meds', logo: './logo-muhameds.png' },
         { id: 'cookies', nombre: 'Cookies', logo: './logo-cookies.png' },
@@ -2208,15 +1772,6 @@ cargarDashboardAdmin();
         console.log("Carga de marcas Firestore diferida:", e);
     }
 
-    // 1. Actualizar el <select> del formulario de productos
-    if (selectMarca) {
-        selectMarca.innerHTML = '<option value="">Selecciona la Marca...</option>';
-        window.marcasCache.forEach(m => {
-            selectMarca.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
-        });
-    }
-
-    // 2. Renderizar cuadrícula de marcas en la página principal
     if (brandsGrid) {
         brandsGrid.innerHTML = window.marcasCache.map(m => `
             <div class="brand-logo-card" onclick="openFullscreenBrand('${m.id}')">
@@ -2224,130 +1779,9 @@ cargarDashboardAdmin();
             </div>
         `).join('');
     }
-
-    // 3. Renderizar lista de administración de marcas
-    if (listaMarcasAdmin) {
-        listaMarcasAdmin.innerHTML = window.marcasCache.map(m => `
-            <div class="stock-item-row" style="display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 10px 14px; border-radius: 12px; margin-bottom: 8px;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${m.logo}" style="width:35px; height:35px; object-fit:contain; border-radius:6px;">
-                    <strong style="color:#fff;">${m.nombre}</strong> <span style="font-size:0.75rem; color:#94a3b8;">(ID: ${m.id})</span>
-                </div>
-                ${['muhameds','cookies','backwoods','donuts','packman','fryd'].includes(m.id) 
-                    ? '<span style="color:#facc15; font-size:0.8rem;">Sistema Base</span>' 
-                    : `<button type="button" onclick="eliminarMarcaCapitan('${m.id}')" style="background:#e11d48; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer;">🗑️ Eliminar</button>`}
-            </div>
-        `).join('');
-    }
 }
-// Guardar nueva marca desde el formulario del Capitán (VERSIÓN CORREGIDA Y SIN BLOQUEOS)
-async function guardarMarcaCapitan(event) {
-    event.preventDefault();
 
-    const btnSubmit = event.target.querySelector('button[type="submit"]');
-    const originalBtnText = btnSubmit ? btnSubmit.innerHTML : '✨ Registrar y Publicar Marca';
-
-    const nombre = document.getElementById('marcaNombre')?.value.trim();
-    const idSlug = document.getElementById('marcaId')?.value.trim().toLowerCase().replace(/\s+/g, '');
-    const urlLogoManual = document.getElementById('marcaLogoUrl')?.value.trim();
-    const urlFondoManual = document.getElementById('marcaFondoUrl')?.value.trim();
-
-    const archivoLogoInput = document.getElementById('marcaLogoArchivo');
-    const archivoFondoInput = document.getElementById('marcaFondoArchivo');
-
-    if (!nombre || !idSlug) {
-        alert("Por favor completa el nombre y el identificador único de la marca.");
-        return;
-    }
-
-    try {
-        // Cambiar el texto del botón y desactivarlo temporalmente para evitar doble clic
-        if (btnSubmit) {
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = "⏳ Subiendo multimedia, por favor espera...";
-        }
-
-        let logoFinal = urlLogoManual || '';
-        let fondoFinal = urlFondoManual || './fondo-espacial.jpg';
-
-        // 1. Subir Logo si se seleccionó archivo
-        if (archivoLogoInput && archivoLogoInput.files.length > 0) {
-            const fileLogo = archivoLogoInput.files[0];
-            if (window.storage && window.fbMethods && window.fbMethods.ref && window.fbMethods.uploadBytes) {
-                try {
-                    const logoRef = window.fbMethods.ref(window.storage, `marcas/logos/${Date.now()}_${fileLogo.name}`);
-                    const snap = await window.fbMethods.uploadBytes(logoRef, fileLogo);
-                    logoFinal = await window.fbMethods.getDownloadURL(snap.ref);
-                } catch (stErr) {
-                    console.warn("Error en Firebase Storage para logo, usando ruta local:", stErr);
-                    logoFinal = `./${fileLogo.name}`;
-                }
-            } else {
-                logoFinal = `./${fileLogo.name}`;
-            }
-        }
-
-        // 2. Subir Fondo si se seleccionó archivo
-        if (archivoFondoInput && archivoFondoInput.files.length > 0) {
-            const fileFondo = archivoFondoInput.files[0];
-            if (window.storage && window.fbMethods && window.fbMethods.ref && window.fbMethods.uploadBytes) {
-                try {
-                    const fondoRef = window.fbMethods.ref(window.storage, `marcas/fondos/${Date.now()}_${fileFondo.name}`);
-                    const snap = await window.fbMethods.uploadBytes(fondoRef, fileFondo);
-                    fondoFinal = await window.fbMethods.getDownloadURL(snap.ref);
-                } catch (stErr) {
-                    console.warn("Error en Firebase Storage para fondo, usando ruta local:", stErr);
-                    fondoFinal = `./${fileFondo.name}`;
-                }
-            } else {
-                fondoFinal = `./${fileFondo.name}`;
-            }
-        }
-
-        if (!logoFinal) {
-            alert("Por favor sube un archivo de logo o escribe una URL / nombre de archivo (ej. ./logo.jpg).");
-            return;
-        }
-
-        const { doc, setDoc } = window.fbMethods;
-        await setDoc(doc(window.db, "marcas", idSlug), {
-            nombre,
-            id: idSlug,
-            logo: logoFinal,
-            fondo: fondoFinal,
-            fecha_creacion: new Date().toISOString()
-        });
-
-        alert(`🚀 ¡Marca "${nombre}" registrada con éxito!`);
-        event.target.reset();
-        if (typeof cargarMarcasTienda === 'function') {
-            await cargarMarcasTienda();
-        }
-
-    } catch (e) {
-        console.error("Error al guardar marca:", e);
-        alert("⚠️ Error al guardar marca: " + e.message);
-    } finally {
-        // Restaurar el botón al finalizar
-        if (btnSubmit) {
-            btnSubmit.disabled = false;
-            btnSubmit.innerHTML = originalBtnText;
-        }
-    }
-}
-// Eliminar marca registrada
-async function eliminarMarcaCapitan(marcaId) {
-    if (!confirm(`¿Seguro que deseas eliminar la marca "${marcaId}"?`)) return;
-    try {
-        const { doc, deleteDoc } = window.fbMethods;
-        await deleteDoc(doc(window.db, "marcas", marcaId));
-        alert("🗑️ Marca eliminada.");
-        cargarMarcasTienda();
-    } catch (e) {
-        alert("Error al eliminar la marca: " + e.message);
-    }
-}
-// Registrar Service Worker para PWA (Instalación en celular)
+// Registrar Service Worker para PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -2355,19 +1789,17 @@ if ('serviceWorker' in navigator) {
       .catch((err) => console.error('❌ Error al activar Service Worker:', err));
   });
 }
-// Función para compartir spots, recetas y cine con un compa
-function compartirContenido(titulo, categoria, descripcion) {
 
-  const urlSitio = window.location.href; // Enlace actual (https://aeroshop7.vercel.app/)
+// Función para compartir
+function compartirContenido(titulo, categoria, descripcion) {
+  const urlSitio = window.location.href; 
   
-  // Mensaje estilizado para WhatsApp
   const mensaje = `🔥 *MIRA ESTO EN AEROSHOP CDMX* 🔥\n\n` +
                   `📍 *${titulo}* (${categoria})\n` +
                   `💬 ${descripcion}\n\n` +
                   `Checa la guía completa y el catálogo aquí 👇\n` +
                   `${urlSitio}`;
 
-  // Si el teléfono soporta el menú nativo de compartir (iOS/Android)
   if (navigator.share) {
     navigator.share({
       title: `${titulo} - AEROSHOP`,
@@ -2375,19 +1807,49 @@ function compartirContenido(titulo, categoria, descripcion) {
       url: urlSitio
     }).catch((err) => console.log('Proceso de compartir cancelado', err));
   } else {
-    // Fallback directo a WhatsApp
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
     window.open(whatsappUrl, '_blank');
   }
 }
-// Disparar la persecución de fantasmas azules en Packman
+
 function triggerPacmanChase(btn) {
     vibrar(30);
     const chaseSquad = document.getElementById('packmanChaseSquad');
     if (chaseSquad) {
         chaseSquad.classList.remove('active');
-        void chaseSquad.offsetWidth; // Forzar reinicio de animación
+        void chaseSquad.offsetWidth; 
         chaseSquad.classList.add('active');
     }
     scrollToBrandProducts();
 }
+
+/* ==========================================
+   INTERSECTION OBSERVER - LAZY LOADING VIDEOS
+   ========================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    const lazyVideos = document.querySelectorAll("video.lazy-video");
+
+    if ("IntersectionObserver" in window) {
+        const videoObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((video) => {
+                if (video.isIntersecting) {
+                    const source = video.target.querySelector('source');
+                    if (source && source.dataset.src) {
+                        source.src = source.dataset.src;
+                    } else if (video.target.dataset.src) {
+                        video.target.src = video.target.dataset.src;
+                    }
+                    video.target.load();
+                    video.target.play().catch(() => {});
+                    video.target.classList.remove("lazy-video");
+                    observer.unobserve(video.target);
+                } else {
+                    // Pausar video si sale de la vista
+                    video.target.pause();
+                }
+            });
+        });
+
+        lazyVideos.forEach((video) => videoObserver.observe(video));
+    }
+});
