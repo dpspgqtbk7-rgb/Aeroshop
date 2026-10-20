@@ -1,3 +1,14 @@
+// Helper de Feedback Háptico (Vibración táctil)
+function vibrar(duracion = 25) {
+  // Comprobar si el navegador/dispositivo soporta vibración
+  if ('vibrate' in navigator) {
+    try {
+      navigator.vibrate(duracion);
+    } catch (e) {
+      // Ignorar silenciosamente en navegadores que lo tengan desactivado por sistema
+    }
+  }
+}
 let currentUserProfile = null;
 const ADMIN_EMAIL = "aeroshop.37@gmail.com";
 const phone = "525561446446";
@@ -258,6 +269,14 @@ async function renderRastreadorPedidoCliente() {
    2. PRODUCTOS DESTACADOS Y BASE LOCAL (CON MÚLTIPLES FOTOS)
    ========================================== */
 const localProductsDB = {
+    besos2g: {
+        titulo: "Besos Liquid Diamonds 2g 💋✨",
+        precio: 850, // Ajusta el precio en MXN si lo necesitas
+        descripcion: "BESOS Liquid Diamonds 2G: una fórmula de máxima potencia cargada con 2,000 mg de diamantes líquidos puros que desatan una explosión de cereza negra jugosa y moras silvestres en cada inhalación. Diseñado en un hardware negro mate soft-touch altamente discreto, con visor de extracto transparente y puerto recargable USB-C para aprovechar hasta la última gota, este dispositivo te garantiza un despegue suave hacia una claridad mental eufórica combinada con una cómoda relajación corporal, la escala perfecta para mantener el vuelo alto sin turbulencias durante tus recorridos por la ciudad.",
+        imagen: "./besos.jpg",
+        imagenes: ["./besos.jpg"],
+        variedades: ["Sativa", "Indica", "Híbrida"]
+    },
     frydovni: {
         titulo: "FRYD Ovni 🛸 + Gomitas 2g",
         precio: 870,
@@ -301,6 +320,7 @@ const localProductsDB = {
 };
 
 async function openProductModal(productId) {
+    vibrar(15); // 📳 Vibración suave al abrir modal
     const mediaContainer = document.getElementById('modalMediaContainer');
     const thumbnailsContainer = document.getElementById('modalThumbnails');
     const strainPillsContainer = document.getElementById('modalStrainPills');
@@ -462,6 +482,7 @@ function toggleCart() {
 }
 
 function addToCart(title, price, image) {
+    vibrar(35); // 📳 Vibración táctil al agregar al carrito
     const existingIndex = cart.findIndex(item => item.title === title);
     if (existingIndex > -1) {
         cart[existingIndex].quantity += 1;
@@ -968,176 +989,317 @@ function closeEmergencyVuelo() {
 const cardDetailsDB = {
     // RUTAS DE VUELO
     lagoalgo: {
-        title: "LagoAlgo — Bosque de Chapultepec 🚣🏻‍♂️",
+        title: "LagoAlgo — Bosque de Chapultepec 🌊🛩️",
         video: "./lago-algo.MP4",
         badge: "📍 Poniente • ✈️✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Espacio cultural y gastronómico inmerso en la 2da Sección del Bosque de Chapultepec. Rodeado de naturaleza, arquitectura brutalista e instalaciones de arte contemporáneo con vistas despejadas al lago.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Poniente (2da Sección del Bosque de Chapultepec)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro Constituyentes (Línea 7) / Cablebús Los Pinos.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Hángar de arquitectura brutalista flotando directo sobre el lago. Aquí la tripulación viene a nivelar presión entre exposiciones de arte inmersivo, arquitectura brutal y un vibe frente al agua que congela el tiempo. La escala VIP obligatoria si andas en la zona poniente.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Altitud Máxima & Discreción)</p>
+        `
     },
     cenart: {
-        title: "CENART (Centro Nacional de las Artes) 🎭",
+        title: "CENART (Centro Nacional de las Artes) 🎭🍊",
         video: "./cenart-hero.mp4",
         badge: "📍 Sur • ✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Amplios jardines con áreas verdes tranquilas, zonas de sombra debajo de árboles frondosos y arquitectura icónica. Ideal para relajarse con música en audífonos o disfrutar ensayos de danza y teatro al aire libre.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Churubusco)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro General Anaya (Línea 2) / Metro Tasqueña.</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🗺️ Mapa de Vuelo:</strong> Abre la imagen del Mapa del CENART (cenart-mapas.jpg) en la ficha para ubicar los pasillos, áreas verdes y no dar vueltas en círculo.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Pista de aterrizaje mítica bañada en colores terracota y torres posmodernas. Aterrizar en sus jardines con tu vape a escuchar ensayos de jazz al aire libre o performances mientras baja el sol es elevar la percepción al 100%.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Turbinas de Arte & Sonido)</p>
+        `
     },
     chapultepec: {
-        title: "Cineteca de Chapultepec 🎬🌿",
+        title: "Cineteca de Chapultepec 🎬🚀",
         video: "./chapultepec.mp4",
         badge: "📍 Poniente • ✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Foros al aire libre en la 4ta Sección de Chapultepec. Cuenta con proyecciones nocturnas gratuitas, senderos elevados y miradores con atardeceres increíbles.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Poniente (4ta Sección del Bosque de Chapultepec)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Cablebús Línea 3 (Estación Cineteca / Bodegas).</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> La nueva terminal espacial en el corazón del bosque. Súbete al Cablebús, sobrevuela las copas de los árboles y aterriza en salas de proyección de última generación, terrazas elevadas y foros al aire libre. La escala perfecta para conectar cine, aire puro y visuales.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Cine en las Alturas)</p>
+        `
     },
     laguna: {
-        title: "Laguna CDMX 🏭🎨",
+        title: "Laguna CDMX 🏭☕",
         video: "./LAGUNA.MP4",
         badge: "📍 Centro • ✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Antigua fábrica reconvertida en laboratorio creativo en la colonia Doctores. Alberga estudios de arquitectura, galerías independientes y cafés de especialidad.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Centro (Colonia Doctores)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro Niños Héroes (Línea 3) / Metro Hospital General.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Una antigua fábrica textil reconvertida en hángar creativo secreto en la Doctores. Pasillos industriales llenos de plantas, galerías de diseño y un café de especialidad que calma cualquier turbulencia. Estética pura para bajarle tres rayas al estrés de la ciudad.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Hángar Industrial & Vibe)</p>
+        `
     },
     jardin: {
-        title: "Jardín Escénico Chapultepec 🌺",
+        title: "Jardín Escénico Chapultepec 🌿🪵",
         video: "./jardin.mp4",
         badge: "📍 Poniente • ✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Rodeado por el Auditorio Nacional, un pabellón botánico y escénico con humedales urbanos, senderos de madera y luz tenue durante el atardecer.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Poniente (Junto al Auditorio Nacional)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro Auditorio (Línea 7).</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Pasarela de madera y espejos de agua camuflados en la vegetación del bosque. Una escala relámpago justo al lado del Auditorio para caminar en absoluto silencio, respirar aire fresco y recargar batería en la cabina antes del siguiente destino.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️ (3/5 — Pasarela Verde Relámpago)</p>
+        `
     },
     eden: {
-        title: "Jardín El Edén CU 🍃📜",
+        title: "Jardín El Edén CU 🌋🌿",
         video: "./eden.mp4",
         badge: "📍 Sur • ✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Secreto guardado detrás de la Facultad de Filosofía y Letras en Ciudad Universitaria. Espacio sombreado, ambiente estudiantil pacífico y naturaleza silvestre.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Reserva Ecológica, UNAM)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metrobús Centro Cultural Universitario / Metro Universidad (Línea 3).</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🚌 Ruta Pumabús:</strong> Consulta el Mapa de Rutas de Pumabús (cenart-mapas.jpg / Guía de Rutas) usando la Ruta 3 o Ruta 10 para hacer landing exacto en la reserva.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Santuario natural escondido entre rocas de piedra volcánica. Cero ruido de motores ni interferencias: solo tú, la vegetación silvestre y un ambiente de paz absoluta para desconectar los transmisores y recargar el pasaporte de vuelo.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️ (3/5 — Trance Volcánico & Paz)</p>
+        `
     },
     soumaya: {
-        title: "Museo Soumaya & Plaza Carso 🏛️✨",
+        title: "Museo Soumaya 🪞🛸",
         video: "./soumaya.mp4",
         badge: "📍 Poniente • ✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Estructura hexagonal brillante con espejos orgánicos. Gran spot para caminar de noche, observar reflejos metálicos e iluminación urbana.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Poniente (Nuevo Polanco)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro San Joaquín / Metro Polanco (Línea 7).</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> La nave nodriza de Polanco. Más de 16,000 hexágonos de aluminio reflejando el cielo de la CDMX. Subir por su rampa espiral bajo luz blanca envolvente rodeado de esculturas monumentales se siente literalmente como caminar dentro de una estación espacial de Sci-Fi.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Nave Nodriza Futurista)</p>
+        `
     },
     muac: {
-        title: "MUAC CU (Museo de Arte Contemporáneo) 🏛️🍃",
+        title: "MUAC CU (Museo Universitario Arte Contemporáneo) 🏛️📐",
         video: "./muac.mp4",
         badge: "📍 Sur • ✈️✈️✈️✈️✈️",
-        html: `<p style="color: #cbd5e1;">Ubicado en el Centro Cultural Universitario. Paisaje volcánico de piedra negra, exposiciones inmersivas e instalaciones sonoras de gran escala.</p>`
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Centro Cultural Universitario, UNAM)</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metrobús CCU / Metro Universidad (Línea 3).</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🚌 Ruta Pumabús:</strong> Revisa la imagen de Rutas de Pumabús para tomar la Ruta 3 (CCU) saliendo directo del Metro Universidad y llegar a la terminal sin turbulencias.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> La meca del arte contemporáneo en el sur de la capital. Su fachada oblicua de cristal flotando sobre espejos de agua te prepara para instalaciones sonoras, luminosas y experiencias conceptuales que te reconfiguran la cabeza.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Vuelo Transatlántico Visual)</p>
+        `
     },
-
     // MONCHIS EN CALLE Y CASA
-    oreo: {
-        title: "Oreo Fritas Crujientes 🍩🍪",
+   oreo: {
+        title: "Bolitas de Oreo (3 Ingredientes) 🍩",
         video: "./OREO.MP4",
-        badge: "🏠 Casa • 🍩 Dulce",
-        html: `<p style="color: #cbd5e1;">Galletas Oreo pasadas por masa de hotcakes espesa y fritas hasta dorar. Servidas con azúcar glass y jarabe de chocolate caliente.</p>`
-    },
-    cotorras: {
-        title: "Las Cotorras 🌮🍻",
-        video: "./cotorras.MP4",
-        badge: "📍 Centro • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Tacos de guisado generosos en tortilla hecha a mano. Salsa de chicharrón prensado, suadero y papas al hilo irresistibles para bajón rápido.</p>`
+        badge: "🏠 Casa • 🍿 Dulce • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Dulce</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> 2 paquetes de galletas Oreo, 2 cdas de queso crema y 200 g de chocolate blanco.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Triturar las galletas en procesador o bolsa. Mezclar con el queso crema hasta formar una masa moldeable. Aceitar ligeramente las manos, formar bolitas, sumergirlas en el chocolate blanco derretido y enfriar.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
+        `
     },
     salchicha_hawaiana: {
         title: "Salchichas Hawaianas Glaseadas 🌭🍍",
         video: "./salchicha.MP4",
-        badge: "🏠 Casa • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Salchichas de pavo cortadas en pulpo, salteadas con piña en almíbar, salsa BBQ dulce y queso manchego fundido sobre pan tostado con mantequilla.</p>`
+        badge: "🏠 Casa • 🍿 Salado • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> Salchichas para asar o de pavo, piña en almíbar picada, tocino en cubos, salsa BBQ y un chorrito de catsup.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Freír el tocino en un sartén fino hasta dorar, agregar las salchichas en rodajas y los trozos de piña. Añadir la salsa BBQ y reducir a fuego lento hasta lograr un glaseado espeso y brillante.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
+        `
     },
     pan_muerto: {
-        title: "Pan de Muerto Relleno 🍞🍫",
+        title: "Pan de Muerto Relleno con Magnum 🍞🍫",
         video: "./pan-de-muerto.MP4",
-        badge: "🏠 Casa • 🍩 Dulce",
-        html: `<p style="color: #cbd5e1;">Pan tradicional con azahar, abierto por la mitad y cortado con helado de vainilla, crema de avellanas y trozos de conejito de chocolate.</p>`
+        badge: "🏠 Casa • 🍿 Dulce • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Dulce</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> 1 pan de muerto azucarado tradicional, 1 paleta Magnum (vainilla/almendras) y jarabe de chocolate.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Realizar un corte lateral en forma de bolsillo al pan de muerto. Introducir la paleta Magnum entera dentro del pan. Llevar a la sandwichera o plancha caliente durante 3 a 5 minutos hasta dorar. Servir caliente por fuera y helado por dentro.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️✈️ (5/5)</p>
+        `
+    },
+    pizzadog: {
+        title: "PizzaDog Express 🍕🌭",
+        video: "./pizza-dog.MP4",
+        badge: "🏠 Casa • 🍿 Salado • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> Salchichas grandes, rebanadas de tocino, pan para hot dog, salsa marinara/pizzera y queso mozzarella o manchego rallado.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Envolver la salchicha en tocino y dorar en sartén. Calentar el pan, untar abundante salsa marinara, colocar la salchicha y cubrir con bastante queso. Gratinar en horno eléctrico o microondas.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
+        `
+    },
+    sandwich: {
+        title: "Sándwich Monchoso de 3 Pisos 🥪🧀",
+        video: "./sandwich.MP4",
+        badge: "🏠 Casa • 🍿 Salado • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> 3 rebanadas de pan de caja, mantequilla, triple queso (manchego, cheddar, americano), jamón de pavo y tocino crujiente.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Untar mantequilla en la parte exterior del pan. Dorar a fuego lento en sartén armando capas con los tres tipos de queso, jamón y tocino. Presionar suavemente hasta que el queso se funda por completo.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
+        `
+    },
+    salchichas: {
+        title: "Salchichas BBQ de Ricardo Pérez 🌭💨",
+        video: "./salchichasbbq.MP4",
+        badge: "🏠 Casa • 🍿 Salado • ✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏠 Supervivencia en Casa • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ingredientes:</strong> Salchichas cocktail o en rodajas, cebolla picada, salsa BBQ, toque de salsa inglesa y papas fritas o crujientes para acompañar.</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Preparación:</strong> Acitronar la cebolla en sartén, agregar las salchichas hasta que doren, bañar con salsa BBQ y un toque de salsa inglesa. Servir caliente sobre o al lado de papas saladas.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️ (3/5)</p>
+        `
+    },
+    cotorras: {
+        title: "Las Cotorras 🌮🍻",
+        video: "./cotorras.MP4",
+        badge: "📍 Centro CDMX • 🍿 Salado • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏙️ Monchis en la Calle • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ubicación:</strong> 📍 Centro CDMX (Cerca de Metro Bellas Artes / Allende - Línea 2)</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Especialidad:</strong> Tacos de guisado atascados, tostadas gigantes y micheladas preparadas. El lugar definitivo para bajear con comida casera mexicana de barrio en pleno Centro Histórico.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️ (4/5)</p>
+        `
     },
     losperros: {
-        title: "Los Perros de San Antonio 🌭🌶️",
+        title: "Los Perros de San Antonio 🌭🥓",
         video: "./losperros.MP4",
-        badge: "📍 Sur • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Hot dogs gigantes de doble salchicha enrollada en tocino, bañados en chili beans casero, jalapeños en almíbar y cebolla caramelizada.</p>`
+        badge: "📍 Sur CDMX • 🍿 Salado • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏙️ Monchis en la Calle • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ubicación:</strong> 📍 Sur CDMX (Cerca de Metro San Antonio / Mixcoac - Línea 7)</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Especialidad:</strong> Hot dogs tamaño jumbo envueltos en tocino, servidos con cebolla caramelizada, champiñones, queso fundido, jalapeños y variedad de aderezos.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️✈️ (5/5)</p>
+        `
     },
     burgergate: {
         title: "Burger Gate 🍔🔥",
         video: "./burgerg.mp4",
-        badge: "📍 Centro • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Smash burgers con bordes ultra crujientes, queso americano derretido, tocino ahumado y salsa secreta sobre pan brioche de papa.</p>`
+        badge: "📍 Centro CDMX • 🍿 Salado • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Clasificación:</strong> 🏙️ Monchis en la Calle • 🍿 Salado</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Ubicación:</strong> 📍 Centro CDMX (Zona Rosa / Metro Insurgentes - Línea 1)</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Especialidad:</strong> Smash burgers con doble carne, costra de queso crujiente, mermelada de tocino, pan brioche artesanal y papas a la francesa sazonadas.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Bajón: ✈️✈️✈️✈️✈️ (5/5)</p>
+        `
     },
-    pizzadog: {
-        title: "PizzaDog Express 🌭🍕",
-        video: "./pizza-dog.MP4",
-        badge: "🏠 Supervivencia en Casa • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Pan de hot dog relleno con salchicha, salsa pomodoro italiana, orégano, capas gruesas de queso mozzarella y pepperoni al horno.</p>`
-    },
-    sandwich: {
-        title: "Sándwich Monchoso de 3 Pisos 🥪",
-        video: "./sandwich.MP4",
-        badge: "🏠 Supervivencia en Casa • 🍿 Salado",
-        html: `<p style="color: #cbd5e1;">Pan blanco dorado en sartén con mantequilla, triple queso cheddar, jamón de pavo dorado, pepinillos dulces y aderezo chipotle.</p>`
-    },
-    salchichas: {
-        title: "Salchichas BBQ de Ricardo Pérez 🌭✨",
-        video: "./salchichasbbq.MP4",
-        badge: "🏠 Supervivencia en Casa • 🧂 Salado",
-        html: `<p style="color: #cbd5e1;">La receta del comediante: Salchichas fritas en mantequilla con salsa inglesa, jugo maggi, catsup y abundante salsa BBQ picante.</p>`
-    },
-
     // CINE & TRIP VISUAL
     robots: {
-        title: "LOVE, DEATH & ROBOTS 🤖🌌",
+        title: "LOVE, DEATH & ROBOTS 🤖🌀",
         video: "./robots.MP4",
-        badge: "🎬 Antología Animada",
-        html: `<p style="color: #cbd5e1;">Episodios autoconclusivos con animación fotorrealista y cyberpunk. Historias futuristas sobre IA, monstruos marinos y viajes espaciales.</p>`
+        badge: "🎬 Psicodelia & Sci-Fi • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Psicodelia & Animación / Sci-Fi</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Antología con animación 3D fotorrealista, cel-shading y rotoscopía. Episodios como Jibaro, The Very Pulse of the Machine, Zima Blue y The Witness generan estimulación sensorial pura.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Estimulación Sensorial)</p>
+        `
     },
     congreso: {
-        title: "THE CONGRESS (EL CONGRESO) 💊🎨",
+        title: "THE CONGRESS (2013) 👁️🎭",
         video: "./congreso.MP4",
-        badge: "🎬 Animación Surrealista",
-        html: `<p style="color: #cbd5e1;">Una actriz vende sus derechos digitales a un estudio cinematográfico. Al entrar al mundo animado, se desata una fantasía psicodélica y colorida.</p>`
+        badge: "🎬 Viaje Mental • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Psicodelia & Animación / Viaje Mental</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Apple TV / Prime Video / Cineteca / Archivos de Internet</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Comienza en Live-Action y muta a mitad de la película a una animación alucinante dibujada a mano al estilo vintage de los años 30 sobre avatares digitales y simulaciones.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Viaje Mental)</p>
+        `
     },
     grasa_fria: {
-        title: "GRASA FRÍA 🧊🌭",
+        title: "CHILLED GREESE 🍟🚗",
         video: "./grasa-fria.MP4",
-        badge: "🎬 Cortometraje Bizarro",
-        html: `<p style="color: #cbd5e1;">Experimento visual atrapante lleno de texturas, sonidos ASMR gastronómicos y animación fluida que desconecta la mente.</p>`
+        badge: "🤣 Comedia Absurda & Risas",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Comedia Absurda & Risas</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> TikTok / YouTube Originals</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Cortos animados con humor cannabis, diálogos reales en el auto a las 3:00 AM y situaciones disparatadas para soltar la risa y abrir el apetito.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️ (3/5 — Risas & Apetito)</p>
+        `
     },
     pastoral: {
-        title: "PASTORAL: TO DIE IN THE COUNTRY 👁️",
+        title: "PASTORAL: TO DIE IN THE COUNTRY (1974) 🎭🎪",
         video: "./pastoral.MP4",
-        badge: "🎬 Drama Experimental",
-        html: `<p style="color: #cbd5e1;">Obra maestra del cine vanguardista japonés de Shūji Terayama. Un viaje cinematográfico lleno de simbolismos visuales y estéticas surrealistas.</p>`
+        badge: "🎬 Cine Experimental • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cine Experimental / Surrealismo Vanguardista</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Archivos de Internet / Cineteca</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Obra maestra de Shūji Terayama. Un viaje poético repleto de estética teatral vanguardista, colores primarios hiper-saturados, máscaras, personajes de circo y memorias de la infancia alteradas.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Vanguardia & Trance Filosófico)</p>
+        `
     },
     neotokyo: {
-        title: "NEO TOKYO (1987) 🚀",
+        title: "NEO TOKYO (1987) 🏍️🌃",
         video: "./neotokyo.mp4",
-        badge: "🎬 Animación Experimental",
-        html: `<p style="color: #cbd5e1;">Tres cortos de anime ochentero dirigidos por los creadores de Akira. Un laberinto steampunk, carreras de alta velocidad y mundos futuristas.</p>`
+        badge: "🎬 Cyberpunk Vintage • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Antología Anime Sci-Fi / Cyberpunk Vintage</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> YouTube / Prime Video / Archivos de Internet</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Tres cortometrajes dirigidos por genios del anime (incluyendo a Katsuhiro Otomo, creador de Akira). Sombras cyber-noir, laberintos retro-futuristas, carreras mortales de autos y surrealismo japonés de los 80s.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Retro Cyberpunk & Nostalgia)</p>
+        `
     },
     dandadan: {
-        title: "DANDADAN 👻🛸",
+        title: "DANDADAN 👾🛸",
         video: "./dandadan.MP4",
-        badge: "🎬 Comedia Absurda",
-        html: `<p style="color: #cbd5e1;">Alienígenas, fantasmas japoneses y comedia desenfrenada con secuencias de animación dinámicas cargadas de neón y acción impredecible.</p>`
+        badge: "🎬 Action Sci-Fi & Yokai • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Anime / Acción Sci-Fi, Aliens & Yokai</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix / Crunchyroll</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Una explosión de animación ultra fluida, paletas de colores neón frenéticas, aliens estrambóticos, maldiciones japonesas y un ritmo frenético. Visualmente desquiciada de la mejor manera posible.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Adrenalina & Colores)</p>
+        `
     },
     void: {
-        title: "ENTER THE VOID (2009) 👁️‍🗨️🌀",
+        title: "ENTER THE VOID (2009) 🏙️🌀",
         video: "./VOID.MP4",
-        badge: "🎬 Psicodélica & Inmersiva",
-        html: `<p style="color: #cbd5e1;">Dirigida por Gaspar Noé. Perspectiva flotante en primera persona sobre la vida nocturna en Tokio, llena de luces estroboscópicas y experiencias extracorporales.</p>`
+        badge: "🎬 Psicodélica Neón • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cine de Autor / Viaje Astral & Psicodelia Neón</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Tubi / Prime Video (Renta)</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Dirigida por Gaspar Noé. Toda la película está grabada en primera persona (POV) sobrevolando un Tokio hiper-saturado de luces neón, geometría fractal, clubes subterráneos y reencarnación. Una inmersión sensorial densa y brutalmente estallada.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Inmersión Neón & Mindfuck)</p>
+        `
     },
     belladonna: {
-        title: "BELLADONNA OF SADNESS (1973) 👁️‍🗨️",
+        title: "BELLADONNA OF SADNESS (1973) 🌸👁️",
         video: "./BELLADONNA.MP4",
-        badge: "🎬 Anime Psicodélico",
-        html: `<p style="color: #cbd5e1;">Ilustraciones de acuarela animadas con estéticas de los años 70. Una experiencia auditiva y visual llena de arte abstracto.</p>`
+        badge: "🎬 Anime Psicodélico 70s • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Anime Clásico / Psicodelia 70s & Arte Acuarela</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> MUBI / Prime Video (Renta) / Cineteca / Archivos de Internet</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Pieza vanguardista del anime japonés de los 70s construida con acuarelas fluidas que se funden en pantalla, música jazz/rock progresivo experimental e imaginería psicodélica barroca. Es literalmente una galería de arte en movimiento.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Trippy Retro & Galería de Arte)</p>
+        `
     },
     puparia: {
-        title: "PUPARIA (2020) 👁️‍🗨️🌀",
+        title: "PUPARIA 👁️✨",
         video: "./PUPARIA.MP4",
-        badge: "🍿 Cortometraje Anime",
-        html: `<p style="color: #cbd5e1;">Cortometraje de 3 minutos creado a mano por Shingo Tamagawa. Expresiones faciales hipnóticas y paisajes con detalles artísticos alucinantes.</p>`
+        badge: "🍿 Cortometraje Surrealista • ✈️✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Cortometraje / Anime Surrealista & Arte Visual</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> YouTube (Canal oficial de Shingo Tamagawa)</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Son solo 3 minutos de animación independiente hecha completamente a mano fotograma por fotograma durante años. El detalle artístico es sobrecogedor: miradas profundas, colores vívidos, criaturas míticas y un silencio espiritual que provoca escalofríos visuales.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️✈️ (5/5 — Arte Puro & Trance)</p>
+        `
     },
     goodtrip: {
-        title: "HAVE A GOOD TRIP (2020) 🍿🌀",
+        title: "HAVE A GOOD TRIP 🍄🧠",
         video: "./GOOD-TRIP.MP4",
-        badge: "🍿 Documental & Comedia",
-        html: `<p style="color: #cbd5e1;">Celebridades y comediantes relatan sus anécdotas más graciosas con psicodélicos, acompañadas de recreaciones animadas disparatadas.</p>`
+        badge: "🍿 Documental & Comedia • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Documental / Comedia & Psicodelia</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Celebridades, músicos y comediantes (A$AP Rocky, Sting, Nick Offerman, Carrie Fisher) relatan sus historias reales de mal viajes y experiencias místicas, recreadas con animaciones absurdas y un todo humorístico muy ligero para reírse en pleno vuelo.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Risas, Historias & Relax)</p>
+        `
     },
     entergalactic: {
-        title: "ENTERGALACTIC (2022) 🎨🎶",
+        title: "ENTERGALACTIC 🎨🌌",
         video: "./ENTERGALACTIC.MP4",
-        badge: "🎨 Animación & Álbum Visual",
-        html: `<p style="color: #cbd5e1;">Creado por Kid Cudi. Historia de amor urbana ambientada en Nueva York con estética de pintura cómic y soundtrack synthwave.</p>`
+        badge: "🎨 Romance Urbano & Psicodelia • ✈️✈️✈️✈️",
+        html: `
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Categoría:</strong> Animación / Romance Urbano & Psicodelia</p>
+            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Dónde ver:</strong> Netflix</p>
+            <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>¿Por qué es perfecto?:</strong> Creada por Kid Cudi, es una experiencia estética pura. Su animación neón estilo cómic en movimiento combinada con un soundtrack hip-hop/lo-fi impecable te envuelve en una atmósfera neoyorquina super chill, romántica y llena de color.</p>
+            <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Chill, Aesthetic & Sound)</p>
+        `
     },
 
     // FRECUENCIAS
@@ -1303,6 +1465,7 @@ let brownNoiseNode = null;
 let isPlayingBrownNoise = false;
 
 function toggleBreathingGuide() {
+    vibrar([40, 60, 40]); // 📳 Doble pulso táctil
     if (isBreathingActive) {
         stopBreathingGuide();
     } else {
@@ -1429,7 +1592,72 @@ function stopBrownNoise() {
 /* ==========================================
    9. PANEL DE ADMINISTRACIÓN (CAPITÁN)
    ========================================== */
-function checkAdminPermission(user) {
+/* ==========================================
+   FUNCIONES FALTANTES DEL PANEL DEL CAPITÁN
+   ========================================== */
+
+// 1. Registrar Stock e Inversión de Lote
+async function registrarInventarioAdmin(event) {
+    event.preventDefault();
+    if (!window.db || !window.fbMethods) return;
+
+    const nombre = document.getElementById('invNombre').value.trim();
+    const inversionTotal = parseFloat(document.getElementById('invInversionTotal').value);
+    const piezas = parseInt(document.getElementById('invPiezas').value);
+    const precioVenta = parseFloat(document.getElementById('invPrecioVenta').value);
+
+    const costoUnitario = inversionTotal / piezas;
+
+    try {
+        const { collection, addDoc } = window.fbMethods;
+        await addDoc(collection(window.db, "productos"), {
+            titulo: nombre,
+            precio: precioVenta,
+            costo: costoUnitario,
+            stock: piezas,
+            marca: "general",
+            imagen: "./portada.jpg",
+            agotado: false,
+            fecha_registro: new Date().toISOString()
+        });
+
+        alert(`📦 ¡Lote registrado!\n\n• Producto: ${nombre}\n• Costo Unitario Calculado: $${costoUnitario.toFixed(2)} MXN\n• Piezas en Stock: ${piezas}`);
+        event.target.reset();
+        
+        cargarDashboardAdmin();
+        cargarProductosTienda();
+        cargarInventarioAdmin();
+    } catch (e) {
+        alert("⚠️ Error al registrar lote: " + e.message);
+    }
+}
+
+// 2. Registrar Regalo (Vuelo #3), Mermas o Gastos Operativos
+async function registrarGastoAdmin(event) {
+    event.preventDefault();
+    if (!window.db || !window.fbMethods) return;
+
+    const tipo = document.getElementById('gastoTipo').value;
+    const monto = parseFloat(document.getElementById('gastoMonto').value);
+    const concepto = document.getElementById('gastoConcepto').value.trim();
+
+    try {
+        const { collection, addDoc } = window.fbMethods;
+        await addDoc(collection(window.db, "gastos_e_inversiones"), {
+            tipo,
+            monto,
+            concepto,
+            fecha: new Date().toISOString()
+        });
+
+        alert("🔻 Gasto/Regalo registrado correctamente.");
+        event.target.reset();
+        cargarDashboardAdmin();
+    } catch (e) {
+        alert("⚠️ Error al registrar gasto: " + e.message);
+    }
+}
+   function checkAdminPermission(user) {
     const adminSection = document.getElementById('adminPanelSection');
     const adminBtn = document.getElementById('adminNavBtn');
     const userEmail = user && user.email ? user.email.toLowerCase().trim() : '';
@@ -2092,4 +2320,37 @@ async function eliminarMarcaCapitan(marcaId) {
     } catch (e) {
         alert("Error al eliminar la marca: " + e.message);
     }
+}
+// Registrar Service Worker para PWA (Instalación en celular)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('🚀 PWA Service Worker activo:', reg.scope))
+      .catch((err) => console.error('❌ Error al activar Service Worker:', err));
+  });
+}
+// Función para compartir spots, recetas y cine con un compa
+function compartirContenido(titulo, categoria, descripcion) {
+
+  const urlSitio = window.location.href; // Enlace actual (https://aeroshop7.vercel.app/)
+  
+  // Mensaje estilizado para WhatsApp
+  const mensaje = `🔥 *MIRA ESTO EN AEROSHOP CDMX* 🔥\n\n` +
+                  `📍 *${titulo}* (${categoria})\n` +
+                  `💬 ${descripcion}\n\n` +
+                  `Checa la guía completa y el catálogo aquí 👇\n` +
+                  `${urlSitio}`;
+
+  // Si el teléfono soporta el menú nativo de compartir (iOS/Android)
+  if (navigator.share) {
+    navigator.share({
+      title: `${titulo} - AEROSHOP`,
+      text: mensaje,
+      url: urlSitio
+    }).catch((err) => console.log('Proceso de compartir cancelado', err));
+  } else {
+    // Fallback directo a WhatsApp
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+    window.open(whatsappUrl, '_blank');
+  }
 }

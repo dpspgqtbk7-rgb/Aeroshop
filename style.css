@@ -3725,3 +3725,48 @@ body.modal-open .buzon-floating-btn {
         transform: translateY(-10px) scale(1.03);
     }
 }
+/* ==========================================
+   AJUSTES NATIVOS PWA Y BOTÓN DE COMPARTIR
+   ========================================== */
+
+/* 1. Estilo para el botón de Compartir */
+.btn-share {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #ffffff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.btn-share:hover, .btn-share:active {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(0.98);
+}
+
+/* 2. Quitar el cuadro/sombra azul feo que pone el navegador del celular al tocar botones */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 3. Sensación de botón presionado al tocar en pantalla táctil */
+button, .compact-card, .product-card, .brand-logo-card {
+    touch-action: manipulation;
+}
+
+button:active, .btn-add:active, .nav-item:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.1s ease !important;
+}

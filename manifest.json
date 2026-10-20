@@ -1,0 +1,22 @@
+{
+  "name": "AEROSHOP CDMX",
+  "short_name": "AEROSHOP",
+  "description": "Tu tienda urbana, catálogo 420 y guía de estilo de vida.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "dub.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "dub.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

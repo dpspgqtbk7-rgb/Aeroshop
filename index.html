@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- MANIFIESTO PWA Y SOPORTE PARA CELULARES (iOS / ANDROID) -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AEROSHOP">
+<link rel="apple-touch-icon" href="dub.png">
+  <!-- VISTA PREVIA PROFESIONAL EN WHATSAPP / INSTAGRAM -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aeroshop7.vercel.app/">
+<meta property="og:title" content="AEROSHOP CDMX 🛸 | Tienda & Lifestyle 420">
+<meta property="og:description" content="Catálogo exclusivo, Pasaporte Digital de Lealtad, Rutas de Vuelo y Guía de Supervivencia.">
+<meta property="og:image" content="https://aeroshop7.vercel.app/fondoslog.jpg">
+
+<!-- FAVICON DE PESTAÑA -->
+<link rel="icon" type="image/png" href="dub.png">
+<link rel="shortcut icon" href="dub.png" type="image/x-icon">
   <!-- LIBRERÍA DE ESCÁNER DE CÓDIGO QR -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>  
     <meta charset="UTF-8">
@@ -56,9 +73,12 @@
     <div class="diferencia-card card-glass">
         <h2>¿Qué nos diferencia?</h2>
         <p class="diferencia-intro">Sabemos que la sustancia es apenas la mitad de la experiencia; la otra mitad es el ambiente:</p>
-        <div class="diferencia-grid">
-
-            <!-- TARJETA 01: RUTAS DE VUELO -->
+       <button class="btn-share" onclick="compartirContenido('AEROSHOP CDMX', 'Tienda & Estilo de Vida', 'Conoce nuestro catálogo, spots y guía de supervivencia.')">
+  📲 Compartir tienda con un compa
+</button>
+        <div class="diferencia-grid">   
+       <!-- TARJETA 01: RUTAS DE VUELO -->
+             
             <div class="diferencia-item" style="cursor: pointer;" onclick="openRutasVuelo()">
                 <span class="diferencia-num">01</span>
                 <h3 style="margin-bottom: 8px;">Rutas de Vuelo ✈️</h3>
@@ -131,7 +151,19 @@
     </div>
     <button class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
 </div>
-
+<!-- PRODUCTO BESOS 2G -->
+<div class="product-card card-glass" onclick="openProductModal('besos2g')">
+    <span class="product-tag-new">NUEVO 💋</span>
+    <div class="product-img-slider">
+        <img src="./besos.jpg" class="active" alt="Besos Liquid Diamonds 2g">
+    </div>
+    <div>
+        <div class="product-name">Besos Liquid Diamonds 2g 💋</div>
+        <div class="product-subtitle">2G Liquid Diamonds • Cherry Berry Kiss</div>
+        <div class="product-price">$850 MXN</div>
+    </div>
+    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('besos2g')">Ver Más Información</button>
+</div>
 <!-- PRODUCTO PACKMAN 3g + PRE-ROLL -->
 <div class="product-card card-glass" onclick="openProductModal('packman3g')">
     <span class="product-tag-sale">¡REBAJA!</span>
@@ -552,88 +584,104 @@
         </div>
 
         <!-- Grid de Tarjetas Compactas de Cine -->
+     <!-- Grid de Tarjetas Compactas de Cine -->
         <div class="monchis-cards-grid" id="cineGrid">
+            <!-- 1. LOVE, DEATH & ROBOTS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'robots')">
-    <video src="./robots.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
-    <div class="compact-card-body">
-        <span class="badge-tag">🎬 Antología Animada</span>
-        <h4>LOVE, DEATH & ROBOTS 🤖🌌</h4>
-    </div>
-</div>
+                <video src="./robots.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Antología Animada • ✈️✈️✈️✈️✈️</span>
+                    <h4>LOVE, DEATH & ROBOTS 🤖🌀</h4>
+                </div>
+            </div>
 
-<div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'congreso')">
-    <video src="./congreso.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
-    <div class="compact-card-body">
-        <span class="badge-tag">🎬 Animación Surrealista</span>
-        <h4>THE CONGRESS (EL CONGRESO) 💊🎨</h4>
-    </div>
-</div>
+            <!-- 2. THE CONGRESS -->
+            <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'congreso')">
+                <video src="./congreso.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Animación Surrealista • ✈️✈️✈️✈️✈️</span>
+                    <h4>THE CONGRESS (2013) 👁️🎭</h4>
+                </div>
+            </div>
 
-<div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'grasa_fria')">
-    <video src="./grasa-fria.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
-    <div class="compact-card-body">
-        <span class="badge-tag">🎬 Cortometraje Bizarro</span>
-        <h4>GRASA FRÍA 🧊🌭</h4>
-    </div>
-</div>
+            <!-- 3. CHILLED GREESE -->
+            <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'grasa_fria')">
+                <video src="./grasa-fria.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🎬 Comedia Absurda & Risas • ✈️✈️✈️</span>
+                    <h4>CHILLED GREESE 🍟🚗</h4>
+                </div>
+            </div>
+
+            <!-- 4. PASTORAL -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'pastoral')">
                 <video src="./pastoral.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎬 Drama Experimental</span>
+                    <span class="badge-tag">🎬 Drama Experimental • ✈️✈️✈️✈️✈️</span>
                     <h4>PASTORAL: TO DIE IN THE COUNTRY 👁️</h4>
                 </div>
             </div>
+
+            <!-- 5. NEO TOKYO -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'neotokyo')">
                 <video src="./neotokyo.mp4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎬 Animación Experimental</span>
+                    <span class="badge-tag">🎬 Animación Experimental • ✈️✈️✈️✈️</span>
                     <h4>NEO TOKYO (1987) 🚀</h4>
                 </div>
             </div>
+
+            <!-- 6. DANDADAN -->
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'dandadan')">
                 <video src="./dandadan.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎬 Comedia Absurda</span>
-                    <h4>DANDADAN 👻🛸</h4>
+                    <span class="badge-tag">🎬 Comedia Absurda • ✈️✈️✈️✈️✈️</span>
+                    <h4>DANDADAN 👾🛸</h4>
                 </div>
             </div>
+
+            <!-- 7. ENTER THE VOID -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'void')">
                 <video src="./VOID.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎬 Psicodélica & Inmersiva</span>
-                    <h4>ENTER THE VOID (2009) 👁️‍🗨️🌀</h4>
+                    <span class="badge-tag">🎬 Psicodélica & Inmersiva • ✈️✈️✈️✈️✈️</span>
+                    <h4>ENTER THE VOID (2009) 🏙️🌀</h4>
                 </div>
             </div>
 
+            <!-- 8. BELLADONNA OF SADNESS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'belladonna')">
                 <video src="./BELLADONNA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎬 Anime Psicodélico</span>
-                    <h4>BELLADONNA OF SADNESS (1973) 👁️‍🗨️</h4>
+                    <span class="badge-tag">🎬 Anime Psicodélico • ✈️✈️✈️✈️✈️</span>
+                    <h4>BELLADONNA OF SADNESS (1973) 🌸👁️</h4>
                 </div>
             </div>
 
+            <!-- 9. PUPARIA -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'puparia')">
                 <video src="./PUPARIA.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🍿 Cortometraje Anime</span>
-                    <h4>PUPARIA (2020) 👁️‍🗨️🌀</h4>
+                    <span class="badge-tag">🍿 Cortometraje Anime • ✈️✈️✈️✈️✈️</span>
+                    <h4>PUPARIA 👁️✨</h4>
                 </div>
             </div>
 
+            <!-- 10. HAVE A GOOD TRIP -->
             <div class="monchis-card compact-card" data-categoria="comedia" onclick="openCardModal('cine', 'goodtrip')">
                 <video src="./GOOD-TRIP.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🍿 Documental & Comedia</span>
-                    <h4>HAVE A GOOD TRIP (2020) 🍿🌀</h4>
+                    <span class="badge-tag">🍿 Documental & Comedia • ✈️✈️✈️✈️</span>
+                    <h4>HAVE A GOOD TRIP 🍄🧠</h4>
                 </div>
             </div>
 
+            <!-- 11. ENTERGALACTIC -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'entergalactic')">
                 <video src="./ENTERGALACTIC.MP4" autoplay loop muted playsinline webkit-playsinline preload="metadata"></video>
                 <div class="compact-card-body">
-                    <span class="badge-tag">🎨 Animación & Álbum Visual</span>
-                    <h4>ENTERGALACTIC (2022) 🎨🎶</h4>
+                    <span class="badge-tag">🎨 Animación & Romance Urbano • ✈️✈️✈️✈️</span>
+                    <h4>ENTERGALACTIC 🎨🌌</h4>
                 </div>
             </div>
 
