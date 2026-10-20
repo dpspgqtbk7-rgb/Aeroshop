@@ -800,13 +800,31 @@ async function openFullscreenBrand(brandKey) {
     } else if (brandKey === 'packman') {
         content.className = 'theme-packman-full';
         content.innerHTML = `
-            <img src="./packmanfondo.jpg" class="muha-bg-fixed" alt="Fondo Packman">
+           <img src="./packmanfondo.jpg" class="muha-bg-fixed" alt="Fondo Packman">
             <div class="brand-hero-common">
                 <div class="muha-brand-group">
                     <img src="./packmanmarcas.png" alt="Packman" class="packman-hero-logo">
                     <img src="./PACKMANSEGUNDOLOGO.png" alt="PACKMAN" class="packman-hero-title-img">
                 </div>
-                <button type="button" class="scroll-down-btn" onclick="scrollToBrandProducts()">↓</button>
+
+                <!-- Carril Animado Retro -->
+                <div class="packman-track-overlay">
+                    <div class="packman-ambient-parade" id="packmanParade">
+                        <div class="pacman-runner"></div>
+                        <svg class="ghost-svg" viewBox="0 0 50 50"><path d="M25 5 C15 5 10 12 10 22 L10 45 L15 40 L20 45 L25 40 L30 45 L35 40 L40 45 L40 22 C40 12 35 5 25 5 Z" fill="#ef4444"/><circle cx="18" cy="18" r="4" fill="#fff"/><circle cx="19" cy="18" r="2" fill="#000"/><circle cx="32" cy="18" r="4" fill="#fff"/><circle cx="33" cy="18" r="2" fill="#000"/></svg>
+                        <svg class="ghost-svg" viewBox="0 0 50 50"><path d="M25 5 C15 5 10 12 10 22 L10 45 L15 40 L20 45 L25 40 L30 45 L35 40 L40 45 L40 22 C40 12 35 5 25 5 Z" fill="#ec4899"/><circle cx="18" cy="18" r="4" fill="#fff"/><circle cx="19" cy="18" r="2" fill="#000"/><circle cx="32" cy="18" r="4" fill="#fff"/><circle cx="33" cy="18" r="2" fill="#000"/></svg>
+                        <svg class="ghost-svg" viewBox="0 0 50 50"><path d="M25 5 C15 5 10 12 10 22 L10 45 L15 40 L20 45 L25 40 L30 45 L35 40 L40 45 L40 22 C40 12 35 5 25 5 Z" fill="#06b6d4"/><circle cx="18" cy="18" r="4" fill="#fff"/><circle cx="19" cy="18" r="2" fill="#000"/><circle cx="32" cy="18" r="4" fill="#fff"/><circle cx="33" cy="18" r="2" fill="#000"/></svg>
+                    </div>
+
+                    <!-- Squad de Persecución (Fantasmas Azules Asustados) -->
+                    <div class="packman-chase-squad" id="packmanChaseSquad">
+                        <div class="pacman-runner"></div>
+                        <svg class="ghost-svg" viewBox="0 0 50 50"><path d="M25 5 C15 5 10 12 10 22 L10 45 L15 40 L20 45 L25 40 L30 45 L35 40 L40 45 L40 22 C40 12 35 5 25 5 Z" fill="#2563eb"/><circle cx="18" cy="20" r="2" fill="#fff"/><circle cx="32" cy="20" r="2" fill="#fff"/><path d="M15 32 Q25 25 35 32" stroke="#fff" stroke-width="2" fill="none"/></svg>
+                        <svg class="ghost-svg" viewBox="0 0 50 50"><path d="M25 5 C15 5 10 12 10 22 L10 45 L15 40 L20 45 L25 40 L30 45 L35 40 L40 45 L40 22 C40 12 35 5 25 5 Z" fill="#2563eb"/><circle cx="18" cy="20" r="2" fill="#fff"/><circle cx="32" cy="20" r="2" fill="#fff"/><path d="M15 32 Q25 25 35 32" stroke="#fff" stroke-width="2" fill="none"/></svg>
+                    </div>
+                </div>
+
+                <button type="button" class="scroll-down-btn" onclick="triggerPacmanChase(this)">↓</button>
             </div>
             <div class="muha-products-container" id="brandProductsSection">
                 <div class="muha-cards-grid">${productosMarcaHTML}</div>
@@ -1006,7 +1024,13 @@ const cardDetailsDB = {
         html: `
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Zona de Despegue:</strong> Sur (Churubusco)</p>
             <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>Coordenadas / Conexión:</strong> Metro General Anaya (Línea 2) / Metro Tasqueña.</p>
-            <p style="color: #cbd5e1; margin-bottom: 8px;"><strong>🗺️ Mapa de Vuelo:</strong> Abre la imagen del Mapa del CENART (cenart-mapas.jpg) en la ficha para ubicar los pasillos, áreas verdes y no dar vueltas en círculo.</p>
+            
+            <!-- MAPA ILUSTRADO DEL CENART -->
+            <div style="text-align: center; margin: 16px 0;">
+                <img src="./cenart-mapas.jpg" alt="Mapa del CENART" style="width: 100%; max-height: 280px; object-fit: contain; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.5);">
+                <span style="display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 6px;">📍 Mapa oficial del CENART — Ubicación de pasillos y áreas verdes</span>
+            </div>
+
             <p style="color: #cbd5e1; margin-bottom: 12px;"><strong>Bitácora de Vuelo:</strong> Pista de aterrizaje mítica bañada en colores terracota y torres posmodernas. Aterrizar en sus jardines con tu vape a escuchar ensayos de jazz al aire libre o performances mientras baja el sol es elevar la percepción al 100%.</p>
             <p style="color: #facc15; font-weight: bold;">Nivel de Vuelo: ✈️✈️✈️✈️ (4/5 — Turbinas de Arte & Sonido)</p>
         `
@@ -2353,4 +2377,15 @@ function compartirContenido(titulo, categoria, descripcion) {
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
     window.open(whatsappUrl, '_blank');
   }
+}
+// Disparar la persecución de fantasmas azules en Packman
+function triggerPacmanChase(btn) {
+    vibrar(30);
+    const chaseSquad = document.getElementById('packmanChaseSquad');
+    if (chaseSquad) {
+        chaseSquad.classList.remove('active');
+        void chaseSquad.offsetWidth; // Forzar reinicio de animación
+        chaseSquad.classList.add('active');
+    }
+    scrollToBrandProducts();
 }
