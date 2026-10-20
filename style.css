@@ -1547,49 +1547,49 @@ body::before {
         gap: 20px;
     }
 }
-/* ==========================================
-   FIX DEFINITIVO DE PORTADA MÓVIL (DIFUMINADO FLUIDO)
-   ========================================== */
+/* DIFUMINADO FLUIDO Y COMPLETO DEL LOGO EN CELULAR */
 @media (max-width: 600px) {
     .hero-logo-nubes-mobile {
         display: none !important;
     }
 
     .hero-cover {
-        min-height: 330px !important;
+        min-height: 310px !important;
         height: auto !important;
-        padding: 20px 15px 25px 15px !important;
+        padding: 10px 15px 20px 15px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
         align-items: center !important;
+        overflow: hidden !important;
     }
 
-    /* Degradado radial suave que elimina bordes rectangulares sobre el cielo */
+    /* Máscara cruzada: desvanece suavemente abajo y a los lados */
     .hero-cover::before {
         background-image: url('./portada.jpg') !important;
         background-position: center top 0px !important;
-        background-size: 92% auto !important;
+        background-size: 100% auto !important;
         background-repeat: no-repeat !important;
-        -webkit-mask-image: radial-gradient(ellipse at top center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 85%), linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 98%) !important;
-        mask-image: radial-gradient(ellipse at top center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 85%), linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 98%) !important;
+        -webkit-mask-image: radial-gradient(ellipse at center top, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 82%) !important;
+        mask-image: radial-gradient(ellipse at center top, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 82%) !important;
+        opacity: 0.95 !important;
     }
 
     .hero-plane-container {
-        margin-top: 135px !important;
-        margin-bottom: 15px !important;
+        margin-top: 130px !important;
+        margin-bottom: 10px !important;
     }
 
     .hero-plane-img {
-        width: 175px !important;
-        max-width: 60% !important;
+        width: 170px !important;
+        max-width: 65% !important;
         height: auto !important;
     }
 
     .hero-subtitle {
         font-size: 0.78rem !important;
         padding: 12px 26px !important;
-        margin-top: 10px !important;
+        margin-top: 8px !important;
         margin-bottom: 20px !important;
     }
 }
@@ -3803,4 +3803,31 @@ button:active, .btn-add:active, .nav-item:active {
     position: relative !important;
     z-index: 1 !important;
     background: transparent !important;
+}
+/* BOTÓN TACHE DE PROMO RESPONSIVO E INSTANTÁNEO */
+.promo-card .close-btn, 
+.modal-card .close-btn {
+    position: absolute !important;
+    top: 12px !important;
+    right: 14px !important;
+    width: 46px !important;
+    height: 46px !important;
+    background: rgba(15, 23, 42, 0.15) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 50% !important;
+    font-size: 1.8rem !important;
+    line-height: 1 !important;
+    color: #0f172a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.promo-card .close-btn:active {
+    transform: scale(0.9) !important;
+    background: rgba(15, 23, 42, 0.3) !important;
 }

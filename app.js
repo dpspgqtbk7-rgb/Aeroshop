@@ -2029,9 +2029,11 @@ function abrirPromo() {
     }
 }
 function cerrarPromo() {
+    vibrar(20);
     const modal = document.getElementById('promoModal');
     if (modal) {
         modal.classList.remove('active');
+        modal.style.display = 'none'; // Cierre inmediato sin retardo
         closeModalState();
     }
 }
