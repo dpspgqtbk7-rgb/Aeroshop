@@ -1,42 +1,50 @@
-const CACHE_NAME = 'aeroshop-v1';
+// sw.js — SERVICE WORKER CON AUTO-ACTUALIZACIÓN FORZADA
+const CACHE_NAME = 'aeroshop-v2.0'; // Al cambiar la versión a v2.0 se borra la caché anterior
+
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './style.css',
   './app.js',
   './manifest.json',
-  './dub.png'
+  './avion.png',
+  './portada.jpg'
 ];
 
-// Instalación del Service Worker
-self.addEventListener('install', (e) => {
-  e.waitUntil(
+// 1. Instalar y forzar activación inmediata
+self.addEventListener('install', (event) => {
+  self.skipWaiting();
+  event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
-  self.skipWaiting();
 });
 
-// Activación y limpieza de cachés antiguas
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
+// 2. Limpiar cachés antiguas en los celulares de los clientes
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Intercepción de peticiones (Cargar desde caché si existe)
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      return cachedResponse || fetch(e.request);
-    })
+// 3. Estrategia de red primero (descarga lo nuevo si hay internet)
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((networkResponse) => {
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request);
+      })
   );
 });
