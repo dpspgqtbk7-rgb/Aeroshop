@@ -1,3 +1,46 @@
+ /* style.css */
+
+:root {
+    --color-primary: #10b981;
+    --color-primary-dark: #059669;
+    --color-bg-dark: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #f8fafc;
+    --color-text-muted: #94a3b8;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --transition-fast: 0.2s ease;
+}
+
+/* Modales estructurados sin !important */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Estado del botón de audio activo */
+.btn-noise.audio-playing {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
  html {
             scroll-behavior: smooth;
         }
@@ -3830,4 +3873,34 @@ button:active, .btn-add:active, .nav-item:active {
 .promo-card .close-btn:active {
     transform: scale(0.9) !important;
     background: rgba(15, 23, 42, 0.3) !important;
+}
+/* --- TOAST NOTIFICATIONS (NOTIFICACIONES FLOTANTES) --- */
+.toast-notification {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.95);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 50px;
+    z-index: 999999;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    bottom: 30px; /* Sube y aparece */
+    opacity: 1;
+}
+
+.toast-notification.error {
+    background: rgba(220, 38, 38, 0.95); /* Rojo oscuro para errores */
+    border-color: #f87171;
 }

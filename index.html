@@ -125,7 +125,7 @@
         </div>
 
         <div class="products-grid" id="featuredGrid">
-            <div class="product-card card-glass" onclick="openProductModal('frydovni')">
+        <div class="product-card card-glass" data-action="open-product-modal" data-product-id="frydovni">
     <span class="product-tag-new">NUEVO 🛸</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
         <video data-src="./frydgomas.mp4" loop muted playsinline class="lazy-video active"></video>
@@ -137,9 +137,9 @@
         <div class="product-subtitle">2G Liquid Batter + Live Resin</div>
         <div class="product-price">$850 MXN</div>
     </div>
-    <button type="button" class="btn-add" onclick="event.stopPropagation(); addToCart('FRYD Ovni 🛸 + Gomitas 2g', 850, './frydgomas2.jpg')">
-        Agregar al Carrito
-    </button>
+  <button type="button" class="btn-add js-add-to-cart" data-action="add-to-cart" data-title="FRYD Ovni 🛸 + Gomitas 2g" data-price="850" data-image="./frydgomas2.jpg">
+    Agregar al Carrito
+</button>
 </div>
          <!-- PRODUCTO DONUTS DONITA V3 -->
 <div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
@@ -495,7 +495,7 @@
 <!-- ========================================== -->
 <div class="product-modal-overlay" id="productModalOverlay" onclick="closeModalOnOverlay(event)">
     <div class="product-modal-card">
-        <button class="modal-close-btn" onclick="closeProductModal()">&times;</button>
+     <button class="modal-close-btn" data-action="close-product-modal">&times;</button>
         <div class="modal-grid">
             <div>
                 <div class="modal-media-wrapper" id="modalMediaContainer">
@@ -529,7 +529,7 @@
     <div class="cart-drawer">
         <div class="cart-header">
             <h2>Bolsa de Compras</h2>
-            <button class="close-cart" onclick="toggleCart()">&times;</button>
+  <button class="close-cart" data-action="toggle-cart">&times;</button>
         </div>
         <div class="cart-items-list" id="cartItemsContainer"></div>
         <div class="cart-summary">
@@ -545,7 +545,7 @@
                 <span>Total</span>
                 <span id="totalPrice">$0 MXN</span>
             </div>
-            <button class="btn-checkout" onclick="sendWhatsAppOrder()">Finalizar compra</button>
+           <button class="btn-checkout" data-action="send-whatsapp">Finalizar compra</button>
         </div>
     </div>
 </div>
@@ -843,23 +843,15 @@
             
             <div class="breathing-circle-wrapper">
                 <!-- Se activa tocando el círculo directamente o presionado el botón -->
-                <div class="breathing-circle" id="breathingCircle" onclick="toggleBreathingGuide()" role="button" tabindex="0">
-                    <span id="breathingActionText">Iniciar</span>
-                </div>
-            </div>
-
-            <div class="breathing-status" id="breathingStatusLabel">Toca el círculo o presiona el botón para comenzar</div>
-
-            <div class="breathing-controls">
-                <button class="btn-breathing" id="btnBreathingToggle" onclick="toggleBreathingGuide()">
-                    ▶️ Iniciar Respiración Guiada
-                </button>
+              <div class="breathing-circle" id="breathingCircle" data-action="toggle-breathing" role="button" tabindex="0">
+...
+<button class="btn-breathing" id="btnBreathingToggle" data-action="toggle-breathing">
             </div>
         </div>
 
         <!-- Reproductor de Audio Ambiental Nativo (Ruido Marrón) -->
         <div class="emergency-audio-card">
-            <button class="btn-audio-emergency" id="btnAudioEmergency" onclick="toggleBrownNoise()">
+          <button class="btn-audio-emergency" id="btnAudioEmergency" data-action="toggle-brown-noise">
                 <span id="btnAudioText">🎧 Escuchar Ruido Marrón Calmante</span>
             </button>
             <span class="audio-hint">Frecuencia continua de baja intensidad para reducir el ruido mental.</span>
@@ -917,36 +909,9 @@
 
     </div> <!-- /emergency-container -->
 </div> <!-- /emergencyFullscreenView -->
-<!-- SDK Modulares Firebase v10 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCMuec9un_xOU2T3AP4SxElQWz14Js8HHU",
-            authDomain: "aeroshop-cdmx.firebaseapp.com",
-            projectId: "aeroshop-cdmx",
-            storageBucket: "aeroshop-cdmx.firebasestorage.app",
-            messagingSenderId: "990438625408",
-            appId: "1:990438625408:web:e14f86cb118cf934f29665",
-            measurementId: "G-LEFTFGQ91G"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        window.auth = getAuth(app);
-        window.db = getFirestore(app);
-        window.storage = getStorage(app);
-        window.googleProvider = new GoogleAuthProvider();
-        window.fbMethods = { 
-            doc, getDoc, setDoc, updateDoc, 
-            signInWithPopup, signOut, onAuthStateChanged, 
-            ref, uploadBytes, getDownloadURL 
-        };
-    </script>
     <!-- JAVASCRIPT -->
-  <script src="app.js" defer></script>
+  <script type="module" src="app.js"></script>
 
 <!-- 1. POPUP PUBLICITARIO DE BIENVENIDA -->
 <div id="promoModal" class="modal-overlay active">
@@ -992,7 +957,7 @@
   Al presionar <strong>"Continuar con Google"</strong>, declaras expresamente que eres mayor de edad, que has leído nuestro <strong>Aviso de Privacidad</strong> y otorgas tu consentimiento para que <strong>AEROSHOP</strong> recabe y trate tus datos (nombre, correo e historial de vuelo) exclusivamente con fines estadísticos internos, personalización de servicio y la acreditación de promociones en tu pasaporte digital. Tus datos están protegidos y no serán compartidos ni comercializados con terceros.
 </div>
     <div class="social-login-grid" style="margin-top: 24px;">
-      <button class="btn-social-auth btn-google-adidas" onclick="iniciarSesionGoogle()" style="justify-content: center; width: 100%;">
+<button id="btn-login" class="btn-social-auth btn-google-adidas" data-action="login-google" style="justify-content: center; width: 100%;">
         <svg width="22" height="22" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
           <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.15C3.31 21.36 7.37 24 12 24z"/>
@@ -1072,7 +1037,7 @@
 
     <!-- BOTÓN CERRAR SESIÓN -->
     <div class="profile-footer">
-      <button class="btn-logout-adidas" onclick="cerrarSesionFirebase()">CERRAR SESIÓN</button>
+  <button id="btn-logout" class="btn-logout-adidas" data-action="logout">CERRAR SESIÓN</button>
     </div>
 
   </div>
@@ -1083,11 +1048,10 @@
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
   </button>
-
-  <button class="nav-item" onclick="toggleCart()">
-    <span class="nav-icon">🛒</span>
-    <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
-  </button>
+<button class="nav-item" data-action="toggle-cart">
+  <span class="nav-icon">🛒</span>
+  <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
+</button>
 
   <button class="nav-item" onclick="openBuzonModal()">
     <span class="nav-icon">📬</span>
@@ -1098,11 +1062,12 @@
     <span class="nav-icon">❓</span>
     <span class="nav-label">FAQ</span>
   </button>
-
-  <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
+<button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
     <span class="nav-icon">👤</span>
     <span class="nav-label">Perfil</span>
   </button>
 </nav>
+<!-- Punto de entrada de la aplicación -->
+<script type="module" src="./js/main.js"></script>
 </body>
 </html>
