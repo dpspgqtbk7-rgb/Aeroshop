@@ -1,21 +1,21 @@
 // sw.js
-
-const CACHE_NAME = 'aeroshop-v2';
+const CACHE_NAME = 'aeroshop-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/style.css',
     '/manifest.json',
+    '/firebase-config.js',
     '/js/main.js',
     '/js/core/store.js',
     '/js/core/events.js',
     '/js/modules/cart.js',
     '/js/modules/catalog.js',
+    '/js/modules/experiences.js',
     '/js/modules/emergency.js',
-    '/utils/ui.js'
+    '/js/modules/auth.js'
 ];
 
-// Instalación
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
@@ -24,7 +24,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activación y limpieza de caches antiguas
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -40,7 +39,6 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Estrategia Fetch: Cache First con fallback a Red
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {

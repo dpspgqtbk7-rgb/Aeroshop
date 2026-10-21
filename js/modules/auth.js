@@ -1,9 +1,9 @@
 // js/modules/auth.js
 import { store } from '../core/store.js';
-import { fbAuth, fbProvider, signInWithPopup, signOut, onAuthStateChanged } from '../config/firebase.js';
+import { auth, googleProvider, fbMethods } from '../../firebase-config.js';
 
 export function initAuthObserver() {
-    onAuthStateChanged(fbAuth, (user) => {
+    fbMethods.onAuthStateChanged(auth, (user) => {
         if (user) {
             const userProfile = {
                 uid: user.uid,
@@ -23,7 +23,7 @@ export function initAuthObserver() {
 
 export async function loginWithGoogle() {
     try {
-        await signInWithPopup(fbAuth, fbProvider);
+        await fbMethods.signInWithPopup(auth, googleProvider);
     } catch (error) {
         console.error("❌ Error al iniciar sesión:", error);
     }
@@ -31,7 +31,7 @@ export async function loginWithGoogle() {
 
 export async function logoutUser() {
     try {
-        await signOut(fbAuth);
+        await fbMethods.signOut(auth);
     } catch (error) {
         console.error("❌ Error al cerrar sesión:", error);
     }
