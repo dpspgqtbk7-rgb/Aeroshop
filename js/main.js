@@ -2,11 +2,44 @@
 import { renderCart } from './modules/cart.js';
 import { initGlobalEvents } from './core/events.js';
 import { initAuthObserver } from './modules/auth.js';
+import { openProductModal, closeProductModal } from './modules/catalog.js';
+
+import {
+    openRutasVuelo, closeRutasVuelo,
+    openMonchisVuelo, closeMonchisVuelo,
+    openCineVuelo, closeCineVuelo,
+    openMusicVuelo, closeMusicVuelo,
+    openEmergencyVuelo, closeEmergencyVuelo,
+    openFullscreenBrand, closeFullscreenBrand,
+    openCardModal, closeInfoModal, closeInfoModalOnOverlay,
+    switchMonchisTab, filterMonchisCards, filterCineCards, filterMusicCards,
+    openBuzonModal, closeBuzonModal, closeBuzonOnOverlay, sendBuzonWhatsApp,
+    openFaqModal, closeFaqModal, closeFaqOnOverlay,
+    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil, guardarDatosPerfil,
+    toggleBreathingGuide, startHoverSlider, stopHoverSlider, compartirContenido
+} from './modules/experiences.js';
+
+// Asignación explícita al ámbito global (window)
+Object.assign(window, {
+    openRutasVuelo, closeRutasVuelo,
+    openMonchisVuelo, closeMonchisVuelo,
+    openCineVuelo, closeCineVuelo,
+    openMusicVuelo, closeMusicVuelo,
+    openEmergencyVuelo, closeEmergencyVuelo,
+    openFullscreenBrand, closeFullscreenBrand,
+    openCardModal, closeInfoModal, closeInfoModalOnOverlay,
+    switchMonchisTab, filterMonchisCards, filterCineCards, filterMusicCards,
+    openBuzonModal, closeBuzonModal, closeBuzonOnOverlay, sendBuzonWhatsApp,
+    openFaqModal, closeFaqModal, closeFaqOnOverlay,
+    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil, guardarDatosPerfil,
+    toggleBreathingGuide, startHoverSlider, stopHoverSlider, compartirContenido,
+    openProductModal, closeProductModal
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-    initGlobalEvents();    // Event Delegation
-    initAuthObserver();    // Escuchador de Firebase Auth
-    renderCart();          // Cargar carrito desde Store/LocalStorage
+    initGlobalEvents();    
+    initAuthObserver();    
+    renderCart();          
     registerServiceWorker();
 });
 
