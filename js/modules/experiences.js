@@ -1,3 +1,4 @@
+import { openModalState, closeModalState, saveMainScrollPosition, showToast } from '../ui.js';
 // js/modules/experiences.js
 import { experiencesData } from './data.js';
 import { openModalState, closeModalState, saveMainScrollPosition, showToast } from '../ui.js';
