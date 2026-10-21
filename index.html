@@ -1065,6 +1065,37 @@
 
 <!-- SCRIPT PRINCIPAL COLOCADO CORRECTAMENTE AL FINAL DEL BODY -->
 <script type="module" src="./js/main.js"></script>
+<!-- FUNCIONES GLOBALES DE MODALES (EJECUCIÓN INSTANTÁNEA) -->
+<script>
+  window.cerrarPromo = function() {
+    var modal = document.getElementById('promoModal');
+    if (modal) modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.irALoginDesdePromo = function() {
+    window.cerrarPromo();
+    var login = document.getElementById('loginModal');
+    if (login) login.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+
+  window.cerrarLogin = function() {
+    var modal = document.getElementById('loginModal');
+    if (modal) modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.cerrarPerfil = function() {
+    var modal = document.getElementById('profileModal');
+    if (modal) modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+</script>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
 </body>
 </html>
  
