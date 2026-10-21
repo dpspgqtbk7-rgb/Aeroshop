@@ -1043,6 +1043,7 @@
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
   </button>
+
   <button class="nav-item" data-action="toggle-cart">
     <span class="nav-icon">🛒</span>
     <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
@@ -1057,45 +1058,457 @@
     <span class="nav-icon">❓</span>
     <span class="nav-label">FAQ</span>
   </button>
+
   <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
     <span class="nav-icon">👤</span>
     <span class="nav-label">Perfil</span>
   </button>
 </nav>
 
-<!-- SCRIPT PRINCIPAL COLOCADO CORRECTAMENTE AL FINAL DEL BODY -->
-<script type="module" src="./js/main.js"></script>
-<!-- FUNCIONES GLOBALES DE MODALES (EJECUCIÓN INSTANTÁNEA) -->
+<!-- SCRIPT DE FUNCIONES GLOBALES (EJECUCIÓN INSTANTÁNEA PARA BOTONES ONCLICK) -->
 <script>
+  // --- FUNCIONES DE MODALES Y PROMOS ---
   window.cerrarPromo = function() {
-    var modal = document.getElementById('promoModal');
-    if (modal) modal.classList.remove('active');
+    var promo = document.getElementById('promoModal');
+    if (promo) { promo.classList.remove('active'); promo.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+    document.querySelectorAll('.modal-overlay, .overlay').forEach(el => el.style.display = 'none');
+  };
+
+  window.irALoginDesdePromo = function() {
+    window.cerrarPromo();
+    var login = document.getElementById('loginModal');
+    if (login) { login.classList.add('active'); login.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  window.cerrarLogin = function() {
+    var modal = document.getElementById('loginModal');
+    if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  window.cerrarPerfil = function() {
+    var modal = document.getElementById('profileModal');
+    if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  window.abrirPerfilOClick = function() {
+    var profile = document.getElementById('profileModal');
+    if (profile) { profile.classList.add('active'); profile.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  // --- FUNCIONES DE BUZÓN Y FAQ ---
+  window.openBuzonModal = function() {
+    var buzon = document.getElementById('buzonModalOverlay');
+    if (buzon) { buzon.classList.add('active'); buzon.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  window.closeBuzonModal = function() {
+    var buzon = document.getElementById('buzonModalOverlay');
+    if (buzon) { buzon.classList.remove('active'); buzon.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openFaqModal = function() {
+    var faq = document.getElementById('faqModalOverlay');
+    if (faq) { faq.classList.add('active'); faq.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  window.closeFaqModal = function() {
+    var faq = document.getElementById('faqModalOverlay');
+    if (faq) { faq.classList.remove('active'); faq.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  // --- FUNCIONES DE SECCIONES FULLSCREEN (RUTAS, MONCHIS, CINE, MÚSICA, PÁLIDA) ---
+  window.openRutasVuelo = function() {
+    var v = document.getElementById('rutasFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeRutasVuelo = function() {
+    var v = document.getElementById('rutasFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openMonchisVuelo = function() {
+    var v = document.getElementById('monchisFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeMonchisVuelo = function() {
+    var v = document.getElementById('monchisFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openCineVuelo = function() {
+    var v = document.getElementById('cineFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeCineVuelo = function() {
+    var v = document.getElementById('cineFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openMusicVuelo = function() {
+    var v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeMusicVuelo = function() {
+    var v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openEmergencyVuelo = function() {
+    var v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeEmergencyVuelo = function() {
+    var v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+</script>
+
+<!-- CÓDIGO JS PRINCIPAL (MÓDULO) -->
+<script type="module" src="./js/main.js"></script>
+<!-- SCRIPT DE FUNCIONES GLOBALES (EJECUCIÓN COMPLETA E INSTANTÁNEA) -->
+<script>
+  // --- ACTIVADOR DE VIDEOS ---
+  function cargarYReproducirVideos(contenedor) {
+    if (!contenedor) return;
+    var videos = contenedor.querySelectorAll('video');
+    videos.forEach(function(v) {
+      if (v.dataset.src && !v.src) { v.src = v.dataset.src; }
+      v.play().catch(function(e) {});
+    });
+  }
+
+  // --- ABRIR Y VER TARJETAS EN MODAL DETALLADO (RUTAS, MONCHIS, CINE) ---
+  window.openCardModal = function(categoria, id) {
+    var overlay = document.getElementById('infoModalOverlay');
+    var body = document.getElementById('infoModalBody');
+    if (!overlay || !body) return;
+
+    var targetCard = document.querySelector('[onclick*="' + id + '"]');
+    var title = targetCard && targetCard.querySelector('h4') ? targetCard.querySelector('h4').innerText : 'Detalles de Selección';
+    var media = targetCard ? targetCard.querySelector('video, img') : null;
+    var src = media ? (media.dataset.src || media.src) : '';
+    var tag = targetCard && targetCard.querySelector('.badge-tag') ? targetCard.querySelector('.badge-tag').innerText : 'AEROSHOP CDMX';
+
+    body.innerHTML = `
+      <span class="badge-tag" style="margin-bottom:12px; display:inline-block;">${tag}</span>
+      <h3 style="color:#fff; font-size:1.6rem; margin-bottom:15px; font-family:'Space Grotesk', sans-serif;">${title}</h3>
+      ${src ? (src.toLowerCase().endsWith('.mp4') ? '<video src="' + src + '" controls autoplay loop style="width:100%; max-height:350px; object-fit:cover; border-radius:16px; margin-bottom:18px;"></video>' : '<img src="' + src + '" style="width:100%; max-height:350px; object-fit:cover; border-radius:16px; margin-bottom:18px;">') : ''}
+      <p style="color:#cbd5e1; font-size:1rem; line-height:1.6;">Aprovecha el viaje al máximo. Vive la experiencia en los mejores puntos de la CDMX.</p>
+    `;
+
+    overlay.classList.add('active');
+    overlay.style.display = 'flex';
+    document.body.classList.add('modal-open');
+  };
+
+  window.closeInfoModal = function() {
+    var overlay = document.getElementById('infoModalOverlay');
+    if (overlay) { overlay.classList.remove('active'); overlay.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  // --- FILTRADO DE TARJETAS (MONCHIS, CINE Y MÚSICA) ---
+  window.filterMonchisCards = function() {
+    var zona = document.getElementById('filterZona') ? document.getElementById('filterZona').value : 'todos';
+    var calleFilters = document.getElementById('filtersCalle');
+    var antojo = (calleFilters && calleFilters.style.display !== 'none') 
+      ? (document.getElementById('filterAntojoCalle') ? document.getElementById('filterAntojoCalle').value : 'todos')
+      : (document.getElementById('filterAntojoCasa') ? document.getElementById('filterAntojoCasa').value : 'todos');
+    
+    var activeTab = document.getElementById('tabCalleBtn') && document.getElementById('tabCalleBtn').classList.contains('active') ? 'calle' : 'casa';
+
+    document.querySelectorAll('#monchisGrid .compact-card').forEach(function(card) {
+      var cardTipo = card.dataset.tipo;
+      var cardZona = card.dataset.zona || 'todos';
+      var cardAntojo = card.dataset.antojo || 'todos';
+
+      var matchTipo = (cardTipo === activeTab);
+      var matchZona = (zona === 'todos' || cardZona === zona);
+      var matchAntojo = (antojo === 'todos' || cardAntojo === antojo);
+
+      if (matchTipo && matchZona && matchAntojo) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  };
+
+  window.filterCineCards = function() {
+    var cat = document.getElementById('filterCategoriaCine') ? document.getElementById('filterCategoriaCine').value : 'todos';
+    document.querySelectorAll('#cineGrid .monchis-card').forEach(function(card) {
+      var cardCat = card.dataset.categoria;
+      if (cat === 'todos' || cardCat === cat) { card.style.display = 'block'; } 
+      else { card.style.display = 'none'; }
+    });
+  };
+
+  window.filterMusicCards = function() {
+    var cat = document.getElementById('filterCategoriaMusic') ? document.getElementById('filterCategoriaMusic').value : 'todos';
+    document.querySelectorAll('#musicGrid .music-card').forEach(function(card) {
+      var cardCat = card.dataset.categoria;
+      if (cat === 'todos' || cardCat === cat) { card.style.display = 'block'; } 
+      else { card.style.display = 'none'; }
+    });
+  };
+
+  // --- VISTA Y RENDERIZADO DE NUESTRAS MARCAS ---
+  window.renderBrandContent = function(brandId) {
+    var container = document.getElementById('brandFullscreenContent');
+    if (!container) return;
+
+    var brandsData = {
+      'muhameds': { name: 'MUHA MEDS', logo: './logo-muhameds.png', bg: './fondo-espacial.jpg', color: '#facc15' },
+      'cookies': { name: 'COOKIES', logo: './logo-cookies.png', bg: '#0088e8', color: '#ffffff' },
+      'backwoods': { name: 'BACKWOODS', logo: './logo-backwoods.png', bg: '#1c1917', color: '#f97316' },
+      'donuts': { name: 'DONUTS', logo: './donutslogomarcas.png', bg: './fondoslog.jpg', color: '#f43f5e' },
+      'packman': { name: 'PACKMAN', logo: './packmanmarcas.png', bg: '#000000', color: '#facc15' },
+      'fryd': { name: 'FRYD EXTRACTS', logo: './FRYD.jpg', bg: '#1e092b', color: '#a855f7' }
+    };
+
+    var info = brandsData[brandId] || { name: brandId.toUpperCase(), logo: '', bg: '#0f172a', color: '#ffffff' };
+    var bgStyle = info.bg.startsWith('.') ? 'url(' + info.bg + ') center/cover fixed no-repeat' : info.bg;
+
+    container.innerHTML = `
+      <div style="min-height:100vh; padding:100px 20px 80px 20px; text-align:center; background:${bgStyle};">
+        ${info.logo ? '<img src="' + info.logo + '" style="max-width:240px; height:auto; margin-bottom:20px; filter:drop-shadow(0 10px 25px rgba(0,0,0,0.6));">' : ''}
+        <h2 style="color:${info.color}; font-size:2.5rem; font-family:'Space Grotesk', sans-serif; margin-bottom:10px;">${info.name}</h2>
+        <p style="color:#e2e8f0; font-size:1.1rem; margin-bottom:40px;">Catálogo Oficial & Ediciones Especiales</p>
+      </div>
+    `;
+  };
+
+  window.openFullscreenBrand = function(brandId) {
+    var brandView = document.getElementById('brandFullscreenView');
+    if (brandView) {
+      brandView.classList.add('active');
+      brandView.style.display = 'block';
+      document.body.classList.add('modal-open');
+      window.renderBrandContent(brandId);
+    }
+  };
+
+  window.closeFullscreenBrand = function() {
+    var brandView = document.getElementById('brandFullscreenView');
+    if (brandView) { brandView.classList.remove('active'); brandView.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  // --- SLIDERS HOVER Y PESTAÑAS MONCHIS ---
+  window.startHoverSlider = function(container) {
+    if (!container) return;
+    var media = container.querySelectorAll('img, video');
+    if (media.length < 2) return;
+    var currentIndex = 0;
+    container._sliderInterval = setInterval(function() {
+      media[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % media.length;
+      media[currentIndex].classList.add('active');
+      if (media[currentIndex].tagName === 'VIDEO') { media[currentIndex].play().catch(function(){}); }
+    }, 1200);
+  };
+
+  window.stopHoverSlider = function(container) {
+    if (!container || !container._sliderInterval) return;
+    clearInterval(container._sliderInterval);
+    var media = container.querySelectorAll('img, video');
+    media.forEach(function(el, idx) {
+      if (idx === 0) el.classList.add('active');
+      else el.classList.remove('active');
+    });
+  };
+
+  window.switchMonchisTab = function(tab) {
+    var calleBtn = document.getElementById('tabCalleBtn');
+    var casaBtn = document.getElementById('tabCasaBtn');
+    var filtersCalle = document.getElementById('filtersCalle');
+    var filtersCasa = document.getElementById('filtersCasa');
+
+    if (tab === 'calle') {
+      if (calleBtn) calleBtn.classList.add('active');
+      if (casaBtn) casaBtn.classList.remove('active');
+      if (filtersCalle) filtersCalle.style.display = 'flex';
+      if (filtersCasa) filtersCasa.style.display = 'none';
+    } else {
+      if (casaBtn) casaBtn.classList.add('active');
+      if (calleBtn) calleBtn.classList.remove('active');
+      if (filtersCasa) filtersCasa.style.display = 'flex';
+      if (filtersCalle) filtersCalle.style.display = 'none';
+    }
+    window.filterMonchisCards();
+  };
+
+  // --- MODALES PRINCIPALES, BUZÓN, FAQ Y NAVEGACIÓN ---
+  window.openProductModal = function(productId) {
+    var modal = document.getElementById('productModalOverlay');
+    if (modal) { modal.classList.add('active'); modal.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  window.closeModalOnOverlay = function(e) {
+    if (e.target.id === 'productModalOverlay' || e.target.classList.contains('modal-close-btn')) {
+      var modal = document.getElementById('productModalOverlay');
+      if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
+      document.body.classList.remove('modal-open');
+    }
+  };
+
+  window.toggleCart = function() {
+    var cart = document.getElementById('cartOverlay');
+    if (cart) {
+      if (cart.classList.contains('active')) {
+        cart.classList.remove('active');
+        cart.style.display = 'none';
+        document.body.classList.remove('modal-open');
+      } else {
+        cart.classList.add('active');
+        cart.style.display = 'flex';
+        document.body.classList.add('modal-open');
+      }
+    }
+  };
+
+  window.cerrarPromo = function() {
+    var promo = document.getElementById('promoModal');
+    if (promo) { promo.classList.remove('active'); promo.style.display = 'none'; }
     document.body.classList.remove('modal-open');
   };
 
   window.irALoginDesdePromo = function() {
     window.cerrarPromo();
     var login = document.getElementById('loginModal');
-    if (login) login.classList.add('active');
+    if (login) { login.classList.add('active'); login.style.display = 'flex'; }
     document.body.classList.add('modal-open');
   };
 
   window.cerrarLogin = function() {
     var modal = document.getElementById('loginModal');
-    if (modal) modal.classList.remove('active');
+    if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
     document.body.classList.remove('modal-open');
   };
 
   window.cerrarPerfil = function() {
     var modal = document.getElementById('profileModal');
-    if (modal) modal.classList.remove('active');
+    if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
     document.body.classList.remove('modal-open');
   };
+
+  window.abrirPerfilOClick = function() {
+    var profile = document.getElementById('profileModal');
+    if (profile) { profile.classList.add('active'); profile.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+
+  window.openBuzonModal = function() {
+    var buzon = document.getElementById('buzonModalOverlay');
+    if (buzon) { buzon.classList.add('active'); buzon.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+  window.closeBuzonModal = function() {
+    var buzon = document.getElementById('buzonModalOverlay');
+    if (buzon) { buzon.classList.remove('active'); buzon.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openFaqModal = function() {
+    var faq = document.getElementById('faqModalOverlay');
+    if (faq) { faq.classList.add('active'); faq.style.display = 'flex'; }
+    document.body.classList.add('modal-open');
+  };
+  window.closeFaqModal = function() {
+    var faq = document.getElementById('faqModalOverlay');
+    if (faq) { faq.classList.remove('active'); faq.style.display = 'none'; }
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openRutasVuelo = function() {
+    var v = document.getElementById('rutasFullscreenView');
+    if (v) { v.classList.add('active'); cargarYReproducirVideos(v); }
+    document.body.classList.add('modal-open');
+  };
+  window.closeRutasVuelo = function() {
+    var v = document.getElementById('rutasFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openMonchisVuelo = function() {
+    var v = document.getElementById('monchisFullscreenView');
+    if (v) { v.classList.add('active'); cargarYReproducirVideos(v); }
+    document.body.classList.add('modal-open');
+  };
+  window.closeMonchisVuelo = function() {
+    var v = document.getElementById('monchisFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openCineVuelo = function() {
+    var v = document.getElementById('cineFullscreenView');
+    if (v) { v.classList.add('active'); cargarYReproducirVideos(v); }
+    document.body.classList.add('modal-open');
+  };
+  window.closeCineVuelo = function() {
+    var v = document.getElementById('cineFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openMusicVuelo = function() {
+    var v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeMusicVuelo = function() {
+    var v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  window.openEmergencyVuelo = function() {
+    var v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+  window.closeEmergencyVuelo = function() {
+    var v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.remove('active');
+    document.body.classList.remove('modal-open');
+  };
+
+  // LISTENER DE EVENTOS DATA-ACTION
+  document.addEventListener('click', function(e) {
+    var actionBtn = e.target.closest('[data-action]');
+    if (!actionBtn) return;
+    var action = actionBtn.dataset.action;
+    if (action === 'toggle-cart') { window.toggleCart(); }
+    if (action === 'close-product-modal') {
+      var modal = document.getElementById('productModalOverlay');
+      if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
+      document.body.classList.remove('modal-open');
+    }
+  });
 </script>
 
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>
-</body>
-</html>
- 
