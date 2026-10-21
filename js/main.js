@@ -1,3 +1,4 @@
+import { openModalState, closeModalState } from './ui.js';
 // js/main.js
 import { renderCart } from './modules/cart.js';
 import { initGlobalEvents } from './core/events.js';
@@ -52,7 +53,7 @@ function registerServiceWorker() {
         });
     }
 }
-import { openModalState, closeModalState } from './ui.js';
+
 
 // Exponer las funciones al objeto global window para que funcionen con onclick=""
 window.cerrarPromo = function() {
