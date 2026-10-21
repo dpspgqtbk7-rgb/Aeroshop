@@ -1,6 +1,6 @@
 // js/core/events.js
 import { addToCart, removeFromCart, sendWhatsAppOrder } from '../modules/cart.js';
-import { openProductModal, closeProductModal } from '../modules/catalog.js';
+import { openProductModal, closeProductModal, addModalProductToCart } from '../modules/catalog.js';
 import { toggleBrownNoise, toggleBreathingGuide } from '../modules/emergency.js';
 import { loginWithGoogle, logoutUser } from '../modules/auth.js';
 
@@ -20,6 +20,11 @@ export function initGlobalEvents() {
                 if (title && !isNaN(price)) {
                     addToCart(title, price, image);
                 }
+                break;
+            }
+
+            case 'add-modal-to-cart': {
+                addModalProductToCart();
                 break;
             }
 
