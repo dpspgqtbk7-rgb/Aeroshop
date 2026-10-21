@@ -3015,6 +3015,17 @@ body.modal-open .bottom-nav {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.1) !important;
     width: calc(100% - 32px) !important;
     max-width: 420px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+/* Ocultar únicamente cuando existe un modal o vista a pantalla completa activa */
+body.modal-open .bottom-nav {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }
 
 .nav-item {

@@ -37,13 +37,6 @@
     <meta name="keywords" content="Aeroshop, CDMX, disposables, wax, vape, muha meds, cookies, packman, donuts, 420 cdmx">
     <meta name="robots" content="index, follow">
 
-    <!-- METADATOS OPEN GRAPH (PARA QUE EL LINK SE VEA INCREÍBLE EN WHATSAPP / INSTAGRAM) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="🚀 AEROSHOP - Catálogo Oficial & Lifestyle CDMX">
-    <meta property="og:description" content="Eleva tu experiencia. Consulta disponibilidad, productos destacados y realiza tu pedido directo por WhatsApp.">
-    <meta property="og:image" content="https://tu-dominio.com/portada.jpg"> 
-    <meta property="og:url" content="https://tu-dominio.com">
-    
     <!-- FUENTES OFICIALES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -561,6 +554,7 @@
             <button class="btn-back-main" onclick="closeCineVuelo()">
                 ← VOLVER AL MENÚ PRINCIPAL
             </button>
+
         </div>
 
         <!-- Título y Gancho -->
@@ -837,17 +831,19 @@
             <p class="emergency-sub-msg">Relax vroski vas a estar bien solo concéntrate en estas recomendaciones 🧘🏽‍♂️</p>
         </div>
 
-        <!-- Módulo de Respiración Guiada Parasimpática -->
-        <div class="breathing-card">
-            <h3>Respiración Guiada (Ritmo 4-4-6)</h3>
-            
-            <div class="breathing-circle-wrapper">
-                <!-- Se activa tocando el círculo directamente o presionado el botón -->
-              <div class="breathing-circle" id="breathingCircle" data-action="toggle-breathing" role="button" tabindex="0">
-...
-<button class="btn-breathing" id="btnBreathingToggle" data-action="toggle-breathing">
-            </div>
+    <!-- Módulo de Respiración Guiada Parasimpática -->
+<div class="breathing-card">
+    <h3>Respiración Guiada (Ritmo 4-4-6)</h3>
+    
+    <div class="breathing-circle-wrapper">
+        <div class="breathing-circle" id="breathingCircle" data-action="toggle-breathing" role="button" tabindex="0">
+            <span id="breathingText">Inhala</span>
         </div>
+    </div>
+    <button class="btn-breathing" id="btnBreathingToggle" data-action="toggle-breathing">
+        Iniciar Respiración 🫁
+    </button>
+</div>
 
         <!-- Reproductor de Audio Ambiental Nativo (Ruido Marrón) -->
         <div class="emergency-audio-card">
@@ -910,8 +906,7 @@
     </div> <!-- /emergency-container -->
 </div> <!-- /emergencyFullscreenView -->
 
-    <!-- JAVASCRIPT -->
-  <script type="module" src="./js/main.js"></script>
+   
 
 <!-- 1. POPUP PUBLICITARIO DE BIENVENIDA -->
 <div id="promoModal" class="modal-overlay active">
@@ -1048,10 +1043,10 @@
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
   </button>
-<button class="nav-item" data-action="toggle-cart">
-  <span class="nav-icon">🛒</span>
-  <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
-</button>
+  <button class="nav-item" data-action="toggle-cart">
+    <span class="nav-icon">🛒</span>
+    <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
+  </button>
 
   <button class="nav-item" onclick="openBuzonModal()">
     <span class="nav-icon">📬</span>
@@ -1062,12 +1057,14 @@
     <span class="nav-icon">❓</span>
     <span class="nav-label">FAQ</span>
   </button>
-<button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
+  <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
     <span class="nav-icon">👤</span>
     <span class="nav-label">Perfil</span>
   </button>
 </nav>
-<!-- Punto de entrada de la aplicación -->
+
+<!-- SCRIPT PRINCIPAL COLOCADO CORRECTAMENTE AL FINAL DEL BODY -->
 <script type="module" src="./js/main.js"></script>
 </body>
 </html>
+ 

@@ -1,533 +1,351 @@
 // js/modules/experiences.js
-import { store } from '../core/store.js';
-import { toggleBrownNoise } from './emergency.js';
+import { experiencesData } from './data.js';
+import { openModalState, closeModalState, saveMainScrollPosition, showToast } from '../ui.js';
 
-// --- BASE DE DATOS DE TARJETAS (SPOT, MONCHIS, CINE Y MÚSICA) ---
-export const cardModalData = {
-    // 01. RUTAS DE VUELO
-    'lagoalgo': {
-        video: './lago-algo.MP4',
-        badge: '📍 Poniente • ✈️✈️✈️✈️✈️',
-        title: 'LagoAlgo — Bosque de Chapultepec',
-        subtitle: 'Galería de arte contemporáneo & restaurante frente al lago.',
-        description: 'Un espacio arquitectónico impresionante rodeado de naturaleza e instalaciones artísticas. Ideal para caminar tranquilamente y disfrutar de una vista relajante.',
-        recommendation: 'Tip: Visítalo entre semana por la tarde para disfrutar la luz del atardecer.'
-    },
-    'cenart': {
-        video: './cenart-hero.mp4',
-        badge: '📍 Sur • ✈️✈️✈️✈️',
-        title: 'CENART (Centro Nacional de las Artes)',
-        subtitle: 'Áreas verdes, arquitectura vibrante y eventos culturales.',
-        description: 'Amplios jardines para acostarse a escuchar música o leer rodeado de la arquitectura icónica de Ricardo Legorreta.',
-        recommendation: 'Tip: Lleva una manta y snacks suaves.'
-    },
-    'chapultepec': {
-        video: './chapultepec.mp4',
-        badge: '📍 Poniente • ✈️✈️✈️✈️',
-        title: 'Cineteca de Chapultepec',
-        subtitle: 'Cine al aire libre y paisajes boscosos.',
-        description: 'Ubicada en la 4ª Sección del Bosque de Chapultepec. Foro al aire libre y andadores entre árboles.',
-        recommendation: 'Tip: Consulta la cartelera gratuita de fin de semana.'
-    },
-    'laguna': {
-        video: './LAGUNA.MP4',
-        badge: '📍 Centro • ✈️✈️✈️✈️',
-        title: 'Laguna CDMX',
-        subtitle: 'Fábrica textil recuperada en la Doctores.',
-        description: 'Ecosistema creativo con diseño, café de especialidad y ambiente industrial-urbano.',
-        recommendation: 'Tip: Pide un café frío y recorre los talleres.'
-    },
-    'jardin': {
-        video: './jardin.mp4',
-        badge: '📍 Poniente • ✈️✈️✈️',
-        title: 'Jardín Escénico Chapultepec',
-        subtitle: 'Rincón escondido de paz y pabellones escénicos.',
-        description: 'Un espacio moderno rodeado de humedales urbanos cerca de Auditorio.',
-        recommendation: 'Tip: Camina por los senderos elevados.'
-    },
-    'eden': {
-        video: './eden.mp4',
-        badge: '📍 Sur • ✈️✈️✈️',
-        title: 'Jardín El Edén CU',
-        subtitle: 'Oasis universitario en Ciudad Universitaria.',
-        description: 'Rincón verde y tranquilo rodeado de roca volcánica y vegetación nativa del Pedregal.',
-        recommendation: 'Tip: Mantén la discreción y respeta el espacio.'
-    },
-    'soumaya': {
-        video: './soumaya.mp4',
-        badge: '📍 Poniente • ✈️✈️✈️✈️',
-        title: 'Museo Soumaya',
-        subtitle: 'Arquitectura futurista y recorrido visual.',
-        description: 'Estructura de hexágonos de aluminio con entrada gratuita y salas llenas de arte.',
-        recommendation: 'Tip: Empieza por el último piso y ve bajando por la rampa.'
-    },
-    'muac': {
-        video: './muac.mp4',
-        badge: '📍 Sur • ✈️✈️✈️✈️✈️',
-        title: 'MUAC CU (Museo de Arte Contemporáneo)',
-        subtitle: 'Arte vanguardista y explanada cultural.',
-        description: 'Exposiciones de nivel internacional con instalaciones sonoras y visuales inmersivas.',
-        recommendation: 'Tip: Visita las salas de arte sonoro.'
-    },
-
-    // 02. MONCHIS
-    'oreo': {
-        video: './OREO.MP4',
-        badge: '🏠 Casa • 🍩 Dulce',
-        title: 'Oreo Fritas Crujientes 🍪🔥',
-        subtitle: 'Receta express para el monchis dulce definitivo.',
-        description: 'Galletas Oreo capeadas en mezcla para hot cakes, fritas hasta lograr un dorado crujiente por fuera y centro derretido.',
-        recommendation: 'Acompaña con azúcar glass o cajeta derretida.'
-    },
-    'cotorras': {
-        video: './cotorras.MP4',
-        badge: '📍 Centro • 🍿 Salado',
-        title: 'Las Cotorras 🌮🍻',
-        subtitle: 'Tacos generosos en la Zona Centro.',
-        description: 'Especialistas en tacos de guisado abundantes con salsas caseras para calmar cualquier monchis.',
-        recommendation: 'Recomendado: Tacos con queso fundido y salsa frita.'
-    },
-    'salchicha_hawaiana': {
-        video: './salchicha.MP4',
-        badge: '🏠 Casa • 🍿 Salado',
-        title: 'Salchichas Hawaianas Glaseadas 🌭🍍',
-        subtitle: 'Mezcla agridulce caliente en 10 minutos.',
-        description: 'Salchichas doradas con piña en almíbar, catsup, soya y un toque de chipotle.',
-        recommendation: 'Sirve bien caliente con galletas saladas.'
-    },
-    'pan_muerto': {
-        video: './pan-de-muerto.MP4',
-        badge: '🏠 Casa • 🍩 Dulce',
-        title: 'Pan de Muerto Relleno 🍞🍫',
-        subtitle: 'Transformación épica de pan tradicional.',
-        description: 'Abre el pan por la mitad y rellénalo con helado de vainilla, Nutella o conejito Turín.',
-        recommendation: 'Calienta el pan 10 segundos antes de colocar el helado.'
-    },
-    'losperros': {
-        video: './losperros.MP4',
-        badge: '📍 Sur • 🍿 Salado',
-        title: 'Los Perros de San Antonio 🌭',
-        subtitle: 'Hot dogs monumentales.',
-        description: 'Hot dogs con tocino crujiente, cebolla caramelizada y quesos fundidos.',
-        recommendation: 'Ubicación: Cerca de Ciudad de los Deportes.'
-    },
-    'burgergate': {
-        video: './burgerg.mp4',
-        badge: '📍 Centro • 🍿 Salado',
-        title: 'Burger Gate 🍔',
-        subtitle: 'Smash burgers ultra jugosas.',
-        description: 'Hamburguesas con bordes dorados crujientes, cheddar derretido y pan brioche.',
-        recommendation: 'Pide la smash doble con tocino.'
-    },
-    'pizzadog': {
-        video: './pizza-dog.MP4',
-        badge: '🏠 Supervivencia en Casa • 🍿 Salado',
-        title: 'PizzaDog Express 🌭🍕',
-        subtitle: 'Fusión de hot dog y pizza.',
-        description: 'Pan de hot dog con salchicha, salsa para pizza, mozzarella y pepperoni gratinado.',
-        recommendation: 'Hornea 5 minutos a 200°C hasta gratinar.'
-    },
-    'sandwich': {
-        video: './sandwich.MP4',
-        badge: '🏠 Supervivencia en Casa • 🍿 Salado',
-        title: 'Sándwich Monchoso de 3 Pisos 🥪',
-        subtitle: 'Torre de sabor en pan tostado.',
-        description: 'Pan tostado con mantequilla, jamón, manchego, tocino, aguacate y huevo estrellado.',
-        recommendation: 'Corta en diagonales para sostener la torre.'
-    },
-    'salchichas': {
-        video: './salchichasbbq.MP4',
-        badge: '🏠 Supervivencia en Casa • 🧂 Salado',
-        title: 'Salchichas BBQ de Ricardo Pérez 🌭',
-        subtitle: 'Botana rápida y sabrosa.',
-        description: 'Salchichas en espiral fritas en mantequilla con salsa BBQ, inglesa y limón.',
-        recommendation: 'Acompaña con papas o totopos.'
-    },
-
-    // 03. CINE
-    'robots': {
-        video: './robots.MP4',
-        badge: '🎬 Antología Animada • ✈️✈️✈️✈️✈️',
-        title: 'LOVE, DEATH & ROBOTS 🤖🌀',
-        subtitle: 'Disponible en Netflix.',
-        description: 'Cortometrajes animados en diversos estilos visuales con historias de ciencia ficción y cyberpunk.',
-        recommendation: 'Episodios clave: "The Witness", "Zima Blue", "Jibaro".'
-    },
-    'congreso': {
-        video: './congreso.MP4',
-        badge: '🎬 Animación Surrealista • ✈️✈️✈️✈️✈️',
-        title: 'THE CONGRESS (2013) 👁️🎭',
-        subtitle: 'Dirigida por Ari Folman.',
-        description: 'Una historia que se transforma en un mundo animado psicodélico donde la realidad se disuelve.',
-        recommendation: 'Experiencia visual profunda e introspectiva.'
-    },
-    'grasa_fria': {
-        video: './grasa-fria.MP4',
-        badge: '🎬 Comedia Absurda & Risas • ✈️✈️✈️',
-        title: 'CHILLED GREESE 🍟🚗',
-        subtitle: 'Comedia delirante.',
-        description: 'Secuencias cómicas impredecibles ideales para reír sin esfuerzo.',
-        recommendation: 'Ideal para ver en grupo durante el bajón.'
-    },
-    'pastoral': {
-        video: './pastoral.MP4',
-        badge: '🎬 Drama Experimental • ✈️✈️✈️✈️✈️',
-        title: 'PASTORAL: TO DIE IN THE COUNTRY 👁️',
-        subtitle: 'Dirigida por Shūji Terayama.',
-        description: 'Obra maestra del cine psicodélico japonés con colores saturados y surrealismo.',
-        recommendation: 'Para amantes del cine de arte.'
-    },
-    'neotokyo': {
-        video: './neotokyo.mp4',
-        badge: '🎬 Animación Experimental • ✈️✈️✈️✈️',
-        title: 'NEO TOKYO (1987) 🚀',
-        subtitle: 'Antología de anime de culto.',
-        description: 'Historias de animación vanguardista cyberpunk dirigidas por maestros del anime.',
-        recommendation: 'Excelente banda sonora de sintetizadores.'
-    },
-    'dandadan': {
-        video: './dandadan.MP4',
-        badge: '🎬 Comedia Absurda • ✈️✈️✈️✈️✈️',
-        title: 'DANDADAN 👾🛸',
-        subtitle: 'Serie en emisión.',
-        description: 'Alienígenas, fantasmas y batallas frenéticas con animación fluida cargada de neón.',
-        recommendation: 'Gran dinamismo visual.'
-    },
-    'void': {
-        video: './VOID.MP4',
-        badge: '🎬 Psicodélica & Inmersiva • ✈️✈️✈️✈️✈️',
-        title: 'ENTER THE VOID (2009) 🏙️🌀',
-        subtitle: 'Dirigida por Gaspar Noé.',
-        description: 'Un viaje en primera persona flotando sobre las luces de neón de Tokio.',
-        recommendation: 'Carga visual e hipnótica.'
-    },
-    'belladonna': {
-        video: './BELLADONNA.MP4',
-        badge: '🎬 Anime Psicodélico • ✈️✈️✈️✈️✈️',
-        title: 'BELLADONNA OF SADNESS (1973) 🌸👁️',
-        subtitle: 'Clásico de animación.',
-        description: 'Ilustraciones de acuarela fluidas con banda sonora de jazz psicodélico.',
-        recommendation: 'Pieza artística de culto.'
-    },
-    'puparia': {
-        video: './PUPARIA.MP4',
-        badge: '🍿 Cortometraje Anime • ✈️✈️✈️✈️✈️',
-        title: 'PUPARIA 👁️✨',
-        subtitle: 'Creado por Shingo Tamagawa.',
-        description: 'Tres minutos de animación independiente minuciosamente dibujada a mano.',
-        recommendation: 'Disponible en YouTube.'
-    },
-    'goodtrip': {
-        video: './GOOD-TRIP.MP4',
-        badge: '🍿 Documental & Comedia • ✈️✈️✈️✈️',
-        title: 'HAVE A GOOD TRIP 🍄🧠',
-        subtitle: 'Disponible en Netflix.',
-        description: 'Celebridades relatan sus vivencias psicodélicas acompañadas de animaciones cómicas.',
-        recommendation: 'Ligero y divertido.'
-    },
-    'entergalactic': {
-        video: './ENTERGALACTIC.MP4',
-        badge: '🎨 Animación & Romance Urbano • ✈️✈️✈️✈️',
-        title: 'ENTERGALACTIC 🎨🌌',
-        subtitle: 'Creado por Kid Cudi.',
-        description: 'Explosión de color y música que sigue una historia de amor en Nueva York.',
-        recommendation: 'Usar audífonos o sonido estéreo.'
-    },
-
-    // 04. MÚSICA
-    'dubside': {
-        image: './dub.png',
-        badge: '🎧 Reggae / Dub • ✈️✈️✈️✈️✈️',
-        title: 'DUB SIDE OF THE MOON',
-        subtitle: 'Easy Star All-Stars',
-        description: 'Tributo en clave Dub al legendario álbum de Pink Floyd. Bajos profundos y ecos envolventes.',
-        recommendation: 'Escúchalo completo con audífonos.'
-    }
-};
-
-// --- GESTIÓN DE VISTAS Y MODALES ---
-export function openRutasVuelo() { toggleFullscreenView('rutasFullscreenView', true); }
-export function closeRutasVuelo() { toggleFullscreenView('rutasFullscreenView', false); }
-
-export function openMonchisVuelo() { toggleFullscreenView('monchisFullscreenView', true); }
-export function closeMonchisVuelo() { toggleFullscreenView('monchisFullscreenView', false); }
-
-export function openCineVuelo() { toggleFullscreenView('cineFullscreenView', true); }
-export function closeCineVuelo() { toggleFullscreenView('cineFullscreenView', false); }
-
-export function openMusicVuelo() { toggleFullscreenView('musicFullscreenView', true); }
-export function closeMusicVuelo() { toggleFullscreenView('musicFullscreenView', false); }
-
-export function openEmergencyVuelo() { toggleFullscreenView('emergencyFullscreenView', true); }
-export function closeEmergencyVuelo() { toggleFullscreenView('emergencyFullscreenView', false); }
-
-function toggleFullscreenView(id, show) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (show) {
-        el.classList.add('active');
-        document.body.classList.add('modal-open');
-        triggerLazyVideos(el);
-    } else {
-        el.classList.remove('active');
-        document.body.classList.remove('modal-open');
-    }
-}
-
-// Carga e inicio de videos
-function triggerLazyVideos(container) {
-    const videos = container.querySelectorAll('video');
-    videos.forEach(v => {
-        if (v.dataset.src && !v.src) v.src = v.dataset.src;
-        v.play().catch(() => {});
-    });
-}
-
-// Abrir Modal Detallado de Tarjetas
-export function openCardModal(type, key) {
+// --- MODAL DETALLADO DE TARJETAS (INFO MODAL) ---
+export function openCardModal(tipo, id) {
+    saveMainScrollPosition();
+    const item = experiencesData[tipo] && experiencesData[tipo][id];
     const modal = document.getElementById('infoModalOverlay');
     const body = document.getElementById('infoModalBody');
-    if (!modal || !body) return;
 
-    const item = cardModalData[key];
-    if (item) {
-        let media = item.video 
-            ? `<video src="${item.video}" controls autoplay loop muted playsinline style="width:100%; max-height:300px; border-radius:16px; object-fit:cover; margin-bottom:16px;"></video>`
-            : `<img src="${item.image}" style="width:100%; max-height:300px; border-radius:16px; object-fit:cover; margin-bottom:16px;">`;
+    if (!item || !modal || !body) return;
 
-        body.innerHTML = `
-            ${media}
-            <span class="badge-tag" style="margin-bottom:8px; display:inline-block;">${item.badge}</span>
-            <h2 style="font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:4px;">${item.title}</h2>
-            ${item.subtitle ? `<p style="color:#facc15; font-size:0.9rem; font-weight:700; margin-bottom:12px;">${item.subtitle}</p>` : ''}
-            <div style="background:rgba(255,255,255,0.06); padding:14px; border-radius:12px; margin-bottom:14px; border-left:4px solid #facc15;">
-                <p style="color:#e2e8f0; font-size:0.92rem; line-height:1.5; margin:0;">${item.description}</p>
-            </div>
-            ${item.recommendation ? `<p style="color:#38bdf8; font-size:0.85rem; font-weight:600;">💡 ${item.recommendation}</p>` : ''}
+    let mediaHTML = item.isVideo 
+        ? `<video src="${item.media}" controls autoplay loop muted playsinline style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:15px;"></video>`
+        : `<img src="${item.media}" alt="${item.title}" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:15px;">`;
+
+    let contentHTML = `
+        <span class="badge-tag" style="margin-bottom:10px; display:inline-block;">${item.badge || ''}</span>
+        <h2 style="font-size:1.6rem; color:#fff; margin-bottom:12px;">${item.title}</h2>
+        ${mediaHTML}
+    `;
+
+    if (tipo === 'rutas') {
+        contentHTML += `
+            <p style="color:#cbd5e1; margin-bottom:8px;"><strong>📍 Ubicación:</strong> ${item.zona}</p>
+            <p style="color:#cbd5e1; margin-bottom:8px;"><strong>🚇 Conexión:</strong> ${item.conexion}</p>
+            <p style="color:#facc15; margin-bottom:12px;"><strong>⭐ Calificación:</strong> ${item.calificacion}</p>
+            <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">${item.bitacora}</p>
+            <p style="color:#a3b899; margin-bottom:15px;"><strong>🛡️ Radar de Discreción:</strong> ${item.discrecion}</p>
+            ${item.extraInfo ? `<p style="color:#38bdf8; margin-bottom:15px; font-size:0.9rem;">${item.extraInfo}</p>` : ''}
+            <a href="${item.mapsUrl}" target="_blank" class="btn-add" style="display:block; text-align:center; text-decoration:none; margin-top:15px;">📍 Abrir en Google Maps</a>
+        `;
+    } else if (tipo === 'monchis') {
+        if (item.ingredientes) {
+            contentHTML += `
+                <p style="color:#facc15; margin-bottom:12px;"><strong>⭐ Calificación:</strong> ${item.calificacion}</p>
+                <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">
+                    <h4 style="color:#fff; margin-bottom:6px;">🛒 Ingredientes:</h4>
+                    <p style="color:#cbd5e1; font-size:0.92rem;">${item.ingredientes}</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:12px;">
+                    <h4 style="color:#fff; margin-bottom:6px;">👨‍🍳 Preparación Paso a Paso:</h4>
+                    <p style="color:#e2e8f0; font-size:0.92rem; white-space:pre-line;">${item.preparacion}</p>
+                </div>
+            `;
+        } else {
+            contentHTML += `
+                <p style="color:#cbd5e1; margin-bottom:8px;"><strong>📍 Ubicación:</strong> ${item.ubicacion}</p>
+                <p style="color:#facc15; margin-bottom:8px;"><strong>⭐ Calificación:</strong> ${item.calificacion}</p>
+                <p style="color:#38bdf8; margin-bottom:12px;"><strong>🔥 Tipo de Bajón:</strong> ${item.tipo}</p>
+                <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">${item.resena}</p>
+                <p style="color:#cbd5e1; margin-bottom:8px;"><strong>💰 Presupuesto:</strong> ${item.presupuesto}</p>
+                ${item.horario ? `<p style="color:#a3b899; margin-bottom:15px;">${item.horario}</p>` : ''}
+                <a href="${item.mapsUrl}" target="_blank" class="btn-add" style="display:block; text-align:center; text-decoration:none; margin-top:15px;">📍 Abrir en Google Maps</a>
+            `;
+        }
+    } else if (tipo === 'cine') {
+        contentHTML += `
+            <p style="color:#cbd5e1; margin-bottom:8px;"><strong>🌀 Categoría:</strong> ${item.categoria}</p>
+            <p style="color:#38bdf8; margin-bottom:12px;"><strong>📺 Disponible en:</strong> ${item.plataforma}</p>
+            <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px;">${item.resena}</p>
         `;
     }
+
+    body.innerHTML = contentHTML;
     modal.classList.add('active');
-    document.body.classList.add('modal-open');
+    openModalState();
 }
 
 export function closeInfoModal() {
     const modal = document.getElementById('infoModalOverlay');
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
+    if (modal) modal.classList.remove('active');
+    closeModalState();
+}
+
+export function closeInfoModalOnOverlay(event) {
+    if (event.target.id === 'infoModalOverlay') {
+        closeInfoModal();
     }
 }
 
-export function closeInfoModalOnOverlay(e) {
-    if (e.target === e.currentTarget) closeInfoModal();
+// --- VISTAS FULLSCREEN PRINCIPALES ---
+export function openRutasVuelo() {
+    saveMainScrollPosition();
+    const v = document.getElementById('rutasFullscreenView');
+    if (v) v.classList.add('active');
+    openModalState();
+}
+export function closeRutasVuelo() {
+    const v = document.getElementById('rutasFullscreenView');
+    if (v) v.classList.remove('active');
+    closeModalState();
 }
 
-// --- TAB Y FILTROS MONCHIS ---
+export function openMonchisVuelo() {
+    saveMainScrollPosition();
+    const v = document.getElementById('monchisFullscreenView');
+    if (v) v.classList.add('active');
+    openModalState();
+}
+export function closeMonchisVuelo() {
+    const v = document.getElementById('monchisFullscreenView');
+    if (v) v.classList.remove('active');
+    closeModalState();
+}
+
+export function openCineVuelo() {
+    saveMainScrollPosition();
+    const v = document.getElementById('cineFullscreenView');
+    if (v) v.classList.add('active');
+    openModalState();
+}
+export function closeCineVuelo() {
+    const v = document.getElementById('cineFullscreenView');
+    if (v) v.classList.remove('active');
+    closeModalState();
+}
+
+export function openMusicVuelo() {
+    saveMainScrollPosition();
+    const v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.add('active');
+    openModalState();
+}
+export function closeMusicVuelo() {
+    const v = document.getElementById('musicFullscreenView');
+    if (v) v.classList.remove('active');
+    closeModalState();
+}
+
+export function openEmergencyVuelo() {
+    saveMainScrollPosition();
+    const v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.add('active');
+    openModalState();
+}
+export function closeEmergencyVuelo() {
+    const v = document.getElementById('emergencyFullscreenView');
+    if (v) v.classList.remove('active');
+    closeModalState();
+}
+
+// --- MARCAS FULLSCREEN INTERFAZ DEDICADA ---
+export function openFullscreenBrand(brandKey) {
+    saveMainScrollPosition();
+    const view = document.getElementById('brandFullscreenView');
+    const container = document.getElementById('brandFullscreenContent');
+    if (!view || !container) return;
+
+    let brandLayout = '';
+    switch (brandKey) {
+        case 'muhameds':
+            brandLayout = `
+                <div class="theme-muhameds-full">
+                    <div class="brand-hero-common">
+                        <div class="muha-brand-group">
+                            <img src="./logo-muhameds.png" class="muha-hero-logo" alt="Muha Meds">
+                            <h2 style="font-size:2rem; color:#d4af37;">MUHA MEDS OFFICIAL</h2>
+                        </div>
+                    </div>
+                </div>`;
+            break;
+        case 'cookies':
+            brandLayout = `
+                <div class="theme-cookies-full">
+                    <div class="brand-hero-common">
+                        <img src="./logo-cookies.png" class="cookies-hero-logo" alt="Cookies">
+                    </div>
+                </div>`;
+            break;
+        case 'donuts':
+            brandLayout = `
+                <div class="theme-donuts-full">
+                    <div class="brand-hero-common">
+                        <img src="./donutslogomarcas.png" class="donuts-interface-logo" alt="Donuts">
+                    </div>
+                </div>`;
+            break;
+        case 'packman':
+            brandLayout = `
+                <div class="theme-packman-full">
+                    <div class="brand-hero-common">
+                        <img src="./packmanmarcas.png" class="packman-hero-title-img" alt="Packman">
+                    </div>
+                </div>`;
+            break;
+        default:
+            brandLayout = `<div style="padding:100px; text-align:center; color:#fff;"><h2>SECCIÓN DE MARCA</h2></div>`;
+            break;
+    }
+
+    container.innerHTML = brandLayout;
+    view.classList.add('active');
+    openModalState();
+}
+
+export function closeFullscreenBrand() {
+    const view = document.getElementById('brandFullscreenView');
+    if (view) view.classList.remove('active');
+    closeModalState();
+}
+
+// --- FILTROS MONCHIS, CINE & MÚSICA ---
 export function switchMonchisTab(tab) {
-    const btnCalle = document.getElementById('tabCalleBtn');
-    const btnCasa = document.getElementById('tabCasaBtn');
-    const fCalle = document.getElementById('filtersCalle');
-    const fCasa = document.getElementById('filtersCasa');
+    const calleBtn = document.getElementById('tabCalleBtn');
+    const casaBtn = document.getElementById('tabCasaBtn');
+    const filtersCalle = document.getElementById('filtersCalle');
+    const filtersCasa = document.getElementById('filtersCasa');
+    const cards = document.querySelectorAll('#monchisGrid .compact-card');
 
     if (tab === 'calle') {
-        if (btnCalle) btnCalle.classList.add('active');
-        if (btnCasa) btnCasa.classList.remove('active');
-        if (fCalle) fCalle.style.display = 'flex';
-        if (fCasa) fCasa.style.display = 'none';
+        if (calleBtn) calleBtn.classList.add('active');
+        if (casaBtn) casaBtn.classList.remove('active');
+        if (filtersCalle) filtersCalle.style.display = 'flex';
+        if (filtersCasa) filtersCasa.style.display = 'none';
+        cards.forEach(c => c.style.display = c.dataset.tipo === 'calle' ? 'block' : 'none');
     } else {
-        if (btnCasa) btnCasa.classList.add('active');
-        if (btnCalle) btnCalle.classList.remove('active');
-        if (fCalle) fCalle.style.display = 'none';
-        if (fCasa) fCasa.style.display = 'flex';
+        if (casaBtn) casaBtn.classList.add('active');
+        if (calleBtn) calleBtn.classList.remove('active');
+        if (filtersCasa) filtersCasa.style.display = 'flex';
+        if (filtersCalle) filtersCalle.style.display = 'none';
+        cards.forEach(c => c.style.display = c.dataset.tipo === 'casa' ? 'block' : 'none');
     }
-    filterMonchisCards();
 }
 
 export function filterMonchisCards() {
     const isCalle = document.getElementById('tabCalleBtn')?.classList.contains('active');
     const cards = document.querySelectorAll('#monchisGrid .compact-card');
-    const targetType = isCalle ? 'calle' : 'casa';
 
-    const zVal = document.getElementById('filterZona')?.value || 'todos';
-    const aCalleVal = document.getElementById('filterAntojoCalle')?.value || 'todos';
-    const aCasaVal = document.getElementById('filterAntojoCasa')?.value || 'todos';
-
-    cards.forEach(card => {
-        const cTipo = card.dataset.tipo;
-        const cZona = card.dataset.zona;
-        const cAntojo = card.dataset.antojo;
-
-        let match = (cTipo === targetType);
-        if (isCalle) {
-            if (zVal !== 'todos') match = match && (cZona === zVal);
-            if (aCalleVal !== 'todos') match = match && (cAntojo === aCalleVal);
-        } else {
-            if (aCasaVal !== 'todos') match = match && (cAntojo === aCasaVal);
-        }
-
-        card.style.display = match ? 'block' : 'none';
-    });
+    if (isCalle) {
+        const zona = document.getElementById('filterZona')?.value || 'todos';
+        const antojo = document.getElementById('filterAntojoCalle')?.value || 'todos';
+        cards.forEach(c => {
+            if (c.dataset.tipo !== 'calle') { c.style.display = 'none'; return; }
+            const matchZona = zona === 'todos' || c.dataset.zona === zona;
+            const matchAntojo = antojo === 'todos' || c.dataset.antojo === antojo;
+            c.style.display = (matchZona && matchAntojo) ? 'block' : 'none';
+        });
+    } else {
+        const antojo = document.getElementById('filterAntojoCasa')?.value || 'todos';
+        cards.forEach(c => {
+            if (c.dataset.tipo !== 'casa') { c.style.display = 'none'; return; }
+            const matchAntojo = antojo === 'todos' || c.dataset.antojo === antojo;
+            c.style.display = matchAntojo ? 'block' : 'none';
+        });
+    }
 }
 
 export function filterCineCards() {
-    const val = document.getElementById('filterCategoriaCine')?.value || 'todos';
-    document.querySelectorAll('#cineGrid .monchis-card').forEach(card => {
-        card.style.display = (val === 'todos' || card.dataset.categoria === val) ? 'block' : 'none';
+    const cat = document.getElementById('filterCategoriaCine')?.value || 'todos';
+    const cards = document.querySelectorAll('#cineGrid .monchis-card');
+    cards.forEach(c => {
+        c.style.display = (cat === 'todos' || c.dataset.categoria === cat) ? 'block' : 'none';
     });
 }
 
 export function filterMusicCards() {
-    const val = document.getElementById('filterCategoriaMusic')?.value || 'todos';
-    document.querySelectorAll('#musicGrid .music-card').forEach(card => {
-        card.style.display = (val === 'todos' || card.dataset.categoria === val) ? 'block' : 'none';
+    const cat = document.getElementById('filterCategoriaMusic')?.value || 'todos';
+    const cards = document.querySelectorAll('#musicGrid .music-card');
+    cards.forEach(c => {
+        c.style.display = (cat === 'todos' || c.dataset.categoria === cat) ? 'block' : 'none';
     });
 }
 
-// --- MARCAS FULLSCREEN ---
-export function openFullscreenBrand(brand) {
-    const view = document.getElementById('brandFullscreenView');
-    const content = document.getElementById('brandFullscreenContent');
-    if (!view || !content) return;
-
-    content.innerHTML = `
-        <div class="brand-hero-common" style="background:#090d16; color:#fff; min-height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-            <h1 style="font-size:2.5rem; text-transform:uppercase; font-family:'Space Grotesk';">${brand}</h1>
-            <p style="color:#94a3b8; margin-top:10px;">Catálogo Oficial & Ediciones Limitadas</p>
-        </div>
-    `;
-    view.classList.add('active');
-    document.body.classList.add('modal-open');
-}
-
-export function closeFullscreenBrand() {
-    const view = document.getElementById('brandFullscreenView');
-    if (view) {
-        view.classList.remove('active');
-        document.body.classList.remove('modal-open');
-    }
-}
-
 // --- MODALES AUXILIARES (BUZÓN, FAQ, PROMO, PERFIL) ---
-export function openBuzonModal() { toggleModal('buzonModalOverlay', true); }
-export function closeBuzonModal() { toggleModal('buzonModalOverlay', false); }
-export function closeBuzonOnOverlay(e) { if (e.target === e.currentTarget) closeBuzonModal(); }
-
-export function openFaqModal() { toggleModal('faqModalOverlay', true); }
-export function closeFaqModal() { toggleModal('faqModalOverlay', false); }
-export function closeFaqOnOverlay(e) { if (e.target === e.currentTarget) closeFaqModal(); }
-
-export function cerrarPromo() { toggleModal('promoModal', false); }
-export function irALoginDesdePromo() { cerrarPromo(); toggleModal('loginModal', true); }
-export function cerrarLogin() { toggleModal('loginModal', false); }
-
-export function abrirPerfilOClick() {
-    const { currentUserProfile } = store.getState();
-    if (currentUserProfile) {
-        toggleModal('profileModal', true);
-    } else {
-        toggleModal('loginModal', true);
-    }
+export function openBuzonModal() {
+    saveMainScrollPosition();
+    const m = document.getElementById('buzonModalOverlay');
+    if (m) m.classList.add('active');
+    openModalState();
 }
-export function cerrarPerfil() { toggleModal('profileModal', false); }
-
-export function guardarDatosPerfil() {
-    alert("¡Datos guardados en tu Pasaporte Digital!");
+export function closeBuzonModal() {
+    const m = document.getElementById('buzonModalOverlay');
+    if (m) m.classList.remove('active');
+    closeModalState();
 }
+export function closeBuzonOnOverlay(e) { if (e.target.id === 'buzonModalOverlay') closeBuzonModal(); }
 
 export function sendBuzonWhatsApp(e) {
     e.preventDefault();
     const tipo = document.getElementById('buzonTipo')?.value || '';
     const nombre = document.getElementById('buzonNombre')?.value || 'Pasajero';
-    const msg = document.getElementById('buzonMensaje')?.value || '';
-
-    const text = `📬 *BUZÓN AEROSHOP*\n*Tipo:* ${tipo}\n*De:* ${nombre}\n*Mensaje:* ${msg}`;
+    const mensaje = document.getElementById('buzonMensaje')?.value || '';
+    const text = `*📫 BUZÓN AEROSHOP*\n*Tipo:* ${tipo}\n*Nombre:* ${nombre}\n*Mensaje:* ${mensaje}`;
     window.open(`https://wa.me/525561446446?text=${encodeURIComponent(text)}`, '_blank');
     closeBuzonModal();
 }
 
-function toggleModal(id, show) {
-    const modal = document.getElementById(id);
-    if (!modal) return;
-    if (show) {
-        modal.classList.add('active');
-        document.body.classList.add('modal-open');
-    } else {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-    }
+export function openFaqModal() {
+    saveMainScrollPosition();
+    const m = document.getElementById('faqModalOverlay');
+    if (m) m.classList.add('active');
+    openModalState();
+}
+export function closeFaqModal() {
+    const m = document.getElementById('faqModalOverlay');
+    if (m) m.classList.remove('active');
+    closeModalState();
+}
+export function closeFaqOnOverlay(e) { if (e.target.id === 'faqModalOverlay') closeFaqModal(); }
+
+export function cerrarPromo() {
+    const m = document.getElementById('promoModal');
+    if (m) m.classList.remove('active');
+    closeModalState();
+}
+export function irALoginDesdePromo() {
+    cerrarPromo();
+    const l = document.getElementById('loginModal');
+    if (l) l.classList.add('active');
+    openModalState();
+}
+export function cerrarLogin() {
+    const l = document.getElementById('loginModal');
+    if (l) l.classList.remove('active');
+    closeModalState();
 }
 
-// --- RESPIRACIÓN GUIADA (PARA LA PÁLIDA) ---
-let breathingTimer = null;
-let isBreathingActive = false;
-
-export function toggleBreathingGuide() {
-    const circle = document.getElementById('breathingCircle');
-    const status = document.getElementById('btnBreathingToggle');
-    if (!circle) return;
-
-    if (isBreathingActive) {
-        clearTimeout(breathingTimer);
-        isBreathingActive = false;
-        circle.className = 'breathing-circle';
-        if (status) status.innerText = '▶️ Iniciar Respiración Guiada';
-        return;
-    }
-
-    isBreathingActive = true;
-    let step = 0;
-
-    const cycle = () => {
-        if (!isBreathingActive) return;
-        if (step === 0) {
-            circle.className = 'breathing-circle inhale';
-            if (status) status.innerText = '🫁 Inhala (4s)...';
-            step = 1;
-            breathingTimer = setTimeout(cycle, 4000);
-        } else if (step === 1) {
-            circle.className = 'breathing-circle hold';
-            if (status) status.innerText = '⏸️ Sostén (4s)...';
-            step = 2;
-            breathingTimer = setTimeout(cycle, 4000);
-        } else {
-            circle.className = 'breathing-circle exhale';
-            if (status) status.innerText = '😮‍💨 Exhala (6s)...';
-            step = 0;
-            breathingTimer = setTimeout(cycle, 6000);
-        }
-    };
-    cycle();
+export function abrirPerfilOClick() {
+    saveMainScrollPosition();
+    const p = document.getElementById('profileModal');
+    if (p) p.classList.add('active');
+    openModalState();
+}
+export function cerrarPerfil() {
+    const p = document.getElementById('profileModal');
+    if (p) p.classList.remove('active');
+    closeModalState();
+}
+export function guardarDatosPerfil() {
+    showToast('💾 Datos guardados en tu Pasaporte');
 }
 
-// Slider Hover en Tarjetas de Productos
-let sliderTimer = null;
-export function startHoverSlider(container) {
-    const media = container.querySelectorAll('img, video');
-    if (media.length <= 1) return;
-    let idx = 0;
-
-    stopHoverSlider(container);
-    sliderTimer = setInterval(() => {
-        media[idx].classList.remove('active');
-        idx = (idx + 1) % media.length;
-        media[idx].classList.add('active');
-        if (media[idx].tagName === 'VIDEO') media[idx].play().catch(() => {});
-    }, 1800);
+export function startHoverSlider(element) {
+    const v = element.querySelector('video');
+    if (v) v.play().catch(() => {});
+}
+export function stopHoverSlider(element) {
+    const v = element.querySelector('video');
+    if (v) v.pause();
 }
 
-export function stopHoverSlider(container) {
-    if (sliderTimer) {
-        clearInterval(sliderTimer);
-        sliderTimer = null;
-    }
-}
-
-// Compartir
-export function compartirContenido(title, text, desc) {
+export function compartirContenido(titulo, texto, url) {
     if (navigator.share) {
-        navigator.share({ title, text: `${text} - ${desc}`, url: window.location.href }).catch(() => {});
+        navigator.share({ title: titulo, text: texto, url: url || window.location.href }).catch(() => {});
     } else {
         navigator.clipboard.writeText(window.location.href);
-        alert('¡Enlace copiado al portapapeles!');
+        showToast('📋 Enlace copiado al portapapeles');
     }
 }

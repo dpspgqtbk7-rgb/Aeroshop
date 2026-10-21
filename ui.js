@@ -39,8 +39,9 @@ export function showToast(mensaje, tipo = 'success') {
 let savedScrollPosition = 0;
 
 export function saveMainScrollPosition() {
+    // Solo registra la posición si el body no tiene activo un modal previo
     if (!document.body.classList.contains('modal-open')) {
-        savedScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+        savedScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     }
 }
 
@@ -54,9 +55,11 @@ export function openModalState() {
 }
 
 export function closeModalState() {
+    // Revisa si queda algún overlay o pantalla completa activa
     const activeOverlays = document.querySelectorAll(
-        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active, #faqModalOverlay.active'
+        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active, #faqModalOverlay.active'
     );
+    
     if (activeOverlays.length === 0) {
         document.body.classList.remove('modal-open');
         restoreMainScrollPosition();
