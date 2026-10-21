@@ -52,3 +52,38 @@ function registerServiceWorker() {
         });
     }
 }
+import { openModalState, closeModalState } from './ui.js';
+
+// Exponer las funciones al objeto global window para que funcionen con onclick=""
+window.cerrarPromo = function() {
+    const promoModal = document.getElementById('promoModal');
+    if (promoModal) {
+        promoModal.classList.remove('active');
+    }
+    closeModalState();
+};
+
+window.irALoginDesdePromo = function() {
+    window.cerrarPromo();
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.classList.add('active');
+        openModalState();
+    }
+};
+
+window.cerrarLogin = function() {
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) {
+        loginModal.classList.remove('active');
+    }
+    closeModalState();
+};
+
+window.cerrarPerfil = function() {
+    const profileModal = document.getElementById('profileModal');
+    if (profileModal) {
+        profileModal.classList.remove('active');
+    }
+    closeModalState();
+};

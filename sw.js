@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'aeroshop-v3';
+const CACHE_NAME = 'aeroshop-v4';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
