@@ -1,7 +1,7 @@
 // ==========================================
 // CONTROL DE MODO MANTENIMIENTO
 // ==========================================
-const MODO_MANTENIMIENTO = false; // 👈 Cambia a 'true' para ACTIVAR, o 'false' para DESACTIVAR
+const MODO_MANTENIMIENTO = true ; // 👈 Cambia a 'true' para ACTIVAR, o 'false' para DESACTIVAR
 
 if (MODO_MANTENIMIENTO) {
     document.addEventListener('DOMContentLoaded', () => {
