@@ -3,7 +3,6 @@ import { store } from '../core/store.js';
 
 const PHONE_NUMBER = "525561446446";
 
-// Agregar producto al carrito
 export function addToCart(title, price, image) {
     const { cart } = store.getState();
     const existingIndex = cart.findIndex(item => item.title === title);
@@ -16,10 +15,8 @@ export function addToCart(title, price, image) {
     }
 
     store.setState({ cart: updatedCart });
-    renderCart();
 }
 
-// Remover o decrementar producto
 export function removeFromCart(title) {
     const { cart } = store.getState();
     const updatedCart = cart
@@ -27,15 +24,15 @@ export function removeFromCart(title) {
         .filter(item => item.quantity > 0);
 
     store.setState({ cart: updatedCart });
-    renderCart();
 }
 
-// Renderizar la interfaz del carrito
 export function renderCart() {
     const { cart, isPromo420Active } = store.getState();
-    const cartContainer = document.getElementById('cart-items-container');
+    
+    const cartContainer = document.getElementById('cartItemsContainer');
     const cartCountBadge = document.getElementById('cart-count');
-    const cartTotalElement = document.getElementById('cart-total-price');
+    const cartTotalElement = document.getElementById('totalPrice');
+    const subtotalElement = document.getElementById('subtotalPrice');
 
     if (!cartContainer) return;
 
@@ -45,10 +42,11 @@ export function renderCart() {
     cartContainer.innerHTML = '';
 
     if (cart.length === 0) {
-        cartContainer.innerHTML = '<p class="cart-empty-msg">Tu carrito está vacío 🚀</p>';
+        cartContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:30px 0;">Tu carrito está vacío 🚀</p>';
     } else {
         cart.forEach(item => {
-            subtotal += item.price * item.quantity;
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
             totalItems += item.quantity;
 
             const itemElement = document.createElement('div');
@@ -56,13 +54,13 @@ export function renderCart() {
             itemElement.innerHTML = `
                 <img src="${item.image}" alt="${item.title}" class="cart-item-img">
                 <div class="cart-item-details">
-                    <h4>${item.title}</h4>
-                    <p>$${item.price} MXN</p>
+                    <div class="cart-item-title">${item.title}</div>
+                    <div style="color:#16a34a; font-weight:bold;">$${item.price.toLocaleString()} MXN</div>
                 </div>
-                <div class="cart-item-controls">
-                    <button class="btn-qty-minus" data-action="qty-minus" data-title="${item.title}">-</button>
-                    <span>${item.quantity}</span>
-                    <button class="btn-qty-plus" data-action="qty-plus" data-title="${item.title}">+</button>
+                <div class="qty-controls">
+                    <button class="qty-btn" data-action="qty-minus" data-title="${item.title}">-</button>
+                    <span style="font-weight:bold;">${item.quantity}</span>
+                    <button class="qty-btn" data-action="qty-plus" data-title="${item.title}">+</button>
                 </div>
             `;
             cartContainer.appendChild(itemElement);
@@ -72,10 +70,10 @@ export function renderCart() {
     const total = isPromo420Active ? subtotal * 0.60 : subtotal;
 
     if (cartCountBadge) cartCountBadge.innerText = totalItems;
+    if (subtotalElement) subtotalElement.innerText = `$${subtotal.toLocaleString()} MXN`;
     if (cartTotalElement) cartTotalElement.innerText = `$${total.toLocaleString()} MXN`;
 }
 
-// Enviar pedido unificado a WhatsApp
 export function sendWhatsAppOrder() {
     const { cart, currentUserProfile, isPromo420Active } = store.getState();
 
@@ -89,7 +87,7 @@ export function sendWhatsAppOrder() {
 
     let message = "¡Hola Aeroshop! 🚀 Quisiera realizar el siguiente pedido:\n\n";
     cart.forEach(item => {
-        message += `• *${item.title}* (x${item.quantity}) - $${item.price * item.quantity} MXN\n`;
+        message += `• *${item.title}* (x${item.quantity}) - $${(item.price * item.quantity).toLocaleString()} MXN\n`;
     });
 
     if (isPromo420Active) {
@@ -106,3 +104,6 @@ export function sendWhatsAppOrder() {
 
     window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
 }
+
+// Escuchar cambios de estado para actualizar interfaz
+store.subscribe(renderCart);

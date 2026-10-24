@@ -36,30 +36,27 @@ export async function logoutUser() {
         console.error("❌ Error al cerrar sesión:", error);
     }
 }
-
+export async function logoutUser() {
+    try {
+        await fbMethods.signOut(auth);
+    } catch (error) {
+        console.error("❌ Error al cerrar sesión:", error);
+    }
+}
 function renderUserProfileUI(profile) {
     const userContainer = document.getElementById('user-passport-card');
     const loginBtn = document.getElementById('btn-login');
     const logoutBtn = document.getElementById('btn-logout');
 
-    if (!userContainer) return;
+   
 
     if (profile) {
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'inline-block';
-        
-        userContainer.innerHTML = `
-            <div class="passport-header">
-                <img src="${profile.photoURL || 'img/default-avatar.png'}" class="passport-avatar" alt="Avatar">
-                <div class="passport-info">
-                    <h3>${profile.displayName}</h3>
-                    <p class="passport-id">#USR-${profile.uid.slice(-5).toUpperCase()}</p>
-                </div>
-            </div>
-        `;
+        if (userAvatar) userAvatar.src = profile.photoURL;
+        if (userEmail) userEmail.innerText = profile.email;
+        if (editNombreReal && !editNombreReal.value) editNombreReal.value = profile.displayName;
     } else {
-        if (loginBtn) loginBtn.style.display = 'inline-block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-        userContainer.innerHTML = `<p>Inicia sesión para ver tu Pasaporte Aeroshop.</p>`;
+        if (userAvatar) userAvatar.src = '';
+        if (userEmail) userEmail.innerText = 'Sin sesión iniciada';
+        if (editNombreReal) editNombreReal.value = '';
     }
 }
