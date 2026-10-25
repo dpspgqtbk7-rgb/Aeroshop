@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'aeroshop-v5';
+const CACHE_NAME = 'aeroshop-v6';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -19,10 +19,9 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
+    self.skipWaiting();
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS_TO_CACHE);
-        }).then(() => self.skipWaiting())
+        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
     );
 });
 
@@ -40,36 +39,18 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Estrategia de Caché Dinámica (Stale-While-Revalidate)
 self.addEventListener('fetch', (event) => {
     if (event.request.url.includes('firestore.googleapis.com')) return;
 
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
+        fetch(event.request)
+            .then((networkResponse) => {
                 if (networkResponse && networkResponse.status === 200) {
                     const responseToCache = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
                 }
                 return networkResponse;
-            }).catch(() => cachedResponse);
-
-            return cachedResponse || fetchPromise;
-        })
-    );
-});
-
-// SOPORTE PARA NOTIFICACIONES PUSH
-self.addEventListener('push', (event) => {
-    const data = event.data ? event.data.json() : { title: 'AEROSHOP CDMX 🛸', body: '¡Hay nuevos vuelos y lanzamientos disponibles!' };
-    const options = {
-        body: data.body,
-        icon: '/avion.png',
-        badge: '/avion.png',
-        vibrate: [100, 50, 100]
-    };
-
-    event.waitUntil(
-        self.registration.showNotification(data.title, options)
+            })
+            .catch(() => caches.match(event.request))
     );
 });
