@@ -1,20 +1,35 @@
 // js/modules/cart.js
 import { store } from '../core/store.js';
+import { escapeHTML, openModalState, closeModalState, showToast } from '../ui.js';
 
-const PHONE_NUMBER = "525561446446";
+const PHONE_NUMBER = '525561446446';
+const DESCUENTO_420 = 0.40; // 40% de descuento cuando isPromo420Active = true
 
-export function addToCart(title, price, image) {
+const formatMXN = (n) => `$${Number(n).toLocaleString('es-MX')} MXN`;
+
+function calcularTotales(cart, isPromo420Active) {
+    const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = isPromo420Active ? subtotal * (1 - DESCUENTO_420) : subtotal;
+    return { subtotal, total };
+}
+
+export function addToCart(title, price, image = '') {
     const { cart } = store.getState();
-    const existingIndex = cart.findIndex(item => item.title === title);
-    
-    let updatedCart = [...cart];
-    if (existingIndex > -1) {
-        updatedCart[existingIndex].quantity += 1;
-    } else {
-        updatedCart.push({ title, price, image, quantity: 1 });
-    }
+    const existe = cart.some(item => item.title === title);
+
+    // Siempre se crea un carrito nuevo (no se modifica el anterior)
+    const updatedCart = existe
+        ? cart.map(item => item.title === title ? { ...item, quantity: item.quantity + 1 } : item)
+        : [...cart, { title, price, image, quantity: 1 }];
 
     store.setState({ cart: updatedCart });
+}
+
+export function increaseQuantity(title) {
+    const { cart } = store.getState();
+    store.setState({
+        cart: cart.map(item => item.title === title ? { ...item, quantity: item.quantity + 1 } : item)
+    });
 }
 
 export function removeFromCart(title) {
@@ -26,9 +41,24 @@ export function removeFromCart(title) {
     store.setState({ cart: updatedCart });
 }
 
+// Abre o cierra el panel del carrito (una sola función para todo el sitio)
+export function toggleCart(forceOpen) {
+    const overlay = document.getElementById('cartOverlay');
+    if (!overlay) return;
+
+    const abrir = typeof forceOpen === 'boolean' ? forceOpen : !overlay.classList.contains('active');
+    overlay.classList.toggle('active', abrir);
+
+    if (abrir) {
+        openModalState();
+    } else {
+        closeModalState();
+    }
+}
+
 export function renderCart() {
     const { cart, isPromo420Active } = store.getState();
-    
+
     const cartContainer = document.getElementById('cartItemsContainer');
     const cartCountBadge = document.getElementById('cart-count');
     const cartTotalElement = document.getElementById('totalPrice');
@@ -36,62 +66,52 @@ export function renderCart() {
 
     if (!cartContainer) return;
 
-    let subtotal = 0;
-    let totalItems = 0;
-
-    cartContainer.innerHTML = '';
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const { subtotal, total } = calcularTotales(cart, isPromo420Active);
 
     if (cart.length === 0) {
         cartContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:30px 0;">Tu carrito está vacío 🚀</p>';
     } else {
-        cart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
-            subtotal += itemTotal;
-            totalItems += item.quantity;
-
-            const itemElement = document.createElement('div');
-            itemElement.className = 'cart-item';
-            itemElement.innerHTML = `
-                <img src="${item.image}" alt="${item.title}" class="cart-item-img">
-                <div class="cart-item-details">
-                    <div class="cart-item-title">${item.title}</div>
-                    <div style="color:#16a34a; font-weight:bold;">$${item.price.toLocaleString()} MXN</div>
-                </div>
-                <div class="qty-controls">
-                    <button class="qty-btn" data-action="qty-minus" data-title="${item.title}">-</button>
-                    <span style="font-weight:bold;">${item.quantity}</span>
-                    <button class="qty-btn" data-action="qty-plus" data-title="${item.title}">+</button>
-                </div>
-            `;
-            cartContainer.appendChild(itemElement);
-        });
+        cartContainer.innerHTML = cart.map(item => {
+            const title = escapeHTML(item.title);
+            return `
+                <div class="cart-item">
+                    <img src="${escapeHTML(item.image)}" alt="${title}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <div class="cart-item-title">${title}</div>
+                        <div style="color:#16a34a; font-weight:bold;">${formatMXN(item.price)}</div>
+                    </div>
+                    <div class="qty-controls">
+                        <button class="qty-btn" data-action="qty-minus" data-title="${title}">-</button>
+                        <span style="font-weight:bold;">${item.quantity}</span>
+                        <button class="qty-btn" data-action="qty-plus" data-title="${title}">+</button>
+                    </div>
+                </div>`;
+        }).join('');
     }
 
-    const total = isPromo420Active ? subtotal * 0.60 : subtotal;
-
-    if (cartCountBadge) cartCountBadge.innerText = totalItems;
-    if (subtotalElement) subtotalElement.innerText = `$${subtotal.toLocaleString()} MXN`;
-    if (cartTotalElement) cartTotalElement.innerText = `$${total.toLocaleString()} MXN`;
+    if (cartCountBadge) cartCountBadge.textContent = totalItems;
+    if (subtotalElement) subtotalElement.textContent = formatMXN(subtotal);
+    if (cartTotalElement) cartTotalElement.textContent = formatMXN(total);
 }
 
 export function sendWhatsAppOrder() {
     const { cart, currentUserProfile, isPromo420Active } = store.getState();
 
     if (cart.length === 0) {
-        alert("Tu carrito está vacío.");
+        showToast('Tu carrito está vacío 🚀', 'error');
         return;
     }
 
-    let subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    let total = isPromo420Active ? subtotal * 0.60 : subtotal;
+    const { total } = calcularTotales(cart, isPromo420Active);
 
-    let message = "¡Hola Aeroshop! 🚀 Quisiera realizar el siguiente pedido:\n\n";
+    let message = '¡Hola Aeroshop! 🚀 Quisiera realizar el siguiente pedido:\n\n';
     cart.forEach(item => {
-        message += `• *${item.title}* (x${item.quantity}) - $${(item.price * item.quantity).toLocaleString()} MXN\n`;
+        message += `• *${item.title}* (x${item.quantity}) - ${formatMXN(item.price * item.quantity)}\n`;
     });
 
     if (isPromo420Active) {
-        message += `\n🔥 *Descuento 420 Aplicado (40% OFF)*`;
+        message += `\n🔥 *Descuento 420 Aplicado (${Math.round(DESCUENTO_420 * 100)}% OFF)*`;
     }
 
     if (currentUserProfile) {
@@ -100,10 +120,10 @@ export function sendWhatsAppOrder() {
         message += `\n*ID Cliente:* #USR-${currentUserProfile.uid.slice(-5).toUpperCase()}`;
     }
 
-    message += `\n\n*TOTAL A PAGAR:* $${total.toLocaleString()} MXN`;
+    message += `\n\n*TOTAL A PAGAR:* ${formatMXN(total)}`;
 
     window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
 }
 
-// Escuchar cambios de estado para actualizar interfaz
+// Redibuja el carrito cada vez que cambia
 store.subscribe(renderCart);

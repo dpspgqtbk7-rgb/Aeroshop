@@ -1,5 +1,7 @@
 // sw.js
-const CACHE_NAME = 'aeroshop-v6';
+// Sube el número cada vez que quieras forzar que todos los celulares limpien su copia guardada.
+const CACHE_NAME = 'aeroshop-v7';
+
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -21,36 +23,50 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+        caches.open(CACHE_NAME).then((cache) =>
+            // Antes, si UN archivo fallaba, no se instalaba nada. Ahora se guarda lo que se pueda.
+            Promise.allSettled(ASSETS_TO_CACHE.map((url) => cache.add(url)))
+        )
     );
 });
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
-                    }
-                })
-            );
-        }).then(() => self.clients.claim())
+        caches.keys()
+            .then((names) => Promise.all(
+                names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
+            ))
+            .then(() => self.clients.claim())
     );
 });
 
 self.addEventListener('fetch', (event) => {
-    if (event.request.url.includes('firestore.googleapis.com')) return;
+    const request = event.request;
+    const url = new URL(request.url);
 
+    // Solo páginas y archivos normales (GET por http/https)
+    if (request.method !== 'GET' || !url.protocol.startsWith('http')) return;
+
+    // Firebase (base de datos y login) siempre va directo a internet
+    if (/googleapis\.com|firebaseio\.com|firebaseapp\.com/.test(url.hostname) && !/fonts\./.test(url.hostname)) return;
+
+    // Los videos pesan mucho: se dejan al navegador y no se guardan
+    if (/\.(mp4|webm|mov)$/i.test(url.pathname) || request.headers.has('range')) return;
+
+    // Primero internet (siempre ves lo último); si no hay conexión, usa la copia guardada
     event.respondWith(
-        fetch(event.request)
+        fetch(request)
             .then((networkResponse) => {
                 if (networkResponse && networkResponse.status === 200) {
-                    const responseToCache = networkResponse.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+                    const copia = networkResponse.clone();
+                    caches.open(CACHE_NAME).then((cache) => cache.put(request, copia));
                 }
                 return networkResponse;
             })
-            .catch(() => caches.match(event.request))
+            .catch(() =>
+                caches.match(request).then((cached) =>
+                    cached || (request.mode === 'navigate' ? caches.match('/index.html') : undefined)
+                )
+            )
     );
 });

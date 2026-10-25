@@ -1,9 +1,9 @@
 // js/main.js
-import { openModalState, closeModalState, showToast } from './ui.js';
-import { renderCart } from './modules/cart.js';
+import { openModalState, showToast } from './ui.js';
+import { renderCart, toggleCart } from './modules/cart.js';
 import { initGlobalEvents } from './core/events.js';
-import { initAuthObserver } from './modules/auth.js';
-import { openProductModal, closeProductModal } from './modules/catalog.js';
+import { openProductModal, closeProductModal, closeModalOnOverlay } from './modules/catalog.js';
+import { toggleBreathingGuide } from './modules/emergency.js';
 
 import {
     openRutasVuelo, closeRutasVuelo,
@@ -16,14 +16,14 @@ import {
     switchMonchisTab, filterMonchisCards, filterCineCards, filterMusicCards,
     openBuzonModal, closeBuzonModal, closeBuzonOnOverlay, sendBuzonWhatsApp,
     openFaqModal, closeFaqModal, closeFaqOnOverlay,
-    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil, guardarDatosPerfil,
-    toggleBreathingGuide, startHoverSlider, stopHoverSlider, compartirContenido
+    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil,
+    startHoverSlider, stopHoverSlider, compartirContenido, initLazyVideos
 } from './modules/experiences.js';
 
 // ==========================================
 // CONTROL DE MODO MANTENIMIENTO
 // ==========================================
-const MODO_MANTENIMIENTO = true; // 👈 En 'true' para mantenimiento, 'false' para la app normal
+const MODO_MANTENIMIENTO = false; // 👈 true = letrero de mantenimiento | false = página normal
 
 function activarMantenimientoUI() {
     document.body.innerHTML = `
@@ -37,7 +37,7 @@ function activarMantenimientoUI() {
                 <p style="margin: 0; color: #38bdf8; font-weight: 700; font-size: 0.95rem;">
                     📞 ¿Dudas o pedidos urgentes? Comunícate directo al:
                 </p>
-                <a href="https://wa.me/525561446446" target="_blank" style="display: inline-block; margin-top: 8px; color: #22c55e; font-size: 1.3rem; font-weight: 800; text-decoration: none;">
+                <a href="https://wa.me/525561446446" target="_blank" rel="noopener" style="display: inline-block; margin-top: 8px; color: #22c55e; font-size: 1.3rem; font-weight: 800; text-decoration: none;">
                     💬 55 6144 6446
                 </a>
             </div>
@@ -45,15 +45,9 @@ function activarMantenimientoUI() {
     `;
 }
 
-if (MODO_MANTENIMIENTO) {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', activarMantenimientoUI);
-    } else {
-        activarMantenimientoUI();
-    }
-}
-
-// Exposición global
+// ==========================================
+// FUNCIONES DISPONIBLES PARA LOS onclick DEL HTML
+// ==========================================
 Object.assign(window, {
     openRutasVuelo, closeRutasVuelo,
     openMonchisVuelo, closeMonchisVuelo,
@@ -65,39 +59,74 @@ Object.assign(window, {
     switchMonchisTab, filterMonchisCards, filterCineCards, filterMusicCards,
     openBuzonModal, closeBuzonModal, closeBuzonOnOverlay, sendBuzonWhatsApp,
     openFaqModal, closeFaqModal, closeFaqOnOverlay,
-    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil, guardarDatosPerfil,
+    cerrarPromo, irALoginDesdePromo, cerrarLogin, abrirPerfilOClick, cerrarPerfil,
     toggleBreathingGuide, startHoverSlider, stopHoverSlider, compartirContenido,
-    openProductModal, closeProductModal
+    openProductModal, closeProductModal, closeModalOnOverlay, toggleCart
 });
 
-window.addEventListener('error', (event) => {
-    console.error('⚠️ Error detectado:', event.error);
-    if (typeof showToast === 'function') {
-        showToast('⚙️ Página en actualización / mantenimiento. Comunícate al 5561446446 para más información.', 'error');
+// Firebase se carga solo cuando hace falta (si falla, el resto del sitio sigue vivo)
+window.guardarDatosPerfil = async function () {
+    try {
+        const auth = await import('./modules/auth.js');
+        await auth.guardarDatosPerfil();
+    } catch (err) {
+        console.error('Perfil no disponible:', err);
+        showToast('Tu Pasaporte no está disponible ahora', 'error');
     }
+};
+
+async function initAuth() {
+    try {
+        const auth = await import('./modules/auth.js');
+        auth.initAuthObserver();
+    } catch (err) {
+        console.error('No se pudo cargar el inicio de sesión:', err);
+    }
+}
+
+// Aviso al cliente solo si algo realmente falla (máximo uno cada 15 s)
+let ultimoAviso = 0;
+window.addEventListener('error', (event) => {
+    console.error('⚠️ Error detectado:', event.error || event.message);
+    if (!event.error) return; // errores de imágenes/recursos se ignoran
+    const ahora = Date.now();
+    if (ahora - ultimoAviso < 15000) return;
+    ultimoAviso = ahora;
+    showToast('⚠️ Algo no cargó bien. Recarga la página.', 'error');
 });
+
+function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+    const registrar = () => navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('✅ Service Worker activo:', reg.scope))
+        .catch(err => console.error('❌ Error SW:', err));
+
+    if (document.readyState === 'complete') {
+        registrar();
+    } else {
+        window.addEventListener('load', registrar, { once: true });
+    }
+}
 
 function initApp() {
-    if (!MODO_MANTENIMIENTO) {
-        initGlobalEvents();    
-        initAuthObserver();    
-        renderCart();          
-        registerServiceWorker();
+    if (MODO_MANTENIMIENTO) {
+        activarMantenimientoUI();
+        return;
     }
+
+    initGlobalEvents();
+    initAuth();
+    renderCart();
+    initLazyVideos();
+    registerServiceWorker();
+
+    // El anuncio de bienvenida viene abierto desde el HTML: bloquea el scroll del fondo
+    const promo = document.getElementById('promoModal');
+    if (promo && promo.classList.contains('active')) openModalState();
 }
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {
     initApp();
-}
-
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('✅ Service Worker activo:', reg.scope))
-                .catch(err => console.error('❌ Error SW:', err));
-        });
-    }
 }

@@ -1,5 +1,6 @@
 // js/modules/catalog.js
 import { addToCart } from './cart.js';
+import { openModalState, closeModalState, showToast } from '../ui.js';
 
 // Base de datos oficial de productos para la vista detallada
 export const productsData = {
@@ -55,66 +56,71 @@ export function openProductModal(productId) {
     const modal = document.getElementById('productModalOverlay');
     if (!modal) return;
 
-    const product = productsData[productId] || {
-        title: 'Producto Aeroshop',
-        price: 850,
-        image: './logo-cookies.png',
-        description: 'Producto exclusivo del catálogo Aeroshop.',
-        strains: ['Híbrida ☯️']
-    };
+    const product = productsData[productId];
+    if (!product) {
+        // Antes se mostraba un producto "genérico" de $850; mejor avisar que algo falta.
+        console.warn('Producto no encontrado en catalog.js:', productId);
+        showToast('Ese producto no está disponible por ahora', 'error');
+        return;
+    }
 
     currentActiveProduct = product;
     currentSelectedStrain = product.strains[0] || '';
 
-    // Elementos del DOM
     const titleEl = document.getElementById('modalTitle');
     const priceEl = document.getElementById('modalPrice');
     const descEl = document.getElementById('modalDescription');
     const imageEl = document.getElementById('modalMainImage');
     const strainsContainer = document.getElementById('modalStrainPills');
 
-    if (titleEl) titleEl.innerText = product.title;
-    if (priceEl) priceEl.innerText = `$${product.price} MXN`;
-    if (descEl) descEl.innerText = product.description;
-    if (imageEl) imageEl.src = product.image;
+    if (titleEl) titleEl.textContent = product.title;
+    if (priceEl) priceEl.textContent = `$${product.price} MXN`;
+    if (descEl) descEl.textContent = product.description;
+    if (imageEl) { imageEl.src = product.image; imageEl.alt = product.title; }
 
-    // Generar botones de cepas/variedades
+    // Botones de cepas/variedades
     if (strainsContainer) {
         strainsContainer.innerHTML = '';
         product.strains.forEach((strain, index) => {
             const pill = document.createElement('button');
             pill.type = 'button';
             pill.className = `strain-pill ${index === 0 ? 'selected' : ''}`;
-            pill.innerText = strain;
-            pill.onclick = () => {
-                document.querySelectorAll('.strain-pill').forEach(p => p.classList.remove('selected'));
+            pill.textContent = strain;
+            pill.addEventListener('click', () => {
+                strainsContainer.querySelectorAll('.strain-pill').forEach(p => p.classList.remove('selected'));
                 pill.classList.add('selected');
                 currentSelectedStrain = strain;
-            };
+            });
             strainsContainer.appendChild(pill);
         });
     }
 
+    openModalState();
     modal.classList.add('active');
-    document.body.classList.add('modal-open');
 }
 
 // Cerrar ventana modal
 export function closeProductModal() {
     const modal = document.getElementById('productModalOverlay');
-    if (modal) {
-        modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
+    if (modal) modal.classList.remove('active');
+    closeModalState();
+}
+
+// Cerrar al tocar el fondo oscuro (fuera de la tarjeta)
+export function closeModalOnOverlay(e) {
+    if (e.target.id === 'productModalOverlay') {
+        closeProductModal();
     }
 }
 
 // Agregar al carrito desde la modal incluyendo la cepa seleccionada
 export function addModalProductToCart() {
     if (!currentActiveProduct) return;
-    const itemTitle = currentSelectedStrain 
-        ? `${currentActiveProduct.title} [${currentSelectedStrain}]` 
+    const itemTitle = currentSelectedStrain
+        ? `${currentActiveProduct.title} [${currentSelectedStrain}]`
         : currentActiveProduct.title;
-    
+
     addToCart(itemTitle, currentActiveProduct.price, currentActiveProduct.image);
+    showToast('🛒 Agregado al carrito');
     closeProductModal();
 }

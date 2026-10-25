@@ -1,8 +1,8 @@
-// ui.js
+// js/ui.js
 
 export function escapeHTML(str) {
-    if (typeof str !== 'string') return '';
-    return str.replace(/[&<>'"]/g, function(tag) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, function (tag) {
         const charsToReplace = {
             '&': '&amp;',
             '<': '&lt;',
@@ -18,7 +18,7 @@ export function vibrar(duracion = 25) {
     if ('vibrate' in navigator) {
         try {
             navigator.vibrate(duracion);
-        } catch (e) {}
+        } catch (e) { /* algunos navegadores no lo permiten */ }
     }
 }
 
@@ -26,9 +26,9 @@ export function showToast(mensaje, tipo = 'success') {
     vibrar(20);
     const toast = document.createElement('div');
     toast.className = `toast-notification ${tipo === 'error' ? 'error' : ''}`;
-    toast.innerText = mensaje;
+    toast.textContent = mensaje;
     document.body.appendChild(toast);
-    
+
     setTimeout(() => toast.classList.add('show'), 10);
     setTimeout(() => {
         toast.classList.remove('show');
@@ -39,7 +39,7 @@ export function showToast(mensaje, tipo = 'success') {
 let savedScrollPosition = 0;
 
 export function saveMainScrollPosition() {
-    // Solo registra la posición si el body no tiene activo un modal previo
+    // Solo registra la posición si todavía no hay un modal abierto
     if (!document.body.classList.contains('modal-open')) {
         savedScrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     }
@@ -54,13 +54,20 @@ export function openModalState() {
     document.body.classList.add('modal-open');
 }
 
+// Lista única de todo lo que cuenta como "ventana abierta".
+const OVERLAYS_ACTIVOS = [
+    '.product-modal-overlay.active',   // producto, buzón, FAQ
+    '.info-modal-overlay.active',
+    '.cart-overlay.active',
+    '.modal-overlay.active',           // promo, login, perfil
+    '.monchis-fullscreen-view.active', // monchis, cine, música
+    '.rutas-fullscreen-view.active',
+    '.brand-fullscreen-view.active',
+    '.emergency-fullscreen-view.active'
+].join(', ');
+
 export function closeModalState() {
-    // Revisa si queda algún overlay o pantalla completa activa
-    const activeOverlays = document.querySelectorAll(
-        '.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay.active, .cart-overlay[style*="flex"], .monchis-fullscreen-view.active, .rutas-fullscreen-view.active, .brand-fullscreen-view.active, .emergency-fullscreen-view.active, #promoModal.active, #loginModal.active, #profileModal.active, #buzonModalOverlay.active, #faqModalOverlay.active'
-    );
-    
-    if (activeOverlays.length === 0) {
+    if (document.querySelectorAll(OVERLAYS_ACTIVOS).length === 0) {
         document.body.classList.remove('modal-open');
         restoreMainScrollPosition();
     }

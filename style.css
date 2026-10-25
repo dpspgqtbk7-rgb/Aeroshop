@@ -3915,3 +3915,17 @@ button:active, .btn-add:active, .nav-item:active {
     background: rgba(220, 38, 38, 0.95); /* Rojo oscuro para errores */
     border-color: #f87171;
 }
+/* ==========================================
+   CORRECCIONES (auditoría Octubre 2026)
+   ========================================== */
+
+/* El carrito se abre con la clase .active (antes dependía de scripts duplicados) */
+.cart-overlay.active {
+    display: flex;
+}
+
+/* Antes decía "width: 100" (sin unidad) y el navegador lo ignoraba */
+#profileModal .modal-card,
+#profileModal .profile-fullscreen-card {
+    width: 100% !important;
+}
