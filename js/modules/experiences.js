@@ -2,6 +2,7 @@
 import { experiencesData } from './data.js';
 import { escapeHTML as e, openModalState, closeModalState, showToast } from '../ui.js';
 import { stopAllEmergency } from './emergency.js';
+import { productsData } from './catalog.js';
 
 /* ==========================================
    HERRAMIENTAS INTERNAS
@@ -51,6 +52,47 @@ function closeView(id) {
     pausarVideos(view);
 }
 
+// Imagen extra (mapa del CENART, rutas de Pumabús...) dentro de la tarjeta
+function imagenExtraHTML(img) {
+    if (!img) return '';
+    return `
+        <div style="margin:4px 0 16px;">
+            <h4 style="color:#fff; margin-bottom:8px;">${e(img.titulo)}</h4>
+            <a href="${e(img.src)}" target="_blank" rel="noopener">
+                <img src="${e(img.src)}" alt="${e(img.titulo)}" loading="lazy" style="width:100%; border-radius:14px; border:1px solid rgba(255,255,255,0.15); background:#fff;">
+            </a>
+            ${img.nota ? `<p style="color:#94a3b8; font-size:0.82rem; margin-top:6px;">${e(img.nota)} (toca la imagen para verla grande)</p>` : ''}
+        </div>`;
+}
+
+// Botones de "Cómo llegar" en transporte público (Google Maps, modo transporte)
+function comoLlegarHTML(cl) {
+    if (!cl) return '';
+    const url = (origen) =>
+        'https://www.google.com/maps/dir/?api=1' +
+        (origen ? '&origin=' + encodeURIComponent(origen + ' CDMX') : '') +
+        '&destination=' + encodeURIComponent(cl.destino + ' CDMX') +
+        '&travelmode=transit';
+    const chips = (cl.desde || []).map(d =>
+        `<a href="${e(url(d))}" target="_blank" rel="noopener" style="display:inline-block; margin:0 8px 8px 0; padding:8px 12px; border-radius:999px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.45); color:#7dd3fc; font-size:0.85rem; text-decoration:none;">Desde ${e(d)}</a>`
+    ).join('');
+    return `
+        <div style="background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">
+            <h4 style="color:#fff; margin-bottom:8px;">🚇 Cómo llegar en transporte público</h4>
+            <a href="${e(url(''))}" target="_blank" rel="noopener" class="btn-add" style="display:block; text-align:center; text-decoration:none; margin-bottom:12px;">🧭 Desde donde estoy ahora</a>
+            <p style="color:#94a3b8; font-size:0.82rem; margin-bottom:8px;">O sal desde un punto cercano:</p>
+            ${chips}
+        </div>`;
+}
+
+// Botones para ver la peli / disco en su plataforma
+function linksHTML(links) {
+    if (!links || !links.length) return '';
+    return links.map(l =>
+        `<a href="${e(l.url)}" target="_blank" rel="noopener" class="btn-add" style="display:block; text-align:center; text-decoration:none; margin-top:8px;">▶️ Ver en ${e(l.label)}</a>`
+    ).join('');
+}
+
 /* ==========================================
    MODAL DETALLADO DE TARJETAS (INFO MODAL)
    ========================================== */
@@ -82,6 +124,8 @@ export function openCardModal(tipo, id) {
             <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">${e(item.bitacora)}</p>
             <p style="color:#a3b899; margin-bottom:15px;"><strong>🛡️ Radar de Discreción:</strong> ${e(item.discrecion)}</p>
             ${item.extraInfo ? `<p style="color:#38bdf8; margin-bottom:15px; font-size:0.9rem;">${e(item.extraInfo)}</p>` : ''}
+            ${imagenExtraHTML(item.imagenExtra)}
+            ${comoLlegarHTML(item.comoLlegar)}
             ${mapsBtn}
         `;
     } else if (tipo === 'monchis') {
@@ -113,7 +157,8 @@ export function openCardModal(tipo, id) {
         contentHTML += `
             <p style="color:#cbd5e1; margin-bottom:8px;"><strong>🌀 Categoría:</strong> ${e(item.categoria)}</p>
             <p style="color:#38bdf8; margin-bottom:12px;"><strong>📺 Disponible en:</strong> ${e(item.plataforma)}</p>
-            <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px;">${e(item.resena)}</p>
+            <p style="color:#e2e8f0; line-height:1.6; background:rgba(255,255,255,0.05); padding:14px; border-radius:12px; margin-bottom:12px;">${e(item.resena)}</p>
+            ${linksHTML(item.links)}
         `;
     }
 
@@ -135,6 +180,16 @@ export function closeInfoModalOnOverlay(event) {
 /* ==========================================
    VISTAS FULLSCREEN PRINCIPALES
    ========================================== */
+export function filterRutas(zona, boton) {
+    document.querySelectorAll('.filtros-zonas .btn-filtro').forEach(b => {
+        b.classList.toggle('activo', b === boton || (!boton && b.dataset.zona === zona));
+    });
+    document.querySelectorAll('#rutasGrid .compact-card').forEach(c => {
+        const ok = zona === 'todo' || c.dataset.zona === zona;
+        c.style.display = ok ? '' : 'none';
+    });
+}
+
 export function openRutasVuelo()  { openView('rutasFullscreenView',  { videos: true }); }
 export function closeRutasVuelo() { closeView('rutasFullscreenView'); }
 
@@ -161,82 +216,129 @@ export function closeEmergencyVuelo() {
 }
 
 /* ==========================================
-   MARCAS FULLSCREEN
+   MARCAS FULLSCREEN (cada marca con su propia interfaz)
    ========================================== */
-const MARCAS_GENERICAS = {
-    backwoods: { name: 'BACKWOODS', logo: './logo-backwoods.png', bg: '#1c1917', color: '#f97316' }
+const MARCAS = {
+    muhameds: {
+        nombre: 'MUHA MEDS', clase: 'brand-muhameds',
+        fondo: 'radial-gradient(circle at 50% 0%, #4a3708 0%, #120d02 45%, #000 100%)',
+        acento: '#d4af37', texto: '#ffffff',
+        logo: './logo-muhameds.png', titulo: './MUHAMEDSINTERFAZ.png',
+        lema: 'Vapes de oro para vuelos de lujo ✨',
+        productos: ['muhacmeds', 'muhamedual'],
+        galeria: ['./muhamedual3.jpg', './muhacmeds2.jpg'],
+        video: './muhadual.mp4'
+    },
+    cookies: {
+        nombre: 'COOKIES', clase: 'brand-cookies',
+        fondo: 'linear-gradient(180deg, #0a9bff 0%, #0077d6 55%, #00539b 100%)',
+        acento: '#ffffff', texto: '#ffffff',
+        logo: './logo-cookies.png',
+        lema: 'California sobre la nube 💙',
+        productos: ['muhacmeds'],
+        galeria: ['./donutsv23.JPG']
+    },
+    backwoods: {
+        nombre: 'BACKWOODS', clase: 'brand-backwoods',
+        fondo: 'linear-gradient(180deg, #2a0707 0%, #120303 50%, #000 100%)',
+        acento: '#ef4444', texto: '#ffffff',
+        logo: './logo-backwoods.png',
+        lema: 'Clásico de toda la vida 🔥',
+        productos: [], galeria: []
+    },
+    donuts: {
+        nombre: 'DONUTS', clase: 'brand-donuts',
+        fondoImg: './fondoslog.jpg', fondo: '#7cc4f5',
+        acento: '#ff4fa3', texto: '#ffffff',
+        logo: './donutslogointerfaz.png',
+        lema: 'Dulce, esponjosa y en las nubes ☁️🍩',
+        productos: ['donutsdonitav3'],
+        galeria: ['./donutsv22.JPG', './donutsv23.JPG', './donutsdonasv3.JPG'],
+        video: './donuts1.mp4'
+    },
+    packman: {
+        nombre: 'PACKMAN', clase: 'brand-packman',
+        fondoImg: './packmanfondo.jpg', fondo: '#000000',
+        acento: '#facc15', texto: '#ffffff',
+        logo: './PACKMANSEGUNDOLOGO.png',
+        lema: 'Insert coin y despega 👾',
+        productos: ['packman3g'],
+        galeria: ['./packmanbyAceultra1_2.png', './packman2.png', './packman3.png', './packman4.PNG'],
+        video: './packmanbyaceultra.mp4'
+    },
+    fryd: {
+        nombre: 'FRYD EXTRACTS', clase: 'brand-fryd',
+        fondoImg: './frydfondo.jpg', fondo: '#1e092b',
+        acento: '#a855f7', texto: '#ffffff',
+        logo: './FRYD.jpg', logoRedondo: true,
+        lema: 'Aterrizaje alienígena garantizado 🛸',
+        productos: ['frydovni', 'besos2g'],
+        galeria: ['./frydgomas2.jpg', './frydgomas3.jpg', './besos.jpg'],
+        video: './frydgomas.mp4'
+    }
 };
+
+function productoMarcaHTML(id) {
+    const p = productsData[id];
+    if (!p) return '';
+    return `
+        <article class="brand-product" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
+            <img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy">
+            <div class="brand-product-info">
+                <h3>${e(p.title)}</h3>
+                <p class="brand-product-price">$${e(p.price)} MXN</p>
+                <div class="brand-product-actions">
+                    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${e(id)}">Ver más</button>
+                    <button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>
+                </div>
+            </div>
+        </article>`;
+}
+
+function marcaHTML(m) {
+    const bg = m.fondoImg
+        ? `background:${m.fondo} url('${m.fondoImg}') center/cover no-repeat;`
+        : `background:${m.fondo};`;
+    const productos = m.productos.map(productoMarcaHTML).join('');
+    const galeria = (m.galeria || []).map(src =>
+        `<img src="${e(src)}" alt="${e(m.nombre)}" loading="lazy">`).join('');
+    const video = m.video
+        ? `<video data-src="${e(m.video)}" loop muted playsinline webkit-playsinline preload="metadata" controls></video>` : '';
+
+    return `
+        <div class="brand-page ${m.clase}" style="--b-acento:${m.acento}; --b-texto:${m.texto};">
+            <div class="brand-bg" style="${bg}"></div>
+            <section class="brand-hero">
+                <img src="${e(m.logo)}" alt="${e(m.nombre)}" class="brand-hero-logo${m.logoRedondo ? ' round' : ''}">
+                ${m.titulo ? `<img src="${e(m.titulo)}" alt="" class="brand-hero-title">` : `<h2 class="brand-hero-name">${e(m.nombre)}</h2>`}
+                <p class="brand-hero-lema">${e(m.lema)}</p>
+                <button type="button" class="scroll-down-btn" aria-label="Ver productos"
+                    onclick="document.getElementById('brandProductos').scrollIntoView({behavior:'smooth'})">↓</button>
+            </section>
+            <section class="brand-section" id="brandProductos">
+                <h2 class="brand-section-title">Productos ${e(m.nombre)}</h2>
+                ${productos
+                    ? `<div class="brand-products-grid">${productos}</div>`
+                    : `<p class="brand-soon">🛬 Próximamente aterrizan productos de esta marca.</p>`}
+            </section>
+            ${(galeria || video) ? `
+            <section class="brand-section">
+                <h2 class="brand-section-title">Galería</h2>
+                <div class="brand-gallery">${video}${galeria}</div>
+            </section>` : ''}
+        </div>`;
+}
 
 export function openFullscreenBrand(brandKey) {
     const view = document.getElementById('brandFullscreenView');
     const container = document.getElementById('brandFullscreenContent');
     if (!view || !container) return;
 
-    let brandLayout = '';
-    switch (brandKey) {
-        case 'muhameds':
-            brandLayout = `
-                <div class="theme-muhameds-full">
-                    <div class="brand-hero-common">
-                        <div class="muha-brand-group">
-                            <img src="./logo-muhameds.png" class="muha-hero-logo" alt="Muha Meds">
-                            <h2 style="font-size:2rem; color:#d4af37;">MUHA MEDS OFFICIAL</h2>
-                        </div>
-                    </div>
-                </div>`;
-            break;
-        case 'cookies':
-            brandLayout = `
-                <div class="theme-cookies-full">
-                    <div class="brand-hero-common">
-                        <img src="./logo-cookies.png" class="cookies-hero-logo" alt="Cookies">
-                    </div>
-                </div>`;
-            break;
-        case 'donuts':
-            brandLayout = `
-                <div class="theme-donuts-full">
-                    <div class="brand-hero-common">
-                        <img src="./donutslogomarcas.png" class="donuts-interface-logo" alt="Donuts">
-                    </div>
-                </div>`;
-            break;
-        case 'packman':
-            brandLayout = `
-                <div class="theme-packman-full">
-                    <div class="brand-hero-common">
-                        <img src="./packmanmarcas.png" class="packman-hero-title-img" alt="Packman">
-                    </div>
-                </div>`;
-            break;
-        case 'fryd':
-            // Estas dos marcas existían solo en la versión vieja del HTML; ahora viven aquí.
-            brandLayout = `
-                <div class="theme-fryd-full">
-                    <div class="brand-hero-common">
-                        <img src="./FRYD.jpg" class="fryd-hero-logo" alt="Fryd Extracts" style="max-width:240px; height:auto;">
-                        <h2 style="font-size:2rem; color:#a855f7; margin-top:16px;">FRYD EXTRACTS</h2>
-                    </div>
-                </div>`;
-            break;
-        case 'backwoods': {
-            const b = MARCAS_GENERICAS.backwoods;
-            brandLayout = `
-                <div style="background:${b.bg}; min-height:100vh; color:#fff;">
-                    <div class="brand-hero-common">
-                        <img src="${b.logo}" alt="Backwoods" style="max-width:240px; height:auto;">
-                        <h2 style="font-size:2rem; color:${b.color}; margin-top:16px;">${b.name}</h2>
-                    </div>
-                </div>`;
-            break;
-        }
-        default:
-            brandLayout = `<div style="padding:100px; text-align:center; color:#fff;"><h2>SECCIÓN DE MARCA</h2></div>`;
-            break;
-    }
-
-    container.innerHTML = brandLayout;
-    openView('brandFullscreenView');
+    const m = MARCAS[brandKey];
+    container.innerHTML = m
+        ? marcaHTML(m)
+        : `<div style="padding:100px; text-align:center; color:#fff;"><h2>SECCIÓN DE MARCA</h2></div>`;
+    openView('brandFullscreenView', { videos: true });
 }
 
 export function closeFullscreenBrand() {
