@@ -20,6 +20,9 @@ import {
     startHoverSlider, stopHoverSlider, compartirContenido, initLazyVideos
 } from './modules/experiences.js';
 
+// Avisa a la red de seguridad de index.html que este archivo sí cargó
+window.__aeroshopListo = true;
+
 // ==========================================
 // CONTROL DE MODO MANTENIMIENTO
 // ==========================================

@@ -121,7 +121,7 @@
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)">
         <video data-src="./frydgomas.mp4" loop muted playsinline class="lazy-video active"></video>
         <img src="./frydgomas2.jpg" alt="FRYD 2" loading="lazy">
-        <img src="./-56.jpg" alt="FRYD 3" loading="lazy">
+        <img src="./frydgomas3.jpg" alt="FRYD 3" loading="lazy">
     </div>
     <div>
         <div class="product-name">FRYD Ovni 🛸 + Gomitas</div>
@@ -184,7 +184,7 @@
     <span class="product-tag-collab">COLABORACIÓN</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
         <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1" loading="lazy">
-        <img src="./MUHACMEDS.png" alt="MUHACMEDS 2g 2" loading="lazy">
+        <img src="./muhacmeds.png" alt="MUHACMEDS 2g 2" loading="lazy">
         <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3" loading="lazy">
         <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4" loading="lazy">
     </div>
@@ -445,7 +445,7 @@
     </div>
 
     <div class="compact-card" data-tipo="calle" data-zona="centro" data-antojo="salado" onclick="openCardModal('monchis', 'burgergate')">
-        <video data-src="./burgerg.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+        <video data-src="./burgerg.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
             <span class="badge-tag">📍 Centro • 🍿 Salado</span>
             <h4>Burger Gate 🍔</h4>
@@ -619,7 +619,7 @@
 
             <!-- 5. NEO TOKYO -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'neotokyo')">
-                <video data-src="./neotokyo.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+                <video data-src="./neotokyo.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
                 <div class="compact-card-body">
                     <span class="badge-tag">🎬 Animación Experimental • ✈️✈️✈️✈️</span>
                     <h4>NEO TOKYO (1987) 🚀</h4>
@@ -1062,6 +1062,34 @@
     <span class="nav-label">Perfil</span>
   </button>
 </nav>
+
+<!-- RED DE SEGURIDAD: si js/main.js no llega a cargar (falta un archivo en /js, abriste el HTML con doble clic, etc.)
+     los avisos igual se pueden cerrar y aparece un mensaje claro. js/main.js reemplaza estas funciones cuando carga bien. -->
+<script>
+  (function () {
+    function cerrar(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+      document.body.classList.remove('modal-open');
+    }
+    window.cerrarPromo  = function () { cerrar('promoModal'); };
+    window.cerrarLogin  = function () { cerrar('loginModal'); };
+    window.cerrarPerfil = function () { cerrar('profileModal'); };
+
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.__aeroshopListo) return;
+        console.error('AEROSHOP: js/main.js no cargó. Abre la consola (Cmd+Option+J): ¿falta un archivo en /js? ¿abriste index.html con doble clic? Usa Live Server o Vercel.');
+        cerrar('promoModal'); cerrar('loginModal'); cerrar('profileModal');
+        var aviso = document.createElement('div');
+        aviso.setAttribute('role', 'alert');
+        aviso.style.cssText = 'position:fixed;left:12px;right:12px;bottom:84px;z-index:2147483647;background:#0f172a;color:#fff;border:1px solid #facc15;border-radius:14px;padding:12px 16px;font:600 14px/1.4 system-ui,sans-serif;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.45)';
+        aviso.textContent = '⚠️ La página no cargó completa. Recarga con Cmd + Shift + R.';
+        document.body.appendChild(aviso);
+      }, 2500);
+    });
+  })();
+</script>
 
 <script type="module" src="./js/main.js"></script>
 </body>
