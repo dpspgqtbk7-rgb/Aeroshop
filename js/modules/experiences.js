@@ -3,6 +3,7 @@ import { experiencesData } from './data.js';
 import { escapeHTML as e, openModalState, closeModalState, showToast } from '../ui.js';
 import { stopAllEmergency } from './emergency.js';
 import { productsData } from './catalog.js';
+import { store } from '../core/store.js';
 
 /* ==========================================
    HERRAMIENTAS INTERNAS
@@ -429,9 +430,15 @@ export function irALoginDesdePromo() {
     openOverlay('loginModal');
 }
 
-export function cerrarLogin() { closeOverlay('loginModal'); }
+export function cerrarLogin() {
+    delete document.getElementById('loginModal')?.dataset.desdePedido;
+    closeOverlay('loginModal');
+}
 
-export function abrirPerfilOClick() { openOverlay('profileModal'); }
+// Con sesión abre el Pasaporte; sin sesión abre el inicio de sesión
+export function abrirPerfilOClick() {
+    openOverlay(store.getState().currentUserProfile ? 'profileModal' : 'loginModal');
+}
 export function cerrarPerfil()      { closeOverlay('profileModal'); }
 
 /* ==========================================

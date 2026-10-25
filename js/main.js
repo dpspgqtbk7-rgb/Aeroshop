@@ -4,6 +4,7 @@ import { renderCart, toggleCart } from './modules/cart.js';
 import { initGlobalEvents } from './core/events.js';
 import { openProductModal, closeProductModal, closeModalOnOverlay } from './modules/catalog.js';
 import { toggleBreathingGuide } from './modules/emergency.js';
+import { capturarInstalacion } from './modules/pwa.js';
 
 import {
     openRutasVuelo, closeRutasVuelo,
@@ -118,6 +119,7 @@ function initApp() {
     }
 
     initGlobalEvents();
+    capturarInstalacion(() => import('./modules/push.js').then(p => p.renderBloquePush()).catch(() => {}));
     initAuth();
     renderCart();
     initLazyVideos();

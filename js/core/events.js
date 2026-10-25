@@ -2,7 +2,7 @@
 import { addToCart, increaseQuantity, removeFromCart, sendWhatsAppOrder, toggleCart } from '../modules/cart.js';
 import { openProductModal, closeProductModal, addModalProductToCart } from '../modules/catalog.js';
 import { toggleBrownNoise, toggleBreathingGuide } from '../modules/emergency.js';
-import { showToast, vibrar } from '../ui.js';
+import { showToast, vibrar, closeModalState } from '../ui.js';
 
 // Firebase se carga solo cuando se necesita, así si falla no se cae todo el sitio.
 async function conAuth(accion) {
@@ -88,6 +88,30 @@ export function initGlobalEvents() {
 
             case 'login-google':
                 conAuth('loginWithGoogle');
+                break;
+
+            case 'send-whatsapp-guest':
+                // Seguir sin cuenta: se cierra el login y se manda el pedido en el mismo toque
+                document.getElementById('loginModal')?.classList.remove('active');
+                if (document.getElementById('loginModal')) delete document.getElementById('loginModal').dataset.desdePedido;
+                closeModalState();
+                sendWhatsAppOrder({ sinCuenta: true });
+                break;
+
+            case 'enable-push':
+                import('../modules/push.js').then(m => m.activarNotificaciones())
+                    .catch(() => showToast('Los avisos no están disponibles ahora', 'error'));
+                break;
+
+            case 'install-app':
+                import('../modules/pwa.js').then(async (m) => {
+                    await m.instalarApp();
+                    import('../modules/push.js').then(p => p.renderBloquePush()).catch(() => {});
+                });
+                break;
+
+            case 'login-apple':
+                conAuth('loginWithApple');
                 break;
 
             case 'logout':

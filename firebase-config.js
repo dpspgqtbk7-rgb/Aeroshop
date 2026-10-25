@@ -1,7 +1,7 @@
 // firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, OAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, addDoc, onSnapshot, updateDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -14,14 +14,23 @@ const firebaseConfig = {
     measurementId: "G-LEFTFGQ91G"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const googleProvider = new GoogleAuthProvider();
 
+// Llave pública para avisos (Firebase Console → Configuración del proyecto → Cloud Messaging →
+// "Certificados push web" → Generar par de claves). Pega aquí la clave larga. Es pública, no es secreta.
+export const VAPID_KEY = "";
+
+// Apple: pide correo y nombre. (Apple solo entrega el nombre la PRIMERA vez que la persona entra.)
+export const appleProvider = new OAuthProvider('apple.com');
+appleProvider.addScope('email');
+appleProvider.addScope('name');
+
 export const fbMethods = { 
-    doc, getDoc, setDoc, updateDoc, collection, getDocs, query, where,
-    signInWithPopup, signOut, onAuthStateChanged, 
+    doc, getDoc, setDoc, addDoc, onSnapshot, updateDoc, collection, getDocs, query, where,
+    signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged, 
     ref, uploadBytes, getDownloadURL 
 };

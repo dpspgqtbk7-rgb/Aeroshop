@@ -95,12 +95,25 @@ export function renderCart() {
     if (cartTotalElement) cartTotalElement.textContent = formatMXN(total);
 }
 
-export function sendWhatsAppOrder() {
+export function sendWhatsAppOrder(opciones = {}) {
     const { cart, currentUserProfile, isPromo420Active } = store.getState();
 
     if (cart.length === 0) {
         showToast('Tu carrito está vacío 🚀', 'error');
         return;
+    }
+
+    // Sin sesión se invita a entrar (así se acumulan vuelos y llegan avisos), pero se puede seguir sin cuenta
+    if (!currentUserProfile && !opciones.sinCuenta) {
+        const login = document.getElementById('loginModal');
+        if (login) {
+            toggleCart(false);
+            login.dataset.desdePedido = '1';
+            login.classList.add('active');
+            openModalState();
+            showToast('Inicia sesión para acumular vuelos y recibir avisos de tu pedido 🎟️');
+            return;
+        }
     }
 
     const { total } = calcularTotales(cart, isPromo420Active);
@@ -122,7 +135,15 @@ export function sendWhatsAppOrder() {
 
     message += `\n\n*TOTAL A PAGAR:* ${formatMXN(total)}`;
 
+    // Se abre WhatsApp primero (el celular solo lo permite justo al tocar el botón)
     window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+
+    // Después se guarda el pedido en el Pasaporte (si falla, el pedido por WhatsApp ya salió)
+    if (currentUserProfile) {
+        import('./pasaporte.js')
+            .then(m => m.registrarPedido(cart, total, isPromo420Active))
+            .catch(err => console.warn('No se guardó el pedido en el Pasaporte:', err.code || err));
+    }
 }
 
 // Redibuja el carrito cada vez que cambia

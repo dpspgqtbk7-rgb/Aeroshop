@@ -3972,3 +3972,63 @@ button:active, .btn-add:active, .nav-item:active {
 .brand-packman .brand-product { background: rgba(0,0,20,.85); border-style: dashed; }
 .brand-fryd .brand-product { background: rgba(20,5,35,.82); box-shadow: 0 0 28px rgba(168,85,247,.45); }
 .brand-backwoods .brand-hero-logo { width: 320px; }
+
+/* Botón "Continuar con Apple" */
+.btn-apple-auth {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; margin-top: 12px; padding: 13px 16px;
+    background: #000; color: #fff; border: 1px solid rgba(255,255,255,.35);
+    border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+.btn-apple-auth:hover { background: #1a1a1a; }
+.btn-apple-auth:disabled { opacity: .6; cursor: wait; }
+
+/* ==========================================
+   AVISOS, PEDIDOS Y SESIÓN SIN CUENTA
+   ========================================== */
+.push-box { background: rgba(250,204,21,.08); border: 1px solid rgba(250,204,21,.35); border-radius: 16px; padding: 14px; margin: 0 0 18px; text-align: center; }
+.push-box p { color: #e2e8f0; font-size: .9rem; line-height: 1.45; margin: 0 0 10px; }
+.push-box .btn-save-profile { margin-top: 6px; }
+.push-box .btn-install { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.push-box.push-destacado { animation: pushPulso 1.6s ease-in-out 3; border-color: #facc15; }
+@keyframes pushPulso { 0%,100% { box-shadow: 0 0 0 0 rgba(250,204,21,.0); } 50% { box-shadow: 0 0 0 8px rgba(250,204,21,.28); } }
+.order-status-card { display: flex; flex-direction: column; gap: 4px; background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.45); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; color: #e2e8f0; text-align: left; }
+.order-status-card strong { color: #7dd3fc; }
+.order-status-card small { color: #94a3b8; }
+.btn-guest-link { display: block; width: 100%; margin-top: 14px; padding: 12px 8px; background: none; border: 0; color: #94a3b8; font-size: .85rem; text-decoration: underline; cursor: pointer; }
+#loginModal:not([data-desde-pedido="1"]) #btnContinuarSinCuenta { display: none; }
+
+/* ==========================================
+   EXPERIENCIA EN CELULAR
+   ========================================== */
+html { -webkit-text-size-adjust: 100%; }
+* { -webkit-tap-highlight-color: transparent; }
+button, a, [role="button"], .compact-card, .product-card, .brand-logo-card, .nav-item { touch-action: manipulation; }
+
+/* Los celulares recortan 100vh por las barras del navegador: dvh usa el alto real */
+.brand-fullscreen-view, .rutas-fullscreen-view, .monchis-fullscreen-view, .cine-fullscreen-view,
+.music-fullscreen-view, .emergency-fullscreen-view { height: 100vh; height: 100dvh; overscroll-behavior: contain; }
+
+@media (max-width: 640px) {
+    /* iOS hace zoom al tocar un campo con letra menor a 16px */
+    input, select, textarea, .profile-input, .monchis-dropdown { font-size: 16px !important; }
+
+    /* Dedos: botones de al menos 44px */
+    .close-btn { min-width: 44px; min-height: 44px; }
+    .btn-add, .btn-save-profile, .btn-back-main, .btn-filtro, .btn-social-auth, .btn-apple-auth { min-height: 44px; }
+    .bottom-nav { padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+    .brand-nav-bar { padding-top: env(safe-area-inset-top); }
+
+    /* Ventanas grandes: ocupan todo el ancho y se pueden deslizar */
+    #profileModal .modal-card, #loginModal .modal-card, #infoModalOverlay .modal-card, #productModalOverlay .modal-card {
+        width: 100% !important; max-width: 100% !important;
+        max-height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        border-radius: 20px 20px 0 0 !important;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    }
+    .filtros-zonas { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 6px; }
+    .btn-filtro { flex: 0 0 auto; white-space: nowrap; }
+    .brand-hero-title { width: 300px; }
+    .brand-product img { height: 220px; }
+    .rutas-grid, .monchis-cards-grid { gap: 14px; }
+}

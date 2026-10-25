@@ -1,6 +1,6 @@
 // sw.js
 // Sube el número cada vez que quieras forzar que todos los celulares limpien su copia guardada.
-const CACHE_NAME = 'aeroshop-v8';
+const CACHE_NAME = 'aeroshop-v10';
 
 const ASSETS_TO_CACHE = [
     '/',
@@ -17,7 +17,10 @@ const ASSETS_TO_CACHE = [
     '/js/modules/experiences.js',
     '/js/modules/emergency.js',
     '/js/modules/auth.js',
-    '/js/modules/data.js'
+    '/js/modules/data.js',
+    '/js/modules/pasaporte.js',
+    '/js/modules/push.js',
+    '/js/modules/pwa.js'
 ];
 
 self.addEventListener('install', (event) => {

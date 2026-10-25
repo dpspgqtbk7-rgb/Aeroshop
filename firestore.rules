@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // El Capitán (Admin)
+    function esAdmin() {
+      return request.auth != null
+          && request.auth.token.email != null
+          && request.auth.token.email.lower() == "aeroshop.37@gmail.com";
+    }
+
+    // 1. PASAPORTES / USUARIOS: cada persona ve y edita SOLO lo suyo (el Admin ve todo)
+    match /usuarios/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || esAdmin());
+
+      // Primera vez que guarda su perfil
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.keys().hasOnly([
+                         'nombreReal','apodo','telefono','email','proveedor',
+                         'creadoEn','actualizadoEn','notificaciones'
+                       ])
+                    && (!('nombreReal' in request.resource.data) || request.resource.data.nombreReal.size() <= 80)
+                    && (!('apodo' in request.resource.data) || request.resource.data.apodo.size() <= 40)
+                    && (!('telefono' in request.resource.data) || request.resource.data.telefono.size() <= 14);
+
+      // Después solo puede cambiar datos de perfil. NUNCA 'vuelos_acumulados' ni 'historial_compras'
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                         'nombreReal','apodo','telefono','email','proveedor','actualizadoEn','notificaciones'
+                       ])
+                    && (!('nombreReal' in request.resource.data) || request.resource.data.nombreReal.size() <= 80)
+                    && (!('apodo' in request.resource.data) || request.resource.data.apodo.size() <= 40)
+                    && (!('telefono' in request.resource.data) || request.resource.data.telefono.size() <= 14);
+
+      // Solo el Capitán puede modificar vuelos y crear usuarios manualmente
+      allow write: if esAdmin();
+
+      // Pedidos del Pasaporte: la persona crea y ve los suyos (siempre "pendiente").
+      // Solo el Capitán los cambia a "entregado" (eso suma el vuelo).
+      match /pedidos/{pedidoId} {
+        allow read: if request.auth != null && (request.auth.uid == userId || esAdmin());
+        allow create: if request.auth != null
+                      && request.auth.uid == userId
+                      && request.resource.data.keys().hasOnly(['items','total','promo420','estado','creadoEn'])
+                      && request.resource.data.estado == 'pendiente'
+                      && request.resource.data.total is number
+                      && request.resource.data.items is list
+                      && request.resource.data.items.size() <= 30;
+        allow update, delete: if esAdmin();
+      }
+
+      // Llaves de avisos (notificaciones) de cada celular
+      match /tokens/{tokenId} {
+        allow read, create, update, delete: if request.auth != null && (request.auth.uid == userId || esAdmin());
+      }
+    }
+
+    // 2. CATÁLOGO Y MARCAS: lectura pública, edición exclusiva del Administrador
+    match /productos/{document=**} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    match /marcas/{document=**} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // 3. REGISTRO FINANCIERO DE VENTAS: acceso exclusivo del Administrador
+    match /transacciones_ventas/{document=**} {
+      allow read, write: if esAdmin();
+    }
+  }
+}

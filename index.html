@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <!-- FAVICON E ÍCONO OFICIAL PWA -->
 <link rel="apple-touch-icon" href="avion.png">
 <link rel="icon" type="image/png" href="avion.png">
@@ -933,7 +933,7 @@
     <button class="btn-primary" onclick="irALoginDesdePromo()">¡REGÍSTRATE E INICIA SESIÓN!</button>
   </div>
 </div>
-<!-- 2. MODAL DE INICIO DE SESIÓN / REGISTRO (SOLO GOOGLE) -->
+<!-- 2. MODAL DE INICIO DE SESIÓN / REGISTRO (GOOGLE Y APPLE) -->
 <div id="loginModal" class="modal-overlay">
   <div class="modal-card adidas-card">
     <button class="close-btn" onclick="cerrarLogin()">&times;</button>
@@ -947,7 +947,7 @@
     <!-- BOTÓN ÚNICO OFICIAL DE GOOGLE -->
 <div class="legal-disclaimer-box">
   <strong>Consentimiento de Datos Personales:</strong><br>
-  Al presionar <strong>"Continuar con Google"</strong>, declaras expresamente que eres mayor de edad, que has leído nuestro <strong>Aviso de Privacidad</strong> y otorgas tu consentimiento para que <strong>AEROSHOP</strong> recabe y trate tus datos (nombre, correo e historial de vuelo) exclusivamente con fines estadísticos internos, personalización de servicio y la acreditación de promociones en tu pasaporte digital. Tus datos están protegidos y no serán compartidos ni comercializados con terceros.
+  Al presionar <strong>"Continuar con Google"</strong> o <strong>"Continuar con Apple"</strong>, declaras expresamente que eres mayor de edad, que has leído nuestro <strong>Aviso de Privacidad</strong> y otorgas tu consentimiento para que <strong>AEROSHOP</strong> recabe y trate tus datos (nombre, correo e historial de vuelo) exclusivamente con fines estadísticos internos, personalización de servicio y la acreditación de promociones en tu pasaporte digital. Tus datos están protegidos y no serán compartidos ni comercializados con terceros.
 </div>
     <div class="social-login-grid" style="margin-top: 24px;">
 <button id="btn-login" class="btn-social-auth btn-google-adidas" data-action="login-google" style="justify-content: center; width: 100%;">
@@ -959,6 +959,11 @@
         </svg>
         <span>Continuar con Google</span>
       </button>
+      <button id="btn-login-apple" type="button" class="btn-social-auth btn-apple-auth" data-action="login-apple">
+        <svg width="20" height="22" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        <span>Continuar con Apple</span>
+      </button>
+      <button type="button" id="btnContinuarSinCuenta" class="btn-guest-link" data-action="send-whatsapp-guest">Continuar sin cuenta (no sumas vuelos ni recibes avisos)</button>
     </div>
   </div>
 </div>
@@ -972,36 +977,47 @@
     <div class="profile-header-banner">
       <span class="badge-pasaporte">🎟️ PASAPORTE DE VUELO DIGITAL</span>
       <h2 class="profile-main-title">AEROSHOP CLUB</h2>
+      <p id="profileGreeting" style="margin-top:6px; color:#cbd5e1; font-weight:600;"></p>
     </div>
 
     <!-- SECCIÓN USUARIO EDITABLE -->
     <div class="profile-user-hero">
       <div class="avatar-wrapper">
-        <img id="userAvatar" src="logo-cookies.png" alt="Avatar Pasajero" class="user-avatar-large">
+        <img id="userAvatar" src="logo-cookies.png" referrerpolicy="no-referrer" alt="Avatar Pasajero" class="user-avatar-large">
       </div>
 
       <div class="user-details-form">
         <!-- Badge de Estatus -->
         <div id="userVipBadge" class="status-pill-badge">PASAJERO EN CURSO 🛫</div>
-<!-- CÓDIGO QR DEL PASAPORTE DIGITAL -->
-<div style="text-align: center; margin: 15px 0;">
-  <img id="userQrCodeImg" src="" alt="Código QR Pasaporte" style="width: 120px; height: 120px; border-radius: 12px; border: 2px solid #facc15; padding: 4px; background: #ffffff;">
-</div>
-        <!-- Campos Editables -->
+<!-- Campos Editables -->
         <div class="input-field-group">
           <label>Nombre Completo:</label>
-          <input type="text" id="editNombreReal" placeholder="Ej. Angel Zahid Galicia" class="profile-input">
+          <input type="text" id="editNombreReal" placeholder="Ej. Angel Zahid Galicia" class="profile-input" maxlength="80" autocomplete="name">
         </div>
 
         <div class="input-field-group">
           <label>Apodo / Alias de Vuelo:</label>
-          <input type="text" id="editApodo" placeholder="Ej. El Capitán 420" class="profile-input">
+          <input type="text" id="editApodo" placeholder="Ej. El Capitán 420" class="profile-input" maxlength="40" autocomplete="nickname">
+        </div>
+
+        <div class="input-field-group">
+          <label>WhatsApp (10 dígitos, opcional):</label>
+          <input type="tel" id="editTelefono" placeholder="Ej. 5512345678" class="profile-input" inputmode="numeric" maxlength="14" autocomplete="tel-national">
         </div>
 
         <p id="userEmail" class="profile-email-text">correo@ejemplo.com</p>
+        <p id="userProvider" style="text-align:center; color:#94a3b8; font-size:0.82rem; margin-top:4px;"></p>
+        <p id="userSince" style="text-align:center; color:#94a3b8; font-size:0.82rem; margin-bottom:8px;"></p>
 
         <button class="btn-save-profile" onclick="guardarDatosPerfil()">💾 Guardar Cambios</button>
       </div>
+    </div>
+
+    <!-- AVISOS (NOTIFICACIONES) E INSTALAR LA APP -->
+    <div id="pushBox" class="push-box">
+      <p id="pushTexto">🔔 Activa los avisos y entérate primero de lanzamientos y promos.</p>
+      <button type="button" id="btnNotificaciones" class="btn-save-profile" data-action="enable-push" hidden>🔔 Activar avisos</button>
+      <button type="button" id="btnInstalar" class="btn-save-profile btn-install" data-action="install-app" hidden>📲 Instalar la app</button>
     </div>
 
     <!-- TARJETA DE PROGRESO DE VUELOS (SISTEMA 3 VUELOS) -->
