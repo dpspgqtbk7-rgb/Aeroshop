@@ -9,7 +9,7 @@ export function initAuthObserver() {
                 uid: user.uid,
                 displayName: user.displayName || 'Pasajero',
                 email: user.email,
-                photoURL: user.photoURL || ''
+                photoURL: user.photoURL || 'logo-cookies.png'
             };
             
             store.setState({ currentUserProfile: userProfile });
@@ -36,26 +36,18 @@ export async function logoutUser() {
         console.error("❌ Error al cerrar sesión:", error);
     }
 }
-export async function logoutUser() {
-    try {
-        await fbMethods.signOut(auth);
-    } catch (error) {
-        console.error("❌ Error al cerrar sesión:", error);
-    }
-}
-function renderUserProfileUI(profile) {
-    const userContainer = document.getElementById('user-passport-card');
-    const loginBtn = document.getElementById('btn-login');
-    const logoutBtn = document.getElementById('btn-logout');
 
-   
+function renderUserProfileUI(profile) {
+    const userAvatar = document.getElementById('userAvatar');
+    const userEmail = document.getElementById('userEmail');
+    const editNombreReal = document.getElementById('editNombreReal');
 
     if (profile) {
-        if (userAvatar) userAvatar.src = profile.photoURL;
+        if (userAvatar) userAvatar.src = profile.photoURL || 'logo-cookies.png';
         if (userEmail) userEmail.innerText = profile.email;
         if (editNombreReal && !editNombreReal.value) editNombreReal.value = profile.displayName;
     } else {
-        if (userAvatar) userAvatar.src = '';
+        if (userAvatar) userAvatar.src = 'logo-cookies.png';
         if (userEmail) userEmail.innerText = 'Sin sesión iniciada';
         if (editNombreReal) editNombreReal.value = '';
     }
