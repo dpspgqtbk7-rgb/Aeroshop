@@ -2,7 +2,7 @@
 import { experiencesData } from './data.js';
 import { escapeHTML as e, openModalState, closeModalState, showToast } from '../ui.js';
 import { stopAllEmergency } from './emergency.js';
-import { productsData } from './catalog.js';
+import { productsData, tienePrecio } from './catalog.js';
 import { store } from '../core/store.js';
 
 /* ==========================================
@@ -226,8 +226,8 @@ const MARCAS = {
         acento: '#d4af37', texto: '#ffffff',
         logo: './logo-muhameds.png', titulo: './MUHAMEDSINTERFAZ.png',
         lema: 'Vapes de oro para vuelos de lujo ✨',
-        productos: ['muhacmeds', 'muhamedual'],
-        galeria: ['./muhamedual3.jpg', './muhacmeds2.jpg'],
+        productos: ['muhameds2026', 'muhacmeds', 'muhamedual'],
+        galeria: ['./muhameds%202026.jpg', './muhamedual3.jpg', './muhacmeds2.jpg'],
         video: './muhadual.mp4'
     },
     cookies: {
@@ -236,7 +236,7 @@ const MARCAS = {
         acento: '#ffffff', texto: '#ffffff',
         logo: './logo-cookies.png',
         lema: 'California sobre la nube 💙',
-        productos: ['muhacmeds'],
+        productos: ['lebowski', 'muhacmeds'],
         galeria: ['./donutsv23.JPG']
     },
     backwoods: {
@@ -287,10 +287,10 @@ function productoMarcaHTML(id) {
             <img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy">
             <div class="brand-product-info">
                 <h3>${e(p.title)}</h3>
-                <p class="brand-product-price">$${e(p.price)} MXN</p>
+                <p class="brand-product-price">${tienePrecio(p) ? '$' + e(p.price) + ' MXN' : 'Consultar precio 💬'}</p>
                 <div class="brand-product-actions">
                     <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${e(id)}">Ver más</button>
-                    <button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>
+                    ${tienePrecio(p) ? `<button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>` : ''}
                 </div>
             </div>
         </article>`;

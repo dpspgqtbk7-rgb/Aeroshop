@@ -4,6 +4,34 @@ import { openModalState, closeModalState, showToast } from '../ui.js';
 
 // Base de datos oficial de productos para la vista detallada
 export const productsData = {
+    'lebowski': {
+        title: 'Cookies × Lebowski 2g 🥃',
+        price: 780,
+        image: './lebo.JPG',
+        description: 'Cookies × Lebowski 🥃 Dispositivo DUO de 2g (1g + 1g) con Liquid Diamonds + Live Resin. Dos vuelos en un solo equipo, edición de colección en azul Cookies. Relax total, estilo "The Dude". Pregunta por las variedades disponibles.',
+        strains: ['Variedad surtida ☯️', 'Pregunta por disponibilidad 💬']
+    },
+    'snoopdog': {
+        title: 'Snoop Dogg × Death Row 🎤',
+        price: 1200,
+        image: './snoop-dog.jpg',
+        description: 'Death Row Records 🔥 La edición de Snoop Dogg aterriza en la cabina: vape de 3.5 ml con dos vuelos distintos. Sour Diesel para despegar con energía y Grape Ape para bajar suave. Vibra West Coast directo a tu equipaje.',
+        strains: ['Sour Diesel — Sativa 🚀', 'Grape Ape — Indica 🌙']
+    },
+    'muhameds2026': {
+        title: 'MUHA MEDS 2026 ✨ All-in-One',
+        price: 700,
+        image: './muhameds%202026.jpg',
+        description: 'Muha Meds 2026 ✨ All-in-One de 2g (2000 mg) en negro y oro. Galactic Diesel, perfil Indica: relajado, aromático y con vibra espacial. Todo en un solo dispositivo, listo para despegar.',
+        strains: ['Galactic Diesel — Indica 🌙']
+    },
+    'crybaby': {
+        title: 'CryBaby 2g 🍼 + Gomitas',
+        price: 800,
+        image: './crybaby.jpg',
+        description: 'CryBaby 🍼 2G Liquid Diamonds con Live Resin, sabor Mango Ice Cream (Híbrida). Dulce, helado y con certificado de autenticidad. Incluye gomitas Gumballs para completar la experiencia.',
+        strains: ['Mango Ice Cream — Híbrida ☯️']
+    },
     'frydovni': {
         title: 'FRYD Ovni 🛸 + Gomitas 2g',
         price: 850,
@@ -48,6 +76,8 @@ export const productsData = {
     }
 };
 
+export const tienePrecio = (p) => Number.isFinite(p && p.price) && p.price > 0;
+
 let currentSelectedStrain = '';
 let currentActiveProduct = null;
 
@@ -74,7 +104,9 @@ export function openProductModal(productId) {
     const strainsContainer = document.getElementById('modalStrainPills');
 
     if (titleEl) titleEl.textContent = product.title;
-    if (priceEl) priceEl.textContent = `$${product.price} MXN`;
+    if (priceEl) priceEl.textContent = tienePrecio(product) ? `$${product.price} MXN` : 'Precio por confirmar';
+    const addBtn = document.querySelector('#productModalOverlay [data-action="add-modal-to-cart"]');
+    if (addBtn) addBtn.textContent = tienePrecio(product) ? 'Agregar al Carrito' : '💬 Consultar precio por WhatsApp';
     if (descEl) descEl.textContent = product.description;
     if (imageEl) { imageEl.src = product.image; imageEl.alt = product.title; }
 
@@ -119,6 +151,13 @@ export function addModalProductToCart() {
     const itemTitle = currentSelectedStrain
         ? `${currentActiveProduct.title} [${currentSelectedStrain}]`
         : currentActiveProduct.title;
+
+    // Sin precio todavía: se pregunta por WhatsApp en vez de agregar un producto de $0
+    if (!tienePrecio(currentActiveProduct)) {
+        const texto = `¡Hola Aeroshop! 🚀 Quiero información y precio de: *${itemTitle}*`;
+        window.open(`https://wa.me/525561446446?text=${encodeURIComponent(texto)}`, '_blank');
+        return;
+    }
 
     addToCart(itemTitle, currentActiveProduct.price, currentActiveProduct.image);
     showToast('🛒 Agregado al carrito');
