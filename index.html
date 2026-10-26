@@ -42,7 +42,7 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="tema-muertos">
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
@@ -52,6 +52,9 @@
         </div>
         <a href="#quienes-somos" class="hero-subtitle">ELEVA TU EXPERIENCIA</a>
     </section>
+
+    <!-- TEMA DE TEMPORADA (quita class="tema-muertos" del <body> para apagarlo) -->
+    <div class="spider-hang" aria-hidden="true"></div>
 
     <!-- QUIÉNES SOMOS -->
     <section class="about-section" id="quienes-somos">
@@ -74,41 +77,68 @@
        <!-- TARJETA 01: RUTAS DE VUELO -->
              
             <div class="diferencia-item" style="cursor: pointer;" onclick="openRutasVuelo()">
-                <span class="diferencia-num">01</span>
                 <h3 style="margin-bottom: 8px;">Rutas de Vuelo ✈️</h3>
                 <p>Explora spots seguros y únicos para volar en la CDMX.</p>
             </div>
 
             <!-- TARJETA 02: MONCHIS Y BAJAR AVIÓN -->
             <div class="diferencia-item" style="cursor: pointer;" onclick="openMonchisVuelo()">
-                <span class="diferencia-num">02</span>
                 <h3 style="margin-bottom: 8px;">Monchis y Bajar Avión 🌮</h3>
                 <p>Descubre los mejores bajones en la CDMX o recetas de supervivencia en casa.</p>
             </div>
 
             <!-- TARJETA 03: TRIP VISUAL & CINE -->
             <div class="diferencia-item" style="cursor: pointer;" onclick="openCineVuelo()">
-                <span class="diferencia-num">03</span>
                 <h3 style="margin-bottom: 8px;">Trip Visual & Cine 🎬</h3>
                 <p>Apaga la mente, prende la pantalla: lo mejor para potenciar tu viaje.</p>
             </div>
 
             <!-- TARJETA 04: FRECUENCIAS & SOUNDTRACKS -->
             <div class="diferencia-item" style="cursor: pointer;" onclick="openMusicVuelo()">
-                <span class="diferencia-num">04</span>
                 <h3 style="margin-bottom: 8px;">Frecuencias 🎧</h3>
                 <p>Una selección sonora para acompañar tu viaje.</p>
             </div>
            <!-- TARJETA 05: PARA LA PÁLIDA (ESTILO CALMA SBS) -->
             <div class="diferencia-item card-calma-sbs" style="cursor: pointer;" onclick="openEmergencyVuelo()">
-                <span class="diferencia-num" style="color: #8ebd9e;">05</span>
                 <h3 style="margin-bottom: 8px; color: #f0efe6;">Para la  palida 😵‍💫</h3>
                 <p style="color: #a3b899;">Tu kit de emergencia para la palida</p>
+            </div>
+
+            <!-- TARJETA 06: MANUAL PARA CUIDAR TU AVIÓN -->
+            <div class="diferencia-item card-manual" style="cursor: pointer;" onclick="openManualVuelo()">
+                <h3 style="margin-bottom: 8px;">Manual para cuidar tu avión 🛠️</h3>
+                <p>Tips rápidos para que tu avión dure más y vuele siempre bien.</p>
             </div>
         </div> <!-- /diferencia-grid -->
     </div> <!-- /diferencia-card -->
 </section>
 
+    <!-- ELIGE TU MUNDO: MIELES / NUBES -->
+    <section class="hub-section" id="elige-mundo">
+        <h2 class="hub-title">Elige tu mundo</h2>
+        <div class="hub-grid">
+            <button type="button" class="hub-btn hub-mieles" onclick="openMielesVuelo()">
+                <span class="hub-ico">🍯</span>
+                <span class="hub-name">MIELES</span>
+                <span class="hub-sub">Catálogo y marcas</span>
+            </button>
+            <button type="button" class="hub-btn hub-nubes" onclick="openNubesVuelo()">
+                <span class="hub-ico">💨</span>
+                <span class="hub-name">NUBES</span>
+                <span class="hub-sub">Muy pronto</span>
+            </button>
+        </div>
+    </section>
+
+
+<!-- ========================================== -->
+<!-- VISTA FULLSCREEN: MIELES (productos destacados + marcas) -->
+<!-- ========================================== -->
+<div class="monchis-fullscreen-view" id="mielesFullscreenView">
+    <div class="monchis-header" style="padding: 0 6px;">
+        <button class="btn-back-main" onclick="closeMielesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+    </div>
+    <h2 class="hub-view-title">🍯 MIELES</h2>
     <!-- PRODUCTOS DESTACADOS -->
     <section class="featured-section" id="productos-destacados">
         <div class="section-title-container">
@@ -293,6 +323,7 @@
             </div>
         </div>
     </section>
+</div>
     <!-- VISTA FULLSCREEN PARA MARCAS -->
 <div class="brand-fullscreen-view" id="brandFullscreenView">
     <div class="brand-nav-bar">
@@ -396,6 +427,33 @@
                 <div class="compact-card-body">
                     <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️✈️</span>
                     <h4>MUAC CU (Museo de Arte Contemporáneo)</h4>
+                </div>
+            </div>
+
+            <!-- PARQUE BICENTENARIO -->
+            <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'bicentenario')">
+                <video data-src="./bicentenario.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Poniente • ✈️✈️✈️✈️</span>
+                    <h4>Parque Bicentenario</h4>
+                </div>
+            </div>
+
+            <!-- AUDIORAMA -->
+            <div class="compact-card" data-zona="poniente" onclick="openCardModal('rutas', 'audiorama')">
+                <video data-src="./audiorama.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Poniente • ✈️✈️✈️</span>
+                    <h4>Audiorama Chapultepec</h4>
+                </div>
+            </div>
+
+            <!-- LABERINTO DEL AJUSCO -->
+            <div class="compact-card" data-zona="sur" onclick="openCardModal('rutas', 'laberinto')">
+                <video data-src="./laberinto.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">📍 Sur • ✈️✈️✈️✈️</span>
+                    <h4>Laberinto del Ajusco</h4>
                 </div>
             </div>
 
@@ -533,6 +591,30 @@
 
     </div> <!-- /monchis-container -->
 </div> <!-- /monchisFullscreenView -->
+<!-- PIE: USO DE IA Y FUENTES -->
+<footer class="aero-legal" id="usoIA">
+  <details>
+    <summary>🤖 Uso de IA y fuentes</summary>
+    <div class="aero-legal-body">
+      <h3>Qué hay detrás de AEROSHOP</h3>
+      <p>AEROSHOP CDMX es un proyecto creado por <strong>Zahid Galicia</strong>. Su idea, su marca, la selección de lugares y el estilo son suyos.</p>
+      <h4>Videos de terceros</h4>
+      <p>Los videos de lugares y monchis son de otros creadores y se muestran como referencia, con su marca de agua visible. Si eres creador y quieres que agreguemos tu crédito o que retiremos tu video, escríbenos por WhatsApp y lo atendemos.</p>
+      <h4>Uso de IA</h4>
+      <p>Para programar la página y redactar borradores usamos <strong>Claude</strong> (Anthropic) como asistente. Todo lo que se publica lo revisa y decide una persona.</p>
+      <h4>Fuentes</h4>
+      <ul>
+        <li>Datos de lugares (horarios, precios y cómo llegar) tomados de notas de <strong>Chilango</strong>, <strong>CDMX Secreta</strong>, <strong>El Financiero</strong> y <strong>Grupo Animal</strong>, reescritos con palabras propias. Pueden cambiar: confírmalos antes de ir.</li>
+        <li>Películas, series y música: solo mostramos títulos, reseñas propias y enlaces a las plataformas donde puedes verlas o escucharlas.</li>
+        <li>Mapas de <strong>CENART</strong> y <strong>Pumabús</strong>: imágenes informativas de sus instituciones.</li>
+        <li>Tipografías: <strong>Google Fonts</strong>.</li>
+      </ul>
+      <h4>Marcas y derechos</h4>
+      <p>Los nombres y logos de otras marcas pertenecen a sus dueños y se muestran con fines informativos. Si eres titular de alguno y quieres que lo retiremos o lo ajustemos, escríbenos por WhatsApp.</p>
+    </div>
+  </details>
+</footer>
+
 <!-- ========================================== -->
 <!-- 1. VENTANA MODAL DE PRODUCTOS Y CARRITO (RESTAURADOS COMPLETOS) -->
 <!-- ========================================== -->
@@ -826,6 +908,46 @@
         </div>
     </div>
    <!-- ========================================== -->
+<!-- VISTA FULLSCREEN: NUBES -->
+<!-- ========================================== -->
+<div class="monchis-fullscreen-view" id="nubesFullscreenView">
+    <div class="monchis-container" style="max-width: 700px;">
+        <div class="monchis-header">
+            <button class="btn-back-main" onclick="closeNubesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+        </div>
+        <div class="nubes-soon">
+            <img src="./logo-nubes.png" alt="Aero Shop Nubes" class="nubes-logo" loading="lazy">
+            <h2>💨 NUBES</h2>
+            <p>Estamos preparando esta sección.</p>
+            <span class="nubes-badge">MUY PRONTO</span>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- VISTA FULLSCREEN: MANUAL PARA CUIDAR TU AVIÓN -->
+<!-- ========================================== -->
+<div class="monchis-fullscreen-view" id="manualFullscreenView">
+    <div class="monchis-container" style="max-width: 700px;">
+        <div class="monchis-header">
+            <button class="btn-back-main" onclick="closeManualVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+        </div>
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">MANUAL PARA CUIDAR TU AVIÓN 🛠️</h2>
+            <p style="color: #a0a0b0; font-size: 1rem;">Cuídalo y te dura mucho más</p>
+        </div>
+        <div class="manual-list">
+            <div class="manual-tip"><span class="manual-ico">🔌</span><div><h4>No lo dejes cargando más de 15 minutos</h4><p>Cárgalo, desconéctalo y listo. Dejarlo de más calienta la batería y la gasta.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">🧱</span><div><h4>No lo conectes directo a la pared</h4><p>Usa un puerto USB de computadora o un cargador de baja potencia (5V). Los cargadores rápidos de pared pueden dañarlo.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">🙃</span><div><h4>Evita voltearlo</h4><p>Boca abajo se puede chorrear o tapar. Guárdalo y úsalo siempre parado.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">🌡️</span><div><h4>Lejos del calor y del frío</h4><p>No lo dejes en el carro al sol ni en lugares muy fríos: la batería y el líquido se echan a perder.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">🧼</span><div><h4>Mantenlo limpio</h4><p>Límpialo con un pañuelo seco, sobre todo la boquilla y el conector de carga.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">🎒</span><div><h4>Guárdalo bien</h4><p>Con su tapa o en una funda, lejos de llaves y monedas, para que no se golpee ni se ensucie.</p></div></div>
+            <div class="manual-tip"><span class="manual-ico">👀</span><div><h4>Si algo se ve raro, déjalo de usar</h4><p>Si se calienta mucho, huele raro o está hinchado, ya no lo uses ni lo cargues y cámbialo.</p></div></div>
+        </div>
+    </div>
+</div>
+<!-- ========================================== -->
 <!-- VISTA FULLSCREEN: 04. FRECUENCIAS -->
 <!-- ========================================== -->
 <div class="monchis-fullscreen-view" id="musicFullscreenView">

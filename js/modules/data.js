@@ -111,6 +111,48 @@ export const experiencesData = {
             mapsUrl: "https://maps.google.com/?q=MUAC+UNAM",
             comoLlegar: { destino: "MUAC UNAM Centro Cultural Universitario", desde: ["Metro Universidad", "Metrobús Centro Cultural Universitario", "Metro Copilco"] },
             imagenExtra: { src: "./pumabus-rutas.jpg", titulo: "🚌 Rutas de Pumabús", nota: "Mapa oficial de rutas de Pumabús y ciclopista: tu transporte interno dentro de CU." }
+        },
+        bicentenario: {
+            title: "Parque Bicentenario 🌳🚲",
+            media: "./bicentenario.MP4",
+            isVideo: true,
+            badge: "📍 Poniente • ✈️✈️✈️✈️",
+            zona: "Poniente (Av. 5 de Mayo 290, Col. Refinería 18 de Marzo, Miguel Hidalgo)",
+            conexion: "Metro Refinería (Línea 7), a unos 100 m de la entrada principal",
+            calificacion: "✈️✈️✈️✈️ (4/5 — Pista Larga & Pasto Infinito)",
+            bitacora: "Un parque enorme dividido en ocho ecosistemas, con jardín botánico y una pista de 4 km para correr o andar en bici. Llega con tu manta y tus monchis, tírate en el pasto y deja que el día se estire.",
+            discrecion: "🟡 Medio. Es un parque grande con vigilancia y mucha gente; elige una zona tranquila y mantén la vibra relajada.",
+            extraInfo: "🧺 Ideal para picnic. Lleva agua y protector solar: hay mucho espacio abierto.",
+            mapsUrl: "https://maps.google.com/?q=Parque+Bicentenario+CDMX",
+            comoLlegar: { destino: "Parque Bicentenario CDMX", desde: ["Metro Refinería", "Metro El Rosario", "Metro Tacuba"] }
+        },
+        audiorama: {
+            title: "Audiorama Chapultepec 🎧🌲",
+            media: "./audiorama.MP4",
+            isVideo: true,
+            badge: "📍 Poniente • ✈️✈️✈️",
+            zona: "Poniente (1ra Sección del Bosque de Chapultepec, detrás del Monumento al Escuadrón 201)",
+            conexion: "Entrada por la Puerta de Flores, cerca del Castillo de Chapultepec / Metro Chapultepec (Línea 1)",
+            calificacion: "✈️✈️✈️ (3/5 — Cabina de Silencio con Música)",
+            bitacora: "Una escala chiquita y tranquila entre árboles, con música suave de fondo y a veces algún concierto instrumental. Perfecto para leer, dibujar, meditar o simplemente bajarle al ritmo.",
+            discrecion: "🟢 Alto / Calmado. Espacio de silencio: habla bajito y disfruta el momento.",
+            extraInfo: "🕘 Abre de martes a domingo, de 9:00 a 16:00. Confirma el horario antes de ir.",
+            mapsUrl: "https://maps.google.com/?q=Audiorama+Chapultepec",
+            comoLlegar: { destino: "Audiorama Chapultepec", desde: ["Metro Chapultepec", "Castillo de Chapultepec", "Metro Constituyentes"] }
+        },
+        laberinto: {
+            title: "Laberinto del Ajusco 🌿🧭",
+            media: "./laberinto.MP4",
+            isVideo: true,
+            badge: "📍 Sur • ✈️✈️✈️✈️",
+            zona: "Sur (Camino Viejo al Maninal 13, km 15 carretera Picacho-Ajusco, Tlalpan)",
+            conexion: "Metro Taxqueña (Línea 2) → Tren Ligero hasta Estadio Banorte → camión a Santo Tomás Ajusco → baja en la \"Y\" y camina unos 15 min",
+            calificacion: "✈️✈️✈️✈️ (4/5 — Misión Secreta en el Ajusco)",
+            bitacora: "Un laberinto de arbustos de más de dos metros, con pasadizos trampa y callejones sin salida, al estilo de los castillos ingleses. Perderte aquí toma unos 20 minutos y la entrada incluye una casona tipo Tudor con museo.",
+            discrecion: "🟢 Alto / Relajado. Plan de día en un lugar alejado del ruido; si te pierdes, el personal te ayuda.",
+            extraInfo: "💵 Entrada: $100 adultos y $50 niños. 🕘 Lunes a domingo, 9:30 a 19:00. Es un viaje largo: sal temprano. Confirma precios y horarios antes de ir.",
+            mapsUrl: "https://maps.google.com/?q=Laberinto+del+Ajusco",
+            comoLlegar: { destino: "Laberinto del Ajusco Tlalpan", desde: ["Metro Taxqueña", "Estadio Banorte (Tren Ligero)", "Santo Tomás Ajusco"] }
         }
     },
     monchis: {

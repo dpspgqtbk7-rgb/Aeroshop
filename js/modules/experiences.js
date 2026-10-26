@@ -206,6 +206,14 @@ export function closeCineVuelo() { closeView('cineFullscreenView'); }
 export function openMusicVuelo()  { openView('musicFullscreenView'); }
 export function closeMusicVuelo() { closeView('musicFullscreenView'); }
 
+export function openMielesVuelo()  { openView('mielesFullscreenView'); }
+export function closeMielesVuelo() { closeView('mielesFullscreenView'); }
+export function openNubesVuelo()   { openView('nubesFullscreenView'); }
+export function closeNubesVuelo()  { closeView('nubesFullscreenView'); }
+
+export function openManualVuelo()  { openView('manualFullscreenView'); }
+export function closeManualVuelo() { closeView('manualFullscreenView'); }
+
 export function openEmergencyVuelo() {
     openView('emergencyFullscreenView');
     document.body.classList.add('emergency-active'); // oculta botones flotantes (CSS)
