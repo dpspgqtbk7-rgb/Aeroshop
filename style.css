@@ -4085,7 +4085,7 @@ button, a, [role="button"], .compact-card, .product-card, .brand-logo-card, .nav
     .product-name { font-size: .95rem !important; line-height: 1.2 !important; }
     .product-subtitle {
         font-size: .72rem !important; margin-bottom: 8px !important; line-height: 1.3;
-        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .product-price { font-size: 1rem !important; margin-bottom: 10px !important; }
     .product-price span { font-size: .78rem !important; }
@@ -4228,3 +4228,6 @@ body.tema-muertos .cart-summary::before { content: "🕸️ 🎃 🕸️"; displ
 .waka-18 { text-align: center; color: #6b7280; font-size: .7rem; margin-top: 14px; }
 .waka-logo { border-radius: 14px; }
 #nubes-marcas .brand-logo-card img { border-radius: 12px; max-height: 80px; width: auto; }
+
+.waka-buy { margin-top: 14px; }
+.waka-buy-sel { text-align: center; font-weight: 700; font-size: .85rem; color: #2d1fc9; margin-bottom: 10px; }

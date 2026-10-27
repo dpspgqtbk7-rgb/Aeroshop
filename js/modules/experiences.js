@@ -4,6 +4,7 @@ import { escapeHTML as e, openModalState, closeModalState, showToast } from '../
 import { stopAllEmergency } from './emergency.js';
 import { productsData, tienePrecio } from './catalog.js';
 import { store } from '../core/store.js';
+import { addToCart } from './cart.js';
 
 /* ==========================================
    HERRAMIENTAS INTERNAS
@@ -350,12 +351,6 @@ function wakaHTML(m) {
     const sabores = p.strains;
     const pills = sabores.map((s, i) =>
         `<button type="button" class="waka-pill${i === 0 ? ' on' : ''}" onclick="wakaSelectSabor(${i})">${e(s)}</button>`).join('');
-    const filas = sabores.map((s, i) => `
-        <div class="waka-row">
-            <span class="waka-row-name">${e(s)}</span>
-            <span class="waka-row-tag">Nuevo</span>
-            <span class="waka-row-price">${tienePrecio(p) ? '$' + e(p.price) + '.00' : 'Consultar'}</span>
-        </div>`).join('');
     return `
     <div class="brand-page brand-waka" data-waka-i="0">
         <div class="brand-bg" style="background:#fff;"></div>
@@ -382,17 +377,29 @@ function wakaHTML(m) {
                 <div class="waka-legal">Este producto contiene nicotina, sustancia altamente adictiva. No se recomienda su consumo a los no fumadores. Prohibida su venta a menores de edad.</div>
             </section>
             <div class="waka-pills">${pills}</div>
-            <section class="waka-table">
-                <div class="waka-table-head">BURST 36000 – 5%</div>
-                ${filas}
-                <div class="waka-actions">
-                    <button type="button" class="waka-btn" data-action="open-product-modal" data-product-id="${e(m.productos[0])}">Ver más información</button>
-                </div>
-            </section>
+            <div class="waka-buy">
+                <div class="waka-buy-sel" id="wakaSel"></div>
+                <button type="button" class="waka-btn" onclick="wakaAgregar()">🛒 Agregar al carrito${tienePrecio(p) ? ' · $' + e(p.price) + ' MXN' : ''}</button>
+            </div>
             <p class="waka-18">Solo para mayores de edad. Producto con nicotina.</p>
         </main>
     </div>`;
 }
+
+window.wakaAgregar = function () {
+    const p = productsData[MARCAS.waka.productos[0]]; if (!p) return;
+    const root = document.querySelector('.brand-waka');
+    const i = root ? parseInt(root.dataset.wakaI || '0', 10) : 0;
+    const s = p.strains[i] || p.strains[0];
+    if (!tienePrecio(p)) {
+        const texto = `¡Hola Aeroshop! 🚀 Quiero información y precio de: *${p.title} [${s}]*`;
+        window.open(`https://wa.me/525561446446?text=${encodeURIComponent(texto)}`, '_blank');
+        return;
+    }
+    const foto = (p.strainImages && p.strainImages[s]) || p.image;
+    addToCart(`${p.title} [${s}]`, p.price, foto);
+    showToast('🛒 Agregado al carrito');
+};
 
 window.wakaSelectSabor = function (i) {
     const m = MARCAS.waka; const p = productsData[m.productos[0]];
@@ -406,6 +413,7 @@ window.wakaSelectSabor = function (i) {
     if (arch) { arch.style.setProperty('--w1', t.c1); arch.style.setProperty('--w2', t.c2); arch.style.setProperty('--wt', t.tx); }
     const fl = document.getElementById('wakaFlavor');
     if (fl) fl.textContent = s.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+    const sel = document.getElementById('wakaSel'); if (sel) sel.textContent = 'Sabor elegido: ' + s;
     root.querySelectorAll('.waka-pill').forEach((b, k) => b.classList.toggle('on', k === i));
 };
 
