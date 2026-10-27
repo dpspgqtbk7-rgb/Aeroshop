@@ -28,11 +28,32 @@ function closeOverlay(id) {
 // Videos con carga diferida (data-src): se cargan y reproducen al abrir la vista
 function cargarYReproducirVideos(contenedor) {
     if (!contenedor) return;
-    contenedor.querySelectorAll('video').forEach(v => {
-        if (v.dataset.src && !v.getAttribute('src')) v.src = v.dataset.src;
-        v.muted = true;
-        v.play().catch(() => { /* el navegador puede bloquear el autoplay */ });
-    });
+    const videos = contenedor.querySelectorAll('video');
+    // Sin IntersectionObserver: se cargan todos (navegadores muy viejos)
+    if (!('IntersectionObserver' in window)) {
+        videos.forEach(v => {
+            if (v.dataset.src && !v.getAttribute('src')) v.src = v.dataset.src;
+            v.muted = true;
+            v.play().catch(() => {});
+        });
+        return;
+    }
+    // Solo se descarga y reproduce el video que está por verse (antes se bajaban todos a la vez)
+    if (contenedor._videoObserver) contenedor._videoObserver.disconnect();
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const v = entry.target;
+            if (entry.isIntersecting) {
+                if (v.dataset.src && !v.getAttribute('src')) v.src = v.dataset.src;
+                v.muted = true;
+                v.play().catch(() => { /* el navegador puede bloquear el autoplay */ });
+            } else {
+                v.pause();
+            }
+        });
+    }, { rootMargin: '150px' });
+    contenedor._videoObserver = obs;
+    videos.forEach(v => obs.observe(v));
 }
 
 function pausarVideos(contenedor) {
@@ -275,6 +296,14 @@ const MARCAS = {
         galeria: ['./packmanbyAceultra1_2.png', './packman2.png', './packman3.png', './packman4.PNG'],
         video: './packmanbyaceultra.mp4'
     },
+    waka: {
+        nombre: 'WAKA', clase: 'brand-waka', plantilla: 'waka',
+        fondo: '#ffffff', acento: '#3a22d6', texto: '#111111',
+        logo: './logo-waka.png',
+        lema: 'Burst 36000 • Turbo 24W',
+        productos: ['waka36k'],
+        galeria: []
+    },
     fryd: {
         nombre: 'FRYD EXTRACTS', clase: 'brand-fryd',
         fondoImg: './frydfondo.jpg', fondo: '#1e092b',
@@ -304,7 +333,84 @@ function productoMarcaHTML(id) {
         </article>`;
 }
 
+
+/* ==========================================
+   PÁGINA DE MARCA WAKA (inspirada en su tienda oficial)
+   ========================================== */
+const WAKA_TONOS = [
+    { c1: '#f5c542', c2: '#fff6d6', tx: '#b8860b' },   // Peach Mango Watermelon
+    { c1: '#35c6b0', c2: '#e2fbf6', tx: '#0f8a78' },   // Menta
+    { c1: '#ff7a93', c2: '#ffe6eb', tx: '#c2334f' },   // Strawberry Watermelon
+    { c1: '#8fd14f', c2: '#f0fbdc', tx: '#4c8a14' }    // Fresa Kiwi
+];
+
+function wakaHTML(m) {
+    const p = productsData[m.productos[0]];
+    if (!p) return '';
+    const sabores = p.strains;
+    const pills = sabores.map((s, i) =>
+        `<button type="button" class="waka-pill${i === 0 ? ' on' : ''}" onclick="wakaSelectSabor(${i})">${e(s)}</button>`).join('');
+    const filas = sabores.map((s, i) => `
+        <div class="waka-row">
+            <span class="waka-row-name">${e(s)}</span>
+            <span class="waka-row-tag">Nuevo</span>
+            <span class="waka-row-price">${tienePrecio(p) ? '$' + e(p.price) + '.00' : 'Consultar'}</span>
+        </div>`).join('');
+    return `
+    <div class="brand-page brand-waka" data-waka-i="0">
+        <div class="brand-bg" style="background:#fff;"></div>
+        <header class="waka-top">
+            <img src="${e(m.logo)}" alt="Waka" class="waka-logo" onerror="this.outerHTML='<span class=&quot;waka-logo-txt&quot;>waka</span>'">
+        </header>
+        <main class="waka-main">
+            <h2 class="waka-title">Productos – Waka</h2>
+            <section class="waka-card">
+                <div class="waka-card-grid">
+                    <div class="waka-arch" id="wakaArch">
+                        <div class="waka-arch-mark">
+                            <svg viewBox="0 0 100 60" aria-hidden="true"><path d="M8 10C30 2 42 14 50 30C58 14 70 2 92 10C96 44 74 58 50 58C26 58 4 44 8 10Z" fill="#fff"/></svg>
+                        </div>
+                        <div class="waka-puffs"><b>36.000</b><i>*</i><span>Puffs</span></div>
+                        <div class="waka-flavor" id="wakaFlavor"></div>
+                        <div class="waka-nic">5% Nicotina</div>
+                        <div class="waka-word">waka</div>
+                        <div class="waka-sub">Burst</div>
+                    </div>
+                    <div class="waka-photo"><img id="wakaImg" src="${e(p.image)}" alt="${e(p.title)}"></div>
+                </div>
+                <p class="waka-foot">*La cantidad de puffs puede variar de acuerdo al hábito de uso de cada consumidor.</p>
+                <div class="waka-legal">Este producto contiene nicotina, sustancia altamente adictiva. No se recomienda su consumo a los no fumadores. Prohibida su venta a menores de edad.</div>
+            </section>
+            <div class="waka-pills">${pills}</div>
+            <section class="waka-table">
+                <div class="waka-table-head">BURST 36000 – 5%</div>
+                ${filas}
+                <div class="waka-actions">
+                    <button type="button" class="waka-btn" data-action="open-product-modal" data-product-id="${e(m.productos[0])}">Ver más información</button>
+                </div>
+            </section>
+            <p class="waka-18">Solo para mayores de edad. Producto con nicotina.</p>
+        </main>
+    </div>`;
+}
+
+window.wakaSelectSabor = function (i) {
+    const m = MARCAS.waka; const p = productsData[m.productos[0]];
+    if (!p) return;
+    const s = p.strains[i]; const t = WAKA_TONOS[i % WAKA_TONOS.length];
+    const root = document.querySelector('.brand-waka'); if (!root) return;
+    root.dataset.wakaI = i;
+    const img = document.getElementById('wakaImg');
+    if (img) img.src = (p.strainImages && p.strainImages[s]) || p.image;
+    const arch = document.getElementById('wakaArch');
+    if (arch) { arch.style.setProperty('--w1', t.c1); arch.style.setProperty('--w2', t.c2); arch.style.setProperty('--wt', t.tx); }
+    const fl = document.getElementById('wakaFlavor');
+    if (fl) fl.textContent = s.replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+    root.querySelectorAll('.waka-pill').forEach((b, k) => b.classList.toggle('on', k === i));
+};
+
 function marcaHTML(m) {
+    if (m.plantilla === 'waka') return wakaHTML(m);
     const bg = m.fondoImg
         ? `background:${m.fondo} url('${m.fondoImg}') center/cover no-repeat;`
         : `background:${m.fondo};`;
@@ -318,7 +424,7 @@ function marcaHTML(m) {
         <div class="brand-page ${m.clase}" style="--b-acento:${m.acento}; --b-texto:${m.texto};">
             <div class="brand-bg" style="${bg}"></div>
             <section class="brand-hero">
-                <img src="${e(m.logo)}" alt="${e(m.nombre)}" class="brand-hero-logo${m.logoRedondo ? ' round' : ''}">
+                <img src="${e(m.logo)}" alt="${e(m.nombre)}" class="brand-hero-logo${m.logoRedondo ? ' round' : ''}" onerror="this.style.display='none'">
                 ${m.titulo ? `<img src="${e(m.titulo)}" alt="" class="brand-hero-title">` : `<h2 class="brand-hero-name">${e(m.nombre)}</h2>`}
                 <p class="brand-hero-lema">${e(m.lema)}</p>
                 <button type="button" class="scroll-down-btn" aria-label="Ver productos"
@@ -348,6 +454,7 @@ export function openFullscreenBrand(brandKey) {
         ? marcaHTML(m)
         : `<div style="padding:100px; text-align:center; color:#fff;"><h2>SECCIÓN DE MARCA</h2></div>`;
     openView('brandFullscreenView', { videos: true });
+    if (brandKey === 'waka' && window.wakaSelectSabor) window.wakaSelectSabor(0);
 }
 
 export function closeFullscreenBrand() {

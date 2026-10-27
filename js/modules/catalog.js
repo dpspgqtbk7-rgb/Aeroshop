@@ -67,6 +67,28 @@ export const productsData = {
         description: 'Muha Meds × Cookies. Colaboración exclusiva con perfil terpénico idéntico a flor recién cosechada.',
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️']
     },
+    'waka36k': {
+        title: 'Waka 36k 💨',
+        price: 500,
+        image: './waka-mango.jpg',
+        description: 'Waka 36k 💨 Desechable recargable con pantalla Turbo 24W. Elige tu sabor y mira cómo se ve.',
+        strains: ['Peach Mango Watermelon 🍑🥭🍉', 'Menta Ice 🌿', 'Strawberry Watermelon 🍓🍉', 'Fresa Kiwi 🍓'],
+        // Al elegir un sabor, la foto cambia a la de ese sabor
+        strainImages: {
+            'Peach Mango Watermelon 🍑🥭🍉': './waka-mango.jpg',
+            'Menta Ice 🌿': './waka-menta.jpg',
+            'Strawberry Watermelon 🍓🍉': './waka-sandia.jpg',
+            'Fresa Kiwi 🍓': './waka-fresakiwi.jpg'
+        }
+    },
+    'lostmary5k': {
+        title: 'Lost Mary 5k 🔥',
+        price: 150,
+        image: './lostmary-alphonso.jpg',
+        description: 'Lost Mary MO5000 Black Gold 🔥 Edición limitada con 5,000 inhalaciones. Sabor Alphonso Mango Ice: mango dulce y jugoso con un final helado.',
+        strains: ['Alphonso Mango Ice 🥭'],
+        strainImages: { 'Alphonso Mango Ice 🥭': './lostmary-alphonso.jpg' }
+    },
     'muhamedual': {
         title: 'MUHAMEDual 2g',
         price: 800,
@@ -108,7 +130,10 @@ export function openProductModal(productId) {
     const addBtn = document.querySelector('#productModalOverlay [data-action="add-modal-to-cart"]');
     if (addBtn) addBtn.textContent = tienePrecio(product) ? 'Agregar al Carrito' : '💬 Consultar precio por WhatsApp';
     if (descEl) descEl.textContent = product.description;
-    if (imageEl) { imageEl.src = product.image; imageEl.alt = product.title; }
+    if (imageEl) {
+        imageEl.src = (product.strainImages && product.strainImages[currentSelectedStrain]) || product.image;
+        imageEl.alt = product.title;
+    }
 
     // Botones de cepas/variedades
     if (strainsContainer) {
@@ -122,6 +147,9 @@ export function openProductModal(productId) {
                 strainsContainer.querySelectorAll('.strain-pill').forEach(p => p.classList.remove('selected'));
                 pill.classList.add('selected');
                 currentSelectedStrain = strain;
+                // Si el producto tiene foto por sabor, se cambia la imagen
+                const foto = product.strainImages && product.strainImages[strain];
+                if (foto && imageEl) imageEl.src = foto;
             });
             strainsContainer.appendChild(pill);
         });
@@ -159,7 +187,8 @@ export function addModalProductToCart() {
         return;
     }
 
-    addToCart(itemTitle, currentActiveProduct.price, currentActiveProduct.image);
+    const fotoCarrito = (currentActiveProduct.strainImages && currentActiveProduct.strainImages[currentSelectedStrain]) || currentActiveProduct.image;
+    addToCart(itemTitle, currentActiveProduct.price, fotoCarrito);
     showToast('🛒 Agregado al carrito');
     closeProductModal();
 }

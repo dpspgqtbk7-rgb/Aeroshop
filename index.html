@@ -125,7 +125,7 @@
             <button type="button" class="hub-btn hub-nubes" onclick="openNubesVuelo()">
                 <span class="hub-ico">💨</span>
                 <span class="hub-name">NUBES</span>
-                <span class="hub-sub">Muy pronto</span>
+                <span class="hub-sub">Waka, Lost Mary y más</span>
             </button>
         </div>
     </section>
@@ -594,14 +594,16 @@
 <!-- PIE: USO DE IA Y FUENTES -->
 <footer class="aero-legal" id="usoIA">
   <details>
-    <summary>🤖 Uso de IA y fuentes</summary>
+    <summary>📚 Fuentes y créditos</summary>
     <div class="aero-legal-body">
       <h3>Qué hay detrás de AEROSHOP</h3>
-      <p>AEROSHOP CDMX es un proyecto creado por <strong>Zahid Galicia</strong>. Su idea, su marca, la selección de lugares y el estilo son suyos.</p>
+      <p>AEROSHOP CDMX es un proyecto creado por <strong>el equipo de AEROSHOP y sus colaboradores</strong>. La idea, la marca, la selección de lugares y el estilo son suyos.</p>
       <h4>Videos de terceros</h4>
       <p>Los videos de lugares y monchis son de otros creadores y se muestran como referencia, con su marca de agua visible. Si eres creador y quieres que agreguemos tu crédito o que retiremos tu video, escríbenos por WhatsApp y lo atendemos.</p>
+      <!-- OCULTO (quita estos marcadores para mostrarlo de nuevo):
       <h4>Uso de IA</h4>
       <p>Para programar la página y redactar borradores usamos <strong>Claude</strong> (Anthropic) como asistente. Todo lo que se publica lo revisa y decide una persona.</p>
+      -->
       <h4>Fuentes</h4>
       <ul>
         <li>Datos de lugares (horarios, precios y cómo llegar) tomados de notas de <strong>Chilango</strong>, <strong>CDMX Secreta</strong>, <strong>El Financiero</strong> y <strong>Grupo Animal</strong>, reescritos con palabras propias. Pueden cambiar: confírmalos antes de ir.</li>
@@ -915,12 +917,55 @@
         <div class="monchis-header">
             <button class="btn-back-main" onclick="closeNubesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
         </div>
-        <div class="nubes-soon">
+        <div class="nubes-head">
             <img src="./logo-nubes.png" alt="Aero Shop Nubes" class="nubes-logo" loading="lazy">
             <h2>💨 NUBES</h2>
-            <p>Estamos preparando esta sección.</p>
-            <span class="nubes-badge">MUY PRONTO</span>
         </div>
+        <div class="products-grid" id="nubesGrid">
+            <!-- PRODUCTO WAKA 36k -->
+            <div class="product-card card-glass" onclick="openProductModal('waka36k')">
+                <span class="product-tag-new">NUEVO 💨</span>
+                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)"
+                     ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+                    <img src="./waka-mango.jpg" alt="Waka 36k Peach Mango Watermelon" class="active">
+                    <img src="./waka-menta.jpg" alt="Waka 36k Menta Ice" loading="lazy">
+                    <img src="./waka-sandia.jpg" alt="Waka 36k Strawberry Watermelon" loading="lazy">
+                    <img src="./waka-fresakiwi.jpg" alt="Waka 36k Fresa Kiwi" loading="lazy">
+                </div>
+                <div>
+                    <div class="product-name">Waka 36k 💨</div>
+                    <div class="product-subtitle">4 sabores • Pantalla Turbo 24W</div>
+                    <div class="product-price">$500 MXN</div>
+                </div>
+                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('waka36k')">Ver Más Información</button>
+            </div>
+            <!-- PRODUCTO LOST MARY 5k -->
+            <div class="product-card card-glass" onclick="openProductModal('lostmary5k')">
+                <span class="product-tag-new">NUEVO 🔥</span>
+                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)"
+                     ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+                    <img src="./lostmary-alphonso.jpg" alt="Lost Mary 5k Alphonso Mango Ice" class="active">
+                    <img src="./lostmary-mango.jpg" alt="Lost Mary MO5000 Black Gold" loading="lazy">
+                </div>
+                <div>
+                    <div class="product-name">Lost Mary 5k 🔥</div>
+                    <div class="product-subtitle">Alphonso Mango Ice • Black Gold</div>
+                    <div class="product-price">$150 MXN</div>
+                </div>
+                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('lostmary5k')">Ver Más Información</button>
+            </div>
+        </div>
+        <section id="nubes-marcas" style="padding: 10px 0 0;">
+            <div class="section-title-container" style="margin-bottom: 20px;">
+                <h2 class="nubes-marcas-title">Nuestras marcas</h2>
+            </div>
+            <div class="brands-selector-grid">
+                <div class="brand-logo-card" onclick="openFullscreenBrand('waka')">
+                    <img src="./logo-waka.png" alt="Waka" loading="lazy" onerror="this.outerHTML='<span class=&quot;brand-text-fallback&quot;>WAKA</span>'">
+                </div>
+            </div>
+        </section>
+        <p class="nubes-more">Muy pronto más productos 💨</p>
     </div>
 </div>
 
@@ -941,9 +986,6 @@
             <div class="manual-tip"><span class="manual-ico">🧱</span><div><h4>No lo conectes directo a la pared</h4><p>Usa un puerto USB de computadora o un cargador de baja potencia (5V). Los cargadores rápidos de pared pueden dañarlo.</p></div></div>
             <div class="manual-tip"><span class="manual-ico">🙃</span><div><h4>Evita voltearlo</h4><p>Boca abajo se puede chorrear o tapar. Guárdalo y úsalo siempre parado.</p></div></div>
             <div class="manual-tip"><span class="manual-ico">🌡️</span><div><h4>Lejos del calor y del frío</h4><p>No lo dejes en el carro al sol ni en lugares muy fríos: la batería y el líquido se echan a perder.</p></div></div>
-            <div class="manual-tip"><span class="manual-ico">🧼</span><div><h4>Mantenlo limpio</h4><p>Límpialo con un pañuelo seco, sobre todo la boquilla y el conector de carga.</p></div></div>
-            <div class="manual-tip"><span class="manual-ico">🎒</span><div><h4>Guárdalo bien</h4><p>Con su tapa o en una funda, lejos de llaves y monedas, para que no se golpee ni se ensucie.</p></div></div>
-            <div class="manual-tip"><span class="manual-ico">👀</span><div><h4>Si algo se ve raro, déjalo de usar</h4><p>Si se calienta mucho, huele raro o está hinchado, ya no lo uses ni lo cargues y cámbialo.</p></div></div>
         </div>
     </div>
 </div>

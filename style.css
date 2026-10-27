@@ -4115,7 +4115,7 @@ button, a, [role="button"], .compact-card, .product-card, .brand-logo-card, .nav
 .aero-legal-body li { margin-bottom: 6px; }
 
 /* MANUAL PARA CUIDAR TU AVIÓN */
-.diferencia-item.card-manual { grid-column: 1 / -1; }
+
 .manual-list { display: grid; gap: 12px; padding-bottom: 90px; }
 .manual-tip { display: flex; gap: 14px; align-items: flex-start; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 16px; }
 .manual-ico { font-size: 1.8rem; line-height: 1; }
@@ -4178,3 +4178,53 @@ body.tema-muertos .cart-drawer::after {
 body.tema-muertos .cart-header::after { content: " 🕷️"; font-size: 1.1rem; }
 body.tema-muertos .cart-summary::before { content: "🕸️ 🎃 🕸️"; display: block; text-align: center; letter-spacing: 6px; font-size: .9rem; opacity: .7; margin-bottom: 8px; }
 @media (prefers-reduced-motion: reduce) { body.tema-muertos .spider-hang { animation: none; } }
+
+.nubes-head { text-align: center; color: #fff; padding: 6px 0 14px; }
+.nubes-head h2 { font-size: 2rem; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
+.nubes-more { text-align: center; color: #fff; margin: 24px 0 110px; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+#nubesGrid { max-width: 1200px; margin: 0 auto; padding: 0 4px; }
+#nubesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+#nubesGrid .product-name { color: #0f172a; }
+#nubesGrid .product-price { color: #0f172a; }
+
+/* La vista de marca debe quedar por encima de MIELES y NUBES */
+#brandFullscreenView { z-index: 20500 !important; }
+.nubes-marcas-title { color: #fff; font-family: var(--font-spinx); font-size: 1.5rem; text-align: center; text-shadow: 0 2px 12px rgba(0,0,0,.45); width: 100%; }
+.brand-text-fallback { font-weight: 900; font-size: 1.6rem; letter-spacing: 3px; color: #0f172a; }
+
+/* ===== MARCA WAKA (inspirada en su tienda oficial: cabecera negra, fondo blanco, índigo) ===== */
+.brand-waka { color: #111; background: #fff; font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
+.waka-top { position: relative; z-index: 2; background: #000; padding: 64px 20px 18px; display: flex; align-items: center; justify-content: center; }
+.waka-logo { height: 54px; width: auto; max-width: 70%; object-fit: contain; }
+.waka-logo-txt { color: #fff; font-weight: 800; font-size: 2.6rem; letter-spacing: 1px; }
+.waka-main { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; padding: 18px 14px 130px; }
+.waka-title { font-size: 1.15rem; font-weight: 800; margin: 6px 4px 12px; color: #111; }
+.waka-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 26px; padding: 14px 14px 0; overflow: hidden; box-shadow: 0 6px 22px rgba(0,0,0,.06); }
+.waka-card-grid { display: grid; grid-template-columns: 42% 1fr; gap: 10px; align-items: center; }
+.waka-arch { --w1: #f5c542; --w2: #fff6d6; --wt: #b8860b; border-radius: 999px 999px 18px 18px; background: linear-gradient(180deg, var(--w1) 0%, var(--w2) 70%, #fff 100%); padding: 22px 8px 14px; text-align: center; color: var(--wt); transition: background .3s; }
+.waka-arch-mark { width: 58%; margin: 0 auto 6px; }
+.waka-arch-mark svg { width: 100%; display: block; }
+.waka-puffs b { display: inline-block; font-size: clamp(1.15rem, 5.2vw, 1.7rem); font-weight: 800; color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.08); }
+.waka-puffs i { font-style: normal; color: #fff; font-size: .8rem; vertical-align: top; }
+.waka-puffs span { display: block; font-size: clamp(.9rem, 4vw, 1.2rem); color: #fff; margin-top: -2px; }
+.waka-flavor { margin: 12px 4px 8px; font-weight: 800; text-transform: uppercase; font-size: clamp(.68rem, 3vw, .9rem); line-height: 1.2; min-height: 2.4em; }
+.waka-nic { font-size: .78rem; font-weight: 600; margin-bottom: 2px; }
+.waka-word { font-weight: 900; font-size: clamp(1.5rem, 7vw, 2.2rem); line-height: 1; letter-spacing: -1px; }
+.waka-sub { font-size: .7rem; opacity: .85; }
+.waka-photo img { width: 100%; height: auto; max-height: 340px; object-fit: contain; display: block; }
+.waka-foot { font-size: .56rem; color: #6b7280; margin: 10px 0 0; text-align: center; }
+.waka-legal { margin: 8px -14px 0; padding: 12px 16px 12px; background: #2d1fc9; color: #fff; font-size: .62rem; line-height: 1.35; text-align: center; border-radius: 22px 22px 0 0; }
+.waka-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 2px 6px; }
+.waka-pill { border: 1.5px solid #2d1fc9; background: #fff; color: #2d1fc9; border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: .8rem; cursor: pointer; }
+.waka-pill.on { background: #2d1fc9; color: #fff; }
+.waka-table { margin-top: 14px; border-radius: 16px; overflow: hidden; border: 1px solid #e5e7eb; }
+.waka-table-head { background: #2d1fc9; color: #fff; font-weight: 800; padding: 14px 16px; font-size: .9rem; letter-spacing: .5px; }
+.waka-row { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; padding: 12px 16px; border-top: 1px solid #eef0f3; font-size: .85rem; align-items: center; }
+.waka-row-name { font-weight: 700; }
+.waka-row-tag { color: #6b7280; }
+.waka-row-price { font-weight: 800; }
+.waka-actions { padding: 14px 16px 16px; border-top: 1px solid #eef0f3; }
+.waka-btn { width: 100%; border: 0; border-radius: 12px; padding: 14px; background: #000; color: #fff; font-weight: 800; font-size: .95rem; cursor: pointer; }
+.waka-18 { text-align: center; color: #6b7280; font-size: .7rem; margin-top: 14px; }
+.waka-logo { border-radius: 14px; }
+#nubes-marcas .brand-logo-card img { border-radius: 12px; max-height: 80px; width: auto; }
