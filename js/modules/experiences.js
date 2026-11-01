@@ -257,7 +257,7 @@ const MARCAS = {
         acento: '#d4af37', texto: '#ffffff',
         logo: './logo-muhameds.png', titulo: './MUHAMEDSINTERFAZ.png',
         lema: 'Vapes de oro para vuelos de lujo ✨',
-        productos: ['muhameds2026', 'muhacmeds', 'muhamedual'],
+        productos: ['muhameds2026', 'muhacmeds', 'muhamedual', 'muhacajas3000', 'muhameds2000'],
         galeria: ['./muhameds%202026.jpg', './muhamedual3.jpg', './muhacmeds2.jpg'],
         video: './muhadual.mp4'
     },
@@ -304,8 +304,8 @@ const MARCAS = {
         acento: '#e6c15a', texto: '#f6efd9',
         logo: './logo-aceultra.png',
         lema: 'Premium que se siente ✨',
-        productos: ['luigi', 'muhacajas3000', 'muhameds2000', 'packman3g'],
-        galeria: ['./ace-luigi.jpg', './ace-muha-cajas.jpg', './ace-muha-2026.jpg']
+        productos: [],
+        galeria: []
     },
     waka: {
         nombre: 'WAKA', clase: 'brand-waka', plantilla: 'waka',

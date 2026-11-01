@@ -1,5 +1,10 @@
 // Mensajes que salen de JavaScript (avisos, errores) y reglas para textos con variables.
 export const EXTRA = {
+  'LOS CT RECORDS': 'LOS CT RECORDS',
+  'Edición Natanael Cano': 'Natanael Cano Edition',
+  'Liquid Diamonds 2.5G + Infused Preroll + Gummies': 'Liquid Diamonds 2.5G + Infused Preroll + Gummies',
+  'Muy pronto aterrizan sus productos ♠': 'Its products land very soon ♠',
+  'Infused Fattone • Dream Cream (Indica) 0.5G': 'Infused Fattone • Dream Cream (Indica) 0.5G',
   'NUEVO 🔥 LOS CT RECORDS': 'NEW 🔥 LOS CT RECORDS',
   'CORRIDOS TUMBADOS': 'CORRIDOS TUMBADOS',
   'Edición Natanael Cano · Liquid Diamonds 2.5G + Infused Preroll + Gummies': 'Natanael Cano Edition · Liquid Diamonds 2.5G + Infused Preroll + Gummies',

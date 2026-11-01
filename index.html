@@ -38,7 +38,7 @@
     <!-- FUENTES OFICIALES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Permanent+Marker&family=Sedgwick+Ave+Display&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -146,19 +146,28 @@
         <button type="button" class="btn-back-main" onclick="closeMielesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
     </div>
     <h2 class="hub-view-title">🍯 MIELES</h2>
-    <!-- NUEVO: CORRIDOS TUMBADOS × LOS CT (banner estrella) -->
+    <!-- NUEVO: CORRIDOS TUMBADOS × LOS CT (banner estrella, estilo calle/graffiti) -->
     <section class="ct-drop" id="ct-drop" aria-label="Nuevo: Corridos Tumbados">
         <div class="ct-beams" aria-hidden="true"></div>
         <div class="ct-floor" aria-hidden="true"></div>
         <div class="ct-stage">
-            <span class="ct-badge">NUEVO 🔥 LOS CT RECORDS</span>
-            <h2 class="ct-title">CORRIDOS<br>TUMBADOS</h2>
-            <p class="ct-sub">Edición Natanael Cano · Liquid Diamonds 2.5G + Infused Preroll + Gummies</p>
+            <span class="ct-badge">LOS CT RECORDS</span>
+            <h2 class="ct-title">CORRIDOS<br><em>TUMBADOS</em></h2>
+            <p class="ct-sub">Edición Natanael Cano</p>
             <div class="ct-frames">
-                <figure class="ct-frame" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><img src="./ace-ct-1.jpg" alt="Corridos Tumbados: El F, Enre las de 20, Orula y Chiclona" loading="lazy"></figure>
-                <figure class="ct-frame" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><img src="./ace-ct-2.jpg" alt="Corridos Tumbados: Jueves 10, Carlitos y Tumbados Runtz" loading="lazy"></figure>
+                <figure class="ct-frame ct-tilt-a" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><span class="ct-tape" aria-hidden="true"></span><img src="./ace-ct-1.jpg" alt="Corridos Tumbados: El F, Enre las de 20, Orula y Chiclona" loading="lazy"></figure>
+                <figure class="ct-frame ct-tilt-b" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><span class="ct-tape" aria-hidden="true"></span><img src="./ace-ct-2.jpg" alt="Corridos Tumbados: Jueves 10, Carlitos y Tumbados Runtz" loading="lazy"></figure>
             </div>
-            <div class="ct-chips" aria-hidden="true"><div class="ct-chips-track"><span>EL F · Acapulco</span><span>ENRE LAS DE 20 · Frescout Cookie</span><span>ORULA · Amnesia</span><span>CHICLONA · Bubba Kush</span><span>JUEVES 10 · Juice Bar</span><span>CARLITOS · Sour Diesel</span><span>TUMBADOS · Runtz</span><span>EL F · Acapulco</span><span>ENRE LAS DE 20 · Frescout Cookie</span><span>ORULA · Amnesia</span><span>CHICLONA · Bubba Kush</span><span>JUEVES 10 · Juice Bar</span><span>CARLITOS · Sour Diesel</span><span>TUMBADOS · Runtz</span></div></div>
+            <p class="ct-spec">Liquid Diamonds 2.5G + Infused Preroll + Gummies</p>
+            <div class="ct-tags" role="list">
+                <div class="ct-tag" role="listitem" style="--tg:#19a8ff;--r:-3deg"><i>HELLO<br>MY NAME IS</i><b>EL F</b><span>Acapulco</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#ff8a1f;--r:2deg"><i>HELLO<br>MY NAME IS</i><b>ENRE LAS DE 20</b><span>Frescout Cookie</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#3a4bff;--r:-2deg"><i>HELLO<br>MY NAME IS</i><b>ORULA</b><span>Amnesia</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#ff3d86;--r:3deg"><i>HELLO<br>MY NAME IS</i><b>CHICLONA</b><span>Bubba Kush</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#22c55e;--r:-2deg"><i>HELLO<br>MY NAME IS</i><b>JUEVES 10</b><span>Juice Bar</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#facc15;--r:2deg"><i>HELLO<br>MY NAME IS</i><b>CARLITOS</b><span>Sour Diesel</span></div>
+                <div class="ct-tag" role="listitem" style="--tg:#a855f7;--r:-3deg"><i>HELLO<br>MY NAME IS</i><b>TUMBADOS</b><span>Runtz</span></div>
+            </div>
             <p class="ct-price">$790 MXN</p>
             <button type="button" class="ct-cta" data-action="open-product-modal" data-product-id="corridostumbados">Elegir mi corrido 🎤</button>
         </div>
@@ -170,24 +179,7 @@
         <div class="ace-stage">
             <span class="ace-badge">NUEVA MARCA</span>
             <img src="./logo-aceultra.png" alt="ACE ULTRA Premium" class="ace-logo">
-            <p class="ace-kicker">Llegó lo nuevo. Desliza y elige tu vuelo 👉</p>
-            <div class="ace-rail">
-                <article class="ace-card" data-action="open-product-modal" data-product-id="luigi" role="button" tabindex="0">
-                    <div class="ace-card-img"><img src="./ace-luigi.jpg" alt="LUIGI" loading="lazy"></div>
-                    <h3>LUIGI</h3>
-                    <p class="product-price">$700 MXN</p>
-                </article>
-                <article class="ace-card" data-action="open-product-modal" data-product-id="muhacajas3000" role="button" tabindex="0">
-                    <div class="ace-card-img"><img src="./ace-muha-cajas.jpg" alt="MUHA MEDS 3000 MG" loading="lazy"></div>
-                    <h3>MUHA MEDS 3000 MG</h3>
-                    <p class="product-price">$850 MXN</p>
-                </article>
-                <article class="ace-card" data-action="open-product-modal" data-product-id="muhameds2000" role="button" tabindex="0">
-                    <div class="ace-card-img"><img src="./ace-muha-2026.jpg" alt="MUHA MEDS 2000 MG" loading="lazy"></div>
-                    <h3>MUHA MEDS 2000 MG</h3>
-                    <p class="product-price">$800 MXN</p>
-                </article>
-            </div>
+            <p class="ace-kicker">Muy pronto aterrizan sus productos ♠</p>
             <button type="button" class="ace-cta" onclick="openFullscreenBrand('aceultra')">Entrar a ACE ULTRA ♠</button>
         </div>
     </section>
@@ -200,6 +192,18 @@
 
         <div class="products-grid" id="featuredGrid">
 <!-- NUEVOS PRODUCTOS -->
+<div class="product-card card-glass" data-action="open-product-modal" data-product-id="luigi">
+    <span class="product-tag-new">NUEVO ✨</span>
+    <div class="product-img-slider">
+        <img src="./ace-luigi.jpg" class="active" alt="LUIGI" loading="lazy">
+    </div>
+    <div>
+        <div class="product-name">LUIGI</div>
+        <div class="product-subtitle">Infused Fattone • Dream Cream (Indica) 0.5G</div>
+        <div class="product-price">$700 MXN</div>
+    </div>
+    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="luigi">Ver Más Información</button>
+</div>
 <div class="product-card card-glass" data-action="open-product-modal" data-product-id="lebowski">
     <span class="product-tag-new">NUEVO 🥃</span>
     <div class="product-img-slider">

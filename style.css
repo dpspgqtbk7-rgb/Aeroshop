@@ -4339,3 +4339,32 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 @media (prefers-reduced-motion: reduce) { .ct-beams, .ct-badge, .ct-title, .ct-frame::after, .ct-chips-track { animation: none !important; } }
 
 .ct-price { margin: 0 0 12px; font-size: 1.7rem; font-weight: 900; color: #fff; text-shadow: 0 0 12px #ff2b4d; }
+
+
+/* ===== CT: tipografía y detalles de calle (graffiti, etiquetas "Hello my name is", cinta) ===== */
+.ct-drop { background: #070104; }
+.ct-drop::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+    background: radial-gradient(circle at 15% 25%, rgba(255,0,110,.35), transparent 40%), radial-gradient(circle at 85% 70%, rgba(120,60,255,.35), transparent 42%); }
+.ct-badge { font-family: "Permanent Marker", cursive; font-size: .95rem; letter-spacing: 3px; font-weight: 400; clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%); border-radius: 0; padding: 7px 22px; }
+.ct-title { font-family: "Sedgwick Ave Display", "Permanent Marker", cursive; font-weight: 400; letter-spacing: 1px; transform: rotate(-3deg); line-height: .9;
+    font-size: clamp(2.4rem, 13vw, 4rem); color: #fff; text-shadow: 3px 3px 0 #ff1f45, 0 0 14px #ff2b4d, 0 0 38px #d1002a; }
+.ct-title em { font-style: normal; color: #ffe14a; text-shadow: 3px 3px 0 #b3071f, 0 0 16px #ff8a1f, 0 0 40px #ff2b4d; }
+.ct-sub { font-family: "Permanent Marker", cursive; font-size: 1.15rem; letter-spacing: 2px; color: #ffe14a; transform: rotate(-1.5deg); margin: 6px 0 18px; }
+.ct-frame { border: 3px solid #fff; border-radius: 4px; box-shadow: 0 10px 26px rgba(0,0,0,.7), 0 0 26px rgba(255,43,77,.6); background: #fff; padding: 6px; }
+.ct-frame img { border-radius: 2px; }
+.ct-tilt-a { transform: rotate(-1.6deg); } .ct-tilt-b { transform: rotate(1.4deg); }
+.ct-frame:hover, .ct-frame:active { transform: rotate(0) scale(1.02); }
+.ct-tape { position: absolute; top: -10px; left: 50%; width: 92px; height: 24px; transform: translateX(-50%) rotate(-3deg); z-index: 3;
+    background: rgba(255,230,120,.82); box-shadow: 0 2px 6px rgba(0,0,0,.4); clip-path: polygon(0 10%, 4% 0, 8% 12%, 12% 0, 92% 0, 96% 12%, 100% 0, 100% 90%, 96% 100%, 92% 88%, 88% 100%, 8% 100%, 4% 88%, 0 100%); }
+.ct-spec { font-family: "Permanent Marker", cursive; color: #fff; font-size: .95rem; letter-spacing: 1px; margin: 20px 4px 10px; }
+.ct-tags { display: flex; gap: 14px; overflow-x: auto; padding: 14px 18px 18px; margin: 0 -14px; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.ct-tags::-webkit-scrollbar { display: none; }
+.ct-tag { flex: 0 0 150px; scroll-snap-align: center; background: #fff; border-radius: 8px; overflow: hidden; transform: rotate(var(--r)); box-shadow: 0 8px 18px rgba(0,0,0,.6); text-align: center; color: #111; transition: transform .2s ease; }
+.ct-tag:hover { transform: rotate(0) scale(1.05); }
+.ct-tag i { display: block; font-style: normal; background: var(--tg); color: #fff; font: 800 .62rem/1.25 "Inter", sans-serif; letter-spacing: 2px; padding: 8px 4px; text-shadow: 0 1px 2px rgba(0,0,0,.35); }
+.ct-tag b { display: block; font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 1.15rem; line-height: 1.05; padding: 14px 8px 2px; color: #111; min-height: 3.2em; display: flex; align-items: center; justify-content: center; }
+.ct-tag span { display: block; font-family: "Sedgwick Ave Display", cursive; font-size: 1.15rem; color: var(--tg); padding: 0 8px 14px; filter: brightness(.8); }
+.ct-price { font-family: "Sedgwick Ave Display", cursive; font-size: 2.3rem; font-weight: 400; color: #ffe14a; text-shadow: 2px 2px 0 #b3071f, 0 0 16px rgba(255,43,77,.8); margin: 4px 0 10px; transform: rotate(-2deg); }
+.ct-cta { font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 1.2rem; letter-spacing: 2px; color: #111; background: #ffe14a; border-radius: 6px; padding: 14px 28px; transform: rotate(-1.5deg);
+    box-shadow: 4px 4px 0 #ff1f45, 0 0 28px rgba(255,225,74,.55); }
+.ct-cta:active { transform: rotate(-1.5deg) scale(.96); }
