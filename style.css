@@ -4252,7 +4252,7 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
     background: radial-gradient(ellipse at 50% -10%, #4a3608 0%, #120d03 48%, #000 100%); box-shadow: 0 0 40px rgba(230,193,90,.35), 0 18px 40px rgba(0,0,0,.5); }
 .ace-drop::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px; z-index: 3; pointer-events: none;
     background: conic-gradient(from var(--ace-ang, 0deg), #6b4d0c, #fff1b0, #e6c15a, #6b4d0c, #fff1b0, #6b4d0c);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
     animation: aceSpin 5s linear infinite; }
 @property --ace-ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @keyframes aceSpin { to { --ace-ang: 360deg; } }
