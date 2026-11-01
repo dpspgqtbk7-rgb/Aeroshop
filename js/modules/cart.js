@@ -1,8 +1,9 @@
 // js/modules/cart.js
 import { store } from '../core/store.js';
 import { escapeHTML, openModalState, closeModalState, showToast } from '../ui.js';
+import { WHATSAPP } from '../config.js';
 
-const PHONE_NUMBER = '525561446446';
+const PHONE_NUMBER = WHATSAPP;
 const DESCUENTO_420 = 0.40; // 40% de descuento cuando isPromo420Active = true
 
 const formatMXN = (n) => `$${Number(n).toLocaleString('es-MX')} MXN`;

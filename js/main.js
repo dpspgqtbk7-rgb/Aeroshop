@@ -5,6 +5,10 @@ import { initGlobalEvents } from './core/events.js';
 import { openProductModal, closeProductModal, closeModalOnOverlay } from './modules/catalog.js';
 import { toggleBreathingGuide } from './modules/emergency.js';
 import { capturarInstalacion } from './modules/pwa.js';
+import { WHATSAPP, WHATSAPP_BONITO } from './config.js';
+import { syncPrices } from './modules/catalog.js';
+import { initI18n } from './i18n.js';
+import { iniciarDiagnostico } from './modules/diagnostico.js';
 
 import {
     openRutasVuelo, closeRutasVuelo,
@@ -43,8 +47,8 @@ function activarMantenimientoUI() {
                 <p style="margin: 0; color: #38bdf8; font-weight: 700; font-size: 0.95rem;">
                     📞 ¿Dudas o pedidos urgentes? Comunícate directo al:
                 </p>
-                <a href="https://wa.me/525561446446" target="_blank" rel="noopener" style="display: inline-block; margin-top: 8px; color: #22c55e; font-size: 1.3rem; font-weight: 800; text-decoration: none;">
-                    💬 55 6144 6446
+                <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener" style="display: inline-block; margin-top: 8px; color: #22c55e; font-size: 1.3rem; font-weight: 800; text-decoration: none;">
+                    💬 ${WHATSAPP_BONITO}
                 </a>
             </div>
         </div>
@@ -122,12 +126,27 @@ function initApp() {
         return;
     }
 
+    // Accesibilidad: las ventanas se anuncian como diálogos y Escape las cierra
+    document.querySelectorAll('.modal-overlay, .product-modal-overlay, .info-modal-overlay, .cart-overlay').forEach(el => {
+        el.setAttribute('role', 'dialog');
+        el.setAttribute('aria-modal', 'true');
+    });
+    document.addEventListener('keydown', (ev) => {
+        if (ev.key !== 'Escape') return;
+        const abierta = document.querySelector('.product-modal-overlay.active, .info-modal-overlay.active, .cart-overlay.active');
+        const cerrar = abierta && abierta.querySelector('.modal-close-btn, .close-cart, .close-btn');
+        if (cerrar) cerrar.click();
+    });
+
     initGlobalEvents();
     capturarInstalacion(() => import('./modules/push.js').then(p => p.renderBloquePush()).catch(() => {}));
     initAuth();
     renderCart();
     initLazyVideos();
+    syncPrices();
     registerServiceWorker();
+    initI18n();
+    iniciarDiagnostico();
 
     // El anuncio de bienvenida viene abierto desde el HTML: bloquea el scroll del fondo
     const promo = document.getElementById('promoModal');

@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <!-- FAVICON E ÍCONO OFICIAL PWA -->
-<link rel="apple-touch-icon" href="avion.png">
-<link rel="icon" type="image/png" href="avion.png">
-<link rel="shortcut icon" href="avion.png" type="image/x-icon">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- MANIFIESTO PWA Y SOPORTE PARA CELULARES (iOS / ANDROID) -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AEROSHOP">
-<link rel="apple-touch-icon" href="dub.png">
   <!-- VISTA PREVIA PROFESIONAL EN WHATSAPP / INSTAGRAM -->
+<link rel="canonical" href="https://aeroshop7.vercel.app/">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AEROSHOP CDMX">
+<meta name="twitter:description" content="Catálogo, Pasaporte Digital, Rutas de Vuelo y guía de monchis en CDMX.">
+<meta name="twitter:image" content="https://aeroshop7.vercel.app/fondoslog.jpg">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aeroshop7.vercel.app/">
 <meta property="og:title" content="AEROSHOP CDMX 🛸 | Tienda & Lifestyle 420">
 <meta property="og:description" content="Catálogo exclusivo, Pasaporte Digital de Lealtad, Rutas de Vuelo y Guía de Supervivencia.">
 <meta property="og:image" content="https://aeroshop7.vercel.app/fondoslog.jpg">
-
-<!-- FAVICON DE PESTAÑA -->
-<link rel="icon" type="image/png" href="dub.png">
-<link rel="shortcut icon" href="dub.png" type="image/x-icon">
    <!-- TÍTULO OFICIAL SEO -->
     <title>AEROSHOP CDMX | Catálogo Oficial de Wax, Disposables & Lifestyle</title>
     <!-- PRECARGA INSTANTÁNEA DE FONDOS DE MARCAS -->
@@ -46,12 +46,19 @@
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
+        <h1 class="sr-only">AEROSHOP CDMX: catálogo, rutas de vuelo y monchis</h1>
 <img src="./logo-nubes.png" alt="Aero Shop Nubes" class="hero-logo-nubes-mobile" loading="lazy">
         <div class="hero-plane-container">
             <img src="./avion.png" alt="Avión Aeroshop" class="hero-plane-img" loading="lazy">
         </div>
         <a href="#quienes-somos" class="hero-subtitle">ELEVA TU EXPERIENCIA</a>
     </section>
+
+    <!-- IDIOMA -->
+    <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+    </div>
 
     <!-- TEMA DE TEMPORADA (quita class="tema-muertos" del <body> para apagarlo) -->
     <div class="spider-hang" aria-hidden="true"></div>
@@ -70,7 +77,7 @@
     <div class="diferencia-card card-glass">
         <h2>¿Qué nos diferencia?</h2>
         <p class="diferencia-intro">Sabemos que la sustancia es apenas la mitad de la experiencia; la otra mitad es el ambiente:</p>
-       <button class="btn-share" onclick="compartirContenido('AEROSHOP CDMX', 'Tienda & Estilo de Vida', 'Conoce nuestro catálogo, spots y guía de supervivencia.')">
+       <button type="button" class="btn-share" onclick="compartirContenido('AEROSHOP CDMX', 'Tienda & Estilo de Vida', 'Conoce nuestro catálogo, spots y guía de supervivencia.')">
   📲 Compartir tienda con un compa
 </button>
         <div class="diferencia-grid">   
@@ -136,9 +143,55 @@
 <!-- ========================================== -->
 <div class="monchis-fullscreen-view" id="mielesFullscreenView">
     <div class="monchis-header" style="padding: 0 6px;">
-        <button class="btn-back-main" onclick="closeMielesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+        <button type="button" class="btn-back-main" onclick="closeMielesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
     </div>
     <h2 class="hub-view-title">🍯 MIELES</h2>
+    <!-- NUEVO: CORRIDOS TUMBADOS × LOS CT (banner estrella) -->
+    <section class="ct-drop" id="ct-drop" aria-label="Nuevo: Corridos Tumbados">
+        <div class="ct-beams" aria-hidden="true"></div>
+        <div class="ct-floor" aria-hidden="true"></div>
+        <div class="ct-stage">
+            <span class="ct-badge">NUEVO 🔥 LOS CT RECORDS</span>
+            <h2 class="ct-title">CORRIDOS<br>TUMBADOS</h2>
+            <p class="ct-sub">Edición Natanael Cano · Liquid Diamonds 2.5G + Infused Preroll + Gummies</p>
+            <div class="ct-frames">
+                <figure class="ct-frame" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><img src="./ace-ct-1.jpg" alt="Corridos Tumbados: El F, Enre las de 20, Orula y Chiclona" loading="lazy"></figure>
+                <figure class="ct-frame" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><img src="./ace-ct-2.jpg" alt="Corridos Tumbados: Jueves 10, Carlitos y Tumbados Runtz" loading="lazy"></figure>
+            </div>
+            <div class="ct-chips" aria-hidden="true"><div class="ct-chips-track"><span>EL F · Acapulco</span><span>ENRE LAS DE 20 · Frescout Cookie</span><span>ORULA · Amnesia</span><span>CHICLONA · Bubba Kush</span><span>JUEVES 10 · Juice Bar</span><span>CARLITOS · Sour Diesel</span><span>TUMBADOS · Runtz</span><span>EL F · Acapulco</span><span>ENRE LAS DE 20 · Frescout Cookie</span><span>ORULA · Amnesia</span><span>CHICLONA · Bubba Kush</span><span>JUEVES 10 · Juice Bar</span><span>CARLITOS · Sour Diesel</span><span>TUMBADOS · Runtz</span></div></div>
+            <p class="ct-price">$790 MXN</p>
+            <button type="button" class="ct-cta" data-action="open-product-modal" data-product-id="corridostumbados">Elegir mi corrido 🎤</button>
+        </div>
+    </section>
+
+    <!-- NUEVO: ACE ULTRA (banner llamativo) -->
+    <section class="ace-drop" id="ace-drop" aria-label="Nuevo: ACE ULTRA">
+        <div class="ace-marquee" aria-hidden="true"><div class="ace-marquee-track"><span>♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM </span><span>♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM </span></div></div>
+        <div class="ace-stage">
+            <span class="ace-badge">NUEVA MARCA</span>
+            <img src="./logo-aceultra.png" alt="ACE ULTRA Premium" class="ace-logo">
+            <p class="ace-kicker">Llegó lo nuevo. Desliza y elige tu vuelo 👉</p>
+            <div class="ace-rail">
+                <article class="ace-card" data-action="open-product-modal" data-product-id="luigi" role="button" tabindex="0">
+                    <div class="ace-card-img"><img src="./ace-luigi.jpg" alt="LUIGI" loading="lazy"></div>
+                    <h3>LUIGI</h3>
+                    <p class="product-price">$700 MXN</p>
+                </article>
+                <article class="ace-card" data-action="open-product-modal" data-product-id="muhacajas3000" role="button" tabindex="0">
+                    <div class="ace-card-img"><img src="./ace-muha-cajas.jpg" alt="MUHA MEDS 3000 MG" loading="lazy"></div>
+                    <h3>MUHA MEDS 3000 MG</h3>
+                    <p class="product-price">$850 MXN</p>
+                </article>
+                <article class="ace-card" data-action="open-product-modal" data-product-id="muhameds2000" role="button" tabindex="0">
+                    <div class="ace-card-img"><img src="./ace-muha-2026.jpg" alt="MUHA MEDS 2000 MG" loading="lazy"></div>
+                    <h3>MUHA MEDS 2000 MG</h3>
+                    <p class="product-price">$800 MXN</p>
+                </article>
+            </div>
+            <button type="button" class="ace-cta" onclick="openFullscreenBrand('aceultra')">Entrar a ACE ULTRA ♠</button>
+        </div>
+    </section>
+
     <!-- PRODUCTOS DESTACADOS -->
     <section class="featured-section" id="productos-destacados">
         <div class="section-title-container">
@@ -223,7 +276,7 @@
         <div class="product-subtitle">Dona Mágica ✨🪴 • Sativa / Indica / Híbrida</div>
         <div class="product-price">$850 MXN</div>
     </div>
-    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
 </div>
 <!-- PRODUCTO BESOS 2G -->
 <div class="product-card card-glass" onclick="openProductModal('besos2g')">
@@ -236,15 +289,15 @@
         <div class="product-subtitle">2G Liquid Diamonds • Cherry Berry Kiss</div>
         <div class="product-price">$850 MXN</div>
     </div>
-    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('besos2g')">Ver Más Información</button>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('besos2g')">Ver Más Información</button>
 </div>
 <!-- PRODUCTO PACKMAN 3g + PRE-ROLL -->
 <div class="product-card card-glass" onclick="openProductModal('packman3g')">
     <span class="product-tag-sale">¡REBAJA!</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
-        <img src="./packman1.png" class="active" alt="Packman 3g 1" loading="lazy">
-        <img src="./packman2.png" alt="Packman 3g 2" loading="lazy">
-        <img src="./packman3.png" alt="Packman 3g 3" loading="lazy">
+        <img src="./packman1.jpg" class="active" alt="Packman 3g 1" loading="lazy">
+        <img src="./packman2.jpg" alt="Packman 3g 2" loading="lazy">
+        <img src="./packman3.jpg" alt="Packman 3g 3" loading="lazy">
         <img src="./packman5.JPG" alt="Packman 3g 4" loading="lazy">
     </div>
     <div>
@@ -255,7 +308,7 @@
             <span style="color: #e11d48; font-weight: 800;">$950 MXN</span>
         </div>
     </div>
-    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('packman3g')">Ver Más Información</button>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('packman3g')">Ver Más Información</button>
 </div>
 
 <!-- PRODUCTO MUHACMEDS 2g -->
@@ -263,7 +316,7 @@
     <span class="product-tag-collab">COLABORACIÓN</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
         <img src="./Muhacmeds1.JPG" class="active" alt="MUHACMEDS 2g 1" loading="lazy">
-        <img src="./muhacmeds.png" alt="MUHACMEDS 2g 2" loading="lazy">
+        <img src="./muhacmeds-foto2.jpg" alt="MUHACMEDS 2g 2" loading="lazy">
         <img src="./muhacmeds.jpg" alt="MUHACMEDS 2g 3" loading="lazy">
         <img src="./muhacmeds2.jpg" alt="MUHACMEDS 2g 4" loading="lazy">
     </div>
@@ -272,7 +325,7 @@
         <div class="product-subtitle">Muha Meds × Cookies • Sativa / Indica / Híbrida</div>
         <div class="product-price">$700 MXN</div>
     </div>
-    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhacmeds')">Ver Más Información</button>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('muhacmeds')">Ver Más Información</button>
 </div>
 <!-- PRODUCTO MUHAMEDual 2g -->
 <div class="product-card card-glass" onclick="openProductModal('muhamedual')">
@@ -291,7 +344,7 @@
         <div class="product-subtitle">Muha Meds • Doble variante & doble resistencia</div>
         <div class="product-price">$800 MXN</div>
     </div>
-    <button class="btn-add" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
+    <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('muhamedual')">Ver Más Información</button>
 </div>
     </div> <!-- /featuredGrid -->
     </section> <!-- /productos-destacados -->
@@ -318,6 +371,9 @@
             <div class="brand-logo-card" onclick="openFullscreenBrand('packman')">
                 <img src="./packmanmarcas.png" alt="Packman" loading="lazy">
             </div>
+            <div class="brand-logo-card brand-logo-ace" onclick="openFullscreenBrand('aceultra')">
+                <img src="./logo-aceultra.png" alt="ACE ULTRA" loading="lazy">
+            </div>
             <div class="brand-logo-card" onclick="openFullscreenBrand('fryd')">
                 <img src="./FRYD.jpg" alt="FRYD Extracts" style="border-radius: 50%; object-fit: cover;" loading="lazy">
             </div>
@@ -327,7 +383,7 @@
     <!-- VISTA FULLSCREEN PARA MARCAS -->
 <div class="brand-fullscreen-view" id="brandFullscreenView">
     <div class="brand-nav-bar">
-        <button class="btn-back-main" onclick="closeFullscreenBrand()">
+        <button type="button" class="btn-back-main" onclick="closeFullscreenBrand()">
             ← VOLVER AL MENÚ PRINCIPAL
         </button>
     </div>
@@ -339,7 +395,7 @@
         
         <!-- Botón Volver -->
         <div style="width: 100%; max-width: 1250px; margin-bottom: 25px;">
-            <button class="btn-back-main" onclick="closeRutasVuelo()">
+            <button type="button" class="btn-back-main" onclick="closeRutasVuelo()">
                 ← VOLVER AL MENÚ PRINCIPAL
             </button>
         </div>
@@ -352,10 +408,10 @@
 
         <!-- Menú de Filtros por Zonas -->
         <div class="filtros-zonas">
-            <button class="btn-filtro activo" data-zona="todo" onclick="filterRutas('todo', this)">Todas las Zonas</button>
-            <button class="btn-filtro" data-zona="sur" onclick="filterRutas('sur', this)">Sur</button>
-            <button class="btn-filtro" data-zona="centro" onclick="filterRutas('centro', this)">Centro</button>
-            <button class="btn-filtro" data-zona="poniente" onclick="filterRutas('poniente', this)">Poniente</button>
+            <button type="button" class="btn-filtro activo" data-zona="todo" onclick="filterRutas('todo', this)">Todas las Zonas</button>
+            <button type="button" class="btn-filtro" data-zona="sur" onclick="filterRutas('sur', this)">Sur</button>
+            <button type="button" class="btn-filtro" data-zona="centro" onclick="filterRutas('centro', this)">Centro</button>
+            <button type="button" class="btn-filtro" data-zona="poniente" onclick="filterRutas('poniente', this)">Poniente</button>
         </div>
 
         <!-- Grid de Tarjetas Compactas -->
@@ -467,17 +523,17 @@
         
         <!-- Botón Volver -->
         <div class="monchis-header">
-            <button class="btn-back-main" onclick="closeMonchisVuelo()">
+            <button type="button" class="btn-back-main" onclick="closeMonchisVuelo()">
                 ← VOLVER AL MENÚ PRINCIPAL
             </button>
         </div>
 
         <!-- Pestañas (Tabs Toggle) -->
         <div class="monchis-tabs">
-            <button class="tab-btn active" id="tabCalleBtn" onclick="switchMonchisTab('calle')">
+            <button type="button" class="tab-btn active" id="tabCalleBtn" onclick="switchMonchisTab('calle')">
                 🌮 Monchis en la Calle
             </button>
-            <button class="tab-btn" id="tabCasaBtn" onclick="switchMonchisTab('casa')">
+            <button type="button" class="tab-btn" id="tabCasaBtn" onclick="switchMonchisTab('casa')">
                 🏠 Supervivencia en Casa
             </button>
         </div>
@@ -622,7 +678,7 @@
 <!-- ========================================== -->
 <div class="product-modal-overlay" id="productModalOverlay" onclick="closeModalOnOverlay(event)">
     <div class="product-modal-card">
-     <button class="modal-close-btn" data-action="close-product-modal">&times;</button>
+     <button type="button" class="modal-close-btn" data-action="close-product-modal" aria-label="Cerrar">&times;</button>
         <div class="modal-grid">
             <div>
                 <div class="modal-media-wrapper" id="modalMediaContainer">
@@ -645,7 +701,7 @@
                     <!-- Los botones se generarán automáticamente desde app.js -->
                 </div>
 
-    <button class="btn-add" style="padding: 16px; font-size: 1.05rem;" data-action="add-modal-to-cart">Agregar al Carrito</button>
+    <button type="button" class="btn-add" style="padding: 16px; font-size: 1.05rem;" data-action="add-modal-to-cart">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -656,7 +712,7 @@
     <div class="cart-drawer">
         <div class="cart-header">
             <h2>Bolsa de Compras</h2>
-  <button class="close-cart" data-action="toggle-cart">&times;</button>
+  <button type="button" class="close-cart" data-action="toggle-cart" aria-label="Cerrar">&times;</button>
         </div>
         <div class="cart-items-list" id="cartItemsContainer"></div>
         <div class="cart-summary">
@@ -672,7 +728,7 @@
                 <span>Total</span>
                 <span id="totalPrice">$0 MXN</span>
             </div>
-           <button class="btn-checkout" data-action="send-whatsapp">Finalizar compra</button>
+           <button type="button" class="btn-checkout" data-action="send-whatsapp">Finalizar compra</button>
         </div>
     </div>
 </div>
@@ -685,7 +741,7 @@
         
         <!-- Botón Volver -->
         <div class="monchis-header">
-            <button class="btn-back-main" onclick="closeCineVuelo()">
+            <button type="button" class="btn-back-main" onclick="closeCineVuelo()">
                 ← VOLVER AL MENÚ PRINCIPAL
             </button>
 
@@ -822,7 +878,7 @@
 <!-- VENTANA MODAL DETALLADA PARA TARJETAS (01, 02, 03) -->
 <div class="info-modal-overlay" id="infoModalOverlay" onclick="closeInfoModalOnOverlay(event)">
     <div class="info-modal-card">
-        <button class="modal-close-btn" onclick="closeInfoModal()">&times;</button>
+        <button type="button" class="modal-close-btn" onclick="closeInfoModal()" aria-label="Cerrar">&times;</button>
         <div id="infoModalBody">
             <!-- JS inyectará el contenido completo de la tarjeta seleccionada -->
         </div>
@@ -831,7 +887,7 @@
    <!-- VENTANA MODAL DEL BUZÓN -->
     <div class="product-modal-overlay" id="buzonModalOverlay" onclick="closeBuzonOnOverlay(event)">
         <div class="product-modal-card" style="max-width: 550px;">
-            <button type="button" class="modal-close-btn" onclick="closeBuzonModal()">&times;</button>
+            <button type="button" class="modal-close-btn" onclick="closeBuzonModal()" aria-label="Cerrar">&times;</button>
             
             <h2 class="modal-title" style="font-size: 1.8rem; margin-bottom: 8px;">📪 Buzón Aeroshop</h2>
             <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">
@@ -862,7 +918,7 @@
     <!-- VENTANA MODAL DE PREGUNTAS FRECUENTES (FAQ) -->
     <div class="product-modal-overlay" id="faqModalOverlay" onclick="closeFaqOnOverlay(event)">
         <div class="product-modal-card" style="max-width: 650px;">
-            <button type="button" class="modal-close-btn" onclick="closeFaqModal()">&times;</button>
+            <button type="button" class="modal-close-btn" onclick="closeFaqModal()" aria-label="Cerrar">&times;</button>
             
             <h2 class="modal-title" style="font-size: 1.8rem; margin-bottom: 8px;">❓ Preguntas Frecuentes</h2>
             <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">
@@ -915,7 +971,7 @@
 <div class="monchis-fullscreen-view" id="nubesFullscreenView">
     <div class="monchis-container" style="max-width: 700px;">
         <div class="monchis-header">
-            <button class="btn-back-main" onclick="closeNubesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+            <button type="button" class="btn-back-main" onclick="closeNubesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
         </div>
         <div class="nubes-head">
             <img src="./logo-nubes.png" alt="Aero Shop Nubes" class="nubes-logo" loading="lazy">
@@ -935,9 +991,25 @@
                 <div>
                     <div class="product-name">Waka 36k 💨</div>
                     <div class="product-subtitle">4 sabores • Pantalla Turbo 24W</div>
-                    <div class="product-price">$500 MXN</div>
+                    <div class="product-price">$510 MXN</div>
                 </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('waka36k')">Ver Más Información</button>
+                <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('waka36k')">Ver Más Información</button>
+            </div>
+            <!-- PRODUCTO WAKA 15k -->
+            <div class="product-card card-glass" onclick="openProductModal('waka15k')">
+                <span class="product-tag-new">NUEVO 💨</span>
+                <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)"
+                     ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+                    <img src="./waka15-mango.jpg" alt="Waka 15k Mango Ice" class="active">
+                    <img src="./waka15-kiwi.jpg" alt="Waka 15k Kiwi Dragon Berry" loading="lazy">
+                    <img src="./waka15-strawberry.jpg" alt="Waka 15k Strawberry Burst" loading="lazy">
+                </div>
+                <div>
+                    <div class="product-name">Waka 15k 💨</div>
+                    <div class="product-subtitle">3 sabores • SoPro 15,000 puffs</div>
+                    <div class="product-price">$250 MXN</div>
+                </div>
+                <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('waka15k')">Ver Más Información</button>
             </div>
             <!-- PRODUCTO LOST MARY 5k -->
             <div class="product-card card-glass" onclick="openProductModal('lostmary5k')">
@@ -952,7 +1024,7 @@
                     <div class="product-subtitle">Alphonso Mango Ice • Black Gold</div>
                     <div class="product-price">$150 MXN</div>
                 </div>
-                <button class="btn-add" onclick="event.stopPropagation(); openProductModal('lostmary5k')">Ver Más Información</button>
+                <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('lostmary5k')">Ver Más Información</button>
             </div>
         </div>
         <section id="nubes-marcas" style="padding: 10px 0 0;">
@@ -975,7 +1047,7 @@
 <div class="monchis-fullscreen-view" id="manualFullscreenView">
     <div class="monchis-container" style="max-width: 700px;">
         <div class="monchis-header">
-            <button class="btn-back-main" onclick="closeManualVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+            <button type="button" class="btn-back-main" onclick="closeManualVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
             <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">MANUAL PARA CUIDAR TU AVIÓN 🛠️</h2>
@@ -995,7 +1067,7 @@
 <div class="monchis-fullscreen-view" id="musicFullscreenView">
     <div class="monchis-container" style="max-width: 1000px;">
         <div class="monchis-header">
-            <button class="btn-back-main" onclick="closeMusicVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
+            <button type="button" class="btn-back-main" onclick="closeMusicVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
             <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">04. FRECUENCIAS & SOUNDTRACKS 🎧</h2>
@@ -1033,7 +1105,7 @@
         
         <!-- Botón Volver -->
         <div class="emergency-header">
-            <button class="btn-back-emergency" onclick="closeEmergencyVuelo()">
+            <button type="button" class="btn-back-emergency" onclick="closeEmergencyVuelo()">
                 ← VOLVER AL MENÚ PRINCIPAL
             </button>
         </div>
@@ -1054,14 +1126,14 @@
             <span id="breathingText">Inhala</span>
         </div>
     </div>
-    <button class="btn-breathing" id="btnBreathingToggle" data-action="toggle-breathing">
+    <button type="button" class="btn-breathing" id="btnBreathingToggle" data-action="toggle-breathing">
         Iniciar Respiración 🫁
     </button>
 </div>
 
         <!-- Reproductor de Audio Ambiental Nativo (Ruido Marrón) -->
         <div class="emergency-audio-card">
-          <button class="btn-audio-emergency" id="btnAudioEmergency" data-action="toggle-brown-noise">
+          <button type="button" class="btn-audio-emergency" id="btnAudioEmergency" data-action="toggle-brown-noise">
                 <span id="btnAudioText">🎧 Escuchar Ruido Marrón Calmante</span>
             </button>
             <span class="audio-hint">Frecuencia continua de baja intensidad para reducir el ruido mental.</span>
@@ -1125,7 +1197,7 @@
 <!-- 1. POPUP PUBLICITARIO DE BIENVENIDA -->
 <div id="promoModal" class="modal-overlay active">
   <div class="modal-card promo-card">
-    <button class="close-btn" onclick="cerrarPromo()">&times;</button>
+    <button type="button" class="close-btn" onclick="cerrarPromo()" aria-label="Cerrar">&times;</button>
     <div class="promo-header">
       <span class="badge">PROMO DE BIENVENIDA ✈️</span>
       <h2>¡Eleva tu experiencia con AeroShop!</h2>
@@ -1146,13 +1218,13 @@
         </div>
       </div>
     </div>
-    <button class="btn-primary" onclick="irALoginDesdePromo()">¡REGÍSTRATE E INICIA SESIÓN!</button>
+    <button type="button" class="btn-primary" onclick="irALoginDesdePromo()">¡REGÍSTRATE E INICIA SESIÓN!</button>
   </div>
 </div>
 <!-- 2. MODAL DE INICIO DE SESIÓN / REGISTRO (GOOGLE Y APPLE) -->
 <div id="loginModal" class="modal-overlay">
   <div class="modal-card adidas-card">
-    <button class="close-btn" onclick="cerrarLogin()">&times;</button>
+    <button type="button" class="close-btn" onclick="cerrarLogin()" aria-label="Cerrar">&times;</button>
     
     <div class="adidas-brand-header" style="text-align: center;">
       <div class="brand-logo-txt">🚀 AEROSHOP CLUB</div>
@@ -1166,7 +1238,7 @@
   Al presionar <strong>"Continuar con Google"</strong> o <strong>"Continuar con Apple"</strong>, declaras expresamente que eres mayor de edad, que has leído nuestro <strong>Aviso de Privacidad</strong> y otorgas tu consentimiento para que <strong>AEROSHOP</strong> recabe y trate tus datos (nombre, correo e historial de vuelo) exclusivamente con fines estadísticos internos, personalización de servicio y la acreditación de promociones en tu pasaporte digital. Tus datos están protegidos y no serán compartidos ni comercializados con terceros.
 </div>
     <div class="social-login-grid" style="margin-top: 24px;">
-<button id="btn-login" class="btn-social-auth btn-google-adidas" data-action="login-google" style="justify-content: center; width: 100%;">
+<button type="button" id="btn-login" class="btn-social-auth btn-google-adidas" data-action="login-google" style="justify-content: center; width: 100%;">
         <svg width="22" height="22" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
           <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.28v3.15C3.31 21.36 7.37 24 12 24z"/>
@@ -1187,7 +1259,7 @@
 <!-- MODAL DE PERFIL Y PASAPORTE DIGITAL A PANTALLA COMPLETA -->
 <div id="profileModal" class="modal-overlay">
   <div class="modal-card profile-fullscreen-card">
-    <button class="close-btn" onclick="cerrarPerfil()">&times;</button>
+    <button type="button" class="close-btn" onclick="cerrarPerfil()" aria-label="Cerrar">&times;</button>
     
     <!-- ENCABEZADO DEL PASAPORTE -->
     <div class="profile-header-banner">
@@ -1225,7 +1297,7 @@
         <p id="userProvider" style="text-align:center; color:#94a3b8; font-size:0.82rem; margin-top:4px;"></p>
         <p id="userSince" style="text-align:center; color:#94a3b8; font-size:0.82rem; margin-bottom:8px;"></p>
 
-        <button class="btn-save-profile" onclick="guardarDatosPerfil()">💾 Guardar Cambios</button>
+        <button type="button" class="btn-save-profile" onclick="guardarDatosPerfil()">💾 Guardar Cambios</button>
       </div>
     </div>
 
@@ -1262,34 +1334,34 @@
 
     <!-- BOTÓN CERRAR SESIÓN -->
     <div class="profile-footer">
-  <button id="btn-logout" class="btn-logout-adidas" data-action="logout">CERRAR SESIÓN</button>
+  <button type="button" id="btn-logout" class="btn-logout-adidas" data-action="logout">CERRAR SESIÓN</button>
     </div>
 
   </div>
 </div>
 <!-- 4. BARRA DE NAVEGACIÓN FIJA CÁPSULA OSCURA -->
 <nav class="bottom-nav">
-  <button class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+  <button type="button" class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
     <span class="nav-icon">🏠</span>
     <span class="nav-label">Inicio</span>
   </button>
 
-  <button class="nav-item" data-action="toggle-cart">
+  <button type="button" class="nav-item" data-action="toggle-cart">
     <span class="nav-icon">🛒</span>
     <span class="nav-label">Carrito (<span id="cart-count">0</span>)</span>
   </button>
 
-  <button class="nav-item" onclick="openBuzonModal()">
+  <button type="button" class="nav-item" onclick="openBuzonModal()">
     <span class="nav-icon">📬</span>
     <span class="nav-label">Buzón</span>
   </button>
 
-  <button class="nav-item" onclick="openFaqModal()">
+  <button type="button" class="nav-item" onclick="openFaqModal()">
     <span class="nav-icon">❓</span>
     <span class="nav-label">FAQ</span>
   </button>
 
-  <button class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
+  <button type="button" class="nav-item" id="navPerfilBtn" onclick="abrirPerfilOClick()">
     <span class="nav-icon">👤</span>
     <span class="nav-label">Perfil</span>
   </button>

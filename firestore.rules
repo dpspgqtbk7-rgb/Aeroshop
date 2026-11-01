@@ -6,6 +6,7 @@ service cloud.firestore {
     function esAdmin() {
       return request.auth != null
           && request.auth.token.email != null
+          && request.auth.token.email_verified == true
           && request.auth.token.email.lower() == "aeroshop.37@gmail.com";
     }
 

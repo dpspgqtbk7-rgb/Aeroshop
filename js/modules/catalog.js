@@ -1,9 +1,38 @@
 // js/modules/catalog.js
 import { addToCart } from './cart.js';
 import { openModalState, closeModalState, showToast } from '../ui.js';
+import { waLink } from '../config.js';
 
 // Base de datos oficial de productos para la vista detallada
 export const productsData = {
+    'corridostumbados': {
+        title: 'CORRIDOS TUMBADOS × LOS CT 🔥',
+        price: 790,
+        image: './ace-ct-1.jpg',
+        description: 'Edición Corridos Tumbados de Natanael Cano · LOS CT Records. Bolsas de colección con Liquid Diamonds 2.5G + Infused Preroll + Gummies en 7 variedades. También hay pack de 3 gomitas infusionadas (300 MG) + 1.5G premium preroll. Pregunta por disponibilidad.',
+        strains: ['EL F — Acapulco', 'ENRE LAS DE 20 — Frescout Cookie', 'ORULA — Amnesia', 'CHICLONA — Bubba Kush', 'JUEVES 10 — Juice Bar', 'CARLITOS — Sour Diesel', 'TUMBADOS — Runtz']
+    },
+    'luigi': {
+        title: 'LUIGI',
+        price: 700,
+        image: './ace-luigi.jpg',
+        description: 'LUIGI Infused Fattone. Dispositivo rosa con pre-roll Dream Cream (Indica) de 0.5G incluido en estuche de colección. Producto ACE ULTRA.',
+        strains: ['Dream Cream — Indica 🌙', 'Pregunta por disponibilidad 💬']
+    },
+    'muhacajas3000': {
+        title: 'MUHA MEDS 3000 MG',
+        price: 850,
+        image: './ace-muha-cajas.jpg',
+        description: 'Muha Meds 3000 MG (0.106 OZ). Dispositivo negro con cuatro variedades en caja de colección. Producto ACE ULTRA.',
+        strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️', 'Pregunta por disponibilidad 💬']
+    },
+    'muhameds2000': {
+        title: 'MUHA MEDS 2000 MG',
+        price: 800,
+        image: './ace-muha-2026.jpg',
+        description: 'Muha Meds 2000 MG (0.071 OZ). Edición negro y oro con detalles metálicos. Producto ACE ULTRA.',
+        strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️', 'Pregunta por disponibilidad 💬']
+    },
     'lebowski': {
         title: 'Cookies × Lebowski 2g 🥃',
         price: 780,
@@ -56,7 +85,7 @@ export const productsData = {
     'packman3g': {
         title: 'PACKMAN 3g + Pre-Roll',
         price: 950,
-        image: './packman1.png',
+        image: './packman1.jpg',
         description: 'Packman × PartyBoyz. 3G Live Resin + .5G Infused Pre-Roll de regalo. Combo de potencia máxima.',
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️']
     },
@@ -69,7 +98,7 @@ export const productsData = {
     },
     'waka36k': {
         title: 'Waka 36k 💨',
-        price: 500,
+        price: 510,
         image: './waka-mango.jpg',
         description: 'Waka 36k 💨 Desechable recargable con pantalla Turbo 24W. Elige tu sabor y mira cómo se ve.',
         strains: ['Peach Mango Watermelon 🍑🥭🍉', 'Menta Ice 🌿', 'Strawberry Watermelon 🍓🍉', 'Fresa Kiwi 🍓'],
@@ -79,6 +108,18 @@ export const productsData = {
             'Menta Ice 🌿': './waka-menta.jpg',
             'Strawberry Watermelon 🍓🍉': './waka-sandia.jpg',
             'Fresa Kiwi 🍓': './waka-fresakiwi.jpg'
+        }
+    },
+    'waka15k': {
+        title: 'Waka 15k 💨',
+        price: 250,
+        image: './waka15-mango.jpg',
+        description: 'Waka SoPro 15,000 puffs 💨 con 5% de nicotina y pantalla digital. Elige tu sabor y mira cómo se ve.',
+        strains: ['Mango Ice 🥭', 'Kiwi Dragon Berry 🐉', 'Strawberry Burst 🍓'],
+        strainImages: {
+            'Mango Ice 🥭': './waka15-mango.jpg',
+            'Kiwi Dragon Berry 🐉': './waka15-kiwi.jpg',
+            'Strawberry Burst 🍓': './waka15-strawberry.jpg'
         }
     },
     'lostmary5k': {
@@ -183,7 +224,7 @@ export function addModalProductToCart() {
     // Sin precio todavía: se pregunta por WhatsApp en vez de agregar un producto de $0
     if (!tienePrecio(currentActiveProduct)) {
         const texto = `¡Hola Aeroshop! 🚀 Quiero información y precio de: *${itemTitle}*`;
-        window.open(`https://wa.me/525561446446?text=${encodeURIComponent(texto)}`, '_blank');
+        window.open(waLink(texto), '_blank');
         return;
     }
 
@@ -191,4 +232,21 @@ export function addModalProductToCart() {
     addToCart(itemTitle, currentActiveProduct.price, fotoCarrito);
     showToast('🛒 Agregado al carrito');
     closeProductModal();
+}
+
+// Pone en las tarjetas del HTML el precio que está en productsData (una sola fuente de verdad)
+export function syncPrices() {
+    document.querySelectorAll('.product-card, .ace-card').forEach(card => {
+        const fuente = card.getAttribute('onclick') || card.innerHTML;
+        const id = card.dataset.productId || (fuente.match(/openProductModal\('([^']+)'\)/) || [])[1];
+        const p = id && productsData[id];
+        if (!p || !tienePrecio(p)) return;
+        const texto = `$${Number(p.price).toLocaleString('es-MX')} MXN`;
+        const precio = card.querySelector('.product-price');
+        if (precio) {
+            const spans = precio.querySelectorAll('span');
+            (spans.length ? spans[spans.length - 1] : precio).textContent = texto;
+        }
+        card.querySelectorAll('[data-action="add-to-cart"]').forEach(b => { b.dataset.price = p.price; });
+    });
 }

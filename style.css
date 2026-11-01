@@ -18,7 +18,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh; height: 100dvh;
     background-color: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(4px);
     display: flex;
@@ -77,7 +77,7 @@ body::before {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh; height: 100dvh;
     height: 100dvh;
     background: url('./fondo.jpg') center center / cover no-repeat;
     z-index: -1;
@@ -480,7 +480,7 @@ body::before {
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; height: 100dvh;
             z-index: 5000;
             overflow-y: auto;
             display: none;
@@ -543,8 +543,8 @@ body::before {
         .brand-hero-common {
             position: relative;
             z-index: 2;
-            min-height: 100vh;
-            height: 100vh;
+            min-height: 100vh; min-height: 100dvh;
+            height: 100vh; height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -595,7 +595,7 @@ body::before {
         .theme-muhameds-full {
             position: relative;
             background-color: #000000;
-            min-height: 100vh;
+            min-height: 100vh; min-height: 100dvh;
             color: #ffffff;
             padding-bottom: 100px;
         }
@@ -603,7 +603,7 @@ body::before {
         .muha-bg-fixed {
             position: fixed;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            width: 100vw; height: 100vh; height: 100dvh;
             object-fit: cover;
             z-index: 1;
             pointer-events: none;
@@ -658,7 +658,7 @@ body::before {
         .theme-cookies-full {
             position: relative;
             background-color: #0088e8;
-            min-height: 100vh;
+            min-height: 100vh; min-height: 100dvh;
             color: #0f172a;
             padding-bottom: 100px;
             overflow: hidden;
@@ -677,7 +677,7 @@ body::before {
         .theme-donuts-full {
             position: relative;
             background: url('./fondoslog.jpg') center/cover fixed no-repeat #0f172a;
-            min-height: 100vh;
+            min-height: 100vh; min-height: 100dvh;
             color: #ffffff;
             padding-bottom: 100px;
             image-rendering: -webkit-optimize-contrast;
@@ -759,7 +759,7 @@ body::before {
         .theme-packman-full {
             position: relative;
             background-color: #000000;
-            min-height: 100vh;
+            min-height: 100vh; min-height: 100dvh;
             color: #ffffff;
             padding-bottom: 100px;
         }
@@ -876,7 +876,7 @@ body::before {
         .product-modal-overlay {
             position: fixed;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            width: 100vw; height: 100vh; height: 100dvh;
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(12px);
             z-index: 6000;
@@ -1130,7 +1130,7 @@ body::before {
     top: 0; 
     left: 0;
     width: 100vw; 
-    height: 100vh;
+    height: 100vh; height: 100dvh;
     z-index: 5000;
     display: none;
     opacity: 0;
@@ -1255,7 +1255,7 @@ body::before {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh; height: 100dvh;
     background-color: #0b0b12;
     z-index: 5200;
     overflow-y: auto;
@@ -1678,7 +1678,7 @@ body::before {
 .info-modal-overlay {
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    width: 100vw; height: 100vh; height: 100dvh;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -1901,7 +1901,7 @@ body::before {
     display: none;
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    width: 100vw; height: 100vh; height: 100dvh;
     background-color: #121c16; /* Verde noche matte profundo */
     z-index: 9000;
     overflow-y: auto;
@@ -2492,7 +2492,7 @@ body.modal-open {
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
+    height: 100vh !important; height: 100dvh !important;
     height: 100dvh !important;
     overscroll-behavior: contain !important;
 }
@@ -2686,7 +2686,7 @@ body.modal-open {
     padding: 100px 20px 60px 20px;
     background: #090d16;
     color: #ffffff;
-    min-height: 100vh;
+    min-height: 100vh; min-height: 100dvh;
 }
 
 .admin-container {
@@ -2837,7 +2837,7 @@ body.modal-open {
   top: 0 !important;
   left: 0 !important;
   width: 100vw !important;
-  height: 100vh !important;
+  height: 100vh !important; height: 100dvh !important;
   height: 100dvh !important;
   background: rgba(0, 0, 0, 0.75) !important;
   backdrop-filter: blur(10px) !important;
@@ -3451,7 +3451,7 @@ video::-webkit-media-controls-panel {
 /* 1. Congelar la página trasera al abrir modales */
 body.modal-open {
     overflow: hidden !important;
-    height: 100vh !important;
+    height: 100vh !important; height: 100dvh !important;
     touch-action: none !important;
 }
 
@@ -3461,7 +3461,7 @@ body.modal-open {
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
+    height: 100vh !important; height: 100dvh !important;
     background: rgba(0, 0, 0, 0.85) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
@@ -3762,7 +3762,7 @@ body.modal-open .buzon-floating-btn {
 /* TEMATIZACIÓN PANTALLA COMPLETA MARCA FRYD */
 .theme-fryd-full {
     background: linear-gradient(180deg, #090d16 0%, #1e092b 50%, #090d16 100%);
-    min-height: 100vh;
+    min-height: 100vh; min-height: 100dvh;
     color: #ffffff;
 }
 
@@ -3936,11 +3936,11 @@ button:active, .btn-add:active, .nav-item:active {
 /* ==========================================
    MARCAS: cada una con su propia interfaz
    ========================================== */
-.brand-page { position: relative; min-height: 100vh; color: var(--b-texto, #fff); }
+.brand-page { position: relative; min-height: 100vh; min-height: 100dvh; color: var(--b-texto, #fff); }
 .brand-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 .brand-hero, .brand-section { position: relative; z-index: 2; }
 .brand-hero {
-    min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 90px 20px 80px;
 }
 .brand-hero-logo { width: 260px; max-width: 70vw; height: auto; object-fit: contain;
@@ -4010,7 +4010,7 @@ button, a, [role="button"], .compact-card, .product-card, .brand-logo-card, .nav
 
 /* Los celulares recortan 100vh por las barras del navegador: dvh usa el alto real */
 .brand-fullscreen-view, .rutas-fullscreen-view, .monchis-fullscreen-view, .cine-fullscreen-view,
-.music-fullscreen-view, .emergency-fullscreen-view { height: 100vh; height: 100dvh; overscroll-behavior: contain; }
+.music-fullscreen-view, .emergency-fullscreen-view { height: 100vh; height: 100dvh; height: 100dvh; overscroll-behavior: contain; }
 
 @media (max-width: 640px) {
     /* iOS hace zoom al tocar un campo con letra menor a 16px */
@@ -4231,3 +4231,111 @@ body.tema-muertos .cart-summary::before { content: "🕸️ 🎃 🕸️"; displ
 
 .waka-buy { margin-top: 14px; }
 .waka-buy-sel { text-align: center; font-weight: 700; font-size: .85rem; color: #2d1fc9; margin-bottom: 10px; }
+.waka-more .brand-product { background: #fff; border: 1px solid #e5e7eb; color: #111; box-shadow: 0 6px 22px rgba(0,0,0,.06); }
+.waka-more .brand-product img { background: #fff; object-fit: contain; }
+.waka-more .brand-product-price { color: #2d1fc9; }
+
+/* Accesibilidad: texto solo para lectores de pantalla y foco visible con teclado */
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+:focus-visible { outline: 3px solid #facc15; outline-offset: 2px; }
+button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #facc15; outline-offset: 2px; }
+
+
+/* ===== Selector de idioma ES | EN ===== */
+.lang-switch { position: fixed; top: 12px; left: 12px; z-index: 900; display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(10,10,20,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.25); }
+.lang-btn { border: 0; background: transparent; color: #fff; font: 700 12px/1 inherit; font-family: inherit; letter-spacing: .5px; padding: 7px 11px; border-radius: 999px; cursor: pointer; min-width: 36px; }
+.lang-btn.active { background: linear-gradient(135deg,#f5f5f5,#b9bcc4); color: #111; }
+
+
+/* ===== ACE ULTRA — banner "NEW DROP" en Mieles ===== */
+.ace-drop { position: relative; z-index: 10; margin: 6px 12px 34px; border-radius: 26px; overflow: hidden; isolation: isolate;
+    background: radial-gradient(ellipse at 50% -10%, #4a3608 0%, #120d03 48%, #000 100%); box-shadow: 0 0 40px rgba(230,193,90,.35), 0 18px 40px rgba(0,0,0,.5); }
+.ace-drop::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 2px; z-index: 3; pointer-events: none;
+    background: conic-gradient(from var(--ace-ang, 0deg), #6b4d0c, #fff1b0, #e6c15a, #6b4d0c, #fff1b0, #6b4d0c);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: aceSpin 5s linear infinite; }
+@property --ace-ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes aceSpin { to { --ace-ang: 360deg; } }
+.ace-marquee { overflow: hidden; background: linear-gradient(90deg, #8a6a14, #f3d77a, #8a6a14); color: #1a1303; font-weight: 900; letter-spacing: 3px; font-size: .78rem; padding: 7px 0; position: relative; z-index: 2; }
+.ace-marquee-track { display: flex; width: max-content; animation: aceMarquee 22s linear infinite; }
+.ace-marquee-track span { white-space: pre; padding-right: 2px; }
+@keyframes aceMarquee { to { transform: translateX(-50%); } }
+.ace-stage { position: relative; z-index: 2; padding: 22px 0 26px; text-align: center; }
+.ace-badge { display: inline-block; padding: 5px 14px; border-radius: 999px; font-size: .72rem; font-weight: 900; letter-spacing: 2px; color: #1a1303;
+    background: linear-gradient(135deg, #fff1b0, #e6c15a); animation: acePulse 1.8s ease-in-out infinite; }
+@keyframes acePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(230,193,90,.7); } 50% { box-shadow: 0 0 0 12px rgba(230,193,90,0); } }
+.ace-logo { display: block; width: 170px; max-width: 52vw; height: auto; margin: 12px auto 4px; filter: drop-shadow(0 0 22px rgba(230,193,90,.65)); animation: floatLogo 4.5s ease-in-out infinite; }
+.ace-kicker { color: #f6efd9; font-weight: 700; font-size: .92rem; margin: 6px 14px 14px; opacity: .9; }
+.ace-rail { display: flex; gap: 14px; overflow-x: auto; padding: 6px 20px 18px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.ace-rail::-webkit-scrollbar { display: none; }
+.ace-card { flex: 0 0 62%; max-width: 250px; scroll-snap-align: center; border-radius: 20px; padding: 10px 10px 14px; cursor: pointer; text-align: left; color: #fff;
+    background: linear-gradient(180deg, rgba(40,31,10,.95), rgba(8,6,2,.95)); border: 1px solid rgba(230,193,90,.55);
+    box-shadow: 0 10px 26px rgba(0,0,0,.55), inset 0 0 22px rgba(230,193,90,.08); transition: transform .25s ease, box-shadow .25s ease; }
+.ace-card:hover, .ace-card:active { transform: translateY(-5px) scale(1.02); box-shadow: 0 14px 34px rgba(230,193,90,.35); }
+.ace-card-img { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4 / 5; background: #000; }
+.ace-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ace-card-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,241,176,.38) 50%, transparent 65%); transform: translateX(-120%); animation: aceShine 3.6s ease-in-out infinite; }
+@keyframes aceShine { 0%,55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.ace-card h3 { margin: 10px 4px 2px; font-size: 1rem; letter-spacing: .5px; }
+.ace-card .product-price { margin: 0 4px; color: #e6c15a; font-weight: 800; font-size: 1.1rem; }
+.ace-cta { margin-top: 4px; padding: 14px 30px; border: 0; border-radius: 999px; cursor: pointer; font: 900 .95rem/1 inherit; font-family: inherit; letter-spacing: 1.5px; color: #1a1303;
+    background: linear-gradient(135deg, #fff1b0, #e6c15a 55%, #b8902c); box-shadow: 0 0 26px rgba(230,193,90,.6); }
+.ace-cta:active { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) { .ace-drop::before, .ace-marquee-track, .ace-badge, .ace-logo, .ace-card-img::after { animation: none !important; } }
+
+/* ===== ACE ULTRA — página de marca (negro + dorado) ===== */
+.brand-aceultra .brand-bg::after { content: ""; position: absolute; inset: 0; opacity: .35;
+    background: repeating-linear-gradient(135deg, rgba(230,193,90,.06) 0 2px, transparent 2px 22px); }
+.brand-aceultra .brand-hero-logo { width: 240px; filter: drop-shadow(0 0 30px rgba(230,193,90,.7)); }
+.brand-aceultra .brand-hero-name, .brand-aceultra .brand-section-title { font-family: Georgia, "Times New Roman", serif; letter-spacing: 4px; text-transform: uppercase;
+    background: linear-gradient(180deg, #fff1b0, #e6c15a 55%, #9a7418); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none; }
+.brand-aceultra .brand-hero-lema { color: #f6efd9; letter-spacing: 2px; font-weight: 500; }
+.brand-aceultra .brand-section-title { text-align: center; border-bottom: 1px solid rgba(230,193,90,.35); padding-bottom: 12px; }
+.brand-aceultra .brand-product { background: linear-gradient(180deg, rgba(34,26,8,.92), rgba(6,5,2,.94)); border: 1px solid rgba(230,193,90,.6); border-radius: 6px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.6), 0 0 22px rgba(230,193,90,.18); }
+.brand-aceultra .brand-product:hover { box-shadow: 0 14px 36px rgba(230,193,90,.35); }
+.brand-aceultra .brand-product-info h3 { font-family: Georgia, serif; letter-spacing: 1px; text-transform: uppercase; font-size: 1rem; }
+.brand-aceultra .btn-add { background: transparent; color: #e6c15a; border: 1px solid #e6c15a; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase; box-shadow: none; }
+.brand-aceultra .btn-add.brand-add { background: linear-gradient(135deg, #fff1b0, #e6c15a 60%, #b8902c); color: #1a1303; border-color: transparent; font-weight: 800; }
+.brand-aceultra .brand-gallery img { border: 1px solid rgba(230,193,90,.5); border-radius: 6px; }
+.brand-logo-ace { background: #000 !important; border: 1px solid rgba(230,193,90,.7) !important; box-shadow: 0 0 18px rgba(230,193,90,.35); }
+.brand-logo-ace img { object-fit: contain; }
+
+
+/* ===== CORRIDOS TUMBADOS × LOS CT — banner estrella (neón rojo, lobby) ===== */
+.ct-drop { position: relative; z-index: 10; margin: 6px 12px 22px; border-radius: 26px; overflow: hidden; isolation: isolate; background: #060103;
+    border: 1px solid rgba(255,40,60,.55); box-shadow: 0 0 46px rgba(255,30,60,.45), 0 18px 40px rgba(0,0,0,.55); }
+.ct-beams { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      linear-gradient(115deg, transparent 0 18%, rgba(255,35,60,.9) 18.4% 19.2%, rgba(255,35,60,.18) 19.6% 24%, transparent 24.5%),
+      linear-gradient(-115deg, transparent 0 18%, rgba(255,35,60,.9) 18.4% 19.2%, rgba(255,35,60,.18) 19.6% 24%, transparent 24.5%),
+      radial-gradient(ellipse at 50% 35%, rgba(150,10,30,.55), transparent 62%);
+    animation: ctFlicker 4s steps(1) infinite; }
+@keyframes ctFlicker { 0%,92%,96%,100% { opacity: 1; } 93%,95% { opacity: .55; } }
+.ct-floor { position: absolute; left: -20%; right: -20%; bottom: -8%; height: 38%; z-index: 0; pointer-events: none; opacity: .5;
+    background: repeating-conic-gradient(#1a1a1a 0 25%, #e9e9e9 0 50%) 0 0 / 56px 56px; transform: perspective(240px) rotateX(62deg); transform-origin: bottom;
+    -webkit-mask-image: linear-gradient(to top, #000, transparent); mask-image: linear-gradient(to top, #000, transparent); }
+.ct-stage { position: relative; z-index: 2; padding: 24px 14px 26px; text-align: center; }
+.ct-badge { display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: .72rem; font-weight: 900; letter-spacing: 2px; color: #fff;
+    background: linear-gradient(135deg, #ff1f45, #a30a24); animation: ctPulse 1.6s ease-in-out infinite; }
+@keyframes ctPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,40,70,.8); } 50% { box-shadow: 0 0 0 13px rgba(255,40,70,0); } }
+.ct-title { margin: 14px 0 6px; font-size: clamp(2.1rem, 11vw, 3.3rem); line-height: .95; letter-spacing: 3px; font-weight: 900; color: #fff;
+    text-shadow: 0 0 8px #ff2b4d, 0 0 22px #ff0f3a, 0 0 46px #d1002a; animation: ctGlow 2.4s ease-in-out infinite alternate; }
+@keyframes ctGlow { from { text-shadow: 0 0 6px #ff2b4d, 0 0 16px #ff0f3a, 0 0 30px #d1002a; } to { text-shadow: 0 0 10px #ff5a74, 0 0 30px #ff0f3a, 0 0 62px #ff0f3a; } }
+.ct-sub { color: #ffd9de; font-size: .86rem; font-weight: 600; margin: 0 6px 16px; opacity: .92; }
+.ct-frames { display: grid; gap: 12px; }
+.ct-frame { margin: 0; border-radius: 16px; overflow: hidden; cursor: pointer; position: relative; border: 2px solid #ff2b4d;
+    box-shadow: 0 0 20px rgba(255,43,77,.55), inset 0 0 18px rgba(255,43,77,.25); transition: transform .25s ease, box-shadow .25s ease; }
+.ct-frame:hover, .ct-frame:active { transform: scale(1.015); box-shadow: 0 0 34px rgba(255,43,77,.85); }
+.ct-frame img { display: block; width: 100%; height: auto; }
+.ct-frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.28) 50%, transparent 62%); transform: translateX(-120%); animation: aceShine 4.2s ease-in-out infinite; }
+.ct-chips { overflow: hidden; margin: 16px -14px 16px; padding: 8px 0; border-block: 1px solid rgba(255,43,77,.45); background: rgba(120,0,20,.28); }
+.ct-chips-track { display: flex; gap: 10px; width: max-content; animation: aceMarquee 30s linear infinite; padding-left: 10px; }
+.ct-chips-track span { white-space: nowrap; padding: 6px 14px; border-radius: 999px; font-size: .78rem; font-weight: 800; color: #fff; background: rgba(255,43,77,.22); border: 1px solid rgba(255,43,77,.7); }
+.ct-cta { padding: 15px 30px; border: 0; border-radius: 999px; cursor: pointer; font: 900 .95rem/1 inherit; font-family: inherit; letter-spacing: 1.5px; color: #fff;
+    background: linear-gradient(135deg, #ff2b4d, #b3071f); box-shadow: 0 0 28px rgba(255,43,77,.75); }
+.ct-cta:active { transform: scale(.97); }
+@media (min-width: 700px) { .ct-frames { grid-template-columns: 1fr 1fr; } }
+@media (prefers-reduced-motion: reduce) { .ct-beams, .ct-badge, .ct-title, .ct-frame::after, .ct-chips-track { animation: none !important; } }
+
+.ct-price { margin: 0 0 12px; font-size: 1.7rem; font-weight: 900; color: #fff; text-shadow: 0 0 12px #ff2b4d; }

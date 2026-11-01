@@ -5,6 +5,7 @@ import { stopAllEmergency } from './emergency.js';
 import { productsData, tienePrecio } from './catalog.js';
 import { store } from '../core/store.js';
 import { addToCart } from './cart.js';
+import { waLink } from '../config.js';
 
 /* ==========================================
    HERRAMIENTAS INTERNAS
@@ -294,8 +295,17 @@ const MARCAS = {
         logo: './PACKMANSEGUNDOLOGO.png',
         lema: 'Insert coin y despega 👾',
         productos: ['packman3g'],
-        galeria: ['./packmanbyAceultra1_2.png', './packman2.png', './packman3.png', './packman4.PNG'],
+        galeria: ['./packmanbyAceultra1_2.jpg', './packman2.jpg', './packman3.jpg', './packman4.jpg'],
         video: './packmanbyaceultra.mp4'
+    },
+    aceultra: {
+        nombre: 'ACE ULTRA', clase: 'brand-aceultra',
+        fondo: 'radial-gradient(ellipse at 50% 0%, #3a2c07 0%, #0f0b02 42%, #000 100%)',
+        acento: '#e6c15a', texto: '#f6efd9',
+        logo: './logo-aceultra.png',
+        lema: 'Premium que se siente ✨',
+        productos: ['luigi', 'muhacajas3000', 'muhameds2000', 'packman3g'],
+        galeria: ['./ace-luigi.jpg', './ace-muha-cajas.jpg', './ace-muha-2026.jpg']
     },
     waka: {
         nombre: 'WAKA', clase: 'brand-waka', plantilla: 'waka',
@@ -381,6 +391,8 @@ function wakaHTML(m) {
                 <div class="waka-buy-sel" id="wakaSel"></div>
                 <button type="button" class="waka-btn" onclick="wakaAgregar()">🛒 Agregar al carrito${tienePrecio(p) ? ' · $' + e(p.price) + ' MXN' : ''}</button>
             </div>
+            <h2 class="waka-title" style="margin-top:22px;">Más de Waka</h2>
+            <div class="brand-products-grid waka-more">${productoMarcaHTML('waka15k')}</div>
             <p class="waka-18">Solo para mayores de edad. Producto con nicotina.</p>
         </main>
     </div>`;
@@ -393,7 +405,7 @@ window.wakaAgregar = function () {
     const s = p.strains[i] || p.strains[0];
     if (!tienePrecio(p)) {
         const texto = `¡Hola Aeroshop! 🚀 Quiero información y precio de: *${p.title} [${s}]*`;
-        window.open(`https://wa.me/525561446446?text=${encodeURIComponent(texto)}`, '_blank');
+        window.open(waLink(texto), '_blank');
         return;
     }
     const foto = (p.strainImages && p.strainImages[s]) || p.image;
@@ -537,7 +549,7 @@ export function sendBuzonWhatsApp(ev) {
     const nombre = document.getElementById('buzonNombre')?.value || 'Pasajero';
     const mensaje = document.getElementById('buzonMensaje')?.value || '';
     const text = `*📫 BUZÓN AEROSHOP*\n*Tipo:* ${tipo}\n*Nombre:* ${nombre}\n*Mensaje:* ${mensaje}`;
-    window.open(`https://wa.me/525561446446?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(waLink(text), '_blank');
     closeBuzonModal();
 }
 
