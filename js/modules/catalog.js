@@ -5,7 +5,16 @@ import { waLink } from '../config.js';
 
 // Base de datos oficial de productos para la vista detallada
 export const productsData = {
+    'cookies1g': {
+        gramos: 1, marca: 'Cookies',
+        title: 'Cookies 1g 💙',
+        price: 400,
+        image: './cookies-1g.jpg',
+        description: 'Cookies Delta 8 Vape de 1G desechable 💙 Listo para usar, sin recargas. Varios sabores de la línea Cookies, como Cereal Milk Caramel y Peach Pie. Pregunta por los sabores disponibles.',
+        strains: ['Cereal Milk Caramel 🥣', 'Peach Pie 🍑', 'Pregunta por más sabores 💬']
+    },
     'corridostumbados': {
+        gramos: 2.5, marca: 'Corridos Tumbados',
         title: 'CORRIDOS TUMBADOS × LOS CT 🔥',
         price: 790,
         image: './ace-ct-1.jpg',
@@ -13,6 +22,7 @@ export const productsData = {
         strains: ['EL F — Acapulco', 'ENRE LAS DE 20 — Frescout Cookie', 'ORULA — Amnesia', 'CHICLONA — Bubba Kush', 'JUEVES 10 — Juice Bar', 'CARLITOS — Sour Diesel', 'TUMBADOS — Runtz']
     },
     'luigi': {
+        gramos: 0.5, marca: 'ACE ULTRA',
         title: 'LUIGI',
         price: 700,
         image: './ace-luigi.jpg',
@@ -20,6 +30,7 @@ export const productsData = {
         strains: ['Dream Cream — Indica 🌙', 'Pregunta por disponibilidad 💬']
     },
     'muhacajas3000': {
+        gramos: 3, marca: 'Muha Meds',
         title: 'MUHA MEDS 3000 MG',
         price: 850,
         image: './ace-muha-cajas.jpg',
@@ -27,6 +38,7 @@ export const productsData = {
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️', 'Pregunta por disponibilidad 💬']
     },
     'muhameds2000': {
+        gramos: 2, marca: 'Muha Meds',
         title: 'MUHA MEDS 2000 MG',
         price: 800,
         image: './ace-muha-2026.jpg',
@@ -34,6 +46,7 @@ export const productsData = {
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️', 'Pregunta por disponibilidad 💬']
     },
     'lebowski': {
+        gramos: 2, marca: 'Cookies',
         title: 'Cookies × Lebowski 2g 🥃',
         price: 780,
         image: './lebo.JPG',
@@ -41,6 +54,7 @@ export const productsData = {
         strains: ['Variedad surtida ☯️', 'Pregunta por disponibilidad 💬']
     },
     'snoopdog': {
+        gramos: 3.5, marca: 'Death Row',
         title: 'Snoop Dogg × Death Row 🎤',
         price: 1200,
         image: './snoop-dog.jpg',
@@ -48,6 +62,7 @@ export const productsData = {
         strains: ['Sour Diesel — Sativa 🚀', 'Grape Ape — Indica 🌙']
     },
     'muhameds2026': {
+        gramos: 2, marca: 'Muha Meds',
         title: 'MUHA MEDS 2026 ✨ All-in-One',
         price: 700,
         image: './muhameds%202026.jpg',
@@ -55,6 +70,7 @@ export const productsData = {
         strains: ['Galactic Diesel — Indica 🌙']
     },
     'crybaby': {
+        gramos: 2, marca: 'CryBaby',
         title: 'CryBaby 2g 🍼 + Gomitas',
         price: 800,
         image: './crybaby.jpg',
@@ -62,6 +78,7 @@ export const productsData = {
         strains: ['Mango Ice Cream — Híbrida ☯️']
     },
     'frydovni': {
+        gramos: 2, marca: 'FRYD',
         title: 'FRYD Ovni 🛸 + Gomitas 2g',
         price: 850,
         image: './frydgomas2.jpg',
@@ -69,13 +86,16 @@ export const productsData = {
         strains: ['Híbrida ☯️', 'Sativa 🚀', 'Indica 🌙']
     },
     'donutsdonitav3': {
+        marca: 'Donuts',
         title: 'donuts donita v3',
-        price: 850,
+        price: 500,
+        antes: 850, // precio normal: mientras exista "antes", se muestra como PROMO
         image: './donusdonitav31.JPG',
         description: 'Dona Mágica ✨🪴. Extracto ultra limpio con sabores naturales y perfil terpénico refinado.',
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️']
     },
     'besos2g': {
+        gramos: 2, marca: 'Besos',
         title: 'Besos Liquid Diamonds 2g 💋',
         price: 850,
         image: './besos.jpg',
@@ -83,13 +103,16 @@ export const productsData = {
         strains: ['Híbrida ☯️', 'Indica 🌙']
     },
     'packman3g': {
+        gramos: 3, marca: 'Packman',
         title: 'PACKMAN 3g + Pre-Roll',
         price: 950,
+        antes: 1300,
         image: './packman1.jpg',
         description: 'Packman × PartyBoyz. 3G Live Resin + .5G Infused Pre-Roll de regalo. Combo de potencia máxima.',
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️']
     },
     'muhacmeds': {
+        gramos: 2, marca: 'Muha Meds',
         title: 'MUHACMEDS 2g',
         price: 700,
         image: './Muhacmeds1.JPG',
@@ -97,6 +120,7 @@ export const productsData = {
         strains: ['Sativa 🚀', 'Indica 🌙', 'Híbrida ☯️']
     },
     'waka36k': {
+        marca: 'Waka',
         title: 'Waka 36k 💨',
         price: 510,
         image: './waka-mango.jpg',
@@ -111,6 +135,7 @@ export const productsData = {
         }
     },
     'waka15k': {
+        marca: 'Waka',
         title: 'Waka 15k 💨',
         price: 250,
         image: './waka15-mango.jpg',
@@ -123,6 +148,7 @@ export const productsData = {
         }
     },
     'lostmary5k': {
+        marca: 'Lost Mary',
         title: 'Lost Mary 5k 🔥',
         price: 150,
         image: './lostmary-alphonso.jpg',
@@ -131,6 +157,7 @@ export const productsData = {
         strainImages: { 'Alphonso Mango Ice 🥭': './lostmary-alphonso.jpg' }
     },
     'muhamedual': {
+        gramos: 2, marca: 'Muha Meds',
         title: 'MUHAMEDual 2g',
         price: 800,
         image: './muhamedual 2.JPG',
@@ -140,6 +167,15 @@ export const productsData = {
 };
 
 export const tienePrecio = (p) => Number.isFinite(p && p.price) && p.price > 0;
+export const enPromo = (p) => tienePrecio(p) && Number.isFinite(p.antes) && p.antes > p.price;
+const mxn = (n) => `$${Number(n).toLocaleString('es-MX')}`;
+// Precio listo para pintar: si está en promo, muestra el precio normal tachado
+export function precioHTML(p) {
+    if (!tienePrecio(p)) return 'Precio por confirmar';
+    return enPromo(p)
+        ? `<s class="price-old">${mxn(p.antes)}</s> <span class="price-promo">${mxn(p.price)} MXN</span>`
+        : `${mxn(p.price)} MXN`;
+}
 
 let currentSelectedStrain = '';
 let currentActiveProduct = null;
@@ -167,7 +203,7 @@ export function openProductModal(productId) {
     const strainsContainer = document.getElementById('modalStrainPills');
 
     if (titleEl) titleEl.textContent = product.title;
-    if (priceEl) priceEl.textContent = tienePrecio(product) ? `$${product.price} MXN` : 'Precio por confirmar';
+    if (priceEl) priceEl.innerHTML = precioHTML(product);
     const addBtn = document.querySelector('#productModalOverlay [data-action="add-modal-to-cart"]');
     if (addBtn) addBtn.textContent = tienePrecio(product) ? 'Agregar al Carrito' : '💬 Consultar precio por WhatsApp';
     if (descEl) descEl.textContent = product.description;
@@ -241,12 +277,114 @@ export function syncPrices() {
         const id = card.dataset.productId || (fuente.match(/openProductModal\('([^']+)'\)/) || [])[1];
         const p = id && productsData[id];
         if (!p || !tienePrecio(p)) return;
-        const texto = `$${Number(p.price).toLocaleString('es-MX')} MXN`;
         const precio = card.querySelector('.product-price');
         if (precio) {
-            const spans = precio.querySelectorAll('span');
-            (spans.length ? spans[spans.length - 1] : precio).textContent = texto;
+            if (enPromo(p)) precio.innerHTML = precioHTML(p);
+            else {
+                const spans = precio.querySelectorAll('span');
+                (spans.length ? spans[spans.length - 1] : precio).textContent = `${mxn(p.price)} MXN`;
+            }
+        }
+        if (enPromo(p)) {
+            const tag = card.querySelector('.product-tag-new');
+            if (tag) { tag.textContent = 'PROMO 🔥'; tag.classList.add('is-promo'); }
         }
         card.querySelectorAll('[data-action="add-to-cart"]').forEach(b => { b.dataset.price = p.price; });
     });
+}
+
+
+/* ==========================================
+   MIELES: ANUNCIOS + FILTROS DEL CATÁLOGO
+   ========================================== */
+// Lo que sale en el recuadro de anuncios además de las promos (en este orden)
+const MIELES_NOVEDADES = ['cookies1g', 'corridostumbados', 'luigi'];
+const idDeTarjeta = (card) => {
+    const fuente = card.getAttribute('onclick') || card.innerHTML;
+    return card.dataset.productId || (fuente.match(/openProductModal\('([^']+)'\)/) || [])[1];
+};
+const esc = (t) => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+function anuncioProductoHTML(id, etiqueta) {
+    const p = productsData[id];
+    if (!p) return '';
+    return `<article class="ma-card" data-action="open-product-modal" data-product-id="${esc(id)}" role="button" tabindex="0">
+        <span class="ma-tag ${etiqueta === 'PROMO 🔥' ? 'is-promo' : ''}">${etiqueta}</span>
+        <img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy">
+        <h4>${esc(p.title)}</h4>
+        <p class="ma-price">${precioHTML(p)}</p>
+    </article>`;
+}
+
+export function initMielesFiltros() {
+    const grid = document.getElementById('featuredGrid');
+    const bar = document.getElementById('mielesFiltros');
+    const track = document.getElementById('mielesAnunciosTrack');
+    if (!grid || !bar) return;
+
+    // 1) Recuadro de anuncios: primero promos, luego novedades, luego la marca nueva
+    if (track) {
+        const promos = Object.keys(productsData).filter(id => enPromo(productsData[id]));
+        const nuevos = MIELES_NOVEDADES.filter(id => !promos.includes(id));
+        track.innerHTML = promos.map(id => anuncioProductoHTML(id, 'PROMO 🔥')).join('')
+            + nuevos.map(id => anuncioProductoHTML(id, 'NUEVO ✨')).join('')
+            + `<article class="ma-card ma-brand" onclick="openFullscreenBrand('aceultra')" role="button" tabindex="0">
+                <span class="ma-tag">NUEVA MARCA</span>
+                <img src="./logo-aceultra.png" alt="ACE ULTRA" loading="lazy">
+                <h4>ACE ULTRA ♠</h4>
+                <p class="ma-price">Ver la marca →</p>
+               </article>`;
+    }
+
+    // 2) Filtros
+    const cards = [...grid.querySelectorAll('.product-card')];
+    cards.forEach((c, i) => { c.dataset.orden = i; });
+    const marcaSel = document.getElementById('mfMarca');
+    if (marcaSel) {
+        const marcas = [...new Set(cards.map(c => (productsData[idDeTarjeta(c)] || {}).marca).filter(Boolean))].sort();
+        marcaSel.innerHTML = '<option value="">🏷️ Por marca</option>' + marcas.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('');
+    }
+    const hint = document.getElementById('mfHint');
+    const vacio = document.getElementById('mfVacio');
+    const estado = { filtro: '', marca: '', barato: false };
+
+    function aplicar() {
+        const activo = estado.filtro || estado.marca || estado.barato;
+        grid.classList.toggle('mf-oculto', !activo);
+        if (hint) hint.hidden = !!activo;
+        let visibles = 0;
+        cards.forEach(c => {
+            const p = productsData[idDeTarjeta(c)] || {};
+            let ok = true;
+            if (estado.filtro === 'ofertas') ok = enPromo(p);
+            else if (estado.filtro && estado.filtro !== 'todos') ok = p.gramos === Number(estado.filtro);
+            if (ok && estado.marca) ok = p.marca === estado.marca;
+            c.style.display = ok ? '' : 'none';
+            if (ok) visibles++;
+        });
+        const orden = estado.barato
+            ? [...cards].sort((a, b) => ((productsData[idDeTarjeta(a)] || {}).price || 1e9) - ((productsData[idDeTarjeta(b)] || {}).price || 1e9))
+            : [...cards].sort((a, b) => a.dataset.orden - b.dataset.orden);
+        orden.forEach(c => grid.appendChild(c));
+        if (vacio) vacio.hidden = !activo || visibles > 0;
+        bar.querySelectorAll('[data-filtro]').forEach(b => b.classList.toggle('active', b.dataset.filtro === estado.filtro));
+        const bp = bar.querySelector('[data-orden="precio"]');
+        if (bp) bp.classList.toggle('active', estado.barato);
+        if (marcaSel) marcaSel.classList.toggle('active', !!estado.marca);
+    }
+
+    bar.addEventListener('click', (ev) => {
+        const b = ev.target.closest('button');
+        if (!b) return;
+        if (b.dataset.filtro) {
+            estado.filtro = estado.filtro === b.dataset.filtro ? '' : b.dataset.filtro;
+            if (b.dataset.filtro === 'todos') estado.marca = '';
+            if (marcaSel && b.dataset.filtro === 'todos') marcaSel.value = '';
+        } else if (b.dataset.orden === 'precio') {
+            estado.barato = !estado.barato;
+        }
+        aplicar();
+    });
+    if (marcaSel) marcaSel.addEventListener('change', () => { estado.marca = marcaSel.value; if (estado.marca && estado.filtro === 'todos') estado.filtro = ''; aplicar(); });
+    aplicar();
 }

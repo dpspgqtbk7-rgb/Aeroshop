@@ -235,6 +235,19 @@ export const experiencesData = {
             horario: "🕒 Abierto hasta las 9:30 PM.",
             mapsUrl: "https://maps.google.com/?q=Fernando+Iglesias+Calderon+91+Jardin+Balbuena"
         },
+        losperrines: {
+            title: "Los Perrines 🌭🌮",
+            media: "./losperrines.mp4",
+            isVideo: true,
+            badge: "📍 Calle • 🍿 Salado",
+            ubicacion: "📍 Calzada del Hueso 405, Vergel Coapa, Tlalpan",
+            calificacion: "✈️✈️✈️✈️✈️ (5/5 — Sello de Garantía)",
+            tipo: "🔴 Nivel Monstruo / Hot dogs mexas",
+            resena: "Hot dogs mexas de 25 cm o el reto del \"burro\" de medio metro. Hay perro volador con palomitas de pollo, perro pastor y, en fin de semana, la norteña con arrachera.",
+            presupuesto: "💸 Económico ($50 - $150)",
+            horario: "🕒 Martes a domingo, 2:00 a 8:00 PM. Lunes cerrado. Confirma antes de ir.",
+            mapsUrl: "https://maps.google.com/?q=Calzada+del+Hueso+405+Vergel+Coapa+Tlalpan+CDMX"
+        },
         losperros: {
             title: "Los Perros de San Antonio 🌭🥓",
             media: "./losperros.MP4",

@@ -6,7 +6,7 @@ import { openProductModal, closeProductModal, closeModalOnOverlay } from './modu
 import { toggleBreathingGuide } from './modules/emergency.js';
 import { capturarInstalacion } from './modules/pwa.js';
 import { WHATSAPP, WHATSAPP_BONITO } from './config.js';
-import { syncPrices } from './modules/catalog.js';
+import { syncPrices, initMielesFiltros } from './modules/catalog.js';
 import { initI18n } from './i18n.js';
 import { iniciarDiagnostico } from './modules/diagnostico.js';
 
@@ -144,6 +144,7 @@ function initApp() {
     renderCart();
     initLazyVideos();
     syncPrices();
+    initMielesFiltros();
     registerServiceWorker();
     initI18n();
     iniciarDiagnostico();

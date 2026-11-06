@@ -4368,3 +4368,70 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 .ct-cta { font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 1.2rem; letter-spacing: 2px; color: #111; background: #ffe14a; border-radius: 6px; padding: 14px 28px; transform: rotate(-1.5deg);
     box-shadow: 4px 4px 0 #ff1f45, 0 0 28px rgba(255,225,74,.55); }
 .ct-cta:active { transform: rotate(-1.5deg) scale(.96); }
+
+/* ==========================================
+   PROMOCIONES (precio normal tachado)
+   ========================================== */
+.price-old { opacity: .55; font-weight: 600; font-size: .85em; margin-right: 4px; text-decoration-thickness: 2px; }
+.price-promo { color: #ff4f7b; font-weight: 800; }
+.product-tag-new.is-promo { background: linear-gradient(90deg, #ff2d55, #ff8a1f) !important; color: #fff !important; }
+.modal-price .price-promo { color: #ff4f7b; }
+
+/* ==========================================
+   MARCA COOKIES: cuadrícula estilo tienda oficial
+   ========================================== */
+.brand-page.ck-page { background: #000; min-height: 100vh; padding: 86px 20px 60px; }
+.ck-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 28px; max-width: 1100px; margin: 0 auto; }
+@media (min-width: 900px) { .ck-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 380px) { .ck-grid { gap: 32px 16px; } }
+.ck-item { display: flex; flex-direction: column; cursor: pointer; background: transparent; border: 0; }
+.ck-img { aspect-ratio: 4 / 5; background: #000; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.ck-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.ck-item:hover .ck-img img { transform: scale(1.04); }
+.ck-name { color: #3ea6ff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(.95rem, 2.6vw, 1.2rem);
+  line-height: 1.3; margin: 18px 0 0; min-height: 2.6em; }
+.ck-price { color: #fff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(1rem, 2.6vw, 1.2rem); margin: 22px 0 16px; }
+.ck-price .price-promo { color: #fff; }
+.ck-btn { margin-top: auto; width: 100%; background: #3f9be0; color: #0a1c2e; border: 0; border-radius: 5px; padding: 15px 10px;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(.95rem, 2.4vw, 1.1rem); cursor: pointer; transition: background .2s; }
+.ck-btn:hover { background: #5ab0ee; }
+.brand-cookies.ck-page .brand-soon { color: #fff; grid-column: 1 / -1; text-align: center; }
+
+/* ==========================================
+   MIELES: RECUADRO DE ANUNCIOS Y PROMOS
+   ========================================== */
+.mieles-anuncios { margin: 10px 16px 26px; padding: 16px 0 18px; border-radius: 24px;
+  background: rgba(15, 23, 42, .78); border: 1px solid rgba(255,255,255,.18);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, .35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.ma-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 18px 12px; }
+.ma-title { font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; font-size: 1.15rem; color: #fff; letter-spacing: .01em; }
+.ma-sub { font-size: .8rem; color: #cbd5e1; }
+.ma-track { display: flex; gap: 12px; overflow-x: auto; padding: 2px 18px 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.ma-track::-webkit-scrollbar { display: none; }
+.ma-card { position: relative; flex: 0 0 150px; scroll-snap-align: start; background: #fff; border-radius: 18px; padding: 10px; cursor: pointer;
+  display: flex; flex-direction: column; transition: transform .2s; }
+.ma-card:hover { transform: translateY(-3px); }
+.ma-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 12px; background: #f1f5f9; }
+.ma-card h4 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: .84rem; font-weight: 700; color: #0f172a; margin: 8px 0 4px; line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ma-price { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: .85rem; font-weight: 800; color: #0f172a; margin-top: auto; }
+.ma-tag { position: absolute; top: 16px; left: 16px; z-index: 1; font-size: .62rem; font-weight: 800; letter-spacing: .04em; padding: 4px 8px; border-radius: 999px;
+  background: #0f172a; color: #fff; }
+.ma-tag.is-promo { background: linear-gradient(90deg, #ff2d55, #ff8a1f); }
+.ma-brand { background: #0b0b0b; }
+.ma-brand img { object-fit: contain; background: #0b0b0b; padding: 10px; }
+.ma-brand h4, .ma-brand .ma-price { color: #e6c15a; }
+
+/* ==========================================
+   MIELES: FILTROS DEL CATÁLOGO
+   ========================================== */
+.mf-bar { margin: 6px 0 14px; }
+.mf-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 0 12px; }
+.mf-chip, .mf-select { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: .86rem; color: #0f172a;
+  background: rgba(255,255,255,.88); border: 1px solid rgba(15,23,42,.12); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(2,6,23,.12); transition: background .2s, color .2s, transform .15s; }
+.mf-select { appearance: none; -webkit-appearance: none; padding-right: 14px; }
+.mf-chip:active { transform: scale(.97); }
+.mf-chip.active, .mf-select.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+.mf-hint { text-align: center; color: #fff; font-weight: 700; text-shadow: 0 2px 10px rgba(2,6,23,.55); margin: 18px 16px 26px; font-size: 1rem; }
+.products-grid.mf-oculto { display: none !important; }

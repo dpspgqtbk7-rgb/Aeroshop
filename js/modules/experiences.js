@@ -2,7 +2,7 @@
 import { experiencesData } from './data.js';
 import { escapeHTML as e, openModalState, closeModalState, showToast } from '../ui.js';
 import { stopAllEmergency } from './emergency.js';
-import { productsData, tienePrecio } from './catalog.js';
+import { productsData, tienePrecio, precioHTML } from './catalog.js';
 import { store } from '../core/store.js';
 import { addToCart } from './cart.js';
 import { waLink } from '../config.js';
@@ -262,12 +262,12 @@ const MARCAS = {
         video: './muhadual.mp4'
     },
     cookies: {
-        nombre: 'COOKIES', clase: 'brand-cookies',
-        fondo: 'linear-gradient(180deg, #0a9bff 0%, #0077d6 55%, #00539b 100%)',
-        acento: '#ffffff', texto: '#ffffff',
+        nombre: 'COOKIES', clase: 'brand-cookies', plantilla: 'cookies',
+        fondo: '#000000',
+        acento: '#3ea6ff', texto: '#ffffff',
         logo: './logo-cookies.png',
         lema: 'California sobre la nube 💙',
-        productos: ['lebowski', 'muhacmeds'],
+        productos: ['cookies1g', 'lebowski', 'muhacmeds'],
         galeria: ['./donutsv23.JPG']
     },
     backwoods: {
@@ -335,7 +335,7 @@ function productoMarcaHTML(id) {
             <img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy">
             <div class="brand-product-info">
                 <h3>${e(p.title)}</h3>
-                <p class="brand-product-price">${tienePrecio(p) ? '$' + e(p.price) + ' MXN' : 'Consultar precio 💬'}</p>
+                <p class="brand-product-price">${tienePrecio(p) ? precioHTML(p) : 'Consultar precio 💬'}</p>
                 <div class="brand-product-actions">
                     <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${e(id)}">Ver más</button>
                     ${tienePrecio(p) ? `<button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>` : ''}
@@ -429,8 +429,30 @@ window.wakaSelectSabor = function (i) {
     root.querySelectorAll('.waka-pill').forEach((b, k) => b.classList.toggle('on', k === i));
 };
 
+/* ==========================================
+   PÁGINA DE MARCA COOKIES (cuadrícula al estilo de su tienda oficial)
+   ========================================== */
+function cookiesHTML(m) {
+    const items = m.productos.map(id => {
+        const p = productsData[id];
+        if (!p) return '';
+        return `
+            <article class="ck-item" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
+                <div class="ck-img"><img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy"></div>
+                <h3 class="ck-name">${e(p.title)}</h3>
+                <p class="ck-price">${precioHTML(p)}</p>
+                <button type="button" class="ck-btn" data-action="open-product-modal" data-product-id="${e(id)}">${tienePrecio(p) ? 'Agregar al carrito' : 'Consultar precio 💬'}</button>
+            </article>`;
+    }).join('');
+    return `
+        <div class="brand-page ${m.clase} ck-page">
+            <div class="ck-grid">${items || '<p class="brand-soon">🛬 Próximamente aterrizan productos de esta marca.</p>'}</div>
+        </div>`;
+}
+
 function marcaHTML(m) {
     if (m.plantilla === 'waka') return wakaHTML(m);
+    if (m.plantilla === 'cookies') return cookiesHTML(m);
     const bg = m.fondoImg
         ? `background:${m.fondo} url('${m.fondoImg}') center/cover no-repeat;`
         : `background:${m.fondo};`;

@@ -146,42 +146,13 @@
         <button type="button" class="btn-back-main" onclick="closeMielesVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
     </div>
     <h2 class="hub-view-title">🍯 MIELES</h2>
-    <!-- NUEVO: CORRIDOS TUMBADOS × LOS CT (banner estrella, estilo calle/graffiti) -->
-    <section class="ct-drop" id="ct-drop" aria-label="Nuevo: Corridos Tumbados">
-        <div class="ct-beams" aria-hidden="true"></div>
-        <div class="ct-floor" aria-hidden="true"></div>
-        <div class="ct-stage">
-            <span class="ct-badge">LOS CT RECORDS</span>
-            <h2 class="ct-title">CORRIDOS<br><em>TUMBADOS</em></h2>
-            <p class="ct-sub">Edición Natanael Cano</p>
-            <div class="ct-frames">
-                <figure class="ct-frame ct-tilt-a" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><span class="ct-tape" aria-hidden="true"></span><img src="./ace-ct-1.jpg" alt="Corridos Tumbados: El F, Enre las de 20, Orula y Chiclona" loading="lazy"></figure>
-                <figure class="ct-frame ct-tilt-b" data-action="open-product-modal" data-product-id="corridostumbados" role="button" tabindex="0"><span class="ct-tape" aria-hidden="true"></span><img src="./ace-ct-2.jpg" alt="Corridos Tumbados: Jueves 10, Carlitos y Tumbados Runtz" loading="lazy"></figure>
-            </div>
-            <p class="ct-spec">Liquid Diamonds 2.5G + Infused Preroll + Gummies</p>
-            <div class="ct-tags" role="list">
-                <div class="ct-tag" role="listitem" style="--tg:#19a8ff;--r:-3deg"><i>HELLO<br>MY NAME IS</i><b>EL F</b><span>Acapulco</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#ff8a1f;--r:2deg"><i>HELLO<br>MY NAME IS</i><b>ENRE LAS DE 20</b><span>Frescout Cookie</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#3a4bff;--r:-2deg"><i>HELLO<br>MY NAME IS</i><b>ORULA</b><span>Amnesia</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#ff3d86;--r:3deg"><i>HELLO<br>MY NAME IS</i><b>CHICLONA</b><span>Bubba Kush</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#22c55e;--r:-2deg"><i>HELLO<br>MY NAME IS</i><b>JUEVES 10</b><span>Juice Bar</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#facc15;--r:2deg"><i>HELLO<br>MY NAME IS</i><b>CARLITOS</b><span>Sour Diesel</span></div>
-                <div class="ct-tag" role="listitem" style="--tg:#a855f7;--r:-3deg"><i>HELLO<br>MY NAME IS</i><b>TUMBADOS</b><span>Runtz</span></div>
-            </div>
-            <p class="ct-price">$790 MXN</p>
-            <button type="button" class="ct-cta" data-action="open-product-modal" data-product-id="corridostumbados">Elegir mi corrido 🎤</button>
+    <!-- ANUNCIOS Y PROMOS (lo primero que se ve en Mieles) -->
+    <section class="mieles-anuncios" id="mielesAnuncios" aria-label="Anuncios y promociones">
+        <div class="ma-head">
+            <span class="ma-title">📢 Anuncios y promos</span>
+            <span class="ma-sub">Desliza 👉</span>
         </div>
-    </section>
-
-    <!-- NUEVO: ACE ULTRA (banner llamativo) -->
-    <section class="ace-drop" id="ace-drop" aria-label="Nuevo: ACE ULTRA">
-        <div class="ace-marquee" aria-hidden="true"><div class="ace-marquee-track"><span>♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM </span><span>♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM ♠ NEW DROP ♠ ACE ULTRA ♠ PREMIUM </span></div></div>
-        <div class="ace-stage">
-            <span class="ace-badge">NUEVA MARCA</span>
-            <img src="./logo-aceultra.png" alt="ACE ULTRA Premium" class="ace-logo">
-            <p class="ace-kicker">Muy pronto aterrizan sus productos ♠</p>
-            <button type="button" class="ace-cta" onclick="openFullscreenBrand('aceultra')">Entrar a ACE ULTRA ♠</button>
-        </div>
+        <div class="ma-track" id="mielesAnunciosTrack"></div>
     </section>
 
     <!-- PRODUCTOS DESTACADOS -->
@@ -190,8 +161,48 @@
             <img src="./titulo-destacados.png" alt="Productos Destacados" class="title-img-destacados" loading="lazy">
         </div>
 
-        <div class="products-grid" id="featuredGrid">
+        <div class="mf-bar" id="mielesFiltros" role="toolbar" aria-label="Filtrar productos">
+            <div class="mf-chips">
+                <button type="button" class="mf-chip" data-filtro="todos">Todos los productos</button>
+                <button type="button" class="mf-chip" data-filtro="1">1g</button>
+                <button type="button" class="mf-chip" data-filtro="2">2g</button>
+                <button type="button" class="mf-chip" data-filtro="3">3g</button>
+                <button type="button" class="mf-chip" data-filtro="3.5">3.5g</button>
+                <button type="button" class="mf-chip" data-filtro="ofertas">🔥 Ofertas</button>
+                <button type="button" class="mf-chip" data-orden="precio">💸 Precio: menor a mayor</button>
+                <select class="mf-select" id="mfMarca" aria-label="Filtrar por marca"><option value="">🏷️ Por marca</option></select>
+            </div>
+        </div>
+        <p class="mf-hint" id="mfHint">👆 Elige un filtro para ver los productos</p>
+        <p class="mf-hint" id="mfVacio" hidden>🛬 No hay productos con ese filtro por ahora.</p>
+
+        <div class="products-grid mf-oculto" id="featuredGrid">
 <!-- NUEVOS PRODUCTOS -->
+<div class="product-card card-glass" data-action="open-product-modal" data-product-id="cookies1g">
+    <span class="product-tag-new">NUEVO 💙</span>
+    <div class="product-img-slider">
+        <img src="./cookies-1g.jpg" class="active" alt="Cookies 1g" loading="lazy">
+    </div>
+    <div>
+        <div class="product-name">Cookies 1g 💙</div>
+        <div class="product-subtitle">Delta 8 Vape 1G • Desechable • Varios sabores</div>
+        <div class="product-price">$400 MXN</div>
+    </div>
+    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="cookies1g">Ver Más Información</button>
+</div>
+<div class="product-card card-glass" data-action="open-product-modal" data-product-id="corridostumbados">
+    <span class="product-tag-new">NUEVO 🎤</span>
+    <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
+        <img src="./ace-ct-1.jpg" class="active" alt="Corridos Tumbados × Los CT 1" loading="lazy">
+        <img src="./ace-ct-2.jpg" alt="Corridos Tumbados × Los CT 2" loading="lazy">
+    </div>
+    <div>
+        <div class="product-name">Corridos Tumbados × Los CT 🔥</div>
+        <div class="product-subtitle">Liquid Diamonds 2.5G + Infused Preroll + Gummies</div>
+        <div class="product-price">$790 MXN</div>
+    </div>
+    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="corridostumbados">Ver Más Información</button>
+</div>
 <div class="product-card card-glass" data-action="open-product-modal" data-product-id="luigi">
     <span class="product-tag-new">NUEVO ✨</span>
     <div class="product-img-slider">
@@ -270,7 +281,7 @@
 </div>
          <!-- PRODUCTO DONUTS DONITA V3 -->
 <div class="product-card card-glass" onclick="openProductModal('donutsdonitav3')">
-    <span class="product-tag-new">NUEVO LANZAMIENTO</span>
+    <span class="product-tag-new is-promo">PROMO 🔥</span>
     <div class="product-img-slider" onmouseenter="startHoverSlider(this)" onmouseleave="stopHoverSlider(this)" ontouchstart="startHoverSlider(this)" ontouchend="stopHoverSlider(this)">
         <img src="./donusdonitav31.JPG" class="active" alt="donuts donita v3 1" loading="lazy">
         <img src="./donutsdonasv3.JPG" alt="donuts donita v3 2" loading="lazy">
@@ -278,7 +289,7 @@
     <div>
         <div class="product-name">donuts donita v3</div>
         <div class="product-subtitle">Dona Mágica ✨🪴 • Sativa / Indica / Híbrida</div>
-        <div class="product-price">$850 MXN</div>
+        <div class="product-price"><s class="price-old">$850</s> <span class="price-promo">$500 MXN</span></div>
     </div>
     <button type="button" class="btn-add" onclick="event.stopPropagation(); openProductModal('donutsdonitav3')">Ver Más Información</button>
 </div>
@@ -606,6 +617,14 @@
 </div>
 
     <!-- SPOTS DE CALLE -->
+    <div class="compact-card" data-tipo="calle" data-zona="sur" data-antojo="salado" onclick="openCardModal('monchis', 'losperrines')">
+        <video data-src="./losperrines.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+        <div class="compact-card-body">
+            <span class="badge-tag">📍 Sur • 🍿 Salado</span>
+            <h4>Los Perrines 🌭🌮</h4>
+        </div>
+    </div>
+
     <div class="compact-card" data-tipo="calle" data-zona="sur" data-antojo="salado" onclick="openCardModal('monchis', 'losperros')">
         <video data-src="./losperros.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
         <div class="compact-card-body">
