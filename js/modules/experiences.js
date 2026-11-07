@@ -188,6 +188,14 @@ export function openCardModal(tipo, id) {
 
     body.innerHTML = contentHTML;
     openOverlay('infoModalOverlay');
+    // Como la persona tocó la tarjeta, el navegador deja que el video suene.
+    // Si aun así lo bloquea, sigue en silencio y se puede activar con los controles.
+    const v = body.querySelector('video');
+    if (v) {
+        v.muted = false;
+        const p = v.play();
+        if (p && p.catch) p.catch(() => { v.muted = true; v.play().catch(() => {}); });
+    }
 }
 
 export function closeInfoModal() {

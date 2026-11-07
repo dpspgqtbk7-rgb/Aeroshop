@@ -11,7 +11,7 @@ const SECCIONES = {
 const esc = (t) => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const corto = (t, n = 110) => { t = String(t || '').trim(); return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t; };
 
-let feed = null, io = null, conSonido = false;
+let feed = null, io = null, conSonido = true;
 
 function tarjetasVisibles(vista) {
     return [...vista.querySelectorAll('.compact-card')].filter(c => c.offsetParent !== null && !c.classList.contains('vb-off'))
@@ -38,7 +38,7 @@ function slideHTML(s, i, total) {
             <button type="button" class="tt-more" data-tt="info" data-tipo="${esc(s.tipo)}" data-id="${esc(s.id)}">Ver ficha completa →</button>
         </div>
         <div class="tt-rail">
-            <button type="button" class="tt-act" data-tt="sound" aria-label="Sonido"><span class="tt-ico">🔇</span><small>Sonido</small></button>
+            <button type="button" class="tt-act" data-tt="sound" aria-label="Sonido"><span class="tt-ico">🔊</span><small>Sonido</small></button>
             <button type="button" class="tt-act" data-tt="info" data-tipo="${esc(s.tipo)}" data-id="${esc(s.id)}" aria-label="Ver ficha"><span class="tt-ico">ℹ️</span><small>Ficha</small></button>
             ${s.item.mapsUrl ? `<a class="tt-act" href="${esc(s.item.mapsUrl)}" target="_blank" rel="noopener" aria-label="Abrir en Maps"><span class="tt-ico">📍</span><small>Maps</small></a>` : ''}
             <button type="button" class="tt-act" data-tt="share" data-titulo="${esc(s.titulo)}" aria-label="Compartir"><span class="tt-ico">↗️</span><small>Compartir</small></button>
@@ -55,7 +55,15 @@ function reproducir(slide) {
     cargar(slide.nextElementSibling);
     if (!v) return;
     v.muted = !conSonido;
-    const p = v.play(); if (p && p.catch) p.catch(() => {});
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {
+        // El navegador no dejó sonar: seguimos en silencio y el botón 🔇 lo activa
+        conSonido = false; actualizarIconos(); v.muted = true; v.play().catch(() => {});
+    });
+}
+
+function actualizarIconos() {
+    if (feed) feed.querySelectorAll('[data-tt="sound"] .tt-ico').forEach(i => { i.textContent = conSonido ? '🔊' : '🔇'; });
 }
 
 function cerrar() {
@@ -104,8 +112,11 @@ export function abrirModoTikTok(vistaId) {
         else if (accion === 'sound') {
             conSonido = !conSonido;
             feed.querySelectorAll('.tt-video').forEach(v => { v.muted = !conSonido; });
-            feed.querySelectorAll('[data-tt="sound"] .tt-ico').forEach(i => { i.textContent = conSonido ? '🔊' : '🔇'; });
-        } else if (accion === 'info' && window.openCardModal) window.openCardModal(b.dataset.tipo, b.dataset.id);
+            actualizarIconos();
+        } else if (accion === 'info' && window.openCardModal) {
+            feed.querySelectorAll('.tt-video').forEach(v => v.pause()); // que no suenen dos videos a la vez
+            window.openCardModal(b.dataset.tipo, b.dataset.id);
+        }
         else if (accion === 'share') {
             const titulo = b.dataset.titulo;
             if (navigator.share) navigator.share({ title: titulo, text: `${titulo} — míralo en AEROSHOP ✈️`, url: location.origin }).catch(() => {});

@@ -1,6 +1,6 @@
 // sw.js
 // Sube el número cada vez que quieras forzar que todos los celulares limpien su copia guardada.
-const CACHE_NAME = 'aeroshop-v47';
+const CACHE_NAME = 'aeroshop-v48';
 
 const ASSETS_TO_CACHE = [
     '/',
