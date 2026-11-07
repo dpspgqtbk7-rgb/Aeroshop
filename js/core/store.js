@@ -27,7 +27,8 @@ class Store {
         this.state = {
             cart: loadCart(),
             currentUserProfile: null,
-            isPromo420Active: false
+            isPromo420Active: false,
+            pedidosCount: null // cuántos pedidos lleva la persona (null = aún no se sabe)
         };
         this.listeners = [];
     }

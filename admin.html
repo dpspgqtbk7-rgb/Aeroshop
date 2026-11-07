@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f172a">
+<title>Panel del Capitán · AEROSHOP</title>
+<link rel="icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<style>
+:root {
+  --bg: #f1f5f9; --card: #ffffff; --ink: #0f172a; --muted: #64748b; --line: #e2e8f0;
+  --navy: #0f172a; --navy2: #1e3a8a; --ok: #16a34a; --ok-bg: #dcfce7; --warn: #b45309; --warn-bg: #fef3c7;
+  --bad: #dc2626; --bad-bg: #fee2e2; --promo: #ea580c; --radius: 16px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 120px; }
+
+/* Barra de arriba */
+.top { position: sticky; top: 0; z-index: 20; background: linear-gradient(135deg, var(--navy), var(--navy2)); color: #fff; padding: max(12px, env(safe-area-inset-top)) 16px 12px; }
+.top-in { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+.top h1 { font-size: 1.05rem; margin: 0; letter-spacing: .02em; flex: 1; }
+.top h1 small { display: block; font-weight: 400; opacity: .7; font-size: .75rem; }
+.top a, .top button { color: #fff; background: rgba(255,255,255,.14); border: 0; border-radius: 999px; padding: 8px 12px; font-size: .82rem; text-decoration: none; white-space: nowrap; }
+
+/* Pantalla de entrada */
+.login { min-height: 80vh; display: grid; place-items: center; text-align: center; padding: 24px 16px; }
+.login-card { background: var(--card); border-radius: 24px; padding: 32px 24px; max-width: 380px; width: 100%; box-shadow: 0 10px 40px rgba(15,23,42,.08); }
+.login-card .emoji { font-size: 3rem; }
+.login-card h2 { margin: 8px 0 6px; }
+.login-card p { color: var(--muted); margin: 0 0 20px; }
+.btn { border: 0; border-radius: 12px; padding: 12px 16px; font-weight: 700; }
+.btn-main { background: var(--navy); color: #fff; width: 100%; }
+.btn-main:disabled { opacity: .6; }
+.btn-soft { background: #e2e8f0; color: var(--ink); }
+.btn-danger { background: var(--bad-bg); color: var(--bad); }
+
+/* Herramientas */
+.tools { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 12px; }
+.search { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; font-size: .85rem; white-space: nowrap; }
+.chip.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+.resumen { color: var(--muted); font-size: .85rem; margin: 0 2px 10px; }
+
+/* Lista de productos */
+.lista { display: grid; gap: 10px; }
+.prod { background: var(--card); border-radius: var(--radius); padding: 12px; display: grid; grid-template-columns: 72px 1fr; gap: 12px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.prod.retirado { opacity: .6; }
+.prod img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; background: #f8fafc; }
+.prod.agotado img { filter: grayscale(1); }
+.prod h3 { margin: 0; font-size: .98rem; line-height: 1.25; word-break: break-word; }
+.prod .precio { margin: 2px 0 6px; font-weight: 700; }
+.prod .precio s { color: var(--muted); font-weight: 400; margin-right: 4px; }
+.badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.badge { font-size: .7rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #f1f5f9; color: var(--muted); }
+.badge.ok { background: var(--ok-bg); color: var(--ok); }
+.badge.bad { background: var(--bad-bg); color: var(--bad); }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.badge.promo { background: #ffedd5; color: var(--promo); }
+.acciones { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; }
+.acciones button { border: 0; border-radius: 10px; padding: 10px 8px; font-weight: 700; font-size: .85rem; }
+.a-stock { background: var(--ok-bg); color: var(--ok); }
+.a-stock.is-agotado { background: var(--bad-bg); color: var(--bad); }
+.a-ver { background: #e0e7ff; color: #3730a3; }
+.a-ver.is-retirado { background: #f1f5f9; color: var(--muted); }
+.a-edit { background: var(--navy); color: #fff; padding: 10px 14px !important; }
+
+.fab { position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 30; background: linear-gradient(135deg, #16a34a, #15803d); color: #fff; border: 0; border-radius: 999px; padding: 14px 20px; font-weight: 800; box-shadow: 0 10px 30px rgba(22,163,74,.4); }
+
+/* Editor (hoja que sube) */
+.sheet-bg { position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 40; display: none; }
+.sheet-bg.on { display: block; }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; background: #fff; border-radius: 22px 22px 0 0; max-height: 92vh; overflow-y: auto; transform: translateY(105%); transition: transform .25s ease; padding: 0 16px max(20px, env(safe-area-inset-bottom)); }
+.sheet.on { transform: none; }
+@media (min-width: 800px) { .sheet { left: 50%; right: auto; width: 640px; margin-left: -320px; } }
+@media (prefers-reduced-motion: reduce) { .sheet { transition: none; } }
+.sheet-head { position: sticky; top: 0; background: #fff; display: flex; align-items: center; gap: 8px; padding: 16px 0 10px; border-bottom: 1px solid var(--line); margin-bottom: 14px; z-index: 1; }
+.sheet-head h2 { margin: 0; font-size: 1.1rem; flex: 1; }
+.x { border: 0; background: #f1f5f9; border-radius: 999px; width: 36px; height: 36px; font-size: 1.1rem; }
+.campo { display: block; margin-bottom: 14px; }
+.campo > span { display: block; font-weight: 700; font-size: .88rem; margin-bottom: 6px; }
+.campo > span em { font-weight: 400; color: var(--muted); font-style: normal; }
+.campo input[type=text], .campo input[type=number], .campo select, .campo textarea { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; }
+.campo textarea { min-height: 90px; resize: vertical; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.foto-box { display: flex; gap: 12px; align-items: center; }
+.foto-box img { width: 96px; height: 96px; object-fit: cover; border-radius: 14px; background: #f1f5f9; border: 1px solid var(--line); }
+.foto-box label { flex: 1; }
+.foto-btn { display: inline-block; background: #e0e7ff; color: #3730a3; font-weight: 700; padding: 10px 14px; border-radius: 12px; cursor: pointer; }
+.foto-box input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.foto-nota { display: block; color: var(--muted); font-size: .78rem; margin-top: 6px; }
+.switch-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #f8fafc; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+.switch-row b { display: block; font-size: .9rem; }
+.switch-row small { color: var(--muted); }
+.switch-row input { width: 22px; height: 22px; accent-color: var(--navy); flex: none; }
+.sheet-pie { display: grid; gap: 8px; margin-top: 18px; }
+.ayuda { color: var(--muted); font-size: .8rem; margin: -6px 0 14px; }
+
+.toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(20px); background: var(--navy); color: #fff; padding: 12px 18px; border-radius: 999px; font-weight: 600; font-size: .9rem; opacity: 0; transition: .25s; z-index: 60; max-width: calc(100% - 32px); text-align: center; pointer-events: none; }
+.toast.on { opacity: 1; transform: translateX(-50%); }
+.toast.error { background: var(--bad); }
+.vacio { text-align: center; color: var(--muted); padding: 40px 0; }
+.cargando { text-align: center; color: var(--muted); padding: 60px 0; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <h1>🛫 Panel del Capitán<small id="quien">AEROSHOP CDMX</small></h1>
+    <a href="/" target="_blank" rel="noopener">Ver página ↗</a>
+    <button type="button" id="btnSalir" hidden>Salir</button>
+  </div>
+</header>
+
+<!-- Entrar -->
+<section class="login" id="vistaLogin" hidden>
+  <div class="login-card">
+    <div class="emoji">🔐</div>
+    <h2>Solo para el Capitán</h2>
+    <p id="loginMsg">Entra con la cuenta de Google de AEROSHOP para manejar tus productos.</p>
+    <button type="button" class="btn btn-main" id="btnEntrar">Entrar con Google</button>
+  </div>
+</section>
+
+<!-- Panel -->
+<main class="wrap" id="vistaPanel" hidden>
+  <div class="tools">
+    <input type="search" class="search" id="buscar" placeholder="🔎 Buscar producto o marca…" autocomplete="off">
+    <div class="chips" id="chips">
+      <button type="button" class="chip on" data-f="todos">Todos</button>
+      <button type="button" class="chip" data-f="disponibles">✅ Disponibles</button>
+      <button type="button" class="chip" data-f="agotados">😢 Agotados</button>
+      <button type="button" class="chip" data-f="retirados">🚫 Retirados</button>
+      <button type="button" class="chip" data-f="mieles">🍯 Mieles</button>
+      <button type="button" class="chip" data-f="nubes">💨 Nubes</button>
+    </div>
+  </div>
+  <p class="resumen" id="resumen"></p>
+  <div class="lista" id="lista"><p class="cargando">Cargando productos… ✈️</p></div>
+</main>
+
+<button type="button" class="fab" id="btnNuevo" hidden>＋ Agregar producto</button>
+
+<!-- Editor -->
+<div class="sheet-bg" id="sheetBg"></div>
+<form class="sheet" id="sheet" autocomplete="off" novalidate>
+  <div class="sheet-head">
+    <h2 id="sheetTitulo">Editar producto</h2>
+    <button type="button" class="x" id="btnCerrar" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="campo">
+    <span>Foto</span>
+    <div class="foto-box">
+      <img id="fFotoVista" alt="">
+      <label>
+        <span class="foto-btn">📷 Elegir foto</span>
+        <input type="file" id="fFoto" accept="image/*">
+        <small class="foto-nota" id="fFotoNota">Se hace más ligera sola para que la página cargue rápido.</small>
+      </label>
+    </div>
+  </div>
+
+  <label class="campo"><span>Nombre</span><input type="text" id="fTitulo" maxlength="80" placeholder="Ej. Cookies 1g 💙" required></label>
+
+  <div class="dos">
+    <label class="campo"><span>Precio</span><input type="number" id="fPrecio" min="0" step="1" inputmode="numeric" placeholder="500"></label>
+    <label class="campo"><span>Precio antes <em>(promo)</em></span><input type="number" id="fAntes" min="0" step="1" inputmode="numeric" placeholder="Vacío = sin promo"></label>
+  </div>
+  <p class="ayuda">💡 Si pones un "precio antes" más alto, sale tachado y con etiqueta PROMO 🔥.</p>
+
+  <label class="campo"><span>Descripción</span><textarea id="fDesc" maxlength="1500" placeholder="Qué es, sabor, potencia…"></textarea></label>
+  <label class="campo"><span>Sabores / variedades <em>(uno por renglón)</em></span><textarea id="fCepas" placeholder="Sativa 🚀&#10;Indica 🌙"></textarea></label>
+
+  <div class="dos">
+    <label class="campo"><span>Marca</span><input type="text" id="fMarca" list="listaMarcas" maxlength="40" placeholder="Ej. Muha Meds"></label>
+    <label class="campo"><span>Gramos</span>
+      <select id="fGramos">
+        <option value="">—</option><option value="0.5">0.5g</option><option value="1">1g</option><option value="2">2g</option>
+        <option value="2.5">2.5g</option><option value="3">3g</option><option value="3.5">3.5g</option>
+      </select>
+    </label>
+  </div>
+  <datalist id="listaMarcas"></datalist>
+
+  <div class="dos">
+    <label class="campo" id="campoSeccion"><span>Sección</span>
+      <select id="fSeccion"><option value="mieles">🍯 Mieles</option><option value="nubes">💨 Nubes</option></select>
+    </label>
+    <label class="campo"><span>Anuncio</span>
+      <select id="fAnuncio"><option value="">Ninguno</option><option value="NUEVO ✨">NUEVO ✨</option><option value="PROMO 🔥">PROMO 🔥</option></select>
+    </label>
+  </div>
+  <p class="ayuda">💡 Con anuncio, el producto sale en el recuadro de Anuncios de Mieles.</p>
+
+  <label class="switch-row"><span><b>😢 Agotado</b><small>Se ve, pero no se puede comprar</small></span><input type="checkbox" id="fAgotado"></label>
+  <label class="switch-row"><span><b>🚫 Retirado</b><small>Desaparece de la página (no se borra)</small></span><input type="checkbox" id="fOculto"></label>
+
+  <div class="sheet-pie">
+    <button type="submit" class="btn btn-main" id="btnGuardar">💾 Guardar</button>
+    <button type="button" class="btn btn-soft" id="btnOriginal" hidden>↩️ Regresarlo a como estaba</button>
+    <button type="button" class="btn btn-danger" id="btnBorrar" hidden>🗑️ Borrar producto</button>
+  </div>
+</form>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="./js/admin.js"></script>
+</body>
+</html>

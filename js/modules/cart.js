@@ -2,16 +2,44 @@
 import { store } from '../core/store.js';
 import { escapeHTML, openModalState, closeModalState, showToast } from '../ui.js';
 import { WHATSAPP } from '../config.js';
+import { descuentoActual } from './promos.js';
 
 const PHONE_NUMBER = WHATSAPP;
-const DESCUENTO_420 = 0.40; // 40% de descuento cuando isPromo420Active = true
-
 const formatMXN = (n) => `$${Number(n).toLocaleString('es-MX')} MXN`;
 
-function calcularTotales(cart, isPromo420Active) {
+// Subtotal, descuento que aplica (4:20 o bienvenida, el más alto) y total
+function calcularTotales(cart, state = store.getState()) {
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const total = isPromo420Active ? subtotal * (1 - DESCUENTO_420) : subtotal;
-    return { subtotal, total };
+    const desc = descuentoActual(state);
+    const ahorro = Math.round(subtotal * desc.pct);
+    return { subtotal, total: subtotal - ahorro, ahorro, desc };
+}
+
+// Renglón del descuento dentro del carrito (se crea solo la primera vez)
+function pintarDescuento(state, ahorro, desc, hayProductos) {
+    const resumen = document.querySelector('.cart-summary');
+    const totalRow = document.getElementById('totalPrice')?.closest('.summary-row');
+    if (!resumen || !totalRow) return;
+    let fila = document.getElementById('descuentoRow');
+    if (!fila) {
+        fila = document.createElement('div');
+        fila.id = 'descuentoRow';
+        fila.className = 'summary-row descuento-row';
+        resumen.insertBefore(fila, totalRow);
+    }
+    let pista = document.getElementById('descuentoPista');
+    if (!pista) {
+        pista = document.createElement('p');
+        pista.id = 'descuentoPista';
+        pista.className = 'descuento-pista';
+        resumen.insertBefore(pista, totalRow.nextSibling);
+    }
+    const verFila = !!(desc.pct && hayProductos);
+    fila.style.display = verFila ? '' : 'none';
+    if (verFila) fila.innerHTML = `<span>${escapeHTML(desc.etiqueta)}</span><span>-${formatMXN(ahorro)}</span>`;
+    const verPista = !state.currentUserProfile && !desc.pct && hayProductos;
+    pista.style.display = verPista ? '' : 'none';
+    if (verPista) pista.textContent = '🎁 Inicia sesión y llévate 10% OFF en tu primer pedido';
 }
 
 export function addToCart(title, price, image = '') {
@@ -58,7 +86,8 @@ export function toggleCart(forceOpen) {
 }
 
 export function renderCart() {
-    const { cart, isPromo420Active } = store.getState();
+    const state = store.getState();
+    const { cart } = state;
 
     const cartContainer = document.getElementById('cartItemsContainer');
     const cartCountBadge = document.getElementById('cart-count');
@@ -68,7 +97,8 @@ export function renderCart() {
     if (!cartContainer) return;
 
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-    const { subtotal, total } = calcularTotales(cart, isPromo420Active);
+    const { subtotal, total, ahorro, desc } = calcularTotales(cart, state);
+    pintarDescuento(state, ahorro, desc, cart.length > 0);
 
     if (cart.length === 0) {
         cartContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:30px 0;">Tu carrito está vacío 🚀</p>';
@@ -117,15 +147,18 @@ export function sendWhatsAppOrder(opciones = {}) {
         }
     }
 
-    const { total } = calcularTotales(cart, isPromo420Active);
+    const { subtotal, total, ahorro, desc } = calcularTotales(cart);
 
     let message = '¡Hola Aeroshop! 🚀 Quisiera realizar el siguiente pedido:\n\n';
     cart.forEach(item => {
         message += `• *${item.title}* (x${item.quantity}) - ${formatMXN(item.price * item.quantity)}\n`;
     });
 
-    if (isPromo420Active) {
-        message += `\n🔥 *Descuento 420 Aplicado (${Math.round(DESCUENTO_420 * 100)}% OFF)*`;
+    if (desc.pct) {
+        message += `\n*Subtotal:* ${formatMXN(subtotal)}`;
+        message += desc.tipo === '420'
+            ? `\n🔥 *PROMO HORA 4:20 APLICADA (40% OFF):* -${formatMXN(ahorro)}`
+            : `\n🎁 *10% OFF BIENVENIDA (1er pedido):* -${formatMXN(ahorro)}`;
     }
 
     if (currentUserProfile) {

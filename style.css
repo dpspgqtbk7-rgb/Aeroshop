@@ -4590,3 +4590,25 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 .product-tag-new.is-agotado-tag { background: #1f2937 !important; color: #fff !important; }
 .ma-card.is-agotado .ma-tag { background: #1f2937; }
 .btn-add.btn-agotado, .btn-add:disabled { background: #94a3b8 !important; color: #fff !important; cursor: not-allowed; }
+
+/* ===== PANEL: productos retirados ===== */
+.is-retirado { display: none !important; }
+.brand-product.is-agotado img, .ck-item.is-agotado img { filter: grayscale(1); opacity: .55; }
+
+/* ===== HORA 4:20 ===== */
+#bannerHora420 {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60000;
+    background: linear-gradient(90deg, #16a34a, #eab308, #16a34a); background-size: 200% 100%;
+    animation: banner420 3s linear infinite;
+    color: #000; font-weight: 800; text-align: center; font-size: .9rem;
+    padding: 10px 12px calc(10px) ; padding-top: max(10px, env(safe-area-inset-top));
+    box-shadow: 0 4px 15px rgba(0,0,0,.35); pointer-events: none;
+}
+body.hay-420 { padding-top: 42px; }
+@keyframes banner420 { to { background-position: 200% 0; } }
+@media (prefers-reduced-motion: reduce) { #bannerHora420 { animation: none; } }
+.price-420 { color: #16a34a; font-weight: 800; }
+
+/* ===== Descuento en el carrito ===== */
+.descuento-row { color: #16a34a; font-weight: 700; }
+.descuento-pista { margin: 6px 0 0; font-size: .82rem; color: #64748b; text-align: center; }

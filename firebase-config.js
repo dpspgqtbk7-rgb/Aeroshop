@@ -1,7 +1,7 @@
 // firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, OAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, addDoc, onSnapshot, updateDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, addDoc, deleteDoc, onSnapshot, updateDoc, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
 const firebaseConfig = {
@@ -30,7 +30,7 @@ appleProvider.addScope('email');
 appleProvider.addScope('name');
 
 export const fbMethods = { 
-    doc, getDoc, setDoc, addDoc, onSnapshot, updateDoc, collection, getDocs, query, where,
+    doc, getDoc, setDoc, addDoc, deleteDoc, onSnapshot, updateDoc, collection, getDocs, query, where,
     signInWithPopup, signInWithRedirect, signOut, onAuthStateChanged, 
     ref, uploadBytes, getDownloadURL 
 };

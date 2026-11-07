@@ -121,9 +121,13 @@ export const EXTRA = {
   "AGOTADO": "SOLD OUT",
   "Agotado 😢": "Sold out 😢",
   "😢 Este producto está agotado por ahora": "😢 This product is sold out for now",
+  "🔥 Hora 4:20 (40% OFF)": "🔥 4:20 Hour (40% OFF)",
+  "🎁 Bienvenida 1er pedido (10% OFF)": "🎁 Welcome, 1st order (10% OFF)",
+  "🎁 Inicia sesión y llévate 10% OFF en tu primer pedido": "🎁 Log in and get 10% OFF your first order",
 };
 // [expresión, función] — para textos con partes variables
 export const RULES = [
+  [/^🔥 ¡HORA 4:20 ACTIVA! 40% OFF EN TODO 🔥 \((.+)\)$/, (t, m) => '🔥 4:20 HOUR IS ON! 40% OFF EVERYTHING 🔥 (' + m[1] + ')'],
   [/^Sabor elegido: (.+)$/, (t, m) => 'Selected flavor: ' + t(m[1])],
   [/^🛒 Agregar al carrito · (.+)$/, (t, m) => '🛒 Add to cart · ' + m[1]],
   [/^Agregar al carrito · (.+)$/, (t, m) => 'Add to cart · ' + m[1]],

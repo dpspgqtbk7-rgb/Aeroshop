@@ -1,6 +1,6 @@
 // js/core/events.js
 import { addToCart, increaseQuantity, removeFromCart, sendWhatsAppOrder, toggleCart } from '../modules/cart.js';
-import { openProductModal, closeProductModal, addModalProductToCart } from '../modules/catalog.js';
+import { openProductModal, closeProductModal, addModalProductToCart, productsData, estaAgotado, estaRetirado } from '../modules/catalog.js';
 import { toggleBrownNoise, toggleBreathingGuide } from '../modules/emergency.js';
 import { showToast, vibrar, closeModalState } from '../ui.js';
 
@@ -34,6 +34,15 @@ export function initGlobalEvents() {
                 const title = target.dataset.title;
                 const price = parseFloat(target.dataset.price);
                 const image = target.dataset.image || '';
+                // Si el producto está agotado o retirado (desde el Panel), no se agrega
+                const tarjeta = target.closest('[data-product-id], [onclick*="openProductModal"]');
+                const idProd = target.dataset.productId || tarjeta?.dataset.productId
+                    || ((tarjeta?.getAttribute('onclick') || '').match(/openProductModal\('([^']+)'\)/) || [])[1];
+                const prod = idProd ? productsData[idProd] : Object.values(productsData).find(p => p.title === title);
+                if (prod && (estaAgotado(prod) || estaRetirado(prod))) {
+                    showToast('😢 Este producto está agotado por ahora');
+                    break;
+                }
                 if (title && !isNaN(price)) {
                     addToCart(title, price, image);
                     vibrar(20);

@@ -6,7 +6,9 @@ import { openProductModal, closeProductModal, closeModalOnOverlay } from './modu
 import { toggleBreathingGuide } from './modules/emergency.js';
 import { capturarInstalacion } from './modules/pwa.js';
 import { WHATSAPP, WHATSAPP_BONITO } from './config.js';
-import { syncPrices, initMielesFiltros } from './modules/catalog.js';
+import { syncPrices, initMielesFiltros, refrescarCatalogo } from './modules/catalog.js';
+import { aplicarDesdeCache, cargarDesdeFirebase } from './modules/inventario.js';
+import { iniciarReloj420 } from './modules/promos.js';
 import { initI18n } from './i18n.js';
 import { iniciarDiagnostico } from './modules/diagnostico.js';
 import { initDiferencia } from './modules/diferencia.js';
@@ -144,10 +146,18 @@ function initApp() {
     initGlobalEvents();
     capturarInstalacion(() => import('./modules/push.js').then(p => p.renderBloquePush()).catch(() => {}));
     initAuth();
+    // Productos: primero lo guardado en este celular, luego lo más nuevo del Panel (Firebase)
+    const cacheCatalogo = aplicarDesdeCache();
     renderCart();
     initLazyVideos();
     syncPrices();
     initMielesFiltros();
+    refrescarCatalogo(cacheCatalogo.cambios);
+    cargarDesdeFirebase(cacheCatalogo.json)
+        .then(cambios => { if (cambios) refrescarCatalogo(cambios); })
+        .catch(err => console.warn('No se pudieron traer los cambios del Panel:', err.code || err));
+    // Hora 4:20: prende/apaga sola el 40% de 4:20 a 4:25 pm
+    iniciarReloj420(() => syncPrices());
     initDiferencia();
     initModoTikTok();
     initVibras();

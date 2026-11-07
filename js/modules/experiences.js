@@ -2,7 +2,7 @@
 import { experiencesData } from './data.js';
 import { escapeHTML as e, openModalState, closeModalState, showToast } from '../ui.js';
 import { stopAllEmergency } from './emergency.js';
-import { productsData, tienePrecio, precioHTML } from './catalog.js';
+import { productsData, tienePrecio, precioHTML, estaAgotado, estaRetirado } from './catalog.js';
 import { store } from '../core/store.js';
 import { addToCart } from './cart.js';
 import { waLink } from '../config.js';
@@ -335,18 +335,31 @@ const MARCAS = {
     }
 };
 
+// Productos de la marca: los de la lista + los que agregues en el Panel con esa misma marca
+const normMarca = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+function productosDeMarca(m, clave) {
+    const extra = Object.keys(productsData).filter(id => {
+        const p = productsData[id];
+        if (!p.panel || m.productos.includes(id)) return false;
+        const mk = normMarca(p.marca);
+        return mk && (mk === normMarca(m.nombre) || mk === normMarca(clave));
+    });
+    return [...m.productos, ...extra].filter(id => productsData[id] && !estaRetirado(productsData[id]));
+}
+
 function productoMarcaHTML(id) {
     const p = productsData[id];
     if (!p) return '';
+    const agotado = estaAgotado(p);
     return `
-        <article class="brand-product" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
+        <article class="brand-product${agotado ? ' is-agotado' : ''}" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
             <img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy">
             <div class="brand-product-info">
                 <h3>${e(p.title)}</h3>
-                <p class="brand-product-price">${tienePrecio(p) ? precioHTML(p) : 'Consultar precio 💬'}</p>
+                <p class="brand-product-price"${tienePrecio(p) ? ` data-precio-de="${e(id)}"` : ''}>${tienePrecio(p) ? precioHTML(p) : 'Consultar precio 💬'}</p>
                 <div class="brand-product-actions">
-                    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${e(id)}">Ver más</button>
-                    ${tienePrecio(p) ? `<button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>` : ''}
+                    <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${e(id)}">${agotado ? 'Agotado 😢' : 'Ver más'}</button>
+                    ${tienePrecio(p) && !agotado ? `<button type="button" class="btn-add brand-add" data-action="add-to-cart" data-title="${e(p.title)}" data-price="${e(p.price)}" data-image="${e(p.image)}">🛒 Agregar</button>` : ''}
                 </div>
             </div>
         </article>`;
@@ -408,6 +421,7 @@ function wakaHTML(m) {
 
 window.wakaAgregar = function () {
     const p = productsData[MARCAS.waka.productos[0]]; if (!p) return;
+    if (estaAgotado(p) || estaRetirado(p)) { showToast('😢 Este producto está agotado por ahora'); return; }
     const root = document.querySelector('.brand-waka');
     const i = root ? parseInt(root.dataset.wakaI || '0', 10) : 0;
     const s = p.strains[i] || p.strains[0];
@@ -441,15 +455,16 @@ window.wakaSelectSabor = function (i) {
    PÁGINA DE MARCA COOKIES (cuadrícula al estilo de su tienda oficial)
    ========================================== */
 function cookiesHTML(m) {
-    const items = m.productos.map(id => {
+    const items = productosDeMarca(m, 'cookies').map(id => {
         const p = productsData[id];
         if (!p) return '';
+        const agotado = estaAgotado(p);
         return `
-            <article class="ck-item" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
+            <article class="ck-item${agotado ? ' is-agotado' : ''}" data-action="open-product-modal" data-product-id="${e(id)}" role="button" tabindex="0">
                 <div class="ck-img"><img src="${e(p.image)}" alt="${e(p.title)}" loading="lazy"></div>
                 <h3 class="ck-name">${e(p.title)}</h3>
-                <p class="ck-price">${precioHTML(p)}</p>
-                <button type="button" class="ck-btn" data-action="open-product-modal" data-product-id="${e(id)}">${tienePrecio(p) ? 'Agregar al carrito' : 'Consultar precio 💬'}</button>
+                <p class="ck-price" data-precio-de="${e(id)}">${precioHTML(p)}</p>
+                <button type="button" class="ck-btn" data-action="open-product-modal" data-product-id="${e(id)}">${agotado ? 'Agotado 😢' : tienePrecio(p) ? 'Agregar al carrito' : 'Consultar precio 💬'}</button>
             </article>`;
     }).join('');
     return `
@@ -458,13 +473,13 @@ function cookiesHTML(m) {
         </div>`;
 }
 
-function marcaHTML(m) {
+function marcaHTML(m, clave) {
     if (m.plantilla === 'waka') return wakaHTML(m);
     if (m.plantilla === 'cookies') return cookiesHTML(m);
     const bg = m.fondoImg
         ? `background:${m.fondo} url('${m.fondoImg}') center/cover no-repeat;`
         : `background:${m.fondo};`;
-    const productos = m.productos.map(productoMarcaHTML).join('');
+    const productos = productosDeMarca(m, clave).map(productoMarcaHTML).join('');
     const galeria = (m.galeria || []).map(src =>
         `<img src="${e(src)}" alt="${e(m.nombre)}" loading="lazy">`).join('');
     const video = m.video
@@ -501,7 +516,7 @@ export function openFullscreenBrand(brandKey) {
 
     const m = MARCAS[brandKey];
     container.innerHTML = m
-        ? marcaHTML(m)
+        ? marcaHTML(m, brandKey)
         : `<div style="padding:100px; text-align:center; color:#fff;"><h2>SECCIÓN DE MARCA</h2></div>`;
     openView('brandFullscreenView', { videos: true });
     if (brandKey === 'waka' && window.wakaSelectSabor) window.wakaSelectSabor(0);
