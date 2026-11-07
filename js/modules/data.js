@@ -304,6 +304,16 @@ resena: "Altitud mental máxima. Una actriz vende su imagen digital y la pelícu
 resena: "Escala exprés de risa. Conversaciones reales de las 3 a.m. dentro del coche, animadas de forma simple y absurda. Es perfecta para el aterrizaje suave: cortita, ligera y te deja con la panza adolorida de tanto reír. Ideal para el bajón.",
             links: [{ label: "YouTube", url: "https://www.youtube.com/results?search_query=Chilled%20Greese%20animaci%C3%B3n" }, { label: "TikTok", url: "https://www.tiktok.com/search?q=Chilled%20Greese" }]
         },
+        midnightgospel: {
+            title: "THE MIDNIGHT GOSPEL 🪐🧘",
+            media: "./midnightgospel.mp4",
+            isVideo: true,
+            badge: "🌀 Animación & Filosofía • ✈️✈️✈️✈️✈️",
+            categoria: "Animación / Psicodelia & Conversaciones profundas",
+            plataforma: "Netflix",
+            resena: "Clancy viaja en su simulador a planetas que se están cayendo a pedazos y, mientras todo explota en colores, platica de la vida, la muerte y la mente. Es de Pendleton Ward (Hora de Aventura) y Duncan Trussell, y las pláticas salen de su podcast real. Para el vuelo introspectivo: ponla cuando quieras pensar bonito, no para hacer ruido.",
+            links: [{ label: "Netflix", url: "https://www.netflix.com/search?q=The%20Midnight%20Gospel" }]
+        },
         entergalactic: {
             title: "ENTERGALACTIC 🎨🌌",
             media: "./ENTERGALACTIC.MP4",

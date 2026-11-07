@@ -9,6 +9,9 @@ import { WHATSAPP, WHATSAPP_BONITO } from './config.js';
 import { syncPrices, initMielesFiltros } from './modules/catalog.js';
 import { initI18n } from './i18n.js';
 import { iniciarDiagnostico } from './modules/diagnostico.js';
+import { initDiferencia } from './modules/diferencia.js';
+import { initModoTikTok } from './modules/tiktok.js';
+import { initVibras } from './modules/vibras.js';
 
 import {
     openRutasVuelo, closeRutasVuelo,
@@ -145,6 +148,9 @@ function initApp() {
     initLazyVideos();
     syncPrices();
     initMielesFiltros();
+    initDiferencia();
+    initModoTikTok();
+    initVibras();
     registerServiceWorker();
     initI18n();
     iniciarDiagnostico();

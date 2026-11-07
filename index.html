@@ -42,7 +42,7 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="tema-muertos">
+<body>
 
     <!-- PORTADA PRINCIPAL -->
     <section class="hero-cover">
@@ -60,8 +60,6 @@
         <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
     </div>
 
-    <!-- TEMA DE TEMPORADA (quita class="tema-muertos" del <body> para apagarlo) -->
-    <div class="spider-hang" aria-hidden="true"></div>
 
     <!-- QUIÉNES SOMOS -->
     <section class="about-section" id="quienes-somos">
@@ -75,46 +73,72 @@
    <!-- DIFERENCIA -->
 <section class="diferencia-section" id="que-nos-diferencia">
     <div class="diferencia-card card-glass">
-        <h2>¿Qué nos diferencia?</h2>
+        <h2 class="trip-title">¿Cómo va tu trip?</h2>
         <p class="diferencia-intro">Sabemos que la sustancia es apenas la mitad de la experiencia; la otra mitad es el ambiente:</p>
-       <button type="button" class="btn-share" onclick="compartirContenido('AEROSHOP CDMX', 'Tienda & Estilo de Vida', 'Conoce nuestro catálogo, spots y guía de supervivencia.')">
-  📲 Compartir tienda con un compa
-</button>
-        <div class="diferencia-grid">   
-       <!-- TARJETA 01: RUTAS DE VUELO -->
-             
-            <div class="diferencia-item" style="cursor: pointer;" onclick="openRutasVuelo()">
-                <h3 style="margin-bottom: 8px;">Rutas de Vuelo ✈️</h3>
-                <p>Explora spots seguros y únicos para volar en la CDMX.</p>
+        <div class="diferencia-grid dif-grid">
+            <!-- TARJETA 01: RUTAS DE VUELO -->
+            <div class="diferencia-item dif-portal dif-hero" style="--bg:url(./dif-rutas.jpg);--acc:#38bdf8" onclick="openRutasVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <span class="dif-badge">🔥 Lo más visitado</span>
+                <div class="dif-body">
+                    <span class="dif-count" data-count="#rutasFullscreenView .compact-card" data-label="📍 {n} spots"></span>
+                    <h3>Rutas de Vuelo ✈️</h3>
+                    <p>Explora spots seguros y únicos para volar en la CDMX.</p>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
 
             <!-- TARJETA 02: MONCHIS Y BAJAR AVIÓN -->
-            <div class="diferencia-item" style="cursor: pointer;" onclick="openMonchisVuelo()">
-                <h3 style="margin-bottom: 8px;">Monchis y Bajar Avión 🌮</h3>
-                <p>Descubre los mejores bajones en la CDMX o recetas de supervivencia en casa.</p>
+            <div class="diferencia-item dif-portal" style="--bg:url(./dif-monchis.jpg);--acc:#fb923c" onclick="openMonchisVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <div class="dif-body">
+                    <span class="dif-count" data-count="#monchisFullscreenView .compact-card" data-label="🌮 {n} bajones"></span>
+                    <h3>Monchis y Bajar Avión 🌮</h3>
+                    <p>Descubre los mejores bajones en la CDMX o recetas de supervivencia en casa.</p>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
 
             <!-- TARJETA 03: TRIP VISUAL & CINE -->
-            <div class="diferencia-item" style="cursor: pointer;" onclick="openCineVuelo()">
-                <h3 style="margin-bottom: 8px;">Trip Visual & Cine 🎬</h3>
-                <p>Apaga la mente, prende la pantalla: lo mejor para potenciar tu viaje.</p>
+            <div class="diferencia-item dif-portal" style="--bg:url(./dif-cine.jpg);--acc:#a78bfa" onclick="openCineVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <div class="dif-body">
+                    <span class="dif-count" data-count="#cineFullscreenView .compact-card" data-label="🎬 {n} pelis"></span>
+                    <h3>Trip Visual & Cine 🎬</h3>
+                    <p>Apaga la mente, prende la pantalla: lo mejor para potenciar tu viaje.</p>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
 
             <!-- TARJETA 04: FRECUENCIAS & SOUNDTRACKS -->
-            <div class="diferencia-item" style="cursor: pointer;" onclick="openMusicVuelo()">
-                <h3 style="margin-bottom: 8px;">Frecuencias 🎧</h3>
-                <p>Una selección sonora para acompañar tu viaje.</p>
+            <div class="diferencia-item dif-portal dif-music" style="--acc:#f472b6" onclick="openMusicVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <div class="dif-body">
+                    <span class="dif-count">🎧 Playlists</span>
+                    <h3>Soundtrack del Vuelo 🎬</h3>
+                    <p>Una selección sonora para acompañar tu viaje.</p>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
-           <!-- TARJETA 05: PARA LA PÁLIDA (ESTILO CALMA SBS) -->
-            <div class="diferencia-item card-calma-sbs" style="cursor: pointer;" onclick="openEmergencyVuelo()">
-                <h3 style="margin-bottom: 8px; color: #f0efe6;">Para la  palida 😵‍💫</h3>
-                <p style="color: #a3b899;">Tu kit de emergencia para la palida</p>
+
+            <!-- TARJETA 05: PARA LA PÁLIDA (portada limpia) -->
+            <div class="diferencia-item dif-portal dif-palida" onclick="openEmergencyVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <div class="dif-body">
+                    <h3>Para la  palida 😵‍💫</h3>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
 
             <!-- TARJETA 06: MANUAL PARA CUIDAR TU AVIÓN -->
-            <div class="diferencia-item card-manual" style="cursor: pointer;" onclick="openManualVuelo()">
-                <h3 style="margin-bottom: 8px;">Manual para cuidar tu avión 🛠️</h3>
-                <p>Tips rápidos para que tu avión dure más y vuele siempre bien.</p>
+            <div class="diferencia-item dif-portal dif-manual" style="--acc:#e2e8f0" onclick="openManualVuelo()" role="button" tabindex="0">
+                <span class="dif-bg" aria-hidden="true"></span>
+                <div class="dif-body">
+                    <span class="dif-count" data-count=".manual-tip" data-label="🛠️ {n} tips"></span>
+                    <h3>Manual para cuidar tu avión 🛠️</h3>
+                    <p>Tips rápidos para que tu avión dure más y vuele siempre bien.</p>
+                    <span class="dif-go">Entrar →</span>
+                </div>
             </div>
         </div> <!-- /diferencia-grid -->
     </div> <!-- /diferencia-card -->
@@ -796,6 +820,15 @@
 
         <!-- Grid de Tarjetas Compactas de Cine -->
         <div class="monchis-cards-grid" id="cineGrid">
+            <!-- 0. THE MIDNIGHT GOSPEL (nuevo) — video: ./midnightgospel.mp4 -->
+            <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'midnightgospel')">
+                <video data-src="./midnightgospel.mp4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
+                <div class="compact-card-body">
+                    <span class="badge-tag">🌀 Animación & Filosofía • ✈️✈️✈️✈️✈️</span>
+                    <h4>THE MIDNIGHT GOSPEL 🪐🧘</h4>
+                </div>
+            </div>
+
             <!-- 1. LOVE, DEATH & ROBOTS -->
             <div class="monchis-card compact-card" data-categoria="psicodelia-animacion" onclick="openCardModal('cine', 'robots')">
                 <video data-src="./robots.MP4" loop muted playsinline webkit-playsinline preload="metadata" class="lazy-video"></video>
@@ -1093,7 +1126,7 @@
             <button type="button" class="btn-back-main" onclick="closeMusicVuelo()">← VOLVER AL MENÚ PRINCIPAL</button>
         </div>
         <div style="text-align: center; margin-bottom: 25px;">
-            <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">04. FRECUENCIAS & SOUNDTRACKS 🎧</h2>
+            <h2 style="color: #fff; font-size: 2rem; margin-bottom: 8px;">04. SOUNDTRACK DEL VUELO 🎬</h2>
             <p style="color: #a0a0b0; font-size: 1rem;">Una selección sonora diseñada para acompañar el viaje</p>
         </div>
         
