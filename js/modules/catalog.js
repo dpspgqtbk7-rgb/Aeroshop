@@ -14,6 +14,7 @@ export const productsData = {
         strains: ['Cereal Milk Caramel 🥣', 'Peach Pie 🍑', 'Pregunta por más sabores 💬']
     },
     'corridostumbados': {
+        agotado: true, // quita esta línea cuando vuelva a haber
         gramos: 2.5, marca: 'Corridos Tumbados',
         title: 'CORRIDOS TUMBADOS × LOS CT 🔥',
         price: 790,
@@ -167,6 +168,7 @@ export const productsData = {
 };
 
 export const tienePrecio = (p) => Number.isFinite(p && p.price) && p.price > 0;
+export const estaAgotado = (p) => !!(p && p.agotado);
 export const enPromo = (p) => tienePrecio(p) && Number.isFinite(p.antes) && p.antes > p.price;
 const mxn = (n) => `$${Number(n).toLocaleString('es-MX')}`;
 // Precio listo para pintar: si está en promo, muestra el precio normal tachado
@@ -232,6 +234,16 @@ export function openProductModal(productId) {
         });
     }
 
+    // Agotado: el botón no deja agregar al carrito
+    const btn = modal.querySelector('[data-action="add-modal-to-cart"]');
+    if (btn) {
+        if (!btn.dataset.textoOriginal) btn.dataset.textoOriginal = btn.textContent;
+        const agotado = estaAgotado(product);
+        btn.disabled = agotado;
+        btn.classList.toggle('btn-agotado', agotado);
+        btn.textContent = agotado ? 'Agotado 😢' : btn.dataset.textoOriginal;
+    }
+
     openModalState();
     modal.classList.add('active');
 }
@@ -253,6 +265,7 @@ export function closeModalOnOverlay(e) {
 // Agregar al carrito desde la modal incluyendo la cepa seleccionada
 export function addModalProductToCart() {
     if (!currentActiveProduct) return;
+    if (estaAgotado(currentActiveProduct)) { showToast('😢 Este producto está agotado por ahora'); return; }
     const itemTitle = currentSelectedStrain
         ? `${currentActiveProduct.title} [${currentSelectedStrain}]`
         : currentActiveProduct.title;
@@ -289,6 +302,13 @@ export function syncPrices() {
             const tag = card.querySelector('.product-tag-new');
             if (tag) { tag.textContent = 'PROMO 🔥'; tag.classList.add('is-promo'); }
         }
+        if (estaAgotado(p)) {
+            card.classList.add('is-agotado');
+            const tag = card.querySelector('.product-tag-new');
+            if (tag) { tag.textContent = 'AGOTADO'; tag.classList.remove('is-promo'); tag.classList.add('is-agotado-tag'); }
+            const btn = card.querySelector('.btn-add');
+            if (btn) btn.textContent = 'Agotado 😢';
+        }
         card.querySelectorAll('[data-action="add-to-cart"]').forEach(b => { b.dataset.price = p.price; });
     });
 }
@@ -312,7 +332,8 @@ const esc = (t) => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt
 function anuncioProductoHTML(id, etiqueta) {
     const p = productsData[id];
     if (!p) return '';
-    return `<article class="ma-card" data-action="open-product-modal" data-product-id="${esc(id)}" role="button" tabindex="0">
+    if (estaAgotado(p)) etiqueta = 'AGOTADO';
+    return `<article class="ma-card ${estaAgotado(p) ? 'is-agotado' : ''}" data-action="open-product-modal" data-product-id="${esc(id)}" role="button" tabindex="0">
         <span class="ma-tag ${etiqueta === 'PROMO 🔥' ? 'is-promo' : ''}">${etiqueta}</span>
         <img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy">
         <h4>${esc(p.title)}</h4>

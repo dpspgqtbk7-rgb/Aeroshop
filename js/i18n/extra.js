@@ -118,6 +118,9 @@ export const EXTRA = {
   "Ansioso o con pálida": "Anxious or having a bad trip",
   "Soundtrack del Vuelo 🎬": "Flight Soundtrack 🎬",
   "04. SOUNDTRACK DEL VUELO 🎬": "04. FLIGHT SOUNDTRACK 🎬",
+  "AGOTADO": "SOLD OUT",
+  "Agotado 😢": "Sold out 😢",
+  "😢 Este producto está agotado por ahora": "😢 This product is sold out for now",
 };
 // [expresión, función] — para textos con partes variables
 export const RULES = [

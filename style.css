@@ -4582,3 +4582,11 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
   border: 1px solid rgba(255,255,255,.3); font-family: 'Space Grotesk', sans-serif; font-weight: 700; border-radius: 14px; }
 .dif-portal:hover .dif-go { background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%) !important; color: #0f172a !important; }
 .dif-portal:hover, .dif-portal:focus-visible { box-shadow: 0 20px 40px rgba(2,6,23,.38), 0 0 0 2px rgba(255,255,255,.7) !important; }
+
+/* ===== AGOTADO ===== */
+.product-card.is-agotado .product-img-slider img, .ma-card.is-agotado img { filter: grayscale(1); opacity: .55; }
+.product-card.is-agotado .product-price { opacity: .5; }
+.product-card.is-agotado .btn-add { background: #94a3b8 !important; color: #fff !important; }
+.product-tag-new.is-agotado-tag { background: #1f2937 !important; color: #fff !important; }
+.ma-card.is-agotado .ma-tag { background: #1f2937; }
+.btn-add.btn-agotado, .btn-add:disabled { background: #94a3b8 !important; color: #fff !important; cursor: not-allowed; }
