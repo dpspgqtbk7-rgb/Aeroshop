@@ -108,6 +108,68 @@ button { cursor: pointer; }
 .toast.error { background: var(--bad); }
 .vacio { text-align: center; color: var(--muted); padding: 40px 0; }
 .cargando { text-align: center; color: var(--muted); padding: 60px 0; }
+/* Pestañas */
+.tabs { background: var(--bg); padding: 12px 16px 0; }
+.tabs-in { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 14px; }
+.tab { border: 0; background: transparent; border-radius: 10px; padding: 9px 4px; font-weight: 700; font-size: .88rem; color: var(--muted); }
+.tab.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+.tab b { background: var(--bad); color: #fff; border-radius: 999px; font-size: .7rem; padding: 1px 6px; margin-left: 4px; }
+.chip b { font-weight: 700; opacity: .75; margin-left: 2px; }
+.sec-head { display: flex; align-items: center; gap: 8px; margin: 16px 0 10px; }
+.sec-head h2 { margin: 0; font-size: 1.05rem; flex: 1; }
+.mini { border: 0; background: #e2e8f0; border-radius: 999px; padding: 7px 12px; font-size: .82rem; font-weight: 700; }
+
+/* Pedidos */
+.pedido { background: #fff; border-radius: var(--radius); padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.pedido-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.pedido-top small { display: block; color: var(--muted); font-size: .8rem; }
+.pedido-top strong { font-size: 1.1rem; white-space: nowrap; }
+.pedido-items { list-style: none; margin: 10px 0; padding: 10px 0 0; border-top: 1px dashed var(--line); display: grid; gap: 4px; font-size: .88rem; }
+.pedido-items li { display: flex; justify-content: space-between; gap: 8px; }
+.pedido-items span { color: var(--muted); white-space: nowrap; }
+.pedido-wa { display: inline-block; color: var(--ok); font-weight: 700; font-size: .85rem; text-decoration: none; margin-bottom: 10px; }
+.pedido-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.pedido-acciones button { border: 0; border-radius: 10px; padding: 11px 8px; font-weight: 700; }
+.pedido-acciones .b-soft { grid-column: 1 / -1; background: #f1f5f9; }
+.b-ok { background: var(--ok); color: #fff; }
+.b-no { background: var(--bad-bg); color: var(--bad); }
+
+/* Contabilidad */
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.kpi { background: #fff; border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.kpi small { display: block; color: var(--muted); font-size: .8rem; }
+.kpi b { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.kpi-gan { background: linear-gradient(135deg, #16a34a, #15803d); color: #fff; }
+.kpi-gan small { color: rgba(255,255,255,.85); }
+.kpi-gan.neg { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+.aviso-conta { background: var(--warn-bg); color: var(--warn); border-radius: 12px; padding: 10px 12px; font-size: .85rem; margin-bottom: 10px; }
+.conta-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 6px 0 14px; }
+.conta-botones .btn { width: 100%; }
+.b-venta { background: var(--ok); color: #fff; }
+.b-gasto { background: var(--navy); color: #fff; }
+.cajas { display: grid; gap: 10px; margin-bottom: 14px; }
+@media (min-width: 640px) { .cajas { grid-template-columns: 1fr 1fr; } }
+.caja { background: #fff; border-radius: var(--radius); padding: 14px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.caja h3 { margin: 0 0 8px; font-size: .92rem; }
+.caja ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .88rem; }
+.caja li { display: flex; justify-content: space-between; gap: 8px; }
+.tenue { color: var(--muted); }
+.mov { background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; border-left: 4px solid var(--ok); }
+.mov.gasto { border-left-color: var(--bad); }
+.mov-info b { display: block; font-size: .9rem; word-break: break-word; }
+.mov-info small { color: var(--muted); font-size: .78rem; }
+.mov strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mov.venta strong { color: var(--ok); }
+.mov.gasto strong { color: var(--bad); }
+.mov-x { border: 0; background: transparent; font-size: 1rem; padding: 4px; }
+.linea { background: #f8fafc; border-radius: 12px; padding: 10px; margin-bottom: 8px; display: grid; gap: 8px; }
+.linea select, .linea input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; }
+.linea-nums { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end; }
+.linea-nums small { display: block; font-size: .75rem; color: var(--muted); margin-bottom: 3px; }
+.l-x { border: 0; background: #e2e8f0; border-radius: 10px; width: 40px; height: 42px; }
+.total-venta { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin: 8px 2px 4px; }
+.costo-nota { display: block; color: var(--muted); font-size: .78rem; margin-top: 4px; }
+.prod .gana { font-size: .78rem; color: var(--ok); font-weight: 700; margin: -2px 0 6px; }
 [hidden] { display: none !important; }
 </style>
 </head>
@@ -121,6 +183,14 @@ button { cursor: pointer; }
   </div>
 </header>
 
+<nav class="tabs" id="tabs" hidden>
+  <div class="tabs-in">
+    <button type="button" class="tab on" data-tab="productos">📦 Productos</button>
+    <button type="button" class="tab" data-tab="pedidos">🛵 Pedidos<b id="badgePedidos" hidden>0</b></button>
+    <button type="button" class="tab" data-tab="conta">💰 Cuentas</button>
+  </div>
+</nav>
+
 <!-- Entrar -->
 <section class="login" id="vistaLogin" hidden>
   <div class="login-card">
@@ -133,6 +203,7 @@ button { cursor: pointer; }
 
 <!-- Panel -->
 <main class="wrap" id="vistaPanel" hidden>
+ <section id="tabProductos">
   <div class="tools">
     <input type="search" class="search" id="buscar" placeholder="🔎 Buscar producto o marca…" autocomplete="off">
     <div class="chips" id="chips">
@@ -146,7 +217,71 @@ button { cursor: pointer; }
   </div>
   <p class="resumen" id="resumen"></p>
   <div class="lista" id="lista"><p class="cargando">Cargando productos… ✈️</p></div>
+ </section>
+
+ <!-- PEDIDOS -->
+ <section id="tabPedidos" hidden>
+  <div class="sec-head"><h2>Pedidos de la página</h2><button type="button" class="mini" id="btnRecargarPedidos">🔄 Recargar</button></div>
+  <div class="chips" id="chipsPedidos">
+    <button type="button" class="chip on" data-e="pendiente">⏳ Pendientes <b>0</b></button>
+    <button type="button" class="chip" data-e="entregado">✅ Entregados <b>0</b></button>
+    <button type="button" class="chip" data-e="cancelado">❌ Cancelados <b>0</b></button>
+  </div>
+  <p class="ayuda" style="margin:10px 2px">💡 Al tocar <b>✅ Entregado</b>, el pedido se suma solo a tus ventas y al Pasaporte del cliente (cuenta como vuelo ✈️).</p>
+  <div id="listaPedidos"><p class="cargando">Cargando pedidos… 🛵</p></div>
+ </section>
+
+ <!-- CONTABILIDAD -->
+ <section id="tabConta" hidden>
+  <div class="chips" id="chipsPeriodo" style="margin-top:16px">
+    <button type="button" class="chip" data-p="hoy">Hoy</button>
+    <button type="button" class="chip" data-p="semana">7 días</button>
+    <button type="button" class="chip on" data-p="mes">Este mes</button>
+    <button type="button" class="chip" data-p="pasado">Mes pasado</button>
+    <button type="button" class="chip" data-p="todo">Todo</button>
+  </div>
+  <div class="kpis" id="contaResumen" style="margin-top:12px"></div>
+  <p class="aviso-conta" id="contaAviso" hidden></p>
+  <div class="conta-botones">
+    <button type="button" class="btn b-venta" id="btnVenta">＋ Venta</button>
+    <button type="button" class="btn b-gasto" id="btnGasto">＋ Gasto</button>
+  </div>
+  <div class="cajas">
+    <div class="caja"><h3>🏆 Más vendidos</h3><ul id="contaTop"></ul></div>
+    <div class="caja"><h3>🧾 Gastos por tipo</h3><ul id="contaGastosCat"></ul></div>
+  </div>
+  <div class="sec-head"><h2>Movimientos</h2><button type="button" class="mini" id="btnCSV">⬇️ Excel</button></div>
+  <div id="contaLista"></div>
+  <p class="ayuda" style="margin-top:12px">💡 La ganancia = ventas − lo que te costó lo vendido − gastos. Las compras de mercancía <b>no</b> van en gastos: ponle el costo a cada producto (Productos → ✏️) y se calcula solo. Todo esto es privado: solo tú lo ves.</p>
+ </section>
 </main>
+
+<!-- Hojas de contabilidad -->
+<div class="sheet-bg" id="hojaBg"></div>
+<form class="sheet hoja-conta" id="hojaVenta" autocomplete="off" novalidate>
+  <div class="sheet-head"><h2>💰 Nueva venta</h2><button type="button" class="x" data-cerrar-hoja aria-label="Cerrar">✕</button></div>
+  <p class="ayuda" style="margin-top:0">Para ventas que no llegaron por la página (en persona, por mensaje…).</p>
+  <div id="lineasVenta"></div>
+  <button type="button" class="btn btn-soft" id="btnOtraLinea" style="width:100%">＋ Otro producto</button>
+  <div class="total-venta"><span>Total</span><span id="vTotal">$0</span></div>
+  <div class="dos" style="margin-top:12px">
+    <label class="campo"><span>Fecha</span><input type="date" id="vFecha"></label>
+    <label class="campo"><span>Cliente <em>(opcional)</em></span><input type="text" id="vCliente" maxlength="60" placeholder="Nombre o apodo"></label>
+  </div>
+  <label class="campo"><span>Nota <em>(opcional)</em></span><input type="text" id="vNota" maxlength="200" placeholder="Ej. pagó en efectivo"></label>
+  <div class="sheet-pie"><button type="submit" class="btn btn-main" id="btnGuardarVenta">💾 Guardar venta</button></div>
+</form>
+<form class="sheet hoja-conta" id="hojaGasto" autocomplete="off" novalidate>
+  <div class="sheet-head"><h2>🧾 Nuevo gasto</h2><button type="button" class="x" data-cerrar-hoja aria-label="Cerrar">✕</button></div>
+  <label class="campo"><span>¿En qué gastaste?</span><input type="text" id="gConcepto" maxlength="80" placeholder="Ej. Uber para entregar en Coyoacán"></label>
+  <div class="dos">
+    <label class="campo"><span>Monto</span><input type="number" id="gMonto" min="0" step="1" inputmode="numeric" placeholder="120"></label>
+    <label class="campo"><span>Tipo</span><select id="gCategoria"></select></label>
+  </div>
+  <label class="campo"><span>Fecha</span><input type="date" id="gFecha"></label>
+  <label class="campo"><span>Nota <em>(opcional)</em></span><input type="text" id="gNota" maxlength="200"></label>
+  <div class="sheet-pie"><button type="submit" class="btn btn-main" id="btnGuardarGasto">💾 Guardar gasto</button></div>
+</form>
 
 <button type="button" class="fab" id="btnNuevo" hidden>＋ Agregar producto</button>
 
@@ -177,6 +312,7 @@ button { cursor: pointer; }
     <label class="campo"><span>Precio antes <em>(promo)</em></span><input type="number" id="fAntes" min="0" step="1" inputmode="numeric" placeholder="Vacío = sin promo"></label>
   </div>
   <p class="ayuda">💡 Si pones un "precio antes" más alto, sale tachado y con etiqueta PROMO 🔥.</p>
+  <label class="campo"><span>🔒 Costo por pieza <em>(lo que te cuesta a ti)</em></span><input type="number" id="fCosto" min="0" step="1" inputmode="numeric" placeholder="Ej. 350"><small class="costo-nota">Privado: nunca sale en la página. Sirve para calcular tu ganancia.</small></label>
 
   <label class="campo"><span>Descripción</span><textarea id="fDesc" maxlength="1500" placeholder="Qué es, sabor, potencia…"></textarea></label>
   <label class="campo"><span>Sabores / variedades <em>(uno por renglón)</em></span><textarea id="fCepas" placeholder="Sativa 🚀&#10;Indica 🌙"></textarea></label>
@@ -197,11 +333,12 @@ button { cursor: pointer; }
       <select id="fSeccion"><option value="mieles">🍯 Mieles</option><option value="nubes">💨 Nubes</option></select>
     </label>
     <label class="campo"><span>Anuncio</span>
-      <select id="fAnuncio"><option value="">Ninguno</option><option value="NUEVO ✨">NUEVO ✨</option><option value="PROMO 🔥">PROMO 🔥</option></select>
+      <select id="fAnuncio"><option value="">Ninguno</option><option value="NUEVO ✨">NUEVO ✨</option><option value="PROMO 🔥">PROMO 🔥</option><option value="RECOMENDADO ⭐">RECOMENDADO ⭐</option></select>
     </label>
   </div>
   <p class="ayuda">💡 Con anuncio, el producto sale en el recuadro de Anuncios de Mieles.</p>
 
+  <label class="switch-row"><span><b>⭐ Destacado</b><small>Sale primero en Mieles y en Anuncios, con borde dorado</small></span><input type="checkbox" id="fDestacado"></label>
   <label class="switch-row"><span><b>😢 Agotado</b><small>Se ve, pero no se puede comprar</small></span><input type="checkbox" id="fAgotado"></label>
   <label class="switch-row"><span><b>🚫 Retirado</b><small>Desaparece de la página (no se borra)</small></span><input type="checkbox" id="fOculto"></label>
 

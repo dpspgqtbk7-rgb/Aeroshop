@@ -151,12 +151,20 @@ export function syncPrices() {
                 (spans.length ? spans[spans.length - 1] : precio).textContent = `${mxn(p.price)} MXN`;
             }
         }
-        const tag = card.querySelector('.product-tag-new');
-        if (tag && tag.dataset.orig === undefined) tag.dataset.orig = tag.textContent;
+        let tag = card.querySelector('.product-tag-new');
+        // Destacado ⭐ sin etiqueta: se le pone una
+        if (!tag && p.destacado) {
+            tag = document.createElement('span');
+            tag.className = 'product-tag-new';
+            tag.dataset.auto = '1';
+            card.prepend(tag);
+        }
+        if (tag && tag.dataset.orig === undefined) tag.dataset.orig = tag.dataset.auto ? (p.anuncio || '⭐ TOP') : tag.textContent;
         const btn = card.querySelector('.btn-add');
         if (btn && btn.dataset.orig === undefined) btn.dataset.orig = btn.textContent;
         const agotado = estaAgotado(p);
         card.classList.toggle('is-agotado', agotado);
+        card.classList.toggle('is-destacado', !!p.destacado && !agotado);
         if (tag) {
             tag.textContent = agotado ? 'AGOTADO' : enPromo(p) ? 'PROMO 🔥' : tag.dataset.orig;
             tag.classList.toggle('is-promo', !agotado && enPromo(p));
@@ -212,8 +220,8 @@ function anuncioProductoHTML(id) {
     const p = productsData[id];
     if (!p || estaRetirado(p)) return '';
     const etiqueta = estaAgotado(p) ? 'AGOTADO' : (enPromo(p) ? 'PROMO 🔥' : p.anuncio);
-    return `<article class="ma-card ${estaAgotado(p) ? 'is-agotado' : ''}" data-action="open-product-modal" data-product-id="${esc(id)}" role="button" tabindex="0">
-        <span class="ma-tag ${etiqueta === 'PROMO 🔥' ? 'is-promo' : ''}">${esc(etiqueta)}</span>
+    return `<article class="ma-card ${estaAgotado(p) ? 'is-agotado' : (p.destacado ? 'is-destacado' : '')}" data-action="open-product-modal" data-product-id="${esc(id)}" role="button" tabindex="0">
+        <span class="ma-tag ${etiqueta === 'PROMO 🔥' ? 'is-promo' : (p.destacado && !estaAgotado(p) ? 'is-top' : '')}">${esc(etiqueta)}</span>
         <img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy">
         <h4>${esc(p.title)}</h4>
         <p class="ma-price" data-precio-de="${esc(id)}">${precioHTML(p)}</p>
@@ -243,7 +251,9 @@ function pintarMieles() {
     // 1) Recuadro de anuncios
     if (track) {
         const ids = Object.keys(productsData).filter(id => productsData[id].anuncio && !estaRetirado(productsData[id]));
-        ids.sort((a, b) => (productsData[b].anuncio === 'PROMO 🔥' || enPromo(productsData[b])) - (productsData[a].anuncio === 'PROMO 🔥' || enPromo(productsData[a])));
+        // Primero los destacados ⭐, luego las promos, luego lo demás
+        const peso = (id) => (productsData[id].destacado ? 2 : 0) + ((productsData[id].anuncio === 'PROMO 🔥' || enPromo(productsData[id])) ? 1 : 0);
+        ids.sort((a, b) => peso(b) - peso(a));
         track.innerHTML = ids.map(anuncioProductoHTML).join('')
             + `<article class="ma-card ma-brand" onclick="openFullscreenBrand('aceultra')" role="button" tabindex="0">
                 <span class="ma-tag">NUEVA MARCA</span>
@@ -311,7 +321,12 @@ export function initMielesFiltros() {
         });
         const orden = estado.barato
             ? [...cards].sort((a, b) => ((productsData[idDeTarjeta(a)] || {}).price || 1e9) - ((productsData[idDeTarjeta(b)] || {}).price || 1e9))
-            : [...cards].sort((a, b) => a.dataset.orden - b.dataset.orden);
+            : [...cards].sort((a, b) => {
+                // Los destacados ⭐ van hasta arriba
+                const da = (productsData[idDeTarjeta(a)] || {}).destacado ? 0 : 1;
+                const db = (productsData[idDeTarjeta(b)] || {}).destacado ? 0 : 1;
+                return da - db || a.dataset.orden - b.dataset.orden;
+            });
         orden.forEach(c => grid.appendChild(c));
         if (vacio) vacio.hidden = !activo || visibles > 0;
         bar.querySelectorAll('[data-filtro]').forEach(b => b.classList.toggle('active', b.dataset.filtro === estado.filtro));

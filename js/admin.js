@@ -3,6 +3,7 @@
 import { auth, db, googleProvider, fbMethods } from '../firebase-config.js';
 import { productsData } from './modules/productos.js';
 import { BASE, CAMPOS, aplicar } from './modules/inventario.js';
+import { cargarConta, initConta, costoDe, guardarCosto } from './admin-conta.js';
 
 const ADMIN_EMAIL = 'aeroshop.37@gmail.com';
 const EDITABLES = Object.keys(CAMPOS).filter(k => k !== 'panel');
@@ -17,6 +18,7 @@ let remotos = {};          // lo que hay en Firebase
 let filtro = 'todos';
 let editando = null;       // id del producto abierto en el editor (null = nuevo)
 let fotoNueva = null;      // foto elegida en el editor (data URL)
+let pestana = 'productos';
 
 /* ---------- Avisos ---------- */
 let toastTimer;
@@ -33,9 +35,24 @@ function aviso(texto, error = false) {
 function mostrar(vista) {
     $('vistaLogin').hidden = vista !== 'login';
     $('vistaPanel').hidden = vista !== 'panel';
-    $('btnNuevo').hidden = vista !== 'panel';
+    $('tabs').hidden = vista !== 'panel';
+    $('btnNuevo').hidden = vista !== 'panel' || pestana !== 'productos';
     $('btnSalir').hidden = vista === 'login';
 }
+
+// Pestañas: Productos | Pedidos | Cuentas
+$('tabs').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-tab]');
+    if (!b) return;
+    pestana = b.dataset.tab;
+    $('tabs').querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t === b));
+    $('tabProductos').hidden = pestana !== 'productos';
+    $('tabPedidos').hidden = pestana !== 'pedidos';
+    $('tabConta').hidden = pestana !== 'conta';
+    $('btnNuevo').hidden = pestana !== 'productos';
+    window.scrollTo(0, 0);
+});
+initConta();
 
 $('btnEntrar').addEventListener('click', async () => {
     $('btnEntrar').disabled = true;
@@ -84,6 +101,10 @@ async function cargar() {
         snap.forEach(d => { remotos[d.id] = d.data(); });
         aplicar(remotos);
         pintarLista();
+        cargarConta(aviso).then(pintarLista).catch(err => {
+            console.error(err);
+            aviso(err.code === 'permission-denied' ? '🔒 Falta dar permiso a Cuentas/Pedidos en Firebase' : '😕 No se cargaron las cuentas', true);
+        });
     } catch (err) {
         console.error(err);
         $('lista').innerHTML = '<p class="vacio">😕 No se pudieron cargar los productos. Revisa tu internet y recarga.</p>';
@@ -176,7 +197,8 @@ function pintarLista() {
             p.oculto ? '<span class="badge">🚫 RETIRADO</span>'
                 : p.agotado ? '<span class="badge bad">😢 AGOTADO</span>' : '<span class="badge ok">✅ DISPONIBLE</span>',
             promo ? '<span class="badge promo">PROMO 🔥</span>' : '',
-            p.anuncio && !promo ? `<span class="badge warn">${esc(p.anuncio)}</span>` : '',
+            p.destacado ? '<span class="badge warn">⭐ DESTACADO</span>' : '',
+            p.anuncio && !promo && p.anuncio !== 'RECOMENDADO ⭐' ? `<span class="badge warn">${esc(p.anuncio)}</span>` : '',
             p.panel ? '<span class="badge">NUEVO (Panel)</span>' : (remotos[id] ? '<span class="badge">✏️ Editado</span>' : ''),
             p.seccion === 'nubes' ? '<span class="badge">💨 Nubes</span>' : ''
         ].join('');
@@ -186,6 +208,7 @@ function pintarLista() {
             <div>
                 <h3>${esc(p.title)}</h3>
                 <div class="precio">${promo ? `<s>${mxn(p.antes)}</s>` : ''}${Number.isFinite(p.price) && p.price > 0 ? mxn(p.price) + ' MXN' : 'Sin precio'}</div>
+                ${costoDe(id) !== null && Number.isFinite(p.price) ? `<div class="gana">🔒 Te cuesta ${mxn(costoDe(id))} · ganas ${mxn(p.price - costoDe(id))}</div>` : ''}
                 <div class="badges">${badges}</div>
             </div>
             <div class="acciones">
@@ -248,6 +271,8 @@ function abrirEditor(id) {
     $('fAnuncio').value = ['NUEVO ✨', 'PROMO 🔥'].includes(p.anuncio) ? p.anuncio : '';
     if (p.anuncio && !$('fAnuncio').value) { $('fAnuncio').add(new Option(p.anuncio, p.anuncio)); $('fAnuncio').value = p.anuncio; }
     $('fAgotado').checked = !!p.agotado;
+    $('fDestacado').checked = !!p.destacado;
+    $('fCosto').value = id && costoDe(id) !== null ? costoDe(id) : '';
     $('fOculto').checked = !!p.oculto;
     $('btnOriginal').hidden = !(id && BASE[id] && remotos[id]);
     $('btnBorrar').hidden = !(id && !BASE[id]);
@@ -339,7 +364,8 @@ $('sheet').addEventListener('submit', async (ev) => {
         gramos: numero($('fGramos').value),
         anuncio: $('fAnuncio').value,
         agotado: $('fAgotado').checked,
-        oculto: $('fOculto').checked
+        oculto: $('fOculto').checked,
+        destacado: $('fDestacado').checked
     };
     if (!editando || !BASE[editando]) nuevoEstado.seccion = $('fSeccion').value === 'nubes' ? 'nubes' : undefined;
 
@@ -350,6 +376,11 @@ $('sheet').addEventListener('submit', async (ev) => {
     }
     $('btnGuardar').disabled = true;
     const ok = await guardar(id, nuevoEstado, editando ? '✅ Cambios guardados' : '✨ Producto agregado a la página');
+    if (ok) {
+        // El costo se guarda aparte, en un lugar privado
+        try { await guardarCosto(id, numero($('fCosto').value)); pintarLista(); }
+        catch (err) { console.error(err); aviso('😕 El costo no se guardó (revisa permisos de Firebase)', true); }
+    }
     $('btnGuardar').disabled = false;
     if (ok) cerrarEditor();
 });

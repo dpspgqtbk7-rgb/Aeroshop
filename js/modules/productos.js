@@ -85,7 +85,7 @@ export const productsData = {
         strains: ['Híbrida ☯️', 'Sativa 🚀', 'Indica 🌙']
     },
     'donutsdonitav3': {
-        marca: 'Donuts', anuncio: 'PROMO 🔥',
+        marca: 'Donuts', anuncio: 'PROMO 🔥', destacado: true,
         title: 'donuts donita v3',
         price: 500,
         antes: 850, // precio normal: mientras exista "antes", se muestra como PROMO
@@ -156,7 +156,7 @@ export const productsData = {
         strainImages: { 'Alphonso Mango Ice 🥭': './lostmary-alphonso.jpg' }
     },
     'muhamedual': {
-        gramos: 2, marca: 'Muha Meds',
+        gramos: 2, marca: 'Muha Meds', anuncio: 'RECOMENDADO ⭐', destacado: true,
         title: 'MUHAMEDual 2g',
         price: 800,
         image: './muhamedual 2.JPG',

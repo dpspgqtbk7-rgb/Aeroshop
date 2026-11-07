@@ -4612,3 +4612,7 @@ body.hay-420 { padding-top: 42px; }
 /* ===== Descuento en el carrito ===== */
 .descuento-row { color: #16a34a; font-weight: 700; }
 .descuento-pista { margin: 6px 0 0; font-size: .82rem; color: #64748b; text-align: center; }
+
+/* ===== DESTACADOS ⭐ ===== */
+.product-card.is-destacado, .ma-card.is-destacado { box-shadow: 0 0 0 2px #f5c542, 0 10px 30px rgba(245,197,66,.35); }
+.ma-tag.is-top { background: linear-gradient(90deg, #d4a017, #f5c542); color: #1a1200; }

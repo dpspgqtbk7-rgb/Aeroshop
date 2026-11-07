@@ -73,5 +73,18 @@ service cloud.firestore {
     match /transacciones_ventas/{document=**} {
       allow read, write: if esAdmin();
     }
+
+    // 4. PANEL: contabilidad (ventas y gastos) y costos de mercancía — SOLO el Capitán
+    match /admin_movimientos/{document=**} {
+      allow read, write: if esAdmin();
+    }
+    match /admin_costos/{document=**} {
+      allow read, write: if esAdmin();
+    }
+
+    // 5. PANEL: el Capitán puede ver todos los pedidos juntos (pestaña Pedidos)
+    match /{path=**}/pedidos/{pedidoId} {
+      allow read: if esAdmin();
+    }
   }
 }

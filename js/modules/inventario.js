@@ -8,7 +8,7 @@ export const BASE = JSON.parse(JSON.stringify(productsData));
 // Solo estos datos se pueden cambiar desde el Panel
 export const CAMPOS = {
     title: 'texto', price: 'numero', antes: 'numero', image: 'foto', description: 'texto',
-    strains: 'lista', gramos: 'numero', marca: 'texto', agotado: 'si-no', oculto: 'si-no',
+    strains: 'lista', gramos: 'numero', marca: 'texto', agotado: 'si-no', oculto: 'si-no', destacado: 'si-no',
     anuncio: 'texto', seccion: 'texto', panel: 'si-no'
 };
 

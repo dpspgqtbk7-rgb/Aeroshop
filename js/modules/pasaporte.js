@@ -26,7 +26,7 @@ export function iniciarPasaporte(uid) {
                 const pedidos = [];
                 snap.forEach(d => pedidos.push({ id: d.id, ...d.data() }));
                 pedidos.sort((a, b) => String(b.creadoEn).localeCompare(String(a.creadoEn)));
-                store.setState({ pedidosCount: pedidos.length }); // 0 = le toca el 10% de bienvenida
+                store.setState({ pedidosCount: pedidos.filter(p => p.estado !== 'cancelado').length }); // 0 = le toca el 10% de bienvenida
                 renderPasaporte(pedidos);
             },
             (err) => console.warn('No se pudo leer el Pasaporte:', err.code || err)
