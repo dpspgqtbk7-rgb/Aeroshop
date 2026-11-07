@@ -154,12 +154,24 @@ async function cargarPerfilGuardado(perfil) {
             if (tel) tel.value = d.telefono || '';
             store.setState({ currentUserProfile: { ...store.getState().currentUserProfile, yaExistia: true } });
             pintarSaludo(d.apodo || d.nombreReal || perfil.displayName);
-        } else if (nombre && !nombre.value) {
-            nombre.value = perfil.displayName || '';
+        } else {
+            // Primera vez que entra: se crea su Pasaporte en automático (sin esperar a que toque "Guardar")
+            if (nombre && !nombre.value) nombre.value = perfil.displayName || '';
+            const ahora = new Date().toISOString();
+            await fbMethods.setDoc(fbMethods.doc(db, COLECCION_USUARIOS, perfil.uid), {
+                nombreReal: String(perfil.displayName || '').slice(0, 80),
+                apodo: '',
+                telefono: '',
+                email: perfil.email || '',
+                proveedor: perfil.proveedor || 'Cuenta',
+                creadoEn: ahora,
+                actualizadoEn: ahora
+            });
+            store.setState({ currentUserProfile: { ...store.getState().currentUserProfile, yaExistia: true } });
         }
     } catch (error) {
         // Si las reglas de Firestore aún no están listas, el sitio sigue funcionando
-        console.warn('No se pudo leer el perfil guardado:', error.code || error);
+        console.warn('No se pudo leer o crear el perfil guardado:', error.code || error);
     }
 }
 

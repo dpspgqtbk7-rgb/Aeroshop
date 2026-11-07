@@ -32,7 +32,8 @@ const ETIQUETAS = {
 // Para quien viene sobrepensando: solo lo tranquilo
 const CALMADO = ['flotar'];
 
-const VISTAS = ['rutasFullscreenView', 'monchisFullscreenView', 'cineFullscreenView', 'musicFullscreenView'];
+// Solo Cine lleva el filtro de vibras (en Rutas, Monchis y Soundtrack se quitó)
+const VISTAS = ['cineFullscreenView'];
 const CLAVE = 'aeroshop_vibra';
 let vibraActual = '';
 try { vibraActual = localStorage.getItem(CLAVE) || ''; } catch (e) {}

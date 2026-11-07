@@ -297,8 +297,12 @@ export function syncPrices() {
 /* ==========================================
    MIELES: ANUNCIOS + FILTROS DEL CATÁLOGO
    ========================================== */
-// Lo que sale en el recuadro de anuncios además de las promos (en este orden)
-const MIELES_NOVEDADES = ['cookies1g', 'corridostumbados', 'luigi'];
+// Lo que sale en el recuadro de anuncios (en este orden). La marca nueva va al final.
+const MIELES_ANUNCIOS = [
+    ['donutsdonitav3', 'PROMO 🔥'],
+    ['cookies1g', 'NUEVO ✨'],
+    ['corridostumbados', 'NUEVO ✨'],
+];
 const idDeTarjeta = (card) => {
     const fuente = card.getAttribute('onclick') || card.innerHTML;
     return card.dataset.productId || (fuente.match(/openProductModal\('([^']+)'\)/) || [])[1];
@@ -324,10 +328,7 @@ export function initMielesFiltros() {
 
     // 1) Recuadro de anuncios: primero promos, luego novedades, luego la marca nueva
     if (track) {
-        const promos = Object.keys(productsData).filter(id => enPromo(productsData[id]));
-        const nuevos = MIELES_NOVEDADES.filter(id => !promos.includes(id));
-        track.innerHTML = promos.map(id => anuncioProductoHTML(id, 'PROMO 🔥')).join('')
-            + nuevos.map(id => anuncioProductoHTML(id, 'NUEVO ✨')).join('')
+        track.innerHTML = MIELES_ANUNCIOS.map(([id, tag]) => anuncioProductoHTML(id, tag)).join('')
             + `<article class="ma-card ma-brand" onclick="openFullscreenBrand('aceultra')" role="button" tabindex="0">
                 <span class="ma-tag">NUEVA MARCA</span>
                 <img src="./logo-aceultra.png" alt="ACE ULTRA" loading="lazy">
@@ -336,7 +337,31 @@ export function initMielesFiltros() {
                </article>`;
     }
 
-    // 2) Filtros
+    // 2) "Todos los productos" = todos los de Mieles: si un producto no tiene tarjeta aquí
+    //    (y no es de Nubes), se crea solita con los datos del catálogo.
+    const enGrid = new Set([...grid.querySelectorAll('.product-card')].map(idDeTarjeta));
+    const nubes = document.getElementById('nubesFullscreenView');
+    const deNubes = new Set(nubes ? [...nubes.querySelectorAll('.product-card, [data-product-id], [onclick*="openProductModal"]')].map(idDeTarjeta).filter(Boolean) : []);
+    Object.keys(productsData).forEach(id => {
+        if (enGrid.has(id) || deNubes.has(id)) return;
+        const p = productsData[id];
+        const sub = [p.gramos ? `${p.gramos}g` : '', p.marca || ''].filter(Boolean).join(' • ');
+        const card = document.createElement('div');
+        card.className = 'product-card card-glass';
+        card.dataset.action = 'open-product-modal';
+        card.dataset.productId = id;
+        card.innerHTML = `
+            <div class="product-img-slider"><img src="${esc(p.image)}" class="active" alt="${esc(p.title)}" loading="lazy"></div>
+            <div>
+                <div class="product-name">${esc(p.title)}</div>
+                ${sub ? `<div class="product-subtitle">${esc(sub)}</div>` : ''}
+                <div class="product-price">${precioHTML(p)}</div>
+            </div>
+            <button type="button" class="btn-add" data-action="open-product-modal" data-product-id="${esc(id)}">Ver Más Información</button>`;
+        grid.appendChild(card);
+    });
+
+    // 3) Filtros
     const cards = [...grid.querySelectorAll('.product-card')];
     cards.forEach((c, i) => { c.dataset.orden = i; });
     const marcaSel = document.getElementById('mfMarca');
