@@ -4413,7 +4413,7 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 .ma-card:hover { transform: translateY(-3px); }
 .ma-card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 12px; background: #f1f5f9; }
 .ma-card h4 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: .84rem; font-weight: 700; color: #0f172a; margin: 8px 0 4px; line-height: 1.25;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .ma-price { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: .85rem; font-weight: 800; color: #0f172a; margin-top: auto; }
 .ma-tag { position: absolute; top: 16px; left: 16px; z-index: 1; font-size: .62rem; font-weight: 800; letter-spacing: .04em; padding: 4px 8px; border-radius: 999px;
   background: #0f172a; color: #fff; }
@@ -4469,7 +4469,7 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 .dif-body { position: relative; z-index: 1; padding: 16px 16px 16px; width: 100%; }
 .dif-portal h3 { font-family: var(--font-spinx); font-size: 1.12rem !important; line-height: 1.2; margin: 6px 0 6px !important; color: #fff !important; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
 .dif-portal p { font-size: .84rem !important; line-height: 1.4 !important; color: rgba(255,255,255,.82) !important; margin: 0 0 12px !important;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .dif-count { display: inline-block; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: .72rem; font-weight: 800; letter-spacing: .02em;
   padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .dif-count:empty { display: none; }
@@ -4482,7 +4482,7 @@ button:focus-visible, a:focus-visible, [role="button"]:focus-visible, select:foc
 /* tarjeta grande arriba */
 .dif-hero { grid-column: 1 / -1; min-height: 250px !important; }
 .dif-hero h3 { font-size: 1.5rem !important; }
-.dif-hero p { -webkit-line-clamp: 3; font-size: .95rem !important; }
+.dif-hero p { -webkit-line-clamp: 3; line-clamp: 3; font-size: .95rem !important; }
 @media (min-width: 900px) { .dif-hero { grid-column: span 2; grid-row: span 2; min-height: 440px !important; } .dif-hero h3 { font-size: 2rem !important; } }
 
 /* Frecuencias: ecualizador vivo */
