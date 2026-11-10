@@ -87,9 +87,9 @@ button { cursor: pointer; }
 .campo { display: block; margin-bottom: 14px; }
 .campo > span { display: block; font-weight: 700; font-size: .88rem; margin-bottom: 6px; }
 .campo > span em { font-weight: 400; color: var(--muted); font-style: normal; }
-.campo input[type=text], .campo input[type=number], .campo select, .campo textarea { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; }
+.campo input[type=text], .campo input[type=number], .campo input[type=tel], .campo input[type=date], .campo select, .campo textarea { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; }
 .campo textarea { min-height: 90px; resize: vertical; }
-.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
 .foto-box { display: flex; gap: 12px; align-items: center; }
 .foto-box img { width: 96px; height: 96px; object-fit: cover; border-radius: 14px; background: #f1f5f9; border: 1px solid var(--line); }
 .foto-box label { flex: 1; }
@@ -110,8 +110,8 @@ button { cursor: pointer; }
 .cargando { text-align: center; color: var(--muted); padding: 60px 0; }
 /* Pestañas */
 .tabs { background: var(--bg); padding: 12px 16px 0; }
-.tabs-in { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 14px; }
-.tab { border: 0; background: transparent; border-radius: 10px; padding: 9px 4px; font-weight: 700; font-size: .88rem; color: var(--muted); }
+.tabs-in { max-width: 760px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 14px; }
+.tab { border: 0; background: transparent; border-radius: 10px; padding: 9px 2px; font-weight: 700; font-size: .8rem; color: var(--muted); white-space: nowrap; }
 .tab.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
 .tab b { background: var(--bad); color: #fff; border-radius: 999px; font-size: .7rem; padding: 1px 6px; margin-left: 4px; }
 .chip b { font-weight: 700; opacity: .75; margin-left: 2px; }
@@ -170,6 +170,88 @@ button { cursor: pointer; }
 .total-venta { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin: 8px 2px 4px; }
 .costo-nota { display: block; color: var(--muted); font-size: .78rem; margin-top: 4px; }
 .prod .gana { font-size: .78rem; color: var(--ok); font-weight: 700; margin: -2px 0 6px; }
+/* Dinero y préstamos */
+.full { width: 100%; }
+.dinero { margin-top: 16px; background: linear-gradient(135deg, var(--navy), var(--navy2)); color: #fff; border-radius: 20px; padding: 16px; }
+.dinero h2 { margin: 0 0 10px; font-size: 1rem; opacity: .9; }
+.dinero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dinero-grid div { background: rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; }
+.dinero-grid small { display: block; opacity: .8; font-size: .78rem; }
+.dinero-grid b { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.dinero-total { display: flex; justify-content: space-between; align-items: baseline; margin: 12px 2px 4px; }
+.dinero-total b { font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.dinero-nota { font-size: .78rem; opacity: .75; margin: 0 2px 12px; }
+.dinero-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dinero-botones button { border: 0; border-radius: 12px; padding: 11px 8px; font-weight: 700; background: rgba(255,255,255,.16); color: #fff; }
+.dinero-botones .b-empezar { grid-column: 1 / -1; background: #f5c542; color: #1a1200; }
+.deuda-resumen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.deuda-resumen .kpi b { font-size: 1.15rem; }
+.deuda-resumen .medeben b { color: var(--ok); }
+.deuda-resumen .debo b { color: var(--bad); }
+.deuda { background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.deuda-top { display: flex; justify-content: space-between; gap: 10px; }
+.deuda-top small { display: block; color: var(--muted); font-size: .78rem; }
+.deuda-top strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.deuda.debo .deuda-top strong { color: var(--bad); }
+.deuda.medeben .deuda-top strong { color: var(--ok); }
+.barra { height: 8px; background: #f1f5f9; border-radius: 999px; margin: 10px 0 8px; overflow: hidden; }
+.barra i { display: block; height: 100%; background: var(--ok); border-radius: 999px; }
+.deuda-acciones { display: flex; gap: 8px; }
+.deuda-acciones button { border: 0; border-radius: 10px; padding: 9px 12px; font-weight: 700; font-size: .85rem; background: #f1f5f9; }
+.deuda-acciones .b-abono { background: var(--ok-bg); color: var(--ok); flex: 1; }
+.ver-saldadas { border: 0; background: none; color: var(--muted); font-size: .82rem; padding: 6px 2px; text-decoration: underline; }
+.mov.neutro { border-left-color: #94a3b8; }
+.mov.neutro strong { color: var(--muted); }
+.pago-opciones { display: grid; gap: 10px; margin: 6px 0 4px; }
+.pago-opciones button { border: 2px solid var(--line); background: #fff; border-radius: 14px; padding: 14px; font-weight: 800; font-size: 1rem; text-align: left; }
+.pago-opciones button small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
+.pago-opciones button:active { border-color: var(--navy); }
+.tag-enc { display: inline-block; font-size: .7rem; font-weight: 700; background: #e0e7ff; color: #3730a3; border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+.pedido-nota { font-size: .85rem; color: var(--muted); margin: -4px 0 10px; }
+/* Compras y stock */
+.faltan { background: var(--warn-bg); border-radius: 16px; padding: 12px 14px; margin: 14px 0 4px; }
+.faltan h3 { margin: 0 0 6px; font-size: .92rem; color: var(--warn); }
+.faltan ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 4px; font-size: .88rem; }
+.faltan li small { color: var(--muted); }
+.compra { background: #fff; border-radius: 14px; padding: 12px; margin-bottom: 8px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.compra-top { display: flex; justify-content: space-between; gap: 10px; }
+.compra-top small { display: block; color: var(--muted); font-size: .78rem; }
+.compra-top strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.compra ul { list-style: none; margin: 8px 0; padding: 0; font-size: .86rem; display: grid; gap: 2px; }
+.compra-acciones { display: flex; gap: 8px; }
+.compra-acciones button { border: 0; border-radius: 10px; padding: 9px 12px; font-weight: 700; font-size: .85rem; background: #f1f5f9; }
+.compra-acciones .b-ok { flex: 1; background: var(--ok); color: #fff; }
+.alcanza { font-size: .85rem; margin: 0 2px 10px; }
+.alcanza.no { color: var(--bad); font-weight: 700; }
+.stock-lista { background: #fff; border-radius: 14px; padding: 6px 14px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+.stock-lista div { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.stock-lista div:last-child { border-bottom: 0; }
+.stock-lista .neg { color: var(--bad); font-weight: 700; }
+.conteo { display: grid; grid-template-columns: 1fr 90px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.conteo input { width: 100%; padding: 9px; border: 1px solid #cbd5e1; border-radius: 10px; text-align: center; }
+.adelanto { display: inline-block; font-size: .78rem; font-weight: 700; color: var(--ok); background: var(--ok-bg); border-radius: 999px; padding: 3px 9px; margin: -2px 0 10px; }
+.pedido-acciones .b-adelanto { grid-column: 1 / -1; background: var(--ok-bg); color: var(--ok); }
+/* Reparto semanal */
+.reparto { background: #fff; border-radius: 20px; padding: 16px; margin-top: 14px; box-shadow: 0 1px 3px rgba(15,23,42,.08); border: 2px solid #f5c542; }
+.reparto h2 { margin: 0; font-size: 1.02rem; }
+.reparto-head { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; text-align: center; margin-bottom: 12px; }
+.reparto-head small { color: var(--muted); font-size: .78rem; }
+.reparto-head .mini:disabled { opacity: .35; }
+.reparto-vendido { display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px 10px; border-bottom: 1px dashed var(--line); margin-bottom: 10px; }
+.reparto-vendido b { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+.reparto-dueno { background: linear-gradient(135deg, #d4a017, #f5c542); color: #1a1200; border-radius: 16px; padding: 14px; margin-bottom: 10px; }
+.reparto-dueno small { display: block; font-weight: 700; font-size: .82rem; }
+.reparto-dueno b { display: block; font-size: 1.9rem; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.reparto-dueno span { font-size: .8rem; opacity: .85; }
+.reparto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.reparto-grid div { background: #f8fafc; border-radius: 12px; padding: 10px; }
+.reparto-grid small { display: block; color: var(--muted); font-size: .72rem; line-height: 1.25; }
+.reparto-grid b { font-size: 1rem; font-variant-numeric: tabular-nums; }
+.reparto-nota { font-size: .82rem; margin: 10px 2px 0; }
+.reparto-total { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); text-align: center; }
+.reparto-total small { display: block; color: var(--muted); font-size: .72rem; }
+.reparto-total b { font-size: .98rem; font-variant-numeric: tabular-nums; }
+@media (max-width: 360px) { .reparto-grid { grid-template-columns: 1fr; } }
 [hidden] { display: none !important; }
 </style>
 </head>
@@ -187,6 +269,7 @@ button { cursor: pointer; }
   <div class="tabs-in">
     <button type="button" class="tab on" data-tab="productos">📦 Productos</button>
     <button type="button" class="tab" data-tab="pedidos">🛵 Pedidos<b id="badgePedidos" hidden>0</b></button>
+    <button type="button" class="tab" data-tab="compras">🛒 Compras</button>
     <button type="button" class="tab" data-tab="conta">💰 Cuentas</button>
   </div>
 </nav>
@@ -221,19 +304,45 @@ button { cursor: pointer; }
 
  <!-- PEDIDOS -->
  <section id="tabPedidos" hidden>
-  <div class="sec-head"><h2>Pedidos de la página</h2><button type="button" class="mini" id="btnRecargarPedidos">🔄 Recargar</button></div>
+  <div class="sec-head"><h2>Pedidos</h2><button type="button" class="mini" id="btnRecargarPedidos">🔄 Recargar</button></div>
+  <button type="button" class="btn b-venta full" id="btnEncargo">＋ Anotar encargo</button>
+  <p class="ayuda" style="margin:8px 2px 12px">✍️ Para lo que te piden por mensaje o en persona (ej. un amigo que te encarga un vape).</p>
   <div class="chips" id="chipsPedidos">
     <button type="button" class="chip on" data-e="pendiente">⏳ Pendientes <b>0</b></button>
     <button type="button" class="chip" data-e="entregado">✅ Entregados <b>0</b></button>
     <button type="button" class="chip" data-e="cancelado">❌ Cancelados <b>0</b></button>
   </div>
-  <p class="ayuda" style="margin:10px 2px">💡 Al tocar <b>✅ Entregado</b>, el pedido se suma solo a tus ventas y al Pasaporte del cliente (cuenta como vuelo ✈️).</p>
+  <p class="ayuda" style="margin:10px 2px">💡 Al tocar <b>✅ Entregado</b> te pregunta cómo te pagaron (efectivo, banco o si te quedaron a deber) y se suma solo a tus ventas y a tu dinero.</p>
   <div id="listaPedidos"><p class="cargando">Cargando pedidos… 🛵</p></div>
  </section>
 
- <!-- CONTABILIDAD -->
+ <!-- COMPRAS -->
+ <section id="tabCompras" hidden>
+  <div class="conta-botones" style="margin-top:16px">
+    <button type="button" class="btn b-venta" id="btnCompra">＋ Ya compré</button>
+    <button type="button" class="btn b-gasto" id="btnPorComprar">📝 Por comprar</button>
+  </div>
+  <div id="comprasFaltan"></div>
+  <div class="sec-head"><h2>📝 Por comprar</h2></div>
+  <div id="comprasPendientes"></div>
+  <div class="sec-head"><h2>📦 Stock en mano</h2><button type="button" class="mini" id="btnContarStock">🔢 Contar stock</button></div>
+  <div id="comprasStock"></div>
+  <div class="sec-head"><h2>💼 Inversión</h2></div>
+  <div class="kpis" id="comprasResumen"></div>
+  <div id="comprasHistorial"></div>
+  <p class="ayuda" style="margin-top:12px">💡 Lo que inviertes en mercancía <b>no</b> es gasto: al comprar, el panel actualiza solo el costo de cada producto, y la ganancia se calcula cuando lo vendes. Si pagas "de tu bolsa", no se resta del dinero del negocio, pero queda anotado cuánto has metido tú.</p>
+ </section>
+
+ <!-- CUENTAS -->
  <section id="tabConta" hidden>
-  <div class="chips" id="chipsPeriodo" style="margin-top:16px">
+  <div id="contaDinero" class="dinero"></div>
+  <div id="contaReparto"></div>
+
+  <div class="sec-head"><h2>🤝 Préstamos</h2><button type="button" class="mini" id="btnPrestamo">＋ Préstamo</button></div>
+  <div id="contaDeudas"></div>
+
+  <div class="sec-head" style="margin-top:22px"><h2>📊 Ventas y ganancia</h2></div>
+  <div class="chips" id="chipsPeriodo">
     <button type="button" class="chip" data-p="hoy">Hoy</button>
     <button type="button" class="chip" data-p="semana">7 días</button>
     <button type="button" class="chip on" data-p="mes">Este mes</button>
@@ -252,36 +361,13 @@ button { cursor: pointer; }
   </div>
   <div class="sec-head"><h2>Movimientos</h2><button type="button" class="mini" id="btnCSV">⬇️ Excel</button></div>
   <div id="contaLista"></div>
-  <p class="ayuda" style="margin-top:12px">💡 La ganancia = ventas − lo que te costó lo vendido − gastos. Las compras de mercancía <b>no</b> van en gastos: ponle el costo a cada producto (Productos → ✏️) y se calcula solo. Todo esto es privado: solo tú lo ves.</p>
+  <p class="ayuda" style="margin-top:12px">💡 Ganancia = ventas − lo que te costó lo vendido − gastos. Los préstamos, abonos y movimientos entre efectivo y banco cambian tu dinero, pero <b>no</b> son ganancia ni gasto. Las compras de mercancía tampoco van en gastos: ponle el costo a cada producto (Productos → ✏️). Todo esto es privado.</p>
  </section>
 </main>
 
-<!-- Hojas de contabilidad -->
+<!-- Hoja de formularios (Pedidos y Cuentas): su contenido lo dibuja js/admin-conta.js -->
 <div class="sheet-bg" id="hojaBg"></div>
-<form class="sheet hoja-conta" id="hojaVenta" autocomplete="off" novalidate>
-  <div class="sheet-head"><h2>💰 Nueva venta</h2><button type="button" class="x" data-cerrar-hoja aria-label="Cerrar">✕</button></div>
-  <p class="ayuda" style="margin-top:0">Para ventas que no llegaron por la página (en persona, por mensaje…).</p>
-  <div id="lineasVenta"></div>
-  <button type="button" class="btn btn-soft" id="btnOtraLinea" style="width:100%">＋ Otro producto</button>
-  <div class="total-venta"><span>Total</span><span id="vTotal">$0</span></div>
-  <div class="dos" style="margin-top:12px">
-    <label class="campo"><span>Fecha</span><input type="date" id="vFecha"></label>
-    <label class="campo"><span>Cliente <em>(opcional)</em></span><input type="text" id="vCliente" maxlength="60" placeholder="Nombre o apodo"></label>
-  </div>
-  <label class="campo"><span>Nota <em>(opcional)</em></span><input type="text" id="vNota" maxlength="200" placeholder="Ej. pagó en efectivo"></label>
-  <div class="sheet-pie"><button type="submit" class="btn btn-main" id="btnGuardarVenta">💾 Guardar venta</button></div>
-</form>
-<form class="sheet hoja-conta" id="hojaGasto" autocomplete="off" novalidate>
-  <div class="sheet-head"><h2>🧾 Nuevo gasto</h2><button type="button" class="x" data-cerrar-hoja aria-label="Cerrar">✕</button></div>
-  <label class="campo"><span>¿En qué gastaste?</span><input type="text" id="gConcepto" maxlength="80" placeholder="Ej. Uber para entregar en Coyoacán"></label>
-  <div class="dos">
-    <label class="campo"><span>Monto</span><input type="number" id="gMonto" min="0" step="1" inputmode="numeric" placeholder="120"></label>
-    <label class="campo"><span>Tipo</span><select id="gCategoria"></select></label>
-  </div>
-  <label class="campo"><span>Fecha</span><input type="date" id="gFecha"></label>
-  <label class="campo"><span>Nota <em>(opcional)</em></span><input type="text" id="gNota" maxlength="200"></label>
-  <div class="sheet-pie"><button type="submit" class="btn btn-main" id="btnGuardarGasto">💾 Guardar gasto</button></div>
-</form>
+<form class="sheet hoja-conta" id="hoja" autocomplete="off" novalidate></form>
 
 <button type="button" class="fab" id="btnNuevo" hidden>＋ Agregar producto</button>
 

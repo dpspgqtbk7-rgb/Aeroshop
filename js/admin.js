@@ -3,7 +3,7 @@
 import { auth, db, googleProvider, fbMethods } from '../firebase-config.js';
 import { productsData } from './modules/productos.js';
 import { BASE, CAMPOS, aplicar } from './modules/inventario.js';
-import { cargarConta, initConta, costoDe, guardarCosto } from './admin-conta.js';
+import { cargarConta, initConta, costoDe, guardarCosto, stockDe } from './admin-conta.js';
 
 const ADMIN_EMAIL = 'aeroshop.37@gmail.com';
 const EDITABLES = Object.keys(CAMPOS).filter(k => k !== 'panel');
@@ -48,11 +48,14 @@ $('tabs').addEventListener('click', (ev) => {
     $('tabs').querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t === b));
     $('tabProductos').hidden = pestana !== 'productos';
     $('tabPedidos').hidden = pestana !== 'pedidos';
+    $('tabCompras').hidden = pestana !== 'compras';
     $('tabConta').hidden = pestana !== 'conta';
     $('btnNuevo').hidden = pestana !== 'productos';
     window.scrollTo(0, 0);
 });
 initConta();
+// Cuando cambian compras/ventas, se actualizan las piezas "en mano" de la lista de productos
+document.addEventListener('conta-cambio', () => { if (!$('vistaPanel').hidden) pintarLista(); });
 
 $('btnEntrar').addEventListener('click', async () => {
     $('btnEntrar').disabled = true;
@@ -209,7 +212,7 @@ function pintarLista() {
                 <h3>${esc(p.title)}</h3>
                 <div class="precio">${promo ? `<s>${mxn(p.antes)}</s>` : ''}${Number.isFinite(p.price) && p.price > 0 ? mxn(p.price) + ' MXN' : 'Sin precio'}</div>
                 ${costoDe(id) !== null && Number.isFinite(p.price) ? `<div class="gana">🔒 Te cuesta ${mxn(costoDe(id))} · ganas ${mxn(p.price - costoDe(id))}</div>` : ''}
-                <div class="badges">${badges}</div>
+                <div class="badges">${badges}${stockDe(id) !== null ? `<span class="badge ${stockDe(id) > 0 ? 'ok' : stockDe(id) < 0 ? 'bad' : ''}">📦 En mano: ${stockDe(id)}</span>` : ''}</div>
             </div>
             <div class="acciones">
                 <button type="button" class="a-stock${p.agotado ? ' is-agotado' : ''}" data-accion="stock">${p.agotado ? '😢 Agotado' : '✅ Hay'}</button>
