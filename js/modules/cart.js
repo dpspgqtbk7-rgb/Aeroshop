@@ -10,8 +10,8 @@ const formatMXN = (n) => `$${Number(n).toLocaleString('es-MX')} MXN`;
 // Subtotal, descuento que aplica (4:20 o bienvenida, el más alto) y total
 function calcularTotales(cart, state = store.getState()) {
     const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const desc = descuentoActual(state);
-    const ahorro = Math.round(subtotal * desc.pct);
+    const desc = descuentoActual(state, cart);
+    const ahorro = desc.ahorro;
     return { subtotal, total: subtotal - ahorro, ahorro, desc };
 }
 
@@ -34,10 +34,10 @@ function pintarDescuento(state, ahorro, desc, hayProductos) {
         pista.className = 'descuento-pista';
         resumen.insertBefore(pista, totalRow.nextSibling);
     }
-    const verFila = !!(desc.pct && hayProductos);
+    const verFila = !!(desc.ahorro && hayProductos);
     fila.style.display = verFila ? '' : 'none';
     if (verFila) fila.innerHTML = `<span>${escapeHTML(desc.etiqueta)}</span><span>-${formatMXN(ahorro)}</span>`;
-    const verPista = !state.currentUserProfile && !desc.pct && hayProductos;
+    const verPista = !state.currentUserProfile && !desc.ahorro && hayProductos;
     pista.style.display = verPista ? '' : 'none';
     if (verPista) pista.textContent = '🎁 Inicia sesión y llévate 10% OFF en tu primer pedido';
 }
@@ -154,10 +154,10 @@ export function sendWhatsAppOrder(opciones = {}) {
         message += `• *${item.title}* (x${item.quantity}) - ${formatMXN(item.price * item.quantity)}\n`;
     });
 
-    if (desc.pct) {
+    if (desc.ahorro) {
         message += `\n*Subtotal:* ${formatMXN(subtotal)}`;
         message += desc.tipo === '420'
-            ? `\n🔥 *PROMO HORA 4:20 APLICADA (40% OFF):* -${formatMXN(ahorro)}`
+            ? `\n🔥 *PROMO HORA 4:20 (Mieles):* -${formatMXN(ahorro)}`
             : `\n🎁 *10% OFF BIENVENIDA (1er pedido):* -${formatMXN(ahorro)}`;
     }
 

@@ -156,7 +156,7 @@ function initApp() {
     cargarDesdeFirebase(cacheCatalogo.json)
         .then(cambios => { if (cambios) refrescarCatalogo(cambios); })
         .catch(err => console.warn('No se pudieron traer los cambios del Panel:', err.code || err));
-    // Hora 4:20: prende/apaga sola el 40% de 4:20 a 4:25 pm
+    // Hora 4:20: de 4:20 a 4:25 pm, Mieles con 10% ($600 o menos) o 30% (más de $600)
     iniciarReloj420(() => syncPrices());
     initDiferencia();
     initModoTikTok();

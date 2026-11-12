@@ -3,7 +3,7 @@ import { addToCart } from './cart.js';
 import { openModalState, closeModalState, showToast } from '../ui.js';
 import { waLink } from '../config.js';
 import { store } from '../core/store.js';
-import { precio420 } from './promos.js';
+import { precio420, descuento420De } from './promos.js';
 
 import { productsData } from './productos.js';
 export { productsData };
@@ -16,9 +16,9 @@ const mxn = (n) => `$${Number(n).toLocaleString('es-MX')}`;
 // Precio listo para pintar: si está en promo, muestra el precio normal tachado
 export function precioHTML(p) {
     if (!tienePrecio(p)) return 'Precio por confirmar';
-    // Hora 4:20: el precio normal tachado y el de 40% OFF
-    if (store.getState().isPromo420Active) {
-        return `<s class="price-old">${mxn(p.price)}</s> <span class="price-promo price-420">${mxn(precio420(p.price))} MXN 🔥</span>`;
+    // Hora 4:20 (solo Mieles): el precio normal tachado y el de 10% o 30% OFF
+    if (store.getState().isPromo420Active && descuento420De(p) > 0) {
+        return `<s class="price-old">${mxn(p.price)}</s> <span class="price-promo price-420">${mxn(precio420(p))} MXN 🔥 -${Math.round(descuento420De(p) * 100)}%</span>`;
     }
     return enPromo(p)
         ? `<s class="price-old">${mxn(p.antes)}</s> <span class="price-promo">${mxn(p.price)} MXN</span>`
